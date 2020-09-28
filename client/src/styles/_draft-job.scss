@@ -1,0 +1,433 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base.scss';
+
+#draftJob {
+    padding: 70px 0 50px;
+
+    .form-label {
+        margin-bottom: 5px;
+        color: $darkBlue;
+        font-size: 18px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+    }
+
+    padding: 70px 0 50px;
+
+    .title {
+        color: $blue;
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    .line-break {
+        width: 56%;
+        float: left;
+        margin-right: 10px;
+
+        @include media('>320px', '<=375px') {
+            width: 61%;
+        }
+
+        @include media('>375px', '<=425px') {
+            width: 64%;
+        }
+
+        @include media('>=tablet', '<992px') {
+            width: 71%;
+        }
+
+        @include media('>=992px', '<1200px') {
+            width: 73%;
+            margin-right: 15px;
+        }
+
+        @include media('>=1200px') {
+            width: 86%;
+            margin-right: 17px;
+        }
+    }
+
+    .step {
+        width: 3%;
+        margin-right: 10px;
+        border-top: 2px solid #d5d5d5;
+        text-align: right;
+        float: left;
+        font-weight: 500;
+        color: #d5d5d5;
+
+        &.active {
+            border-top-color: $blue;
+            color: $blue;
+        }
+    }
+
+    .step-1 {
+        padding: 0 10px;
+
+        .subtitle {
+            margin-bottom: 10px;
+            font-size: 12px;
+
+            &.desc {
+                width: 240px;
+                margin: auto;
+                text-align: center;
+            }
+        }
+
+        .list {
+            .nav-item {
+                width: 100%;
+                font-weight: 500;
+                color: #606060;
+                cursor: pointer;
+                margin-bottom: 5px;
+
+                &.active {
+                    color: $darkBlue;
+                }
+            }
+        }
+
+        .item {
+            position: relative;
+            border-radius: 30px;
+            background-color: #d5d5d5;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #606060;
+            display: inline-block;
+            margin-bottom: 15px;
+            margin-right: 10px;
+
+            .close {
+                position: absolute;
+                top: -8px;
+                right: -4px;
+                background-color: $blue;
+                border-radius: 30px;
+                opacity: 1;
+                color: $white;
+                padding: 0 6px 6px;
+                cursor: pointer;
+                font-size: 14px;
+            }
+        }
+
+        .specialty-line-break {
+            @include media('>=tablet') {
+                margin-top: 161px;
+            }
+        }
+
+        .button {
+            border-radius: 20px;
+            background-color: $blue;
+            border-color: $blue;
+            margin-top: 50px;
+
+            @include media('>tablet') {
+                margin-top: 100px;
+            }
+        }
+    }
+
+    .step-2 {
+        .line-break {
+            width: 100%;
+        }
+
+        .form-label {
+            color: #298494;
+            font-weight: 700;
+        }
+
+        .title {
+            color: #298494;
+        }
+
+        textarea {
+            border-radius: 15px;
+        }
+
+        .input[type='text'] {
+            padding-right: 25px;
+        }
+
+        .fas {
+            position: absolute;
+            top: 50%;
+            right: 2%;
+            transform: translate(-2%, -50%);
+            color: #0c3961;
+        }
+
+        .button {
+            background-color: #4adad8;
+            border-color: #4adad8;
+            color: #ffffff;
+        }
+
+        .roles-list,
+        .key-responsibilities-list,
+        .responsibilities-list {
+            list-style-type: none;
+            margin-left: 25px;
+            margin-top: 25px;
+            padding-left: 0;
+
+            li {
+                text-indent: -20px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .roles-item,
+        .key-responsibilities-item,
+        .responsibilities-item {
+            color: #606060;
+            font-weight: 500;
+            font-size: 14px;
+            position: relative;
+
+            &::before {
+                content: '';
+                display: inline-block;
+                width: 10px;
+                height: 3px;
+                margin: 4px auto;
+                margin-right: 10px;
+                background-color: #606060;
+            }
+
+            .roles-close,
+            .key-responsibilities-close,
+            .responsibilities-close {
+                position: absolute;
+                top: -11px;
+                right: -25px;
+                background-color: #0c3961;
+                border-radius: 30px;
+                opacity: 1;
+                color: #fff;
+                padding: 2px 7px;
+                cursor: pointer;
+                text-indent: 0;
+                font-size: 12px;
+            }
+        }
+    }
+
+    .step-3 {
+        .form {
+            width: 350px;
+            margin: auto;
+
+            .title {
+                color: #298494;
+                margin-bottom: 2rem;
+            }
+
+            .form-check {
+                padding-left: 0;
+
+                .input {
+                    &[name='availability'] {
+                        display: none;
+                    }
+
+                    &:checked + .form-check-label {
+                        background-color: $darkGray;
+                        color: $white;
+                    }
+                }
+
+                .form-check-label {
+                    background-color: $white;
+                    padding: 10px 0;
+                    width: 100%;
+                    text-align: center;
+                    margin-bottom: 10px;
+                    border: 2px solid $darkGray;
+                    font-weight: 500;
+                }
+            }
+
+            .input {
+                &[name='expectedSalary'] {
+                    margin-right: auto;
+                }
+
+                &[name='currency'] {
+                    margin-right: 0;
+                }
+            }
+
+            .button {
+                background-color: $blue;
+                border-color: $blue;
+            }
+        }
+    }
+}
+
+.preview-job {
+    .modal-header {
+        border-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .modal-title {
+        color: #0c3961;
+        font-weight: 700;
+    }
+
+    .modal-body {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .item {
+        &[name='about'],
+        &[name='remoteStaffExpectation'] {
+            margin-bottom: 16px;
+            white-space: pre;
+        }
+    }
+
+    .title {
+        margin-bottom: 1rem;
+        color: #298494;
+    }
+
+    .subtitle {
+        margin-bottom: 10px;
+        color: #d5d5d5;
+        font-weight: 500;
+    }
+
+    .edit-link {
+        color: #606060;
+        font-weight: 500;
+    }
+
+    .item {
+        color: #606060;
+        font-weight: 500;
+
+        .list {
+            list-style-type: none;
+            margin-left: 25px;
+            padding-left: 0;
+
+            li {
+                text-indent: -20px;
+                margin-bottom: 10px;
+                color: #606060;
+                font-weight: 500;
+                font-size: 14px;
+
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 10px;
+                    height: 3px;
+                    margin: 4px auto;
+                    margin-right: 10px;
+                    background-color: #d5d5d5;
+                }
+            }
+        }
+    }
+
+    .line-break-v {
+        border-right: 2px solid #d5d5d5;
+    }
+
+    .line-break {
+        width: 100%;
+    }
+
+    .button {
+        color: #ffffff;
+
+        &.cancel {
+            background-color: #ffffff;
+            border-color: #606060;
+            color: #606060;
+        }
+    }
+
+    .input {
+        &[name='expectedSalary'] {
+            width: 180px;
+        }
+
+        &[name='about'],
+        &[name='remoteStaffExpectation'] {
+            border-radius: 15px;
+        }
+    }
+
+    .roles-list,
+    .key-responsibilities-list,
+    .responsibilities-list {
+        list-style-type: none;
+        margin-left: 25px;
+        margin-top: 25px;
+        padding-left: 0;
+
+        li {
+            text-indent: -20px;
+            margin-bottom: 10px;
+        }
+    }
+
+    .roles-item,
+    .key-responsibilities-item,
+    .responsibilities-item {
+        color: #606060;
+        font-weight: 500;
+        font-size: 14px;
+        position: relative;
+
+        &::before {
+            content: '';
+            display: inline-block;
+            width: 10px;
+            height: 3px;
+            margin: 4px auto;
+            margin-right: 10px;
+            background-color: #606060;
+        }
+
+        .roles-close,
+        .key-responsibilities-close,
+        .responsibilities-close {
+            position: absolute;
+            top: -11px;
+            right: -25px;
+            background-color: #0c3961;
+            border-radius: 30px;
+            opacity: 1;
+            color: #fff;
+            padding: 2px 7px;
+            cursor: pointer;
+            text-indent: 0;
+            font-size: 12px;
+        }
+    }
+
+    .fas {
+        position: absolute;
+        top: 50%;
+        right: 2%;
+        transform: translate(-2%, -50%);
+        color: #0c3961;
+    }
+}

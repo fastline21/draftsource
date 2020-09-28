@@ -1,0 +1,87 @@
+@import 'include-media/dist/_include-media.scss';
+@import './base';
+
+#login {
+    padding: 70px 0 50px;
+
+    .header {
+        .title {
+            margin-bottom: 5px;
+        }
+    }
+
+    .form {
+        padding-top: 20px;
+        margin: auto;
+
+        @include media('>tablet') {
+            width: 380px;
+        }
+
+        .button {
+            border-radius: 20px;
+            background-color: $blue;
+            border-color: $blue;
+        }
+
+        .form-check {
+            @include media('<tablet') {
+                width: 57%;
+            }
+        }
+
+        .form-check-input {
+            margin-top: auto;
+
+            @include media('<576px') {
+                margin-top: 5px;
+            }
+        }
+
+        .link {
+            color: $darkBlue;
+            background-color: transparent;
+            border: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .or {
+            display: flex;
+            flex-basis: 100%;
+            align-items: center;
+            margin: 1.5rem 0;
+            color: #ababac;
+            font-weight: 600;
+
+            &::before,
+            &::after {
+                content: '';
+                flex-grow: 1;
+                background-color: #ababac;
+                height: 1px;
+                font-size: 0px;
+                line-height: 0px;
+                margin: 0px 8px;
+            }
+        }
+
+        .other-login {
+            .button {
+                background-color: #d5d5d5;
+                border-color: #d5d5d5;
+                color: #606060;
+                font-weight: 500;
+                margin-bottom: 1rem;
+                padding: 10px 0;
+
+                .fab {
+                    margin-right: 1rem;
+                    color: #0c3961;
+                }
+            }
+        }
+    }
+}

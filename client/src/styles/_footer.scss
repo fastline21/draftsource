@@ -1,0 +1,85 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base';
+
+#footer {
+    padding: 30px 10px;
+
+    .title {
+        color: $black;
+        margin-bottom: 28px;
+        font-weight: 700;
+    }
+
+    .list {
+        list-style: none;
+        padding: 0;
+        margin: 10px 0 20px;
+
+        .item {
+            color: $black;
+            font-weight: 400;
+        }
+    }
+
+    .logo {
+        height: 34px;
+    }
+
+    .address {
+        margin: 20px 0 10px;
+        color: $black;
+        font-weight: 400;
+    }
+
+    .social-media {
+        color: $black;
+        margin-top: 15px;
+        margin-bottom: 0;
+
+        .fab {
+            color: $lightGray;
+            margin-right: 10px;
+        }
+    }
+
+    .create-resume,
+    .draft-job {
+        color: $black;
+        text-decoration: underline;
+    }
+
+    .policy {
+        margin-top: 20px;
+        margin-bottom: 10px;
+
+        @include media('>=tablet') {
+            text-align: center;
+        }
+
+        a {
+            color: $black;
+            display: block;
+
+            &:not(:last-child) {
+                margin-right: 10px;
+            }
+
+            &:hover {
+                text-decoration: none;
+            }
+        }
+    }
+
+    .copyright {
+        margin-bottom: 0;
+        color: $black;
+
+        @include media('>=tablet') {
+            text-align: center;
+        }
+
+        a {
+            color: $black;
+        }
+    }
+}

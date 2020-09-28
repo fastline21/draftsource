@@ -1,0 +1,145 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base';
+
+#dashboard {
+    padding: 70px 0 50px;
+
+    .header {
+        .title {
+            margin-bottom: 5px;
+            color: $blue;
+
+            @include media('<=tablet') {
+                font-size: 32px;
+            }
+
+            span {
+                color: $darkBlue;
+            }
+        }
+    }
+
+    .sidebar {
+        border-right: 2px solid #d5d5d5;
+        padding-right: 0;
+        padding-left: 0;
+
+        .remote-worker,
+        .employer,
+        .settings {
+            padding-top: 2.5rem;
+        }
+
+        .title {
+            color: $darkBlue;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-item {
+            .nav-link {
+                padding: 16px 0 12px;
+                color: #818181;
+                font-weight: 600;
+                font-size: 14px;
+                margin-left: 1rem;
+            }
+
+            .fas {
+                color: #818181;
+                font-weight: 600;
+                padding-right: 10px;
+            }
+
+            &.active {
+                background-color: #f0f0f0;
+
+                .nav-link {
+                    color: $blue;
+                }
+            }
+        }
+
+        .filter {
+            padding-top: 1rem;
+            padding-left: 1rem;
+            padding-bottom: 0.5rem;
+            background-color: $white;
+
+            .title {
+                padding-left: 0;
+                margin-bottom: 1rem;
+            }
+
+            .nav-item {
+                border-bottom: 2px solid #d5d5d5;
+
+                &:first-child {
+                    border-top: 2px solid #d5d5d5;
+                }
+
+                .nav-link {
+                    padding: 16px 0 12px;
+                    color: #0c3961;
+                    font-weight: 700;
+                    font-size: 14px;
+                    margin: 0;
+                }
+
+                .fas {
+                    color: #606060;
+                    font-weight: 600;
+                    padding-right: 20px;
+                }
+            }
+        }
+
+        .filter-dropdown {
+            display: none;
+            padding-top: 5px;
+            padding-bottom: 12px;
+
+            .nav-item {
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 5px;
+                border-top: 0 !important;
+                border-bottom: 0;
+
+                .filter-input {
+                    display: none;
+
+                    & + .filter-label {
+                        color: #606060;
+                        margin-bottom: 0;
+                        margin-left: 15px;
+                        cursor: pointer;
+                    }
+
+                    &:checked + .filter-label {
+                        color: #298494;
+                    }
+                }
+
+                &::before {
+                    content: '';
+                    display: inline-block;
+                    width: 10px;
+                    height: 3px;
+                    margin: 4px 0;
+                }
+
+                &.checked {
+                    &::before {
+                        background-color: #298494;
+                    }
+                }
+            }
+        }
+    }
+
+    .main {
+        padding-left: 0;
+        padding-top: 35px;
+    }
+}

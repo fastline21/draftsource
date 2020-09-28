@@ -1,0 +1,84 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base.scss';
+
+.alert-msg {
+    text-align: center;
+
+    .modal-dialog {
+        &.success-alert {
+            max-width: 50%;
+
+            & > .modal-content .modal-body .subtitle {
+                color: $darkBlue;
+                font-weight: 600;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            & > .modal-content .modal-footer {
+                width: 40%;
+            }
+        }
+
+        &.sucess1-alert {
+            max-width: 45%;
+
+            & > .modal-content .modal-body .subtitle {
+                color: $darkBlue;
+                font-weight: 600;
+                font-size: 16px;
+                margin-top: 10px;
+            }
+
+            & > .modal-content .modal-footer {
+                width: 40%;
+            }
+        }
+
+        .modal-content {
+            padding: 4.5rem 0;
+            border: none;
+            border-radius: 1rem;
+
+            .modal-body {
+                width: 70%;
+                margin: auto;
+                color: $flatBlack;
+                font-weight: 600;
+
+                @include media('<576px') {
+                    width: 85%;
+                }
+            }
+
+            .modal-footer {
+                border: none;
+                margin: auto;
+                width: 70%;
+
+                .button {
+                    background-color: $blue;
+                    border-color: $blue;
+                    color: $white;
+                    border-radius: 20px;
+
+                    &.success2,
+                    &.reject,
+                    &.delete {
+                        width: 45%;
+                    }
+
+                    &.approve {
+                        width: 45%;
+
+                        &:nth-child(1) {
+                            background-color: $white;
+                            color: $blue;
+                            border-color: $blue;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

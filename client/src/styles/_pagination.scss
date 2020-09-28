@@ -1,0 +1,21 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base.scss';
+
+.pagination {
+    .page-item {
+        &.active {
+            color: $darkBlue;
+
+            .page-link {
+                background-color: $darkBlue;
+                color: $white;
+            }
+        }
+
+        .page-link {
+            border-color: transparent;
+            color: $flatBlack;
+            font-weight: 500;
+        }
+    }
+}

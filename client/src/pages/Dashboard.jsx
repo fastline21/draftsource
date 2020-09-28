@@ -1,0 +1,266 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
+import { Link, useLocation } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+// Actions
+import { getUserInfo } from './../state/actions/userAction';
+import {
+    approvedApplicants,
+    newApplicants,
+    rejectedApplicants,
+} from './../state/actions/candidateAction';
+
+// Components
+import Filter from './Dashboard/Filter';
+import NewApplicants from './Dashboard/NewApplicants';
+import ApprovedApplicants from './Dashboard/ApprovedApplicants';
+import RejectedApplicants from './Dashboard/RejectedApplicants';
+
+const Dashboard = ({
+    getUserInfo,
+    newApplicants,
+    approvedApplicants,
+    rejectedApplicants,
+    userState: { user, info },
+    filterState: { filter },
+}) => {
+    const { menu } = useParams();
+    const location = useLocation();
+    const initialPersonalInfo = {
+        firstName: '',
+        lastName: '',
+    };
+    const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
+    const [load, setLoad] = useState(true);
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    const { firstName, lastName } = personalInfo;
+
+    useEffect(() => {
+        if (load) {
+            getUserInfo();
+            setLoad(false);
+        }
+
+        if (user && user.type === 'Admin') {
+            setIsAdmin(true);
+        }
+
+        if (
+            info !== null &&
+            JSON.stringify(personalInfo) === JSON.stringify(initialPersonalInfo)
+        ) {
+            setPersonalInfo(info);
+        }
+
+        if (menu === 'new-applicants') {
+            newApplicants();
+        }
+
+        if (menu === 'approved-applicants') {
+            approvedApplicants();
+        }
+
+        if (menu === 'rejected-applicants') {
+            rejectedApplicants();
+        }
+
+        // eslint-disable-next-line
+    }, [load, info, personalInfo, user, menu, filter, location]);
+    return (
+        <div id="dashboard">
+            <div className="container-fluid">
+                <div className="header">
+                    <h2 className="title">
+                        Welcome,{' '}
+                        <span>
+                            {firstName} {lastName}
+                        </span>
+                    </h2>
+                    <div className="line-break" />
+                </div>
+                <div className="row">
+                    <nav className="d-none d-sm-block col-sm-2 sidebar">
+                        <div className="remote-worker">
+                            <h5 className="title">Remote Worker</h5>
+                            <ul className="nav flex-column">
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'new-applicants'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/new-applicants"
+                                        className="nav-link"
+                                    >
+                                        New Applicants{' '}
+                                        <i
+                                            className={`fas fa-${
+                                                menu === 'new-applicants'
+                                                    ? 'minus'
+                                                    : 'plus'
+                                            } float-right pt-1`}
+                                        ></i>
+                                    </Link>
+                                    {menu === 'new-applicants' ? (
+                                        <Filter loadData={newApplicants} />
+                                    ) : null}
+                                </li>
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'approved-applicants'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/approved-applicants"
+                                        className="nav-link"
+                                    >
+                                        Approved Applicants{' '}
+                                        <i
+                                            className={`fas fa-${
+                                                menu === 'approved-applicants'
+                                                    ? 'minus'
+                                                    : 'plus'
+                                            } float-right pt-1`}
+                                        ></i>
+                                    </Link>
+                                    {menu === 'approved-applicants' ? (
+                                        <Filter loadData={approvedApplicants} />
+                                    ) : null}
+                                </li>
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'rejected-applicants'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/rejected-applicants"
+                                        className="nav-link"
+                                    >
+                                        Rejected Appplicants{' '}
+                                        <i
+                                            className={`fas fa-${
+                                                menu === 'rejected-applicants'
+                                                    ? 'minus'
+                                                    : 'plus'
+                                            } float-right pt-1`}
+                                        ></i>
+                                    </Link>
+                                    {menu === 'rejected-applicants' ? (
+                                        <Filter loadData={rejectedApplicants} />
+                                    ) : null}
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="employer">
+                            <h5 className="title">Employer</h5>
+                            <ul className="nav flex-column">
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'new-job-request'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/new-job"
+                                        className="nav-link"
+                                    >
+                                        New Job Request
+                                    </Link>
+                                </li>
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'approved-job-request'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/approved-job"
+                                        className="nav-link"
+                                    >
+                                        Approved Job Request
+                                    </Link>
+                                </li>
+                                <li
+                                    className={`nav-item sidebar-item${
+                                        menu === 'rejected-job-request'
+                                            ? ' active'
+                                            : ''
+                                    }`}
+                                >
+                                    <Link
+                                        to="/dashboard/rejected-job"
+                                        className="nav-link"
+                                    >
+                                        Rejected Job Request
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                        {isAdmin && (
+                            <div className="settings">
+                                <h5 className="title">Settings</h5>
+                                <ul className="nav flex-column">
+                                    <li
+                                        className={`nav-item sidebar-item${
+                                            menu === 'roles-permissions'
+                                                ? ' active'
+                                                : ''
+                                        }`}
+                                    >
+                                        <Link
+                                            to="/dashboard/roles-permissions"
+                                            className="nav-link"
+                                        >
+                                            Roles & Permissions
+                                        </Link>
+                                    </li>
+                                </ul>
+                            </div>
+                        )}
+                    </nav>
+                    <main className="col-sm-10 main">
+                        {menu === 'new-applicants' && <NewApplicants />}
+                        {menu === 'approved-applicants' && (
+                            <ApprovedApplicants />
+                        )}
+                        {menu === 'rejected-applicants' && (
+                            <RejectedApplicants />
+                        )}
+                    </main>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+Dashboard.propTypes = {
+    getUserInfo: PropTypes.func.isRequired,
+    userState: PropTypes.object.isRequired,
+    newApplicants: PropTypes.func.isRequired,
+    approvedApplicants: PropTypes.func.isRequired,
+    rejectedApplicants: PropTypes.func.isRequired,
+    filterState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+    userState: state.userState,
+    filterState: state.filterState,
+});
+
+export default connect(mapStateToProps, {
+    getUserInfo,
+    newApplicants,
+    approvedApplicants,
+    rejectedApplicants,
+})(Dashboard);
