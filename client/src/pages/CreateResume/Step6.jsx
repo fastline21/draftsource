@@ -373,7 +373,7 @@ const Step6 = ({
             uploadWork.documents.length === 0
         ) {
             return setAlert(
-                'error',
+                '',
                 'Please fill-in the required boxes to Proceed.'
             );
         } else {
