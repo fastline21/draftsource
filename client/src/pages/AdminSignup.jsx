@@ -28,7 +28,7 @@ const AdminSignup = ({ addUser, setAlert }) => {
 
         if (JSON.stringify(info) === JSON.stringify(initialInfo)) {
             return setAlert(
-                'error',
+                '',
                 'Please fill-in the required boxes to Proceed.'
             );
         } else {
