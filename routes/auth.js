@@ -8,6 +8,9 @@ const jwt = require('jsonwebtoken');
 const User = require('./../models/User');
 const Admin = require('./../models/Admin');
 
+// Config
+const { sendEmail } = require('./../config/mailer');
+
 // Middleware
 const auth = require('./../middleware/auth');
 
@@ -53,6 +56,29 @@ router.post('/signup', async (req, res) => {
                     verificationToken,
                 });
                 await user.save();
+                const compose = `
+                        Someone has used your email to engage in Employment Activities, if this is your email click the link below. 
+                        <br /><br />
+                        <a href="https://draftsourcevirtual.com/verify/${verificationToken}">https://draftsourcevirtual.com/verify/${verificationToken}</a>
+                        
+                        <br /><br />
+                        Have a great day!<br />
+                        Team Draftsource Virtual
+                    `;
+                let isSuccess = false;
+                while (!isSuccess) {
+                    try {
+                        await sendEmail(
+                            'Draftsource BPO <do-not-reply@draftsourcebpo.com>',
+                            email,
+                            'Verify Email',
+                            compose
+                        );
+                        isSuccess = true;
+                    } catch (err) {
+                        console.error('error:', err);
+                    }
+                }
                 res.json(user);
             } catch (error) {
                 console.error(error.message);
@@ -87,6 +113,29 @@ router.post('/signup', async (req, res) => {
                         verificationToken,
                     });
                     await user.save();
+                    const compose = `
+                        Someone has used your email to engage in Employment Activities, if this is your email click the link below. 
+                        <br /><br />
+                        <a href="https://draftsourcevirtual.com/verify/${verificationToken}">https://draftsourcevirtual.com/verify/${verificationToken}</a>
+                        
+                        <br /><br />
+                        Have a great day!<br />
+                        Team Draftsource Virtual
+                    `;
+                    let isSuccess = false;
+                    while (!isSuccess) {
+                        try {
+                            await sendEmail(
+                                'Draftsource BPO <do-not-reply@draftsourcebpo.com>',
+                                email,
+                                'Verify Email',
+                                compose
+                            );
+                            isSuccess = true;
+                        } catch (err) {
+                            console.error('error:', err);
+                        }
+                    }
                     res.json(user);
                 }
             } catch (error) {
@@ -122,6 +171,29 @@ router.post('/signup', async (req, res) => {
                         verificationToken,
                     });
                     await user.save();
+                    const compose = `
+                        Someone has used your email to engage in Employment Activities, if this is your email click the link below. 
+                        <br /><br />
+                        <a href="https://draftsourcevirtual.com/verify/${verificationToken}">https://draftsourcevirtual.com/verify/${verificationToken}</a>
+                        
+                        <br /><br />
+                        Have a great day!<br />
+                        Team Draftsource Virtual
+                    `;
+                    let isSuccess = false;
+                    while (!isSuccess) {
+                        try {
+                            await sendEmail(
+                                'Draftsource BPO <do-not-reply@draftsourcebpo.com>',
+                                email,
+                                'Verify Email',
+                                compose
+                            );
+                            isSuccess = true;
+                        } catch (err) {
+                            console.error('error:', err);
+                        }
+                    }
                     res.json(user);
                 }
             } catch (error) {
