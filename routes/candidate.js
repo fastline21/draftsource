@@ -59,7 +59,6 @@ router.get('/view-candidates', async (req, res) => {
 
     results.candidates = candidates.slice(startIndex, endIndex);
     res.json(results);
-    console.log('ues');
 });
 
 // @route   GET /api/candidate/new-applicants

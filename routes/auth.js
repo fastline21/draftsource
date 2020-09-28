@@ -202,20 +202,17 @@ router.post('/signup', async (req, res) => {
             }
         }
     } else if (type === 'Admin') {
-        const { email, password, password2, firstName, lastName } = req.body;
+        const { email, password, firstName, lastName, type } = req.body;
 
         if (
             email === '' ||
             password === '' ||
-            password2 === '' ||
             firstName === '' ||
             lastName === ''
         ) {
             return res
                 .status(400)
                 .json({ msg: 'Please fill-in the required boxes to Proceed.' });
-        } else if (password !== password2) {
-            return res.status(400).json({ msg: 'Incorrect password' });
         } else {
             try {
                 let user = await User.findOne({ email });
