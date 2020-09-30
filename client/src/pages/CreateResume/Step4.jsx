@@ -431,17 +431,6 @@ const Step4 = ({
                                             </div>
                                             <div className="form-group">
                                                 <label className="form-label">
-                                                    School
-                                                </label>
-                                                <input
-                                                    type="text"
-                                                    name="school"
-                                                    className="form-control input"
-                                                    onChange={eduItem}
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <label className="form-label">
                                                     Course
                                                 </label>
                                                 <input
@@ -450,6 +439,17 @@ const Step4 = ({
                                                     className="form-control input"
                                                     onChange={eduItem}
                                                     disabled={disableInput}
+                                                />
+                                            </div>
+                                            <div className="form-group">
+                                                <label className="form-label">
+                                                    School
+                                                </label>
+                                                <input
+                                                    type="text"
+                                                    name="school"
+                                                    className="form-control input"
+                                                    onChange={eduItem}
                                                 />
                                             </div>
                                             <div className="form-group">

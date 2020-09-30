@@ -57,6 +57,8 @@ const Login = ({
         if (user) {
             if (user.type === 'Admin') {
                 history.push('/dashboard');
+            } else if (user.type === 'Employer') {
+                history.push('/draft-job');
             }
         }
 

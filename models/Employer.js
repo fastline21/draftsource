@@ -12,7 +12,7 @@ const EmployerSchema = new mongoose.Schema({
         type: String,
     },
     contactNo: {
-        type: String,
+        type: Number,
     },
     country: {
         type: String,

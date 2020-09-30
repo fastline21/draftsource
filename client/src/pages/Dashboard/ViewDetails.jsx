@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { setAlert } from './../../state/actions/alertAction';
 
 // Components
-import ModalAction from './ModalAction';
+import ModalActionJob from './ModalActionJob';
 
 const ViewDetails = ({ isShow, isHide, loadJob, jobState: { details } }) => {
     const [show, setShow] = useState(false);
@@ -21,14 +21,17 @@ const ViewDetails = ({ isShow, isHide, loadJob, jobState: { details } }) => {
         company: '',
         expectedSalary: '',
         availability: '',
-        specialty: '',
-        software: '',
+        specialty: [],
+        software: [],
         about: '',
-        roles: '',
-        keyResponsibilities: '',
-        responsibilities: '',
+        roles: [],
+        keyResponsibilities: [],
+        responsibilities: [],
         remoteStaffExpectation: '',
+        status: '',
     };
+
+    const [data, setData] = useState(initialData);
 
     const handleClose = () => {
         setData(initialData);
@@ -54,6 +57,7 @@ const ViewDetails = ({ isShow, isHide, loadJob, jobState: { details } }) => {
         keyResponsibilities,
         responsibilities,
         remoteStaffExpectation,
+        status,
     } = data;
 
     const approveJob = () => {
@@ -142,10 +146,10 @@ const ViewDetails = ({ isShow, isHide, loadJob, jobState: { details } }) => {
             handleShow();
         }
 
-        if (resume !== null) {
-            setData(resume);
+        if (details !== null) {
+            setData(details);
         }
-    }, [resume, isShow]);
+    }, [details, isShow]);
 
     return (
         <Modal
@@ -157,7 +161,7 @@ const ViewDetails = ({ isShow, isHide, loadJob, jobState: { details } }) => {
             id="seeDetails"
         >
             <Modal.Body>
-                <ModalAction
+                <ModalActionJob
                     isShow={showModalAction}
                     id={_id}
                     msg={msg}

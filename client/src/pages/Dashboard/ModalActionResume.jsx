@@ -9,14 +9,15 @@ import {
     approveResume,
     deleteResume,
     rejectResume,
-} from './../../state/actions/candidateAction';
+} from '../../state/actions/candidateAction';
 
-const ModalAction = ({
+const ModalActionResume = ({
     isShow,
     id,
     msg,
     rate,
     salary,
+    comments,
     approveResume,
     isHide,
     hideModal,
@@ -42,7 +43,7 @@ const ModalAction = ({
                     className="btn btn-primary button approve"
                     onClick={() => {
                         handleClose();
-                        approveResume({ id, rate, salary });
+                        approveResume({ id, rate, salary, comments });
                         isHide();
                     }}
                 >
@@ -55,7 +56,7 @@ const ModalAction = ({
                     className="btn btn-primary button reject"
                     onClick={() => {
                         handleClose();
-                        rejectResume({ id, rate, salary });
+                        rejectResume({ id, rate, salary, comments });
                         isHide();
                     }}
                 >
@@ -81,7 +82,7 @@ const ModalAction = ({
                     className="btn btn-primary button delete"
                     onClick={() => {
                         handleClose();
-                        approveResume({ id, rate, salary });
+                        approveResume({ id, rate, salary, comments });
                         isHide();
                     }}
                 >
@@ -136,7 +137,7 @@ const ModalAction = ({
     );
 };
 
-ModalAction.propTypes = {
+ModalActionResume.propTypes = {
     approveResume: PropTypes.func.isRequired,
     deleteResume: PropTypes.func.isRequired,
     rejectResume: PropTypes.func.isRequired,
@@ -146,4 +147,4 @@ export default connect(null, {
     approveResume,
     deleteResume,
     rejectResume,
-})(ModalAction);
+})(ModalActionResume);

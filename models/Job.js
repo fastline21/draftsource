@@ -5,6 +5,12 @@ const JobSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
     },
+    industry: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
     title: {
         type: String,
     },
@@ -37,6 +43,19 @@ const JobSchema = new mongoose.Schema({
     },
     currency: {
         type: String,
+    },
+    industry: {
+        type: String,
+    },
+    country: {
+        type: String,
+    },
+    company: {
+        type: String,
+    },
+    status: {
+        type: String,
+        default: 'Pending',
     },
     dateCreated: {
         type: Date,

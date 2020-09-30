@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 // Models
+const User = require('./../models/User');
+const Employer = require('../models/Employer');
 const Job = require('./../models/Job');
 
 // Middleware
 const auth = require('./../middleware/auth');
-const Employer = require('../models/Employer');
 
 // @route   POST /api/job
 // @desc    Draft a job
@@ -25,7 +26,6 @@ router.post('/', auth, async (req, res) => {
         keyResponsibilities,
         responsibilities,
     } = req.body;
-
     if (
         title === '' ||
         specialty.length === 0 ||
@@ -44,6 +44,8 @@ router.post('/', auth, async (req, res) => {
         });
     } else {
         try {
+            const employer = await Employer.findOne({ user: req.user.id });
+            const { country, company } = employer;
             const jobFields = {
                 user: req.user.id,
                 title,
@@ -57,6 +59,9 @@ router.post('/', auth, async (req, res) => {
                 roles,
                 keyResponsibilities,
                 responsibilities,
+                country,
+                industry: company.industry,
+                company: company.name,
             };
             const job = new Job(jobFields);
             await job.save();
@@ -108,7 +113,7 @@ router.get('/new-jobs', auth, async (req, res) => {
         };
     }
 
-    if (endIndex < candidates.length) {
+    if (endIndex < job.length) {
         results.next = {
             page: page + 1,
             limit,
@@ -161,7 +166,7 @@ router.get('/approved-jobs', auth, async (req, res) => {
         };
     }
 
-    if (endIndex < candidates.length) {
+    if (endIndex < job.length) {
         results.next = {
             page: page + 1,
             limit,
@@ -214,7 +219,7 @@ router.get('/rejected-jobs', auth, async (req, res) => {
         };
     }
 
-    if (endIndex < candidates.length) {
+    if (endIndex < job.length) {
         results.next = {
             page: page + 1,
             limit,
@@ -252,19 +257,18 @@ router.put('/reject-job', auth, async (req, res) => {
 // @route   PUT /api/job/delete-job
 // @desc    Delete job
 // @access  Private
-router.put('/delete-job', auth, async (req, res) => {
-    const { id } = req.body;
+router.delete('/delete-job/:id', auth, async (req, res) => {
+    const { id } = req.params;
     await Job.findByIdAndDelete(id);
 });
 
 // @route   POST /api/job/view-details
 // @desc    View details
 // @access  Private
-router.post('/view-resume', auth, async (req, res) => {
+router.post('/view-details', auth, async (req, res) => {
     const { id } = req.body;
     const job = await Job.findById(id);
-    const employer = await Employer.findById(job.user).select('company.name');
-    res.json({ ...job, ...employer });
+    res.json(job);
 });
 
 module.exports = router;

@@ -7,12 +7,14 @@ import PropTypes from 'prop-types';
 import { verifyUser, clearError } from './../state/actions/userAction';
 import { setAlert } from './../state/actions/alertAction';
 import { addResume } from './../state/actions/resumeAction';
+import { setStep } from './../state/actions/employerAction';
 
 const Verify = ({
     verifyUser,
     setAlert,
     clearError,
     addResume,
+    setStep,
     userState: { user, error },
 }) => {
     let { token } = useParams();
@@ -51,6 +53,9 @@ const Verify = ({
                 localStorage.clear();
                 addResume(resume);
                 setLink('/create-resume?step=2');
+            } else if (user.type === 'Employer') {
+                setStep(2);
+                setLink('/signup/employer?step=2');
             }
         }
 
@@ -65,6 +70,7 @@ Verify.propTypes = {
     setAlert: PropTypes.func.isRequired,
     clearError: PropTypes.func.isRequired,
     addResume: PropTypes.func.isRequired,
+    setStep: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -76,4 +82,5 @@ export default connect(mapStateToProps, {
     setAlert,
     clearError,
     addResume,
+    setStep,
 })(Verify);

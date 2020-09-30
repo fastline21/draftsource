@@ -109,7 +109,7 @@ export const deleteResume = (id) => async (dispatch) => {
                 'Content-Type': 'application/json',
             },
         };
-        await axios.delete('/api/candidate/delete-resume', { id }, config);
+        await axios.delete(`/api/candidate/delete-resume/${id}`);
     } catch (error) {
         dispatch({
             type: CANDIDATES_ERROR,

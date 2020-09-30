@@ -3,11 +3,23 @@ import {
     CLEAR_JOB,
     JOBS_ERROR,
     CLEAR_ERROR,
+    JOB_STEP,
+    SET_SUCCESS,
+    GET_JOBS,
+    CLEAR_DETAILS,
+    VIEW_DETAILS,
 } from './../actions/types';
 
 const initialState = {
+    jobs: null,
     job: null,
     error: null,
+    step: 0,
+    success: false,
+    details: null,
+    next: null,
+    previous: null,
+    total: null,
 };
 
 export default (state = initialState, action) => {
@@ -21,16 +33,46 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 job: null,
+                success: true,
             };
         case CLEAR_ERROR:
             return {
                 ...state,
                 error: null,
             };
+        case JOB_STEP:
+            return {
+                ...state,
+                step: action.payload,
+            };
+        case SET_SUCCESS:
+            return {
+                ...state,
+                success: false,
+            };
         case JOBS_ERROR:
             return {
                 ...state,
                 error: action.payload,
+            };
+        case VIEW_DETAILS:
+            return {
+                ...state,
+                details: action.payload,
+            };
+        case GET_JOBS:
+            return {
+                ...state,
+                jobs: action.payload.job,
+                candidates: action.payload.candidates,
+                next: action.payload.next,
+                previous: action.payload.previous,
+                total: action.payload.total,
+            };
+        case CLEAR_DETAILS:
+            return {
+                ...state,
+                details: null,
             };
         default:
             return state;

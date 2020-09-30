@@ -48,7 +48,8 @@ const Header = ({ logoutUser, userState: { user } }) => {
                     >
                         Talk to a Recruiter
                     </Nav.Link>
-                    {user ? (
+                    {(user && user.type === 'Admin') ||
+                    (user && user.type === 'Recruiter') ? (
                         <Fragment>
                             <Nav.Link as={NavLink} to="/dashboard">
                                 Dashboard

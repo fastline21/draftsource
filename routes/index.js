@@ -13,4 +13,7 @@ router.use('/candidate', require('./candidate'));
 // Job API
 router.use('/job', require('./job'));
 
+// Employer API
+router.use('/employer', require('./employer'));
+
 module.exports = router;

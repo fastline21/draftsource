@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import { Container } from 'react-bootstrap';
 
@@ -10,17 +10,21 @@ import Step3 from './DraftJob/Step3';
 const DraftJob = () => {
     const { search } = useLocation();
     const { step } = queryString.parse(search);
+    const history = useHistory();
 
     const renderStep = () => {
-        let r = '';
         if (parseInt(step) === 1) {
-            r = <Step1 />;
+            return <Step1 />;
         } else if (parseInt(step) === 2) {
-            r = <Step2 />;
+            return <Step2 />;
         } else if (parseInt(step) === 3) {
-            r = <Step3 />;
+            return <Step3 />;
+        } else {
+            history.push({
+                pathname: `/draft-job`,
+                search: 'step=1',
+            });
         }
-        return r;
     };
 
     return (

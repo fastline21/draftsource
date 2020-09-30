@@ -9,6 +9,7 @@ import Filter from './ViewCandidates/Filter';
 import TopVerifedCandidates from './ViewCandidates/TopVerifiedCandidates';
 import ShortlistedCandidates from './ViewCandidates/ShortlistedCandidates';
 import { bookInterview } from './../components/BookInterview';
+import { talkRecruiter } from './../components/TalkRecruiter';
 
 // Actions
 import {
@@ -101,7 +102,10 @@ const ViewCandidates = ({
                                         </h1>
                                     </div>
                                     <div className="col-lg-3">
-                                        <button className="btn btn-primary button">
+                                        <button
+                                            className="btn btn-primary button"
+                                            onClick={talkRecruiter}
+                                        >
                                             Talk to a Recruiter
                                         </button>
                                     </div>

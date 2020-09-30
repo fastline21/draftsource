@@ -49,6 +49,10 @@
                 @include media('<576px') {
                     width: 85%;
                 }
+
+                .title {
+                    color: $blue;
+                }
             }
 
             .modal-footer {

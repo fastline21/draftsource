@@ -6,13 +6,39 @@ import PropTypes from 'prop-types';
 import { availabilityList } from './../../list/Availability';
 
 // Actions
-import { addJob, submitJob } from '../../state/actions/jobAction';
+import {
+    addJob,
+    submitJob,
+    setStep,
+    setSuccess,
+    clearError,
+} from '../../state/actions/jobAction';
 import { setAlert } from '../../state/actions/alertAction';
+import { clearUser } from './../../state/actions/userAction';
 
 // Components
 import SummaryModal from './SummaryModal';
 
-const Step3 = ({ addJob, submitJob, setAlert, jobState: { job, error } }) => {
+// Utils
+import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
+
+const Step3 = ({
+    addJob,
+    submitJob,
+    setAlert,
+    setStep,
+    setSuccess,
+    clearError,
+    clearUser,
+    jobState: { job, error, step, success },
+}) => {
+    const [
+        Prompt,
+        setDirty,
+        setPristine,
+        setMessage,
+    ] = useUnsavedChangesWarning();
+
     const initialInfo = {
         availability: 'Full Time',
         expectedSalary: '',
@@ -21,6 +47,7 @@ const Step3 = ({ addJob, submitJob, setAlert, jobState: { job, error } }) => {
 
     const [info, setInfo] = useState(initialInfo);
     const [submit, setSubmit] = useState(false);
+    const [load, setLoad] = useState(true);
     const [summaryModal, setSummaryModal] = useState(false);
 
     const { availability, expectedSalary, currency } = info;
@@ -28,6 +55,8 @@ const Step3 = ({ addJob, submitJob, setAlert, jobState: { job, error } }) => {
     const onChange = (e) => {
         const { name, value } = e.target;
         setInfo({ ...info, [name]: value });
+        setDirty();
+        setMessage('Are you sure you want to leave this page?');
     };
 
     const onSubmit = (e) => {
@@ -46,18 +75,32 @@ const Step3 = ({ addJob, submitJob, setAlert, jobState: { job, error } }) => {
     };
 
     useEffect(() => {
-        if (error) {
-            setAlert('', error.msg);
+        if (load) {
+            if (step !== 3) {
+                setAlert(
+                    '/',
+                    'You are not authorize to go in this page. Please start at Step 1'
+                );
+            }
+            setLoad(false);
         }
 
-        if (submit) {
+        if (error) {
+            setAlert('', error.msg);
+            clearError();
+        }
+
+        if (success) {
+            localStorage.clear();
             setAlert(
                 '/',
                 '<h2 class="title">Thank you for drafting a job</h2><p class="subtitle">We will call you within 72 hours to verify your profile</p>'
             );
-            setSubmit(false);
+            setSuccess();
+            setStep(0);
+            clearUser();
         }
-    }, [submit, error, job]);
+    }, [success, error, load]);
 
     return (
         <div className="step-3">
@@ -67,7 +110,7 @@ const Step3 = ({ addJob, submitJob, setAlert, jobState: { job, error } }) => {
                     isHide={() => setSummaryModal(!summaryModal)}
                     submit={() => {
                         submitJob(job);
-                        setSubmit(true);
+                        setPristine();
                     }}
                 />
             ) : null}
@@ -137,10 +180,22 @@ Step3.propTypes = {
     addJob: PropTypes.func.isRequired,
     submitJob: PropTypes.func.isRequired,
     jobState: PropTypes.object.isRequired,
+    setStep: PropTypes.func.isRequired,
+    setSuccess: PropTypes.func.isRequired,
+    clearError: PropTypes.func.isRequired,
+    clearUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     jobState: state.jobState,
 });
 
-export default connect(mapStateToProps, { setAlert, addJob, submitJob })(Step3);
+export default connect(mapStateToProps, {
+    setAlert,
+    addJob,
+    submitJob,
+    setStep,
+    setSuccess,
+    clearError,
+    clearUser,
+})(Step3);

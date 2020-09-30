@@ -184,9 +184,13 @@ const NewApplicants = ({
                                       </div>
                                       <div className="d-flex"></div>
                                       <hr className="line-break" />
-                                      <p className="specialty">
-                                          {e.specialty.join(', ')},{' '}
-                                          {e.software.join(', ')}
+                                      <p className="specialty-software">
+                                          {e.specialty.map((element, index) => (
+                                              <span key={index}>{element}</span>
+                                          ))}
+                                          {e.software.map((element, index) => (
+                                              <span key={index}>{element}</span>
+                                          ))}
                                       </p>
                                       <button
                                           className="link"

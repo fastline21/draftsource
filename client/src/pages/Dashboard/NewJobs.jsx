@@ -110,7 +110,7 @@ const NewJobs = ({
                             setSeeDetails(false);
                             clearDetails();
                         }}
-                        loadJobs={() => {
+                        loadJob={() => {
                             newJobs();
                             clearDetails();
                         }}

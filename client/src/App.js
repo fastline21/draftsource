@@ -23,6 +23,8 @@ import VerifyViewCandidates from './components/VerifyViewCandidates';
 import DraftJobRoute from './routing/DraftJobRoute';
 import DraftJob from './pages/DraftJob';
 import AdminSignup from './pages/AdminSignup';
+import Signup from './pages/Signup';
+import SignupRoute from './routing/SignupRoute';
 
 const App = () => {
     return (
@@ -62,6 +64,7 @@ const App = () => {
                         />
                         <Route path="/login" component={Login} />
                         <Route path="/admin-signup" component={AdminSignup} />
+                        <Route path="/signup/:type" component={Signup} />
                         <Route path="*" component={NotFound} />
                     </Switch>
                     <Footer />

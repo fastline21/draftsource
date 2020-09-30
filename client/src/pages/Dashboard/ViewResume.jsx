@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -7,13 +7,17 @@ import PropTypes from 'prop-types';
 import { setAlert } from './../../state/actions/alertAction';
 
 // Components
-import ModalAction from './ModalAction';
+import ModalActionResume from './ModalActionResume';
+import ViewImage from './ViewImage';
+import ViewSampleWorkImage from './ViewSampleWorkImage';
+import ViewSampleWorkDocument from './ViewSampleWorkDocument';
 
 const ViewResume = ({
     isShow,
     isHide,
     loadCandidate,
     candidateState: { resume },
+    setAlert,
 }) => {
     const [show, setShow] = useState(false);
     const [editRate, setEditRate] = useState(false);
@@ -22,6 +26,24 @@ const ViewResume = ({
     const [showModalAction, setShowModalAction] = useState(false);
     const [action, setAction] = useState('');
     const [msg, setMsg] = useState('');
+    const recruitersCommentsRef = useRef(null);
+    const [showWorkImage, setShowWorkImage] = useState(false);
+    const [showWorkDocument, setShowWorkDocument] = useState(false);
+    const [viewWorkImage, setViewWorkImage] = useState({
+        file: '',
+        title: '',
+        desc: '',
+    });
+    const [viewWorkDocument, setViewWorkDocument] = useState({
+        file: '',
+        title: '',
+        desc: '',
+    });
+    const [showImage, setShowImage] = useState(false);
+    const [viewImage, setViewImage] = useState({
+        title: '',
+        image: '',
+    });
     const initialData = {
         _id: '',
         firstName: '',
@@ -37,6 +59,7 @@ const ViewResume = ({
             images: [],
             documents: [],
         },
+        aboutYourself: '',
         workHistory: [],
         education: [],
         workspace: '',
@@ -45,12 +68,14 @@ const ViewResume = ({
         brandName: '',
         internetResult: '',
         computerSpecs: '',
+        recruitmentsComment: [],
         rating: '',
     };
     const [data, setData] = useState(initialData);
     const [newData, setNewData] = useState({
         rate: 0,
         salary: '',
+        comments: '',
     });
 
     const handleClose = () => {
@@ -60,8 +85,6 @@ const ViewResume = ({
     };
 
     const handleShow = () => setShow(true);
-
-    const viewImage = (file) => {};
 
     const editChange = (e) => {
         const { name, value } = e.target;
@@ -75,8 +98,8 @@ const ViewResume = ({
         resumeImage,
         city,
         availability,
-        expectedSalary,
         aboutYourself,
+        expectedSalary,
         specialty,
         software,
         uploadWork,
@@ -89,18 +112,30 @@ const ViewResume = ({
         internetResult,
         computerSpecs,
         status,
+        recruitmentsComment,
     } = data;
 
     const editNewRate = (rate) => {
-        return editRate ? setRate(rate) : null;
+        if (editRate) {
+            setNewData({ ...newData, rate });
+            setRate(rate);
+        }
     };
 
     const approveResume = () => {
-        setAction('approve');
-        setShowModalAction(true);
-        setMsg(
-            '<h2 className="title">Approve Resume?</h2><p>This resume will add to your approved resume tab.</p>'
-        );
+        if (
+            newData.rate === 0 ||
+            newData.comments === undefined ||
+            newData.comments.length === 0
+        ) {
+            setAlert('', 'Please fill-in the required boxes to Proceed.');
+        } else {
+            setAction('approve');
+            setShowModalAction(true);
+            setMsg(
+                '<h2 className="title">Approve Resume?</h2><p>This resume will add to your approved resume tab.</p>'
+            );
+        }
     };
 
     const rejectResume = () => {
@@ -183,8 +218,13 @@ const ViewResume = ({
 
         if (resume !== null) {
             setData(resume);
+            setNewData({
+                ...newData,
+                comments: resume.recruitmentsComment,
+                rate: resume.rating,
+            });
         }
-    }, [resume, isShow]);
+    }, [resume, isShow, data]);
 
     return (
         <Modal
@@ -196,18 +236,53 @@ const ViewResume = ({
             id="seeResume"
         >
             <Modal.Body>
-                <ModalAction
+                <ModalActionResume
                     isShow={showModalAction}
                     id={_id}
                     msg={msg}
                     action={action}
-                    rate={rate}
-                    salary={newData.salary !== '' ? newData : expectedSalary}
+                    rate={newData.rate}
+                    comments={newData.comments}
+                    salary={
+                        newData.salary !== '' ? newData.salary : expectedSalary
+                    }
                     isHide={() => {
                         handleClose();
                         loadCandidate();
                     }}
                     hideModal={() => setShowModalAction(false)}
+                />
+                <ViewImage
+                    isShow={showImage}
+                    isHide={() => {
+                        setShowImage(false);
+                        setViewImage({
+                            image: '',
+                            title: '',
+                        });
+                    }}
+                    image={viewImage.image}
+                    title={viewImage.title}
+                />
+                <ViewSampleWorkImage
+                    isShow={showWorkImage}
+                    isHide={() => {
+                        setShowWorkImage(false);
+                        setViewWorkImage({ title: '', desc: '', file: '' });
+                    }}
+                    title={viewWorkImage.title}
+                    desc={viewWorkImage.desc}
+                    file={viewWorkImage.file}
+                />
+                <ViewSampleWorkDocument
+                    isShow={showWorkDocument}
+                    isHide={() => {
+                        setShowWorkDocument(false);
+                        setViewWorkDocument({ title: '', desc: '', file: '' });
+                    }}
+                    title={viewWorkDocument.title}
+                    desc={viewWorkDocument.desc}
+                    file={viewWorkDocument.file}
                 />
                 <button className="close" onClick={handleClose}>
                     <span aria-hidden="true">×</span>
@@ -221,10 +296,12 @@ const ViewResume = ({
                                 alt=""
                                 className="img-fluid resume-image mb-3"
                             />
-                            <audio controls>
-                                <source src={`/uploads/${aboutYourself}`} />
-                                Your browser does not support the audio!
-                            </audio>
+                            {aboutYourself !== '' && (
+                                <audio controls>
+                                    <source src={`/uploads/${aboutYourself}`} />
+                                    Your browser does not support the audio!
+                                </audio>
+                            )}
                         </div>
                         <div className="col-lg-9">
                             <div className="row">
@@ -245,7 +322,9 @@ const ViewResume = ({
                                     <div className="rating d-inline">
                                         <i
                                             className={`rating-color fas fa-star${
-                                                rate >= 1 ? ' checked' : ''
+                                                newData.rate >= 1
+                                                    ? ' checked'
+                                                    : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -254,7 +333,9 @@ const ViewResume = ({
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                rate >= 2 ? ' checked' : ''
+                                                newData.rate >= 2
+                                                    ? ' checked'
+                                                    : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -263,7 +344,9 @@ const ViewResume = ({
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                rate >= 3 ? ' checked' : ''
+                                                newData.rate >= 3
+                                                    ? ' checked'
+                                                    : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -272,7 +355,9 @@ const ViewResume = ({
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                rate >= 4 ? ' checked' : ''
+                                                newData.rate >= 4
+                                                    ? ' checked'
+                                                    : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -281,7 +366,9 @@ const ViewResume = ({
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                rate === 5 ? ' checked' : ''
+                                                newData.rate === 5
+                                                    ? ' checked'
+                                                    : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
@@ -387,11 +474,20 @@ const ViewResume = ({
                             <p className="item-title color-2">Sample Works</p>
                         </div>
                         <div className="col-lg-9">
-                            <p className="item-title color-1">JPEG OR PNG</p>
                             <div className="row pb-3 upload-work-images">
                                 {uploadWork.images.map((e, i) => (
                                     <div className="col-lg-3" key={i}>
-                                        <figure className="figure">
+                                        <figure
+                                            className="figure"
+                                            onClick={() => {
+                                                setShowWorkImage(true);
+                                                setViewWorkImage({
+                                                    title: e.title,
+                                                    desc: e.description,
+                                                    file: e.file,
+                                                });
+                                            }}
+                                        >
                                             <img
                                                 src={`/uploads/${e.file}`}
                                                 alt=""
@@ -403,14 +499,21 @@ const ViewResume = ({
                                         </figure>
                                     </div>
                                 ))}
-                            </div>
-                            <p className="item-title color-1">PDF</p>
-                            <div className="row upload-work-documents">
                                 {uploadWork.documents.map((e, i) => (
                                     <div className="col-lg-3" key={i}>
-                                        <figure className="figure">
+                                        <figure
+                                            className="figure"
+                                            onClick={() => {
+                                                setShowWorkDocument(true);
+                                                setViewWorkDocument({
+                                                    title: e.title,
+                                                    desc: e.description,
+                                                    file: e.file,
+                                                });
+                                            }}
+                                        >
                                             <img
-                                                src={`/uploads/bg-upload-${e.skin}.png`}
+                                                src={`../uploads/bg-upload-${e.skin}.png`}
                                                 alt=""
                                                 className="figure-img img-fluid"
                                             />
@@ -524,7 +627,39 @@ const ViewResume = ({
                             </p>
                         </div>
                         <div className="col-lg-9">
-                            <div id="recruitersComments"></div>
+                            <div id="recruitersComments">
+                                <div className="form-inline">
+                                    <input
+                                        type="text"
+                                        className="form-control input"
+                                        name="comments"
+                                        ref={recruitersCommentsRef}
+                                    />
+                                    <button
+                                        className="btn btn-primary button"
+                                        onClick={() => {
+                                            setNewData({
+                                                ...newData,
+                                                comments: [
+                                                    ...newData.comments,
+                                                    recruitersCommentsRef
+                                                        .current.value,
+                                                ],
+                                            });
+                                            recruitersCommentsRef.current.value =
+                                                '';
+                                        }}
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                                <ul>
+                                    {newData.comments !== '' &&
+                                        newData.comments.map((e, i) => (
+                                            <li key={i}>{e}</li>
+                                        ))}
+                                </ul>
+                            </div>
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -602,9 +737,15 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={viewImage(
-                                                    internetResult
-                                                )}
+                                                onClick={() => {
+                                                    setShowImage(true);
+                                                    setViewImage({
+                                                        ...viewImage,
+                                                        image: internetResult,
+                                                        title:
+                                                            'Internet Result',
+                                                    });
+                                                }}
                                             >
                                                 View
                                             </button>
@@ -620,9 +761,14 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={viewImage(
-                                                    computerSpecs
-                                                )}
+                                                onClick={() => {
+                                                    setShowImage(true);
+                                                    setViewImage({
+                                                        ...viewImage,
+                                                        image: computerSpecs,
+                                                        title: 'Computer Specs',
+                                                    });
+                                                }}
                                             >
                                                 View
                                             </button>

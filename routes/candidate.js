@@ -4,6 +4,7 @@ const fs = require('fs');
 
 // Models
 const Resume = require('./../models/Resume');
+const User = require('./../models/User');
 
 // Middleware
 const auth = require('./../middleware/auth');
@@ -75,11 +76,12 @@ router.get('/new-applicants', async (req, res) => {
                 queryData = { ...queryData, [key]: value };
             }
         } else if (key === 'search') {
+            console.log(value);
             queryData = {
                 ...queryData,
                 $or: [
-                    { specialty: new RegExp(`^${value}$`, 'i') },
-                    { software: new RegExp(`^${value}$`, 'i') },
+                    { specialty: { $regex: value, $options: 'i' } },
+                    { software: { $regex: value, $options: 'i' } },
                 ],
             };
         } else if (key === 'page' || key === 'limit') {
@@ -224,11 +226,12 @@ router.get('/rejected-applicants', auth, async (req, res) => {
 // @desc    Approve resume
 // @access  Private
 router.put('/approve-resume', auth, async (req, res) => {
-    const { id, rate, salary } = req.body;
+    const { id, rate, salary, comments } = req.body;
     const resume = await Resume.findByIdAndUpdate(id, {
         status: 'Approve',
         expectedSalary: parseInt(salary),
         rating: rate,
+        recruitmentsComment: comments,
     });
     res.json(resume);
 });
@@ -237,11 +240,12 @@ router.put('/approve-resume', auth, async (req, res) => {
 // @desc    Reject resume
 // @access  Private
 router.put('/reject-resume', auth, async (req, res) => {
-    const { id, rate, salary } = req.body;
+    const { id, rate, salary, comments } = req.body;
     const resume = await Resume.findByIdAndUpdate(id, {
         status: 'Reject',
         expectedSalary: parseInt(salary),
         rating: rate,
+        recruitmentsComment: comments,
     });
     res.json(resume);
 });
@@ -249,8 +253,8 @@ router.put('/reject-resume', auth, async (req, res) => {
 // @route   DELETE /api/candidate/delete-resume
 // @desc    Delete resume
 // @access  Private
-router.delete('/delete-resume', auth, async (req, res) => {
-    const { id } = req.body;
+router.delete('/delete-resume/:id', auth, async (req, res) => {
+    const { id } = req.params;
     let resume = await Resume.findById(id);
     const {
         resumeImage,
@@ -258,6 +262,7 @@ router.delete('/delete-resume', auth, async (req, res) => {
         computerSpecs,
         aboutYourself,
         uploadWork,
+        user,
     } = resume;
     fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
         if (err) {
@@ -301,6 +306,7 @@ router.delete('/delete-resume', auth, async (req, res) => {
             }
         });
     });
+    await User.findByIdAndDelete(user);
     await Resume.findByIdAndDelete(id);
 });
 

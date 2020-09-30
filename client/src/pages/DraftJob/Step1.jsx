@@ -16,9 +16,9 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Actions
 import { setAlert } from './../../state/actions/alertAction';
-import { addJob } from './../../state/actions/jobAction';
+import { addJob, setStep } from './../../state/actions/jobAction';
 
-const Step1 = ({ setAlert, addJob, jobState: { error } }) => {
+const Step1 = ({ setAlert, addJob, setStep }) => {
     const history = useHistory();
     const [
         Prompt,
@@ -237,8 +237,8 @@ const Step1 = ({ setAlert, addJob, jobState: { error } }) => {
             setInfo(initialInfo);
             setSpecialty([]);
             setSoftware([]);
-            setSubmit(true);
             setPristine();
+            setSubmit(true);
         }
     };
 
@@ -248,16 +248,17 @@ const Step1 = ({ setAlert, addJob, jobState: { error } }) => {
             setMessage('Are you sure you want to leave this page?');
         }
 
-        if (error) {
-            setAlert('', error.msg);
-        }
-
         if (submit) {
             setSubmit(false);
-            history.push('/draft-job/?step=2');
+            setStep(2);
+            history.push({
+                pathname: '/draft-job',
+                search: 'step=2',
+            });
         }
+
         // eslint-disable-next-line
-    }, [info, submit, error]);
+    }, [info, submit]);
     return (
         <div className="step-1">
             {Prompt}
@@ -412,11 +413,7 @@ const Step1 = ({ setAlert, addJob, jobState: { error } }) => {
 Step1.propTypes = {
     setAlert: PropTypes.func.isRequired,
     addJob: PropTypes.func.isRequired,
-    jobState: PropTypes.object.isRequired,
+    setStep: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({
-    jobState: state.jobState,
-});
-
-export default connect(mapStateToProps, { setAlert, addJob })(Step1);
+export default connect(null, { setAlert, addJob, setStep })(Step1);

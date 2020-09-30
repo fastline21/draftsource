@@ -2,40 +2,15 @@ const express = require('express');
 const router = express.Router();
 const randomstring = require('randomstring');
 const path = require('path');
+const fs = require('fs');
+const gm = require('gm');
+const pdf = require('pdf-thumbnail');
 
 // Models
 const Resume = require('./../models/Resume');
 
 // Middleware
 const auth = require('./../middleware/auth');
-
-router.post('/sample', (req, res) => {
-    const { upload } = req.files;
-
-    const generateFileName = (file, fieldname) => {
-        const filename = randomstring.generate({
-            length: 6,
-            charset: 'numeric',
-        });
-        return `${fieldname}-${filename}-${Date.now()}${path.extname(
-            file.name
-        )}`;
-    };
-
-    let resumeImage = upload;
-    const resumeImageFile = generateFileName(resumeImage, 'resumeImage');
-    resumeImage.mv(
-        `${__dirname}/../public/uploads/${resumeImageFile}`,
-        (err) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).send(err);
-            }
-        }
-    );
-    resumeImage = resumeImageFile;
-    res.json(resumeImage);
-});
 
 // @route   POST /api/resume
 // @desc    Create resume
@@ -71,16 +46,12 @@ router.post('/', auth, async (req, res) => {
             length: 6,
             charset: 'numeric',
         });
-        console.log(fieldname, 'fieldname');
-        console.log(filename, 'filename');
-        console.log(file, 'file');
         return `${fieldname}-${filename}-${Date.now()}${path.extname(
             file.name
         )}`;
     };
 
     let resumeImage = uploadFile.resumeImage;
-    console.log(resumeImage, 'resume image');
     const resumeImageFile = generateFileName(resumeImage, 'resumeImage');
     resumeImage.mv(
         `${__dirname}/../public/uploads/${resumeImageFile}`,

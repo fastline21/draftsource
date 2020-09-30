@@ -8,9 +8,9 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Actions
 import { setAlert } from './../../state/actions/alertAction';
-import { addJob } from './../../state/actions/jobAction';
+import { addJob, setStep } from './../../state/actions/jobAction';
 
-const Step2 = ({ setAlert, addJob, jobState: { error } }) => {
+const Step2 = ({ setAlert, addJob, setStep, jobState: { step } }) => {
     const [
         Prompt,
         setDirty,
@@ -30,6 +30,7 @@ const Step2 = ({ setAlert, addJob, jobState: { error } }) => {
     const [responsibilities, setResponsibilities] = useState([]);
     const [info, setInfo] = useState(initialInfo);
     const [submit, setSubmit] = useState(false);
+    const [load, setLoad] = useState(true);
 
     const { about, remoteStaffExpectation } = info;
 
@@ -140,20 +141,29 @@ const Step2 = ({ setAlert, addJob, jobState: { error } }) => {
     };
 
     useEffect(() => {
+        if (load) {
+            if (step !== 2) {
+                setAlert(
+                    '/',
+                    'You are not authorize to go in this page. Please start at Step 1'
+                );
+            }
+            setLoad(false);
+        }
         if (JSON.stringify(info) === JSON.stringify(initialInfo)) {
             setDirty();
             setMessage('Are you sure you want to leave this page?');
         }
 
-        if (error) {
-            setAlert('', error.msg);
-        }
-
         if (submit) {
             setSubmit(false);
-            history.push('/draft-job?step=3');
+            setStep(3);
+            history.push({
+                pathname: '/draft-job',
+                search: 'step=3',
+            });
         }
-    }, [submit, error, info]);
+    }, [submit, info, load]);
 
     return (
         <div className="step-2">
@@ -344,6 +354,7 @@ const Step2 = ({ setAlert, addJob, jobState: { error } }) => {
 Step2.propTypes = {
     setAlert: PropTypes.func.isRequired,
     addJob: PropTypes.func.isRequired,
+    setStep: PropTypes.func.isRequired,
     jobState: PropTypes.object.isRequired,
 };
 
@@ -351,4 +362,4 @@ const mapStateToProps = (state) => ({
     jobState: state.jobState,
 });
 
-export default connect(mapStateToProps, { setAlert, addJob })(Step2);
+export default connect(mapStateToProps, { setAlert, addJob, setStep })(Step2);

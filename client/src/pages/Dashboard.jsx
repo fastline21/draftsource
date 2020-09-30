@@ -11,18 +11,29 @@ import {
     newApplicants,
     rejectedApplicants,
 } from './../state/actions/candidateAction';
+import {
+    newJobs,
+    approvedJobs,
+    rejectedJobs,
+} from './../state/actions/jobAction';
 
 // Components
 import Filter from './Dashboard/Filter';
 import NewApplicants from './Dashboard/NewApplicants';
 import ApprovedApplicants from './Dashboard/ApprovedApplicants';
 import RejectedApplicants from './Dashboard/RejectedApplicants';
+import NewJobs from './Dashboard/NewJobs';
+import ApprovedJobs from './Dashboard/ApprovedJobs';
+import RejectedJobs from './Dashboard/RejectedJobs';
 
 const Dashboard = ({
     getUserInfo,
     newApplicants,
     approvedApplicants,
     rejectedApplicants,
+    newJobs,
+    approvedJobs,
+    rejectedJobs,
     userState: { user, info },
     filterState: { filter },
 }) => {
@@ -65,6 +76,18 @@ const Dashboard = ({
 
         if (menu === 'rejected-applicants') {
             rejectedApplicants();
+        }
+
+        if (menu === 'new-jobs') {
+            newJobs();
+        }
+
+        if (menu === 'approved-jobs') {
+            approvedJobs();
+        }
+
+        if (menu === 'rejected-jobs') {
+            rejectedJobs();
         }
 
         // eslint-disable-next-line
@@ -165,13 +188,11 @@ const Dashboard = ({
                             <ul className="nav flex-column">
                                 <li
                                     className={`nav-item sidebar-item${
-                                        menu === 'new-job-request'
-                                            ? ' active'
-                                            : ''
+                                        menu === 'new-jobs' ? ' active' : ''
                                     }`}
                                 >
                                     <Link
-                                        to="/dashboard/new-job"
+                                        to="/dashboard/new-jobs"
                                         className="nav-link"
                                     >
                                         New Job Request
@@ -179,13 +200,13 @@ const Dashboard = ({
                                 </li>
                                 <li
                                     className={`nav-item sidebar-item${
-                                        menu === 'approved-job-request'
+                                        menu === 'approved-jobs'
                                             ? ' active'
                                             : ''
                                     }`}
                                 >
                                     <Link
-                                        to="/dashboard/approved-job"
+                                        to="/dashboard/approved-jobs"
                                         className="nav-link"
                                     >
                                         Approved Job Request
@@ -193,13 +214,13 @@ const Dashboard = ({
                                 </li>
                                 <li
                                     className={`nav-item sidebar-item${
-                                        menu === 'rejected-job-request'
+                                        menu === 'rejected-jobs'
                                             ? ' active'
                                             : ''
                                     }`}
                                 >
                                     <Link
-                                        to="/dashboard/rejected-job"
+                                        to="/dashboard/rejected-jobs"
                                         className="nav-link"
                                     >
                                         Rejected Job Request
@@ -237,6 +258,9 @@ const Dashboard = ({
                         {menu === 'rejected-applicants' && (
                             <RejectedApplicants />
                         )}
+                        {menu === 'new-jobs' && <NewJobs />}
+                        {menu === 'approved-jobs' && <ApprovedJobs />}
+                        {menu === 'rejected-jobs' && <RejectedJobs />}
                     </main>
                 </div>
             </div>
@@ -251,6 +275,9 @@ Dashboard.propTypes = {
     approvedApplicants: PropTypes.func.isRequired,
     rejectedApplicants: PropTypes.func.isRequired,
     filterState: PropTypes.object.isRequired,
+    newJobs: PropTypes.func.isRequired,
+    approvedJobs: PropTypes.func.isRequired,
+    rejectedJobs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -263,4 +290,7 @@ export default connect(mapStateToProps, {
     newApplicants,
     approvedApplicants,
     rejectedApplicants,
+    newJobs,
+    approvedJobs,
+    rejectedJobs,
 })(Dashboard);

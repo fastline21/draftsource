@@ -143,9 +143,6 @@ const TopVerifiedCandidates = ({
                                               alt=""
                                               className="img-fluid"
                                           />
-                                          <p className="name">
-                                              {e.firstName} {e.lastName}
-                                          </p>
                                           <audio controls>
                                               <source
                                                   src={`/uploads/${e.aboutYourself}`}
@@ -164,11 +161,41 @@ const TopVerifiedCandidates = ({
                                       </div>
                                       <div className="eng-rating flex-fill">
                                           <div className="rating">
-                                              <i className="rating-color fas fa-star"></i>
-                                              <i className="rating-color fas fa-star"></i>
-                                              <i className="rating-color fas fa-star"></i>
-                                              <i className="rating-color fas fa-star"></i>
-                                              <i className="rating-color fas fa-star"></i>
+                                              <i
+                                                  className={`rating-color fas fa-star${
+                                                      e.rating >= 1
+                                                          ? ` checked`
+                                                          : ''
+                                                  }`}
+                                              ></i>
+                                              <i
+                                                  className={`rating-color fas fa-star${
+                                                      e.rating >= 2
+                                                          ? ` checked`
+                                                          : ''
+                                                  }`}
+                                              ></i>
+                                              <i
+                                                  className={`rating-color fas fa-star${
+                                                      e.rating >= 3
+                                                          ? ` checked`
+                                                          : ''
+                                                  }`}
+                                              ></i>
+                                              <i
+                                                  className={`rating-color fas fa-star${
+                                                      e.rating >= 4
+                                                          ? ` checked`
+                                                          : ''
+                                                  }`}
+                                              ></i>
+                                              <i
+                                                  className={`rating-color fas fa-star${
+                                                      e.rating === 5
+                                                          ? ` checked`
+                                                          : ''
+                                                  }`}
+                                              ></i>
                                           </div>
                                           <span className="eng-prof d-block">
                                               English Proficiency
