@@ -141,43 +141,43 @@ router.post('/', auth, async (req, res) => {
         uploadWorkImage = uploadWorkImageFile;
     }
 
-    let uploadWorkDocument = '';
-    if (uploadWork.documents.length > 1) {
-        uploadFile.documents.forEach((element) => {
-            const uploadWorkDocumentFile = generateFileName(
-                element,
-                'uploadWorkDocument'
-            );
-            element.mv(
-                `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-                (err) => {
-                    if (err) {
-                        console.error(err);
-                        return res.status(500).send(err);
-                    }
-                }
-            );
-            uploadWorkDocument = [
-                ...uploadWorkDocument,
-                uploadWorkDocumentFile,
-            ];
-        });
-    } else {
-        const uploadWorkDocumentFile = generateFileName(
-            uploadFile.documents,
-            'documents'
-        );
-        uploadFile.documents.mv(
-            `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-            (err) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send(err);
-                }
-            }
-        );
-        uploadWorkDocument = uploadWorkDocumentFile;
-    }
+    // let uploadWorkDocument = '';
+    // if (uploadWork.documents.length > 1) {
+    //     uploadFile.documents.forEach((element) => {
+    //         const uploadWorkDocumentFile = generateFileName(
+    //             element,
+    //             'uploadWorkDocument'
+    //         );
+    //         element.mv(
+    //             `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
+    //             (err) => {
+    //                 if (err) {
+    //                     console.error(err);
+    //                     return res.status(500).send(err);
+    //                 }
+    //             }
+    //         );
+    //         uploadWorkDocument = [
+    //             ...uploadWorkDocument,
+    //             uploadWorkDocumentFile,
+    //         ];
+    //     });
+    // } else {
+    //     const uploadWorkDocumentFile = generateFileName(
+    //         uploadFile.documents,
+    //         'documents'
+    //     );
+    //     uploadFile.documents.mv(
+    //         `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
+    //         (err) => {
+    //             if (err) {
+    //                 console.error(err);
+    //                 return res.status(500).send(err);
+    //             }
+    //         }
+    //     );
+    //     uploadWorkDocument = uploadWorkDocumentFile;
+    // }
 
     try {
         uploadWork.images = uploadWork.images.map((x, i) => {
@@ -189,15 +189,15 @@ router.post('/', auth, async (req, res) => {
                         : uploadWorkImage,
             };
         });
-        uploadWork.documents = uploadWork.documents.map((x, i) => {
-            return {
-                ...x,
-                file:
-                    uploadWork.documents.length > 1
-                        ? uploadWorkDocument[i]
-                        : uploadWorkDocument,
-            };
-        });
+        // uploadWork.documents = uploadWork.documents.map((x, i) => {
+        //     return {
+        //         ...x,
+        //         file:
+        //             uploadWork.documents.length > 1
+        //                 ? uploadWorkDocument[i]
+        //                 : uploadWorkDocument,
+        //     };
+        // });
 
         const resumeFields = {
             user: req.user.id,

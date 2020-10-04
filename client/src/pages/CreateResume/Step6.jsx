@@ -11,7 +11,7 @@ import SpecialtySelected from './SpecialtySelected';
 import SoftwareItem from './SoftwareItem';
 import SoftwareSelected from './SoftwareSelected';
 import UploadWorkImageModal from './UploadWorkImageModal';
-import UploadWorkDocumentModal from './UploadWorkDocumentModal';
+// import UploadWorkDocumentModal from './UploadWorkDocumentModal';
 import UploadWorkItem from './UploadWorkItem';
 
 // List
@@ -53,12 +53,11 @@ const Step6 = ({
     const [software, setSoftware] = useState([]);
     const [uploadWork, setUploadWork] = useState({
         images: [],
-        documents: [],
     });
     const [uploadWorkImageModal, setUploadWorkImageModal] = useState(
         initialUploadModal
     );
-    const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
+    // const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
     const [load, setLoad] = useState(true);
     const [submit, setSubmit] = useState(false);
 
@@ -189,39 +188,64 @@ const Step6 = ({
     // Add Other Specialty
     const addOtherSpecialty = (e) => {
         e.preventDefault();
-        const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
-        const lowerOther = otherSpecialtyRef.current.value;
-        if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
-            const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
-            setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
-            Array.from(document.querySelectorAll('.specialty .list .nav-item'))
-                .find((el) => el.textContent === specialtyList()[index])
-                .classList.add('active');
+
+        if (otherSpecialtyRef.current.value === '') {
+            return setAlert(
+                '',
+                'Please fill-in the required boxes to Proceed.'
+            );
         } else {
-            setSpecialty((specialty) => [...specialty, lowerOther]);
+            const lowerSpecialty = specialtyList().map((el) =>
+                el.toLowerCase()
+            );
+            const lowerOther = otherSpecialtyRef.current.value;
+            if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
+                const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
+                setSpecialty((specialty) => [
+                    ...specialty,
+                    specialtyList()[index],
+                ]);
+                Array.from(
+                    document.querySelectorAll('.specialty .list .nav-item')
+                )
+                    .find((el) => el.textContent === specialtyList()[index])
+                    .classList.add('active');
+            } else {
+                setSpecialty((specialty) => [...specialty, lowerOther]);
+            }
+            otherSpecialtyRef.current.value = '';
+            setDirty();
+            setMessage('Are you sure you want to leave this page?');
         }
-        otherSpecialtyRef.current.value = '';
-        setDirty();
-        setMessage('Are you sure you want to leave this page?');
     };
 
     // Add Other Software
     const addOtherSoftware = (e) => {
         e.preventDefault();
-        const lowerSoftware = softwareList().map((el) => el.toLowerCase());
-        const lowerOther = otherSoftwareRef.current.value;
-        if (lowerSoftware.includes(lowerOther.toLowerCase())) {
-            const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
-            setSoftware((software) => [...software, softwareList()[index]]);
-            Array.from(document.querySelectorAll('.software .list .nav-item'))
-                .find((el) => el.textContent === softwareList()[index])
-                .classList.add('active');
+
+        if (otherSoftwareRef.current.value === '') {
+            return setAlert(
+                '',
+                'Please fill-in the required boxes to Proceed.'
+            );
         } else {
-            setSoftware((software) => [...software, lowerOther]);
+            const lowerSoftware = softwareList().map((el) => el.toLowerCase());
+            const lowerOther = otherSoftwareRef.current.value;
+            if (lowerSoftware.includes(lowerOther.toLowerCase())) {
+                const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
+                setSoftware((software) => [...software, softwareList()[index]]);
+                Array.from(
+                    document.querySelectorAll('.software .list .nav-item')
+                )
+                    .find((el) => el.textContent === softwareList()[index])
+                    .classList.add('active');
+            } else {
+                setSoftware((software) => [...software, lowerOther]);
+            }
+            otherSoftwareRef.current.value = '';
+            setDirty();
+            setMessage('Are you sure you want to leave this page?');
         }
-        otherSoftwareRef.current.value = '';
-        setDirty();
-        setMessage('Are you sure you want to leave this page?');
     };
 
     // Upload Work Image Modal Click
@@ -242,22 +266,22 @@ const Step6 = ({
     };
 
     // Upload Work Document Modal Click
-    const onUploadWorkDocumentModal = (e) => {
-        e.preventDefault();
-        setUploadWorkDocumentModal({
-            show: true,
-            title: 'Upload your PDF',
-            note: [
-                'Upload your pdf not exceeding to 5mb',
-                'Concise and professionaly done is a must',
-                'Avoid unnecessary elements to make it more direct',
-                'A clean and modern look attracts client',
-            ],
-            caption: 'Draft PDF',
-            data: '',
-            index: '',
-        });
-    };
+    // const onUploadWorkDocumentModal = (e) => {
+    //     e.preventDefault();
+    //     setUploadWorkDocumentModal({
+    //         show: true,
+    //         title: 'Upload your PDF',
+    //         note: [
+    //             'Upload your pdf not exceeding to 5mb',
+    //             'Concise and professionaly done is a must',
+    //             'Avoid unnecessary elements to make it more direct',
+    //             'A clean and modern look attracts client',
+    //         ],
+    //         caption: 'Draft PDF',
+    //         data: '',
+    //         index: '',
+    //     });
+    // };
 
     // Hide Upload Work Image Modal
     const isHideImage = () => {
@@ -265,9 +289,9 @@ const Step6 = ({
     };
 
     // Hide Upload Work Document Modal
-    const isHideDocument = () => {
-        setUploadWorkDocumentModal(initialUploadModal);
-    };
+    // const isHideDocument = () => {
+    //     setUploadWorkDocumentModal(initialUploadModal);
+    // };
 
     // Upload Work Image Data
     const uploadWorkImageData = (data) => {
@@ -278,15 +302,15 @@ const Step6 = ({
     };
 
     // Upload Work Document Data
-    const uploadWorkDocumentData = (data) => {
-        setUploadWork({
-            ...uploadWork,
-            documents: [...uploadWork.documents, data],
-        });
-        setUploadWorkImageModal(initialUploadModal);
-        setDirty();
-        setMessage('Are you sure you want to leave this page?');
-    };
+    // const uploadWorkDocumentData = (data) => {
+    //     setUploadWork({
+    //         ...uploadWork,
+    //         documents: [...uploadWork.documents, data],
+    //     });
+    //     setUploadWorkImageModal(initialUploadModal);
+    //     setDirty();
+    //     setMessage('Are you sure you want to leave this page?');
+    // };
 
     // Edit Upload Work Image Modal
     const onEditWorkImage = (index) => {
@@ -294,9 +318,9 @@ const Step6 = ({
             show: true,
             title: 'Upload your JPG or PNG',
             note: [
-                'Upload your jpeg or png but not exceed on 3mb',
                 'Minimum size W 1200 x H 1100 pixels',
-                'Preferred no texts layered on top of the image to keep it clean look',
+                'No texts layered on top of the image to keep it clean look',
+                'Do not put company name or personal branding',
             ],
             caption: 'Draft a JPEG or PNG',
             data: uploadWork.images[index],
@@ -305,21 +329,21 @@ const Step6 = ({
     };
 
     // Edit Upload Work Document Modal
-    const onEditWorkDocument = (index) => {
-        setUploadWorkDocumentModal({
-            show: true,
-            title: 'Upload your PDF',
-            note: [
-                'Upload your pdf not exceeding to 5mb',
-                'Concise and professionaly done is a must',
-                'Avoid unnecessary elements to make it more direct',
-                'A clean and modern look attracts client',
-            ],
-            caption: 'Draft a PDF',
-            data: uploadWork.documents[index],
-            index,
-        });
-    };
+    // const onEditWorkDocument = (index) => {
+    //     setUploadWorkDocumentModal({
+    //         show: true,
+    //         title: 'Upload your PDF',
+    //         note: [
+    //             'Upload your pdf not exceeding to 5mb',
+    //             'Concise and professionaly done is a must',
+    //             'Avoid unnecessary elements to make it more direct',
+    //             'A clean and modern look attracts client',
+    //         ],
+    //         caption: 'Draft a PDF',
+    //         data: uploadWork.documents[index],
+    //         index,
+    //     });
+    // };
 
     // Delete Upload Work Image
     const onDeleteWorkImage = (current) => {
@@ -330,14 +354,14 @@ const Step6 = ({
     };
 
     // Delete Upload Work Document
-    const onDeleteWorkDocument = (current) => {
-        const { documents } = uploadWork;
-        const removeItem = documents.filter(
-            (document, index) => index !== current
-        );
-        setUploadWork({ ...uploadWork, documents: [...removeItem] });
-        setUploadWorkDocumentModal(initialUploadModal);
-    };
+    // const onDeleteWorkDocument = (current) => {
+    //     const { documents } = uploadWork;
+    //     const removeItem = documents.filter(
+    //         (document, index) => index !== current
+    //     );
+    //     setUploadWork({ ...uploadWork, documents: [...removeItem] });
+    //     setUploadWorkDocumentModal(initialUploadModal);
+    // };
 
     // Update Upload Work Image
     const updateWorkImageData = (current, data) => {
@@ -352,16 +376,16 @@ const Step6 = ({
     };
 
     // Update Upload Work Document
-    const updateWorkDocumentData = (current, data) => {
-        const { documents } = uploadWork;
-        const newUpdate = documents.map((document, index) =>
-            index === current ? data : document
-        );
-        setUploadWork({ ...uploadWork, documents: [...newUpdate] });
-        setUploadWorkDocumentModal(initialUploadModal);
-        setDirty();
-        setMessage('Are you sure you want to leave this page?');
-    };
+    // const updateWorkDocumentData = (current, data) => {
+    //     const { documents } = uploadWork;
+    //     const newUpdate = documents.map((document, index) =>
+    //         index === current ? data : document
+    //     );
+    //     setUploadWork({ ...uploadWork, documents: [...newUpdate] });
+    //     setUploadWorkDocumentModal(initialUploadModal);
+    //     setDirty();
+    //     setMessage('Are you sure you want to leave this page?');
+    // };
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -369,8 +393,8 @@ const Step6 = ({
         if (
             specialty.length === 0 ||
             software.length === 0 ||
-            uploadWork.images.length === 0 ||
-            uploadWork.documents.length === 0
+            uploadWork.images.length === 0
+            // uploadWork.documents.length === 0
         ) {
             return setAlert(
                 '',
@@ -401,7 +425,6 @@ const Step6 = ({
             setSoftware([]);
             setUploadWork({
                 images: [],
-                documents: [],
             });
             setSubmit(true);
             setPristine();
@@ -448,7 +471,7 @@ const Step6 = ({
                     updateData={updateWorkImageData}
                 />
             ) : null}
-            {uploadWorkDocumentModal.show ? (
+            {/* {uploadWorkDocumentModal.show ? (
                 <UploadWorkDocumentModal
                     titleModal={uploadWorkDocumentModal.title}
                     note={uploadWorkDocumentModal.note}
@@ -460,7 +483,7 @@ const Step6 = ({
                     index={uploadWorkDocumentModal.index}
                     updateData={updateWorkDocumentData}
                 />
-            ) : null}
+            ) : null} */}
             <div className="row">
                 <div className="col-lg-12">
                     <form className="form" onSubmit={onSubmit}>
@@ -612,7 +635,7 @@ const Step6 = ({
                                         </div>
                                     )}
                                 </div>
-                                <div className="upload-document">
+                                {/* <div className="upload-document">
                                     <label className="form-label">PDF</label>
                                     {uploadWork.documents.length === 0 ? (
                                         <button
@@ -656,7 +679,7 @@ const Step6 = ({
                                             </div>
                                         </div>
                                     )}
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                         <div className="form-row">

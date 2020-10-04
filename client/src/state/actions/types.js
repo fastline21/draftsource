@@ -35,3 +35,4 @@ export const CLEAR_EMPLOYER = 'CLEAR_EMPLOYER';
 export const SET_SUCCESS = 'SET_SUCCESS';
 export const CLEAR_DETAILS = 'CLEAR_DETAILS';
 export const VIEW_DETAILS = 'VIEW_DETAILS';
+export const SET_LOADING = 'SET_LOADING';

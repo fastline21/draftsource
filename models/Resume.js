@@ -123,9 +123,6 @@ const ResumeSchema = new mongoose.Schema({
             title: {
                 type: String,
             },
-            description: {
-                type: String,
-            },
         },
         documents: {
             type: Array,
@@ -145,7 +142,7 @@ const ResumeSchema = new mongoose.Schema({
         default: 'Pending',
     },
     recruitmentsComment: {
-        type: Array,
+        type: String,
     },
     rating: {
         type: Number,

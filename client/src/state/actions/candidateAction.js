@@ -8,11 +8,14 @@ import {
     REMOVE_CANDIDATE,
     GET_SHORTLISTED,
     SET_SHORTLISTED,
+    SET_LOADING,
 } from './types';
 
 // New applicants
 export const newApplicants = () => async (dispatch) => {
     try {
+        setLoading()(dispatch);
+
         const getSearch = window.location.search;
         const res = await axios.get(
             `/api/candidate/new-applicants${getSearch}`
@@ -51,6 +54,8 @@ export const rejectedApplicants = () => async (dispatch) => {
 // Approved applicants
 export const approvedApplicants = () => async (dispatch) => {
     try {
+        setLoading()(dispatch);
+
         const getSearch = window.location.search;
         const res = await axios.get(
             `/api/candidate/approved-applicants${getSearch}`
@@ -218,4 +223,11 @@ export const getShortlisted = (shortlisted) => async (dispatch) => {
             payload: error.response.data,
         });
     }
+};
+
+// Set loading to true
+export const setLoading = () => (dispatch) => {
+    dispatch({
+        type: SET_LOADING,
+    });
 };

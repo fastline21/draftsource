@@ -1,140 +1,125 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import getSymbolFromCurrency from 'currency-symbol-map';
 import { useHistory } from 'react-router-dom';
 
 // Actions
-import {
-    clearResume,
-    removeCandidate,
-    addCandidate,
-} from './../../state/actions/candidateAction';
 import { setAlert } from './../../state/actions/alertAction';
-
-// Components
-import ViewImage from './ViewImage';
-import ViewSampleWork from './ViewSampleWork';
+import {
+    addCandidate,
+    removeCandidate,
+} from './../../state/actions/candidateAction';
 
 const ViewResume = ({
     isShow,
-    loadCandidate,
+    isHide,
     candidateState: { resume, shortlist },
-    clearResume,
-    setAlert,
-    removeCandidate,
     addCandidate,
+    removeCandidate,
+    shortlistView,
 }) => {
     const queryParams = new URLSearchParams(window.location.search);
     const newUrl = new URL(window.location.href);
     const history = useHistory();
-    // Initial
+    const [show, setShow] = useState(false);
+    const [shortlisted, setShortlisted] = useState(shortlist);
     const initialData = {
         _id: '',
         resumeImage: '',
-        aboutYourself: '',
-        firstName: '',
-        lastName: '',
-        city: '',
-        status: '',
-        rating: '',
         availability: '',
-        expectedSalary: '',
         currency: '',
         specialty: [],
         software: [],
-        uploadWork: { images: [] },
+        uploadWork: {
+            images: [],
+            documents: [],
+        },
         workHistory: [],
         education: [],
-        recruitmentsComment: '',
+        aboutYourself: '',
         workspace: '',
         internetType: '',
         hardwareType: '',
         brandName: '',
         internetResult: '',
         computerSpecs: '',
+        rating: '',
     };
-    const initialViewImage = {
-        show: false,
-        title: '',
-        file: '',
-    };
-    const initialViewSampleWork = {
-        show: false,
-        title: '',
-        file: '',
+    const [data, setData] = useState(initialData);
+
+    const handleClose = () => {
+        setData(initialData);
+        setShow(false);
+        isHide(true);
     };
 
-    // State
-    const [show, setShow] = useState(false);
-    const [data, setData] = useState(initialData);
-    const [action, setAction] = useState(null);
-    const [msg, setMsg] = useState('');
-    const [viewImage, setViewImage] = useState(initialViewImage);
-    const [viewSampleWork, setViewSampleWork] = useState(initialViewSampleWork);
+    const handleShow = () => setShow(true);
+
+    const viewImage = (file) => {};
 
     const {
         _id,
         resumeImage,
-        aboutYourself,
-        firstName,
-        lastName,
-        city,
-        status,
-        rating,
         availability,
-        expectedSalary,
-        currency,
+        aboutYourself,
         specialty,
         software,
         uploadWork,
         workHistory,
         education,
-        recruitmentsComment,
         workspace,
         internetType,
         hardwareType,
         brandName,
         internetResult,
         computerSpecs,
+        rating,
     } = data;
 
     const removeShortlist = (id) => {
-        removeCandidate(id);
+        if (shortlistView) {
+            const oldData = queryParams.get('candidates');
+            let newData;
 
-        if (history.location.pathname.includes('shortlisted-candidates')) {
-            handleClose();
-            const oldQuery = queryParams.get('candidates');
-            let newQuery = '';
-            newQuery = oldQuery.split(',');
-            newQuery = newQuery.filter((e) => e !== id);
-            if (newQuery.length === 0) {
-                newUrl.searchParams.delete('candidates');
-            } else {
-                newUrl.searchParams.set('candidates', newQuery);
+            if (oldData) {
+                newData = oldData.split(',');
+
+                newData = newData.filter((e) => e !== id);
+
+                if (newData.length !== 0) {
+                    newData = newData.join(',');
+                    newUrl.searchParams.set('candidates', newData);
+                } else {
+                    newUrl.searchParams.delete('candidates');
+                }
             }
-
             history.push({
                 pathname: newUrl.pathname,
                 search: newUrl.search,
             });
+            isHide(true);
+            removeCandidate(id);
+        } else {
+            removeCandidate(id);
         }
     };
 
-    const handleClose = () => {
-        setShow(false);
-        clearResume();
+    const addShortlist = (id) => {
+        addCandidate(id);
     };
-
-    const handleShow = () => setShow(true);
 
     useEffect(() => {
         if (isShow) {
             handleShow();
+        }
+
+        if (resume !== null) {
             setData(resume);
         }
-    }, [isShow]);
+
+        setShortlisted(shortlist);
+    }, [resume, isShow, shortlist]);
 
     return (
         <Modal
@@ -146,15 +131,6 @@ const ViewResume = ({
             id="seeResume"
         >
             <Modal.Body>
-                <ViewImage
-                    viewImage={viewImage}
-                    isHide={() => setViewImage(initialViewImage)}
-                />
-                <ViewSampleWork
-                    isShow={viewSampleWork.show}
-                    isHide={() => setViewSampleWork(initialViewSampleWork)}
-                    viewSampleWork={viewSampleWork}
-                />
                 <button className="close" onClick={handleClose}>
                     <span aria-hidden="true">×</span>
                     <span className="sr-only">Close</span>
@@ -167,26 +143,17 @@ const ViewResume = ({
                                 alt=""
                                 className="img-fluid resume-image mb-3"
                             />
-                            <audio controls controlsList="nodownload">
-                                <source src={`/uploads/${aboutYourself}`} />
-                                Your browser does not support the audio!
-                            </audio>
+                            {aboutYourself !== '' && (
+                                <audio controls>
+                                    <source src={`/uploads/${aboutYourself}`} />
+                                    Your browser does not support the audio!
+                                </audio>
+                            )}
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-lg-9">
                             <div className="row">
-                                <div className="col-lg-12">
-                                    <p className="data-title mb-3">ID Code</p>
-                                </div>
-                                <div className="col-lg-12">
-                                    <p className="data-title mb-0">
-                                        Availability
-                                    </p>
-                                    <p className="availability">
-                                        {availability}
-                                    </p>
-                                </div>
-                                <div className="col-lg-12">
-                                    <p className="data-title mb-0">
+                                <div className="col-lg-4">
+                                    <p className="eng-proficiency mb-1">
                                         English Proficiency
                                     </p>
                                     <div className="rating d-inline">
@@ -194,100 +161,67 @@ const ViewResume = ({
                                             className={`rating-color fas fa-star${
                                                 rating >= 1 ? ' checked' : ''
                                             }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setData({
-                                                    ...data,
-                                                    rating: 1,
-                                                });
-                                            }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
                                                 rating >= 2 ? ' checked' : ''
                                             }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setData({
-                                                    ...data,
-                                                    rating: 2,
-                                                });
-                                            }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
                                                 rating >= 3 ? ' checked' : ''
                                             }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setData({
-                                                    ...data,
-                                                    rating: 3,
-                                                });
-                                            }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
                                                 rating >= 4 ? ' checked' : ''
                                             }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setData({
-                                                    ...data,
-                                                    rating: 4,
-                                                });
-                                            }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
                                                 rating === 5 ? ' checked' : ''
                                             }`}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setData({
-                                                    ...data,
-                                                    rating: 5,
-                                                });
-                                            }}
                                         ></i>
                                     </div>
                                 </div>
+                                <div className="col-lg-4">
+                                    <p>Availability</p>
+                                    <p className="availability mb-1">
+                                        {availability}
+                                    </p>
+                                </div>
+                                <div className="col-lg-4">
+                                    <button
+                                        className="btn btn-primary button"
+                                        onClick={() =>
+                                            shortlisted.includes(_id)
+                                                ? removeShortlist(_id)
+                                                : addShortlist(_id)
+                                        }
+                                    >
+                                        {shortlist.includes(_id)
+                                            ? 'Remove from Shortlist'
+                                            : 'Add to Shortlist'}
+                                    </button>
+                                    <button
+                                        onClick={() => {
+                                            history.push(
+                                                `/view-candidates/shortlisted-candidates${
+                                                    shortlist.length > 0
+                                                        ? `?candidates=${shortlist.join(
+                                                              ','
+                                                          )}`
+                                                        : ''
+                                                }`
+                                            );
+                                            handleClose();
+                                        }}
+                                        className="btn btn-primary button shortlist-candidates"
+                                    >
+                                        Shortlist Candidates
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div className="col-lg-3">
-                            <button
-                                className={`btn btn-primary button${
-                                    shortlist.includes(_id)
-                                        ? ' remove-shortlist'
-                                        : ' add-shortlist'
-                                }`}
-                                onClick={() =>
-                                    shortlist.includes(_id)
-                                        ? removeShortlist(_id)
-                                        : addCandidate(_id)
-                                }
-                            >
-                                {shortlist.includes(_id)
-                                    ? 'Remove from Shortlist'
-                                    : 'Add to Shortlist'}
-                            </button>
-                            <button
-                                onClick={() => {
-                                    history.push(
-                                        `/view-candidates/shortlisted-candidates${
-                                            shortlist.length > 0
-                                                ? `?candidates=${shortlist.join(
-                                                      ','
-                                                  )}`
-                                                : ''
-                                        }`
-                                    );
-                                    handleClose();
-                                }}
-                                className="btn btn-primary button shortlist-candidates"
-                            >
-                                Shortlist Candidates
-                            </button>
                         </div>
                     </div>
                     <div className="row pb-3">
@@ -319,23 +253,14 @@ const ViewResume = ({
                             <p className="item-title color-2">Sample Works</p>
                         </div>
                         <div className="col-lg-9">
+                            <p className="item-title color-1">JPEG OR PNG</p>
                             <div className="row pb-3 upload-work-images">
                                 {uploadWork.images.map((e, i) => (
                                     <div className="col-lg-3" key={i}>
-                                        <figure
-                                            className="figure"
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() =>
-                                                setViewSampleWork({
-                                                    show: true,
-                                                    title: e.title,
-                                                    file: e.file,
-                                                })
-                                            }
-                                        >
+                                        <figure className="figure">
                                             <img
                                                 src={`/uploads/${e.file}`}
-                                                alt={e.title}
+                                                alt=""
                                                 className="figure-img img-fluid"
                                             />
                                             <figcaption className="figure-caption">
@@ -345,7 +270,23 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
-                            <hr className="line-break" />
+                            <p className="item-title color-1">PDF</p>
+                            <div className="row upload-work-documents">
+                                {uploadWork.documents.map((e, i) => (
+                                    <div className="col-lg-3" key={i}>
+                                        <figure className="figure">
+                                            <img
+                                                src={`/uploads/bg-upload-${e.skin}.png`}
+                                                alt=""
+                                                className="figure-img img-fluid"
+                                            />
+                                            <figcaption className="figure-caption">
+                                                {e.title}
+                                            </figcaption>
+                                        </figure>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -375,7 +316,6 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
-                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -441,7 +381,6 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
-                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -451,10 +390,7 @@ const ViewResume = ({
                             </p>
                         </div>
                         <div className="col-lg-9">
-                            <p className="recruitments-comment pb-5">
-                                {recruitmentsComment}
-                            </p>
-                            <hr className="line-break" />
+                            <div id="recruitersComments"></div>
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -532,14 +468,9 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={() =>
-                                                    setViewImage({
-                                                        show: true,
-                                                        title:
-                                                            'Internet Speedtest Result',
-                                                        file: internetResult,
-                                                    })
-                                                }
+                                                onClick={viewImage(
+                                                    internetResult
+                                                )}
                                             >
                                                 View
                                             </button>
@@ -555,13 +486,9 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={() =>
-                                                    setViewImage({
-                                                        show: true,
-                                                        title: 'Computer Specs',
-                                                        file: computerSpecs,
-                                                    })
-                                                }
+                                                onClick={viewImage(
+                                                    computerSpecs
+                                                )}
                                             >
                                                 View
                                             </button>
@@ -578,12 +505,10 @@ const ViewResume = ({
 };
 
 ViewResume.propTypes = {
-    candidateState: PropTypes.object.isRequired,
-    clearResume: PropTypes.func.isRequired,
-    isShow: PropTypes.bool.isRequired,
     setAlert: PropTypes.func.isRequired,
-    removeCandidate: PropTypes.func.isRequired,
+    candidateState: PropTypes.object.isRequired,
     addCandidate: PropTypes.func.isRequired,
+    removeCandidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -591,8 +516,7 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, {
-    clearResume,
     setAlert,
-    removeCandidate,
     addCandidate,
+    removeCandidate,
 })(ViewResume);

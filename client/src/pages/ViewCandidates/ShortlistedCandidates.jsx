@@ -19,6 +19,7 @@ import { addFilter, removeFilter } from './../../state/actions/filterAction';
 // Components
 import ViewResume from './ViewResume';
 import PaginationLink from './PaginationLink';
+import Candidates from './Candidates';
 
 const ShortlistedCandidates = ({
     viewCandidates,
@@ -30,7 +31,7 @@ const ShortlistedCandidates = ({
     removeCandidate,
     getShortlisted,
     setShortlisted,
-    candidateState: { candidates, shortlist, shortlistedInfo },
+    candidateState: { candidates, shortlist, shortlistedInfo, resume },
     filterState: { filter },
 }) => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -109,19 +110,19 @@ const ShortlistedCandidates = ({
 
         if (queryParams.get('candidates') !== null) {
             if (shortlist.length === 0) {
-                getShortlisted(queryParams.get('candidates'));
+                getShortlisted(queryParams.get('candidates').split(','));
             }
         }
 
         if (shortlist.length === 0) {
             if (queryParams.get('candidates')) {
-                setShortlisted(queryParams.get('candidates'));
+                setShortlisted(queryParams.get('candidates').split(','));
             }
         }
 
         getShortlisted(
             queryParams.get('candidates') !== null
-                ? queryParams.get('candidates')
+                ? queryParams.get('candidates').split(',')
                 : []
         );
 
@@ -151,22 +152,9 @@ const ShortlistedCandidates = ({
                     <option value="50">50</option>
                 </select>
             </div>
-
-            {seeResume ? (
-                <ViewResume
-                    isShow={true}
-                    shortlistView={true}
-                    isHide={() => {
-                        setSeeResume(false);
-                        clearResume();
-                    }}
-                    loadCandidate={() => {
-                        viewCandidates();
-                        clearResume();
-                    }}
-                />
-            ) : null}
-            {shortlistedInfo !== null
+            <ViewResume isShow={resume !== null ? true : false} />
+            <Candidates isShortlisted={true} />
+            {/* {shortlistedInfo !== null
                 ? shortlistedInfo.map((e, i) => (
                       <div className="candidate" key={i}>
                           <div className="row">
@@ -277,7 +265,7 @@ const ShortlistedCandidates = ({
                           </div>
                       </div>
                   ))
-                : 'No New Candidate'}
+                : 'No New Candidate'} */}
             <div className="footer">
                 <div
                     className={`ml-auto${

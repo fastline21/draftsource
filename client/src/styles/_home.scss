@@ -8,13 +8,21 @@
         min-height: 500px;
 
         .title {
-            font-size: 24px;
+            font-size: 20px;
 
-            @include media('>=tablet', '<desktop') {
-                font-size: 36px;
+            @include media('>=425px', '<tablet') {
+                font-size: 23px;
             }
 
-            @include media('>=desktop') {
+            @include media('>=tablet', '<=desktop') {
+                font-size: 35px;
+            }
+
+            @include media('>desktop') {
+                font-size: 35px;
+            }
+
+            @include media('>=1200px') {
                 font-size: 40px;
             }
         }
@@ -27,10 +35,14 @@
                 border-color: $darkBlue;
                 color: $darkBlue;
                 border-radius: 30px;
-                // padding: 12px 30px;
-                padding: 12px 30px;
                 font-weight: 700;
                 font-size: 12px;
+                padding: 12px 20px;
+
+                @include media('>phone') {
+                    padding: 12px 30px;
+                    font-size: 14px;
+                }
 
                 @include media('>=desktop') {
                     font-size: 16px;

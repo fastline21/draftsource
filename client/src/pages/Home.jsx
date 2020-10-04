@@ -30,9 +30,9 @@ const Home = () => {
                                 </button>
                             </div>
                             <ul className="list">
-                                <li className="item">No hiring headcaches</li>
-                                <li className="item">No interviews</li>
-                                <li className="item">No dramas</li>
+                                <li className="item">No recruitment fees</li>
+                                <li className="item">No salary markups</li>
+                                <li className="item">No underpaid staff</li>
                             </ul>
                         </Col>
                     </Row>

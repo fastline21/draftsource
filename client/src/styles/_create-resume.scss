@@ -78,8 +78,6 @@
             }
 
             .form-group {
-                margin-bottom: 0;
-
                 @include media('>=tablet') {
                     margin-bottom: 10px;
                 }
@@ -350,11 +348,12 @@
         }
 
         .submit {
-            width: 320px;
+            // width: 320px;
+            width: 100%;
             margin: auto;
 
             @include media('<=320px') {
-                width: auto;
+                width: 100%;
             }
 
             @include media('>tablet', '<=desktop') {
@@ -1135,6 +1134,10 @@
 
         .replace-file {
             display: none;
+        }
+
+        .footer {
+            margin-top: 12rem;
         }
     }
 }

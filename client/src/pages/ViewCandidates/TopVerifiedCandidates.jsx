@@ -17,6 +17,7 @@ import { addFilter, removeFilter } from './../../state/actions/filterAction';
 // Components
 import ViewResume from './ViewResume';
 import PaginationLink from './PaginationLink';
+import Candidates from './Candidates';
 
 const TopVerifiedCandidates = ({
     viewCandidates,
@@ -26,7 +27,7 @@ const TopVerifiedCandidates = ({
     clearResume,
     addCandidate,
     removeCandidate,
-    candidateState: { candidates, shortlist },
+    candidateState: { candidates, shortlist, resume },
     filterState: { filter },
 }) => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -117,190 +118,10 @@ const TopVerifiedCandidates = ({
                     <option value="50">50</option>
                 </select>
             </div>
-
-            {seeResume ? (
-                <ViewResume
-                    isShow={true}
-                    isHide={() => {
-                        setSeeResume(false);
-                        clearResume();
-                    }}
-                    loadCandidate={() => {
-                        viewCandidates();
-                        clearResume();
-                    }}
-                />
-            ) : null}
-            {candidates !== null
-                ? candidates.map((e, i) => (
-                      <div className="candidate" key={i}>
-                          <div className="row">
-                              <div className="col-lg-9">
-                                  <div className="d-flex justify-content-between mt-3">
-                                      <div className="profile flex-fill">
-                                          <img
-                                              src={`/uploads/${e.resumeImage}`}
-                                              alt=""
-                                              className="img-fluid"
-                                          />
-                                          <audio controls>
-                                              <source
-                                                  src={`/uploads/${e.aboutYourself}`}
-                                              />
-                                              Your browser does not support the
-                                              audio!
-                                          </audio>
-                                      </div>
-                                      <div className="available flex-fill">
-                                          <p className="per-hour">
-                                              Availability
-                                          </p>
-                                          <p className="available">
-                                              {e.availability}
-                                          </p>
-                                      </div>
-                                      <div className="eng-rating flex-fill">
-                                          <div className="rating">
-                                              <i
-                                                  className={`rating-color fas fa-star${
-                                                      e.rating >= 1
-                                                          ? ` checked`
-                                                          : ''
-                                                  }`}
-                                              ></i>
-                                              <i
-                                                  className={`rating-color fas fa-star${
-                                                      e.rating >= 2
-                                                          ? ` checked`
-                                                          : ''
-                                                  }`}
-                                              ></i>
-                                              <i
-                                                  className={`rating-color fas fa-star${
-                                                      e.rating >= 3
-                                                          ? ` checked`
-                                                          : ''
-                                                  }`}
-                                              ></i>
-                                              <i
-                                                  className={`rating-color fas fa-star${
-                                                      e.rating >= 4
-                                                          ? ` checked`
-                                                          : ''
-                                                  }`}
-                                              ></i>
-                                              <i
-                                                  className={`rating-color fas fa-star${
-                                                      e.rating === 5
-                                                          ? ` checked`
-                                                          : ''
-                                                  }`}
-                                              ></i>
-                                          </div>
-                                          <span className="eng-prof d-block">
-                                              English Proficiency
-                                          </span>
-                                      </div>
-                                  </div>
-                                  <div className="d-flex">
-                                      {e.specialty.map((e, i) => (
-                                          <span
-                                              className="specialty-software"
-                                              key={i}
-                                          >
-                                              {e}
-                                          </span>
-                                      ))}
-                                      {e.software.map((e, i) => (
-                                          <span
-                                              className="specialty-software"
-                                              key={i}
-                                          >
-                                              {e}
-                                          </span>
-                                      ))}
-                                  </div>
-                                  <hr className="line-break" />
-                                  <p className="recruiters-comment">
-                                      Recruiters Comment:
-                                  </p>
-                                  {/* {recruitmentsComment.map((e, i) => )} */}
-                                  {e.recruitmentsComment.join('. ')}
-                                  <button
-                                      className="see-resume"
-                                      onClick={() => {
-                                          setSeeResume(true);
-                                          viewResume(e._id);
-                                      }}
-                                  >
-                                      See resume and recruiter comments &gt;
-                                  </button>
-                              </div>
-                              <div className="col-lg-3">
-                                  {shortlist && shortlist.includes(e._id) ? (
-                                      <button
-                                          onClick={() => removeShortlist(e._id)}
-                                          className="btn btn-primary button mt-3 remove"
-                                      >
-                                          Remove from Shortlist
-                                      </button>
-                                  ) : (
-                                      <button
-                                          onClick={() => addShortlist(e._id)}
-                                          className="btn btn-primary button mt-3"
-                                      >
-                                          Add to Shortlist
-                                      </button>
-                                  )}
-                                  <div className="mini-slide">
-                                      <Carousel
-                                          activeIndex={activeMiniSlide}
-                                          interval={null}
-                                          onSelect={miniSlideSelect}
-                                          indicators={false}
-                                          nextIcon={
-                                              <i
-                                                  className="fas fa-caret-right"
-                                                  aria-hidden="true"
-                                              ></i>
-                                          }
-                                          prevIcon={
-                                              <i
-                                                  className="fas fa-caret-left"
-                                                  aria-hidden="true"
-                                              ></i>
-                                          }
-                                      >
-                                          {e.uploadWork.images.map((e, i) => (
-                                              <Carousel.Item key={i}>
-                                                  <img
-                                                      src={`/uploads/${e.file}`}
-                                                      className="d-block w-100"
-                                                      alt="..."
-                                                  />
-                                              </Carousel.Item>
-                                          ))}
-                                      </Carousel>
-                                      <span className="num">
-                                          {activeMiniSlide + 1} of{' '}
-                                          {e.uploadWork.images.length}
-                                      </span>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  ))
-                : 'No New Candidate'}
+            <ViewResume isShow={resume !== null ? true : false} />
+            <Candidates isShortlisted={false} />
             <div className="footer">
-                <div
-                    className={`ml-auto${
-                        candidates && candidates.length === 0
-                            ? ' invisible'
-                            : ''
-                    }`}
-                >
-                    <PaginationLink />
-                </div>
+                <PaginationLink />
                 <label className="form-label view-by-label">View by</label>
                 <select
                     className="form-control input"

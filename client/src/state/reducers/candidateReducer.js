@@ -7,6 +7,7 @@ import {
     REMOVE_CANDIDATE,
     GET_SHORTLISTED,
     SET_SHORTLISTED,
+    SET_LOADING,
 } from './../actions/types';
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     shortlistedInfo: [],
     error: null,
     resume: null,
+    loading: false,
 };
 
 export default (state = initialState, action) => {
@@ -29,6 +31,7 @@ export default (state = initialState, action) => {
                 next: action.payload.next,
                 previous: action.payload.previous,
                 total: action.payload.total,
+                loading: false,
             };
         case CANDIDATES_ERROR:
             return {
@@ -43,7 +46,7 @@ export default (state = initialState, action) => {
         case SET_SHORTLISTED:
             return {
                 ...state,
-                shortlist: [action.payload],
+                shortlist: action.payload,
             };
         case ADD_CANDIDATE:
             return {
@@ -66,6 +69,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 resume: null,
+            };
+        case SET_LOADING:
+            return {
+                ...state,
+                loading: true,
             };
         default:
             return state;

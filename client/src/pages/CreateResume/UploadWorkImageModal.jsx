@@ -24,14 +24,13 @@ const UploadWorkImageModal = ({
     const [fileBg, setFileBg] = useState(null);
     const [upload, setUpload] = useState({
         file: '',
-        skin: '1',
         title: '',
         description: '',
     });
     const [crop, setCrop] = useState({ x: 0, y: 0 });
     const [zoom, setZoom] = useState(1);
 
-    const { file, skin, title, description } = upload;
+    const { file, title, description } = upload;
 
     // Close Modal
     const handleClose = useCallback(() => {
@@ -66,7 +65,7 @@ const UploadWorkImageModal = ({
     const onUpload = (e) => {
         e.preventDefault();
 
-        if (file === '' || skin === '' || title === '' || description === '') {
+        if (file === '' || title === '' || description === '') {
             return setAlert(
                 '',
                 'Please fill-in the required boxes to Proceed.'
@@ -125,14 +124,15 @@ const UploadWorkImageModal = ({
                                         </span>
                                     </p>
                                 ) : (
-                                    <Cropper
-                                        image={fileBg}
-                                        crop={crop}
-                                        zoom={zoom}
-                                        aspect={4 / 3}
-                                        onCropChange={setCrop}
-                                        onZoomChange={setZoom}
-                                    />
+                                    // <Cropper
+                                    //     image={fileBg}
+                                    //     crop={crop}
+                                    //     zoom={zoom}
+                                    //     aspect={4 / 3}
+                                    //     onCropChange={setCrop}
+                                    //     onZoomChange={setZoom}
+                                    // />
+                                    <img src={fileBg} className="img-fluid" />
                                 )}
                             </label>
                             <input
@@ -144,73 +144,6 @@ const UploadWorkImageModal = ({
                             />
                         </div>
                         <div className="col-lg-5">
-                            <div className="form-group">
-                                <p className="text">
-                                    Choose your layer skin thumbnail
-                                </p>
-                                <div className="form-inline">
-                                    <div className="form-check">
-                                        <input
-                                            type="radio"
-                                            onChange={onChange}
-                                            className="form-check-input upload-work-layer"
-                                            name="skin"
-                                            id="uploadWorkLayer1"
-                                            value="1"
-                                            checked={
-                                                skin === '1' ? true : false
-                                            }
-                                        />
-                                        <div className="upload-work-layer-outer">
-                                            <label
-                                                htmlFor="uploadWorkLayer1"
-                                                id="uploadWorkLayerLabel1"
-                                                className="upload-work-layer-label"
-                                            ></label>
-                                        </div>
-                                    </div>
-                                    <div className="form-check">
-                                        <input
-                                            type="radio"
-                                            onChange={onChange}
-                                            className="form-check-input upload-work-layer"
-                                            name="skin"
-                                            id="uploadWorkLayer2"
-                                            value="2"
-                                            checked={
-                                                skin === '2' ? true : false
-                                            }
-                                        />
-                                        <div className="upload-work-layer-outer">
-                                            <label
-                                                htmlFor="uploadWorkLayer2"
-                                                id="uploadWorkLayerLabel2"
-                                                className="upload-work-layer-label"
-                                            ></label>
-                                        </div>
-                                    </div>
-                                    <div className="form-check">
-                                        <input
-                                            type="radio"
-                                            onChange={onChange}
-                                            className="form-check-input upload-work-layer"
-                                            name="skin"
-                                            id="uploadWorkLayer3"
-                                            value="3"
-                                            checked={
-                                                skin === '3' ? true : false
-                                            }
-                                        />
-                                        <div className="upload-work-layer-outer">
-                                            <label
-                                                htmlFor="uploadWorkLayer3"
-                                                id="uploadWorkLayerLabel3"
-                                                className="upload-work-layer-label"
-                                            ></label>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div className="form-group">
                                 <label className="form-label">
                                     Project Title
@@ -224,7 +157,7 @@ const UploadWorkImageModal = ({
                                     onChange={onChange}
                                 />
                             </div>
-                            <div className="form-group">
+                            {/* <div className="form-group">
                                 <label className="form-label">
                                     Project Description
                                 </label>
@@ -234,13 +167,13 @@ const UploadWorkImageModal = ({
                                     value={description}
                                     onChange={onChange}
                                 ></textarea>
-                            </div>
+                            </div> */}
                             <ul>
                                 {note.map((e, i) => (
                                     <li key={i}>{e}</li>
                                 ))}
                             </ul>
-                            <div className="form-inline justify-content-between">
+                            <div className="form-inline justify-content-between footer">
                                 {fileBg ? (
                                     <>
                                         <label

@@ -13,37 +13,25 @@ import {
 
 const ModalActionResume = ({
     isShow,
-    id,
+    load,
     msg,
-    rate,
-    salary,
-    comments,
+    action,
     approveResume,
-    isHide,
-    hideModal,
     deleteResume,
     rejectResume,
-    action,
+    isHide,
 }) => {
+    // State
     const [show, setShow] = useState(false);
 
-    // Close alert modal
-    const handleClose = () => {
-        setShow(false);
-    };
-
-    // Show alert modal
-    const handleShow = () => setShow(true);
-
     const primaryAction = () => {
-        let p = '';
         if (action === 'approve') {
-            p = (
+            return (
                 <button
                     className="btn btn-primary button approve"
                     onClick={() => {
                         handleClose();
-                        approveResume({ id, rate, salary, comments });
+                        approveResume(load);
                         isHide();
                     }}
                 >
@@ -51,12 +39,12 @@ const ModalActionResume = ({
                 </button>
             );
         } else if (action === 'reject') {
-            p = (
+            return (
                 <button
                     className="btn btn-primary button reject"
                     onClick={() => {
                         handleClose();
-                        rejectResume({ id, rate, salary, comments });
+                        rejectResume(load);
                         isHide();
                     }}
                 >
@@ -64,12 +52,12 @@ const ModalActionResume = ({
                 </button>
             );
         } else if (action === 'delete') {
-            p = (
+            return (
                 <button
                     className="btn btn-primary button delete"
                     onClick={() => {
                         handleClose();
-                        deleteResume(id);
+                        deleteResume(load._id);
                         isHide();
                     }}
                 >
@@ -77,12 +65,12 @@ const ModalActionResume = ({
                 </button>
             );
         } else if (action === 'reapprove') {
-            p = (
+            return (
                 <button
                     className="btn btn-primary button delete"
                     onClick={() => {
                         handleClose();
-                        approveResume({ id, rate, salary, comments });
+                        approveResume(load);
                         isHide();
                     }}
                 >
@@ -90,12 +78,12 @@ const ModalActionResume = ({
                 </button>
             );
         } else if (action === 'delete') {
-            p = (
+            return (
                 <button
                     className="btn btn-primary button delete"
                     onClick={() => {
                         handleClose();
-                        deleteResume(id);
+                        deleteResume(load._id);
                         isHide();
                     }}
                 >
@@ -103,8 +91,13 @@ const ModalActionResume = ({
                 </button>
             );
         }
-        return p;
     };
+
+    const handleClose = () => {
+        setShow(false);
+    };
+
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         if (isShow) {
@@ -126,7 +119,6 @@ const ModalActionResume = ({
                     className="btn btn-primary button approve"
                     onClick={() => {
                         handleClose();
-                        hideModal();
                     }}
                 >
                     Cancel

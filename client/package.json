@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
+    "currency-symbol-map": "^4.0.4",
     "include-media": "^1.4.9",
     "moment": "^2.29.0",
     "node-sass": "^4.14.1",

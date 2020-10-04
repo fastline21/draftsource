@@ -16,6 +16,8 @@ import { addFilter, removeFilter } from './../../state/actions/filterAction';
 // Components
 import ViewResume from './ViewResume';
 import PaginationLink from './PaginationLink';
+import PreLoader from './../../layouts/PreLoader';
+import Candidates from './Candidates';
 
 const NewApplicants = ({
     newApplicants,
@@ -23,7 +25,7 @@ const NewApplicants = ({
     removeFilter,
     viewResume,
     clearResume,
-    candidateState: { candidates },
+    candidateState: { candidates, loading, resume },
     filterState: { filter },
 }) => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -80,8 +82,12 @@ const NewApplicants = ({
             }
         }
 
+        if (resume !== null) {
+            setSeeResume(true);
+        }
+
         // eslint-disable-next-line
-    }, [queryParams, params, filter, candidates]);
+    }, [queryParams, params, filter, candidates, resume]);
 
     return (
         <div id="admin">
@@ -107,144 +113,11 @@ const NewApplicants = ({
                 </select>
             </div>
             <div id="newApplicants">
-                {seeResume ? (
-                    <ViewResume
-                        isShow={true}
-                        isHide={() => {
-                            setSeeResume(false);
-                            clearResume();
-                        }}
-                        loadCandidate={() => {
-                            newApplicants();
-                            clearResume();
-                        }}
-                    />
-                ) : null}
-                {candidates !== null
-                    ? candidates.map((e, i) => (
-                          <div className="candidate" key={i}>
-                              <div className="row">
-                                  <div className="col-lg-8">
-                                      <div className="d-flex justify-content-between mt-3">
-                                          <div className="profile flex-fill">
-                                              <img
-                                                  src={`/uploads/${e.resumeImage}`}
-                                                  alt=""
-                                                  className="img-fluid"
-                                              />
-                                              <p className="name">
-                                                  {e.firstName} {e.lastName}
-                                              </p>
-                                              <span className="address">
-                                                  {e.city}
-                                              </span>
-                                          </div>
-                                          <div className="available mr-5 flex-shrink-1">
-                                              <p
-                                                  style={{
-                                                      fontSize: '12px',
-                                                      color: '#606060',
-                                                      marginBottom: '6px',
-                                                  }}
-                                              >
-                                                  Availability
-                                              </p>
-                                              <p className="available">
-                                                  {e.availability}
-                                              </p>
-                                          </div>
-                                          <div className="submitted mr-5 flex-shrink-1">
-                                              <p
-                                                  style={{
-                                                      fontSize: '12px',
-                                                      color: '#606060',
-                                                      marginBottom: '6px',
-                                                  }}
-                                              >
-                                                  Date Submitted
-                                              </p>
-                                              {moment(e.dateCreated).format(
-                                                  'MM-DD-YYYY'
-                                              )}
-                                          </div>
-                                          <div className="submitted flex-shrink-1">
-                                              <p
-                                                  style={{
-                                                      fontSize: '12px',
-                                                      color: '#606060',
-                                                      marginBottom: '6px',
-                                                  }}
-                                              >
-                                                  Time Submitted
-                                              </p>
-                                              {moment(e.dateCreated).format(
-                                                  'h:mm a'
-                                              )}
-                                          </div>
-                                      </div>
-                                      <div className="d-flex"></div>
-                                      <hr className="line-break" />
-                                      <p className="specialty-software">
-                                          {e.specialty.map((element, index) => (
-                                              <span key={index}>{element}</span>
-                                          ))}
-                                          {e.software.map((element, index) => (
-                                              <span key={index}>{element}</span>
-                                          ))}
-                                      </p>
-                                      <button
-                                          className="link"
-                                          onClick={() => {
-                                              setSeeResume(true);
-                                              viewResume(e._id);
-                                          }}
-                                      >
-                                          View Resume
-                                      </button>
-                                  </div>
-
-                                  <div className="col-lg-4">
-                                      <div className="mini-slide">
-                                          <Carousel
-                                              activeIndex={activeMiniSlide}
-                                              interval={null}
-                                              onSelect={miniSlideSelect}
-                                              indicators={false}
-                                              nextIcon={
-                                                  <i
-                                                      className="fas fa-caret-right"
-                                                      aria-hidden="true"
-                                                  ></i>
-                                              }
-                                              prevIcon={
-                                                  <i
-                                                      className="fas fa-caret-left"
-                                                      aria-hidden="true"
-                                                  ></i>
-                                              }
-                                          >
-                                              {e.uploadWork.images.map(
-                                                  (e, i) => (
-                                                      <Carousel.Item key={i}>
-                                                          <img
-                                                              src={`/uploads/${e.file}`}
-                                                              className="d-block w-100"
-                                                              alt="..."
-                                                          />
-                                                      </Carousel.Item>
-                                                  )
-                                              )}
-                                          </Carousel>
-                                          <span className="num">
-                                              {activeMiniSlide + 1} of{' '}
-                                              {e.uploadWork.images.length}
-                                          </span>
-                                      </div>
-                                  </div>
-                              </div>
-                          </div>
-                      ))
-                    : 'No New Candidate'}
+                <ViewResume
+                    isShow={resume !== null ? true : false}
+                    loadCandidate={() => newApplicants()}
+                />
+                <Candidates />
             </div>
             <div className="footer">
                 <PaginationLink />

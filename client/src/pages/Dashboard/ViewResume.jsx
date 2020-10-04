@@ -1,132 +1,102 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import getSymbolFromCurrency from 'currency-symbol-map';
 
 // Actions
+import { clearResume } from './../../state/actions/candidateAction';
 import { setAlert } from './../../state/actions/alertAction';
 
 // Components
-import ModalActionResume from './ModalActionResume';
 import ViewImage from './ViewImage';
-import ViewSampleWorkImage from './ViewSampleWorkImage';
-import ViewSampleWorkDocument from './ViewSampleWorkDocument';
+import ViewSampleWork from './ViewSampleWork';
+import ModalActionResume from './ModalActionResume';
 
 const ViewResume = ({
     isShow,
-    isHide,
     loadCandidate,
     candidateState: { resume },
+    clearResume,
     setAlert,
 }) => {
-    const [show, setShow] = useState(false);
-    const [editRate, setEditRate] = useState(false);
-    const [editSalary, setEditSalary] = useState(false);
-    const [rate, setRate] = useState(0);
-    const [showModalAction, setShowModalAction] = useState(false);
-    const [action, setAction] = useState('');
-    const [msg, setMsg] = useState('');
-    const recruitersCommentsRef = useRef(null);
-    const [showWorkImage, setShowWorkImage] = useState(false);
-    const [showWorkDocument, setShowWorkDocument] = useState(false);
-    const [viewWorkImage, setViewWorkImage] = useState({
-        file: '',
-        title: '',
-        desc: '',
-    });
-    const [viewWorkDocument, setViewWorkDocument] = useState({
-        file: '',
-        title: '',
-        desc: '',
-    });
-    const [showImage, setShowImage] = useState(false);
-    const [viewImage, setViewImage] = useState({
-        title: '',
-        image: '',
-    });
+    // Initial
     const initialData = {
         _id: '',
+        resumeImage: '',
+        aboutYourself: '',
         firstName: '',
         lastName: '',
-        resumeImage: '',
         city: '',
+        status: '',
+        rating: '',
         availability: '',
         expectedSalary: '',
         currency: '',
         specialty: [],
         software: [],
-        uploadWork: {
-            images: [],
-            documents: [],
-        },
-        aboutYourself: '',
+        uploadWork: { images: [] },
         workHistory: [],
         education: [],
+        recruitmentsComment: '',
         workspace: '',
         internetType: '',
         hardwareType: '',
         brandName: '',
         internetResult: '',
         computerSpecs: '',
-        recruitmentsComment: [],
-        rating: '',
     };
+    const initialViewImage = {
+        show: false,
+        title: '',
+        file: '',
+    };
+    const initialViewSampleWork = {
+        show: false,
+        title: '',
+        file: '',
+    };
+
+    // State
+    const [show, setShow] = useState(false);
     const [data, setData] = useState(initialData);
-    const [newData, setNewData] = useState({
-        rate: 0,
-        salary: '',
-        comments: '',
-    });
-
-    const handleClose = () => {
-        setData(initialData);
-        setShow(false);
-        isHide(true);
-    };
-
-    const handleShow = () => setShow(true);
-
-    const editChange = (e) => {
-        const { name, value } = e.target;
-        setNewData({ ...newData, [name]: value });
-    };
+    const [action, setAction] = useState(null);
+    const [showModalAction, setShowModalAction] = useState(false);
+    const [msg, setMsg] = useState('');
+    const [viewImage, setViewImage] = useState(initialViewImage);
+    const [viewSampleWork, setViewSampleWork] = useState(initialViewSampleWork);
 
     const {
         _id,
+        resumeImage,
+        aboutYourself,
         firstName,
         lastName,
-        resumeImage,
         city,
+        status,
+        rating,
         availability,
-        aboutYourself,
         expectedSalary,
+        currency,
         specialty,
         software,
         uploadWork,
         workHistory,
         education,
+        recruitmentsComment,
         workspace,
         internetType,
         hardwareType,
         brandName,
         internetResult,
         computerSpecs,
-        status,
-        recruitmentsComment,
     } = data;
-
-    const editNewRate = (rate) => {
-        if (editRate) {
-            setNewData({ ...newData, rate });
-            setRate(rate);
-        }
-    };
 
     const approveResume = () => {
         if (
-            newData.rate === 0 ||
-            newData.comments === undefined ||
-            newData.comments.length === 0
+            rating === 0 ||
+            recruitmentsComment === undefined ||
+            recruitmentsComment.length === 0
         ) {
             setAlert('', 'Please fill-in the required boxes to Proceed.');
         } else {
@@ -163,9 +133,8 @@ const ViewResume = ({
     };
 
     const actionButton = () => {
-        let a = '';
         if (status === 'Pending') {
-            a = (
+            return (
                 <>
                     <button
                         className="btn btn-primary button"
@@ -182,7 +151,7 @@ const ViewResume = ({
                 </>
             );
         } else if (status === 'Approve') {
-            a = (
+            return (
                 <button
                     className="btn btn-primary button button"
                     onClick={rejectResume}
@@ -191,7 +160,7 @@ const ViewResume = ({
                 </button>
             );
         } else if (status === 'Reject') {
-            a = (
+            return (
                 <>
                     <button
                         className="btn btn-primary button"
@@ -208,23 +177,26 @@ const ViewResume = ({
                 </>
             );
         }
-        return a;
     };
+
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setData({ ...data, [name]: value });
+    };
+
+    const handleClose = () => {
+        setShow(false);
+        clearResume();
+    };
+
+    const handleShow = () => setShow(true);
 
     useEffect(() => {
         if (isShow) {
             handleShow();
-        }
-
-        if (resume !== null) {
             setData(resume);
-            setNewData({
-                ...newData,
-                comments: resume.recruitmentsComment,
-                rate: resume.rating,
-            });
         }
-    }, [resume, isShow, data]);
+    }, [isShow]);
 
     return (
         <Modal
@@ -236,53 +208,25 @@ const ViewResume = ({
             id="seeResume"
         >
             <Modal.Body>
+                <ViewImage
+                    viewImage={viewImage}
+                    isHide={() => setViewImage(initialViewImage)}
+                />
+                <ViewSampleWork
+                    isShow={viewSampleWork.show}
+                    isHide={() => setViewSampleWork(initialViewSampleWork)}
+                    viewSampleWork={viewSampleWork}
+                />
                 <ModalActionResume
                     isShow={showModalAction}
-                    id={_id}
+                    load={data}
                     msg={msg}
                     action={action}
-                    rate={newData.rate}
-                    comments={newData.comments}
-                    salary={
-                        newData.salary !== '' ? newData.salary : expectedSalary
-                    }
                     isHide={() => {
+                        setShowModalAction(false);
                         handleClose();
                         loadCandidate();
                     }}
-                    hideModal={() => setShowModalAction(false)}
-                />
-                <ViewImage
-                    isShow={showImage}
-                    isHide={() => {
-                        setShowImage(false);
-                        setViewImage({
-                            image: '',
-                            title: '',
-                        });
-                    }}
-                    image={viewImage.image}
-                    title={viewImage.title}
-                />
-                <ViewSampleWorkImage
-                    isShow={showWorkImage}
-                    isHide={() => {
-                        setShowWorkImage(false);
-                        setViewWorkImage({ title: '', desc: '', file: '' });
-                    }}
-                    title={viewWorkImage.title}
-                    desc={viewWorkImage.desc}
-                    file={viewWorkImage.file}
-                />
-                <ViewSampleWorkDocument
-                    isShow={showWorkDocument}
-                    isHide={() => {
-                        setShowWorkDocument(false);
-                        setViewWorkDocument({ title: '', desc: '', file: '' });
-                    }}
-                    title={viewWorkDocument.title}
-                    desc={viewWorkDocument.desc}
-                    file={viewWorkDocument.file}
                 />
                 <button className="close" onClick={handleClose}>
                     <span aria-hidden="true">×</span>
@@ -296,14 +240,12 @@ const ViewResume = ({
                                 alt=""
                                 className="img-fluid resume-image mb-3"
                             />
-                            {aboutYourself !== '' && (
-                                <audio controls>
-                                    <source src={`/uploads/${aboutYourself}`} />
-                                    Your browser does not support the audio!
-                                </audio>
-                            )}
+                            <audio controls controlsList="nodownload">
+                                <source src={`/uploads/${aboutYourself}`} />
+                                Your browser does not support the audio!
+                            </audio>
                         </div>
-                        <div className="col-lg-9">
+                        <div className="col-lg-6">
                             <div className="row">
                                 <div className="col-lg-8">
                                     <p className="fullname">
@@ -312,138 +254,80 @@ const ViewResume = ({
                                     </p>
                                     <p className="city">{city}</p>
                                 </div>
-                                <div className="col-lg-4">{actionButton()}</div>
                             </div>
                             <div className="row mt-4">
                                 <div className="col-lg-4">
-                                    <p className="eng-proficiency mb-1">
+                                    <p className="data-title mb-0">
                                         English Proficiency
                                     </p>
                                     <div className="rating d-inline">
                                         <i
                                             className={`rating-color fas fa-star${
-                                                newData.rate >= 1
-                                                    ? ' checked'
-                                                    : ''
+                                                rating >= 1 ? ' checked' : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                editNewRate(1);
+                                                setData({ ...data, rating: 1 });
                                             }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                newData.rate >= 2
-                                                    ? ' checked'
-                                                    : ''
+                                                rating >= 2 ? ' checked' : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                editNewRate(2);
+                                                setData({ ...data, rating: 2 });
                                             }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                newData.rate >= 3
-                                                    ? ' checked'
-                                                    : ''
+                                                rating >= 3 ? ' checked' : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                editNewRate(3);
+                                                setData({ ...data, rating: 3 });
                                             }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                newData.rate >= 4
-                                                    ? ' checked'
-                                                    : ''
+                                                rating >= 4 ? ' checked' : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                editNewRate(4);
+                                                setData({ ...data, rating: 4 });
                                             }}
                                         ></i>
                                         <i
                                             className={`rating-color fas fa-star${
-                                                newData.rate === 5
-                                                    ? ' checked'
-                                                    : ''
+                                                rating === 5 ? ' checked' : ''
                                             }`}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                editNewRate(5);
+                                                setData({ ...data, rating: 5 });
                                             }}
                                         ></i>
                                     </div>
-                                    {!editRate ? (
-                                        <button
-                                            className="btn btn-primary edit-button"
-                                            onClick={() => setEditRate(true)}
-                                        >
-                                            Edit
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className="btn btn-primary edit-button"
-                                            onClick={() => setEditRate(false)}
-                                        >
-                                            Save
-                                        </button>
-                                    )}
                                 </div>
                                 <div className="col-lg-4">
-                                    <p className="availability mb-1">
+                                    <p className="data-title mb-0">
+                                        Availability
+                                    </p>
+                                    <p className="availability">
                                         {availability}
                                     </p>
-                                    <p className="salary d-inline">
-                                        {editSalary ? (
-                                            <input
-                                                type="number"
-                                                className="form-control input"
-                                                name="salary"
-                                                placeholder={`${
-                                                    newData.salary === ''
-                                                        ? expectedSalary
-                                                        : newData.salary
-                                                }/hr`}
-                                                onChange={editChange}
-                                            />
-                                        ) : (
-                                            <>
-                                                {`$${
-                                                    newData.salary === ''
-                                                        ? expectedSalary
-                                                        : newData.salary
-                                                }`}
-                                                <span
-                                                    style={{
-                                                        fontWeight: 500,
-                                                    }}
-                                                >
-                                                    /hr
-                                                </span>
-                                            </>
-                                        )}
+                                </div>
+                                <div className="col-lg-4">
+                                    <p className="data-title mb-0">
+                                        Expected Salary
                                     </p>
-                                    {!editSalary ? (
-                                        <button
-                                            className="btn btn-primary edit-button"
-                                            onClick={() => setEditSalary(true)}
-                                        >
-                                            Edit
-                                        </button>
-                                    ) : (
-                                        <button
-                                            className="btn btn-primary edit-button"
-                                            onClick={() => setEditSalary(false)}
-                                        >
-                                            Save
-                                        </button>
-                                    )}
+                                    <p className="expected-salary">
+                                        {getSymbolFromCurrency(currency)}{' '}
+                                        {expectedSalary} /hr
+                                    </p>
                                 </div>
                             </div>
                         </div>
+                        <div className="col-lg-3">{actionButton()}</div>
                     </div>
                     <div className="row pb-3">
                         <div className="col-lg-3">
@@ -479,42 +363,18 @@ const ViewResume = ({
                                     <div className="col-lg-3" key={i}>
                                         <figure
                                             className="figure"
-                                            onClick={() => {
-                                                setShowWorkImage(true);
-                                                setViewWorkImage({
+                                            style={{ cursor: 'pointer' }}
+                                            onClick={() =>
+                                                setViewSampleWork({
+                                                    show: true,
                                                     title: e.title,
-                                                    desc: e.description,
                                                     file: e.file,
-                                                });
-                                            }}
+                                                })
+                                            }
                                         >
                                             <img
                                                 src={`/uploads/${e.file}`}
-                                                alt=""
-                                                className="figure-img img-fluid"
-                                            />
-                                            <figcaption className="figure-caption">
-                                                {e.title}
-                                            </figcaption>
-                                        </figure>
-                                    </div>
-                                ))}
-                                {uploadWork.documents.map((e, i) => (
-                                    <div className="col-lg-3" key={i}>
-                                        <figure
-                                            className="figure"
-                                            onClick={() => {
-                                                setShowWorkDocument(true);
-                                                setViewWorkDocument({
-                                                    title: e.title,
-                                                    desc: e.description,
-                                                    file: e.file,
-                                                });
-                                            }}
-                                        >
-                                            <img
-                                                src={`../uploads/bg-upload-${e.skin}.png`}
-                                                alt=""
+                                                alt={e.title}
                                                 className="figure-img img-fluid"
                                             />
                                             <figcaption className="figure-caption">
@@ -524,6 +384,7 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
+                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -553,6 +414,7 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
+                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -618,6 +480,7 @@ const ViewResume = ({
                                     </div>
                                 ))}
                             </div>
+                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -627,39 +490,17 @@ const ViewResume = ({
                             </p>
                         </div>
                         <div className="col-lg-9">
-                            <div id="recruitersComments">
-                                <div className="form-inline">
-                                    <input
-                                        type="text"
-                                        className="form-control input"
-                                        name="comments"
-                                        ref={recruitersCommentsRef}
-                                    />
-                                    <button
-                                        className="btn btn-primary button"
-                                        onClick={() => {
-                                            setNewData({
-                                                ...newData,
-                                                comments: [
-                                                    ...newData.comments,
-                                                    recruitersCommentsRef
-                                                        .current.value,
-                                                ],
-                                            });
-                                            recruitersCommentsRef.current.value =
-                                                '';
-                                        }}
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                                <ul>
-                                    {newData.comments !== '' &&
-                                        newData.comments.map((e, i) => (
-                                            <li key={i}>{e}</li>
-                                        ))}
-                                </ul>
+                            <div id="recruitmentsComment" className="pb-5">
+                                <textarea
+                                    name="recruitmentsComment"
+                                    className="form-control input"
+                                    value={recruitmentsComment}
+                                    onChange={onChange}
+                                    cols="30"
+                                    rows="12"
+                                ></textarea>
                             </div>
+                            <hr className="line-break" />
                         </div>
                     </div>
                     <div className="row pb-5">
@@ -737,15 +578,14 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={() => {
-                                                    setShowImage(true);
+                                                onClick={() =>
                                                     setViewImage({
-                                                        ...viewImage,
-                                                        image: internetResult,
+                                                        show: true,
                                                         title:
-                                                            'Internet Result',
-                                                    });
-                                                }}
+                                                            'Internet Speedtest Result',
+                                                        file: internetResult,
+                                                    })
+                                                }
                                             >
                                                 View
                                             </button>
@@ -761,14 +601,13 @@ const ViewResume = ({
                                         <td className="pt-0">
                                             <button
                                                 className="btn btn-primary view"
-                                                onClick={() => {
-                                                    setShowImage(true);
+                                                onClick={() =>
                                                     setViewImage({
-                                                        ...viewImage,
-                                                        image: computerSpecs,
+                                                        show: true,
                                                         title: 'Computer Specs',
-                                                    });
-                                                }}
+                                                        file: computerSpecs,
+                                                    })
+                                                }
                                             >
                                                 View
                                             </button>
@@ -785,12 +624,14 @@ const ViewResume = ({
 };
 
 ViewResume.propTypes = {
-    setAlert: PropTypes.func.isRequired,
     candidateState: PropTypes.object.isRequired,
+    clearResume: PropTypes.func.isRequired,
+    isShow: PropTypes.bool.isRequired,
+    setAlert: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
     candidateState: state.candidateState,
 });
 
-export default connect(mapStateToProps, { setAlert })(ViewResume);
+export default connect(mapStateToProps, { clearResume, setAlert })(ViewResume);

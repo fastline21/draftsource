@@ -26,8 +26,9 @@ router.get('/view-candidates', async (req, res) => {
             queryData = {
                 ...queryData,
                 $or: [
-                    { specialty: new RegExp(`^${value}$`, 'i') },
-                    { software: new RegExp(`^${value}$`, 'i') },
+                    { specialty: { $regex: value, $options: 'i' } },
+                    { software: { $regex: value, $options: 'i' } },
+                    { availability: { $regex: value, $options: 'i' } },
                 ],
             };
         } else if (key === 'page' || key === 'limit') {
@@ -226,12 +227,10 @@ router.get('/rejected-applicants', auth, async (req, res) => {
 // @desc    Approve resume
 // @access  Private
 router.put('/approve-resume', auth, async (req, res) => {
-    const { id, rate, salary, comments } = req.body;
-    const resume = await Resume.findByIdAndUpdate(id, {
+    const { _id } = req.body;
+    const resume = await Resume.findByIdAndUpdate(_id, {
+        ...req.body,
         status: 'Approve',
-        expectedSalary: parseInt(salary),
-        rating: rate,
-        recruitmentsComment: comments,
     });
     res.json(resume);
 });
@@ -240,12 +239,10 @@ router.put('/approve-resume', auth, async (req, res) => {
 // @desc    Reject resume
 // @access  Private
 router.put('/reject-resume', auth, async (req, res) => {
-    const { id, rate, salary, comments } = req.body;
-    const resume = await Resume.findByIdAndUpdate(id, {
+    const { _id } = req.body;
+    const resume = await Resume.findByIdAndUpdate(_id, {
+        ...req.body,
         status: 'Reject',
-        expectedSalary: parseInt(salary),
-        rating: rate,
-        recruitmentsComment: comments,
     });
     res.json(resume);
 });

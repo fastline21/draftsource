@@ -12,7 +12,7 @@ export const softwareList = () => {
         'Microsoft Excel',
         'Figma',
         'Adobe XD',
-        'Sketch',
+        'SketchUp',
         'Autodesk Revit',
         'SolidWorks',
         'Adobe Illustrator',
@@ -29,5 +29,8 @@ export const softwareList = () => {
         'Microstation',
         'Planswift',
         'Bluebeam',
+        'PDS Frameworks',
+        'Tekla Structures',
+        'Prosteel',
     ];
 };
