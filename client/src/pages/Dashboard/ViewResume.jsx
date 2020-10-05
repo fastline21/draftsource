@@ -109,11 +109,19 @@ const ViewResume = ({
 	};
 
 	const rejectResume = () => {
-		setAction('reject');
-		setShowModalAction(true);
-		setMsg(
-			'<h2 className="title">Reject Resume?</h2><p>This resume will go to your reject resume tab. You can go back and review it again and decide to reapprove or delete this application.</p>'
-		);
+		if (
+			rating === 0 ||
+			recruitmentsComment === undefined ||
+			recruitmentsComment.length === 0
+		) {
+			setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else {
+			setAction('reject');
+			setShowModalAction(true);
+			setMsg(
+				'<h2 className="title">Reject Resume?</h2><p>This resume will go to your reject resume tab. You can go back and review it again and decide to reapprove or delete this application.</p>'
+			);
+		}
 	};
 
 	const deleteResume = () => {
@@ -261,80 +269,101 @@ const ViewResume = ({
 									</p>
 									<p className='city'>{city}</p>
 								</div>
-								<div>
-									<p className='data-title mb-0'>
-										English Proficiency
-									</p>
-									<div className='rating d-inline'>
-										<i
-											className={`rating-color fas fa-star${
-												rating >= 1 ? ' checked' : ''
-											}`}
-											onClick={(e) => {
-												e.preventDefault();
-												setData({ ...data, rating: 1 });
-											}}
-										></i>
-										<i
-											className={`rating-color fas fa-star${
-												rating >= 2 ? ' checked' : ''
-											}`}
-											onClick={(e) => {
-												e.preventDefault();
-												setData({ ...data, rating: 2 });
-											}}
-										></i>
-										<i
-											className={`rating-color fas fa-star${
-												rating >= 3 ? ' checked' : ''
-											}`}
-											onClick={(e) => {
-												e.preventDefault();
-												setData({ ...data, rating: 3 });
-											}}
-										></i>
-										<i
-											className={`rating-color fas fa-star${
-												rating >= 4 ? ' checked' : ''
-											}`}
-											onClick={(e) => {
-												e.preventDefault();
-												setData({ ...data, rating: 4 });
-											}}
-										></i>
-										<i
-											className={`rating-color fas fa-star${
-												rating === 5 ? ' checked' : ''
-											}`}
-											onClick={(e) => {
-												e.preventDefault();
-												setData({ ...data, rating: 5 });
-											}}
-										></i>
+								<div className='d-flex justify-content-between'>
+									<div>
+										<p className='data-title mb-0'>
+											English Proficiency
+										</p>
+										<div className='rating d-inline'>
+											<i
+												className={`rating-color fas fa-star${
+													rating >= 1
+														? ' checked'
+														: ''
+												}`}
+												onClick={(e) => {
+													e.preventDefault();
+													setData({
+														...data,
+														rating: 1,
+													});
+												}}
+											></i>
+											<i
+												className={`rating-color fas fa-star${
+													rating >= 2
+														? ' checked'
+														: ''
+												}`}
+												onClick={(e) => {
+													e.preventDefault();
+													setData({
+														...data,
+														rating: 2,
+													});
+												}}
+											></i>
+											<i
+												className={`rating-color fas fa-star${
+													rating >= 3
+														? ' checked'
+														: ''
+												}`}
+												onClick={(e) => {
+													e.preventDefault();
+													setData({
+														...data,
+														rating: 3,
+													});
+												}}
+											></i>
+											<i
+												className={`rating-color fas fa-star${
+													rating >= 4
+														? ' checked'
+														: ''
+												}`}
+												onClick={(e) => {
+													e.preventDefault();
+													setData({
+														...data,
+														rating: 4,
+													});
+												}}
+											></i>
+											<i
+												className={`rating-color fas fa-star${
+													rating === 5
+														? ' checked'
+														: ''
+												}`}
+												onClick={(e) => {
+													e.preventDefault();
+													setData({
+														...data,
+														rating: 5,
+													});
+												}}
+											></i>
+										</div>
 									</div>
-								</div>
-							</div>
-							<div className='row'>
-								<div className='col-lg-8'></div>
-							</div>
-							<div className='row mt-4'>
-								<div className='col-lg-4'></div>
-								<div className='col-lg-4'>
-									<p className='data-title mb-0'>
-										Availability
-									</p>
-									<p className='availability'>
-										{availability}
-									</p>
-								</div>
-								<div className='col-lg-4'>
-									<p className='data-title mb-0'>
-										Expected Salary
-									</p>
-									<p className='expected-salary'>
-										{getSymbolFromCurrency(currency)}{' '}
-										{expectedSalary} /hr
-									</p>
+									<div>
+										<p className='data-title mb-0'>
+											Availability
+										</p>
+										<p className='availability'>
+											{availability}
+										</p>
+									</div>
+									<div className='col-lg-4'>
+										<p className='data-title mb-0'>
+											Expected Salary
+										</p>
+										<p className='expected-salary'>
+											{getSymbolFromCurrency(currency)}{' '}
+											{expectedSalary} /hr
+										</p>
+									</div>
 								</div>
 							</div>
 						</div>

@@ -44,6 +44,11 @@
 			background-color: $blue;
 			border-color: $blue;
 			// width: 276px;
+
+			&.book-interview {
+				background-color: $lightBlue;
+				border-color: $lightBlue;
+			}
 		}
 	}
 
@@ -243,6 +248,12 @@
 				overflow-x: auto;
 				scrollbar-width: none;
 				scroll-behavior: smooth;
+				width: 718px;
+
+				&::-webkit-scrollbar {
+					width: none;
+					display: none;
+				}
 
 				.specialty-software-item {
 					color: $flatBlack;

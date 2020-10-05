@@ -25,53 +25,59 @@ import DraftJob from './pages/DraftJob';
 import AdminSignup from './pages/AdminSignup';
 import Signup from './pages/Signup';
 import SignupRoute from './routing/SignupRoute';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const App = () => {
-    return (
-        <Provider store={store}>
-            <BrowserRouter>
-                <Fragment>
-                    <ScrollToTop />
-                    <LoadUser />
-                    <Alert />
-                    <Header />
-                    <Switch>
-                        <Route exact path="/" component={Home} />
-                        <Route
-                            exact
-                            path="/view-candidates"
-                            component={VerifyViewCandidates}
-                        />
-                        <Route
-                            path="/view-candidates/:menu"
-                            component={ViewCandidates}
-                        />
-                        <Route path="/pricing" component={Pricing} />
-                        <CreateResumeRoute
-                            path="/create-resume"
-                            component={CreateResume}
-                        />
-                        <DraftJobRoute path="/draft-job" component={DraftJob} />
-                        <Route path="/verify/:token" component={Verify} />
-                        <PrivateRoute
-                            exact
-                            path="/dashboard"
-                            component={VerifyDashboard}
-                        />
-                        <PrivateRoute
-                            path="/dashboard/:menu"
-                            component={Dashboard}
-                        />
-                        <Route path="/login" component={Login} />
-                        <Route path="/admin-signup" component={AdminSignup} />
-                        <Route path="/signup/:type" component={Signup} />
-                        <Route path="*" component={NotFound} />
-                    </Switch>
-                    <Footer />
-                </Fragment>
-            </BrowserRouter>
-        </Provider>
-    );
+	return (
+		<Provider store={store}>
+			<BrowserRouter>
+				<Fragment>
+					<ScrollToTop />
+					<LoadUser />
+					<Alert />
+					<div id='mobileOverlay' />
+					<Header />
+					<Switch>
+						<Route exact path='/' component={Home} />
+						<Route
+							exact
+							path='/view-candidates'
+							component={VerifyViewCandidates}
+						/>
+						<Route
+							path='/view-candidates/:menu'
+							component={ViewCandidates}
+						/>
+						<Route path='/pricing' component={Pricing} />
+						<CreateResumeRoute
+							path='/create-resume'
+							component={CreateResume}
+						/>
+						<DraftJobRoute path='/draft-job' component={DraftJob} />
+						<Route path='/verify/:token' component={Verify} />
+						<PrivateRoute
+							exact
+							path='/dashboard'
+							component={VerifyDashboard}
+						/>
+						<PrivateRoute
+							path='/dashboard/:menu'
+							component={Dashboard}
+						/>
+						<Route path='/login' component={Login} />
+						<Route path='/admin-signup' component={AdminSignup} />
+						<Route
+							path='/privacy-policy'
+							component={PrivacyPolicy}
+						/>
+						<Route path='/signup/:type' component={Signup} />
+						<Route path='*' component={NotFound} />
+					</Switch>
+					<Footer />
+				</Fragment>
+			</BrowserRouter>
+		</Provider>
+	);
 };
 
 export default App;

@@ -23,6 +23,7 @@
         "gm": "^1.23.1",
         "jsonwebtoken": "^8.5.1",
         "mongoose": "^5.10.7",
+        "mongoose-sequence": "^5.2.2",
         "nodemailer": "^6.4.11",
         "pdf-thumbnail": "^1.0.6",
         "randomstring": "^1.1.5"

@@ -67,6 +67,7 @@ const CandidateItem = ({ candidate, viewResume }) => {
 									fontSize: '12px',
 									color: '#606060',
 									marginBottom: '6px',
+									textAlign: 'center',
 								}}
 							>
 								Availability

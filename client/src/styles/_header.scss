@@ -1,25 +1,99 @@
 @import 'base';
 
 #header {
-    .nav-link {
-        color: $black;
-        border-bottom: 2px solid transparent;
-        padding: 8px 0;
-        margin: 0 8px;
-        font-weight: 500;
+	.navbar-toggler {
+		border: none;
+		font-size: 30px;
+		color: $blue;
+	}
 
-        &.active {
-            color: $blue;
-            border-bottom: 2px solid $blue;
-        }
+	.nav-link {
+		color: $black;
+		border-bottom: 2px solid transparent;
+		padding: 8px 0;
+		margin: 0 8px;
+		font-weight: 500;
 
-        &.talk-recruiter {
-            color: $darkBlue;
-            border: 1px solid $darkBlue;
-            border-radius: 20px;
-            width: 180px;
-            text-align: center;
-            padding: 5px 0;
-        }
-    }
+		&.active {
+			color: $blue;
+			border-bottom: 2px solid $blue;
+		}
+
+		&.talk-recruiter {
+			color: $darkBlue;
+			border: 1px solid $darkBlue;
+			border-radius: 20px;
+			width: 180px;
+			text-align: center;
+			padding: 5px 0;
+		}
+	}
+}
+
+// Mobile Nav
+.overlay {
+	height: 100%;
+	width: 310px;
+	position: fixed;
+	z-index: 1032;
+	right: -100%;
+	top: 0;
+	background-color: #ffffff;
+	overflow-x: hidden;
+	padding-top: 100px;
+	transition: 0.5s;
+
+	.mobile-close {
+		position: absolute;
+		top: 15px;
+		left: 30px;
+		text-decoration: none;
+		color: #298494;
+		font-weight: 500;
+	}
+
+	.mobile-main-menu {
+		list-style: none;
+		padding: 0;
+		margin-bottom: 100px;
+
+		li {
+			a {
+				padding: 15px;
+				display: block;
+				text-decoration: none;
+				text-align: center;
+				margin: 0 15px;
+				font-weight: 500;
+				border-bottom: 1px solid #acacac;
+				color: #606060;
+			}
+
+			.active {
+				color: #0c3961;
+				background-color: #acacac;
+				color: #ffffff;
+				margin: 0;
+			}
+
+			&:nth-child(1) {
+				a {
+					border-top: 1px solid #acacac;
+				}
+			}
+		}
+	}
+}
+
+#mobileOverlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	opacity: 0;
+	height: 120vh;
+	background-color: rgba(96, 96, 96, 0.5);
+	z-index: 1031;
+	visibility: hidden;
+	transition: 0.5s;
 }

@@ -2,84 +2,91 @@
 @import 'base';
 
 #footer {
-    padding: 30px 10px;
+	padding: 30px 10px;
 
-    .title {
-        color: $black;
-        margin-bottom: 28px;
-        font-weight: 700;
-    }
+	.title {
+		color: $black;
+		margin-bottom: 28px;
+		font-weight: 700;
+	}
 
-    .list {
-        list-style: none;
-        padding: 0;
-        margin: 10px 0 20px;
+	.list {
+		list-style: none;
+		padding: 0;
+		margin: 10px 0 20px;
 
-        .item {
-            color: $black;
-            font-weight: 400;
-        }
-    }
+		.item {
+			color: $black;
+			font-weight: 400;
+		}
+	}
 
-    .logo {
-        height: 34px;
-    }
+	.logo {
+		height: 34px;
+	}
 
-    .address {
-        margin: 20px 0 10px;
-        color: $black;
-        font-weight: 400;
-    }
+	.address {
+		margin: 20px 0 10px;
+		color: $black;
+		font-weight: 400;
+	}
 
-    .social-media {
-        color: $black;
-        margin-top: 15px;
-        margin-bottom: 0;
+	.social-media {
+		color: $black;
+		margin-top: 15px;
+		margin-bottom: 0;
 
-        .fab {
-            color: $lightGray;
-            margin-right: 10px;
-        }
-    }
+		.fab {
+			color: $lightGray;
+			margin-right: 10px;
+		}
+	}
 
-    .create-resume,
-    .draft-job {
-        color: $black;
-        text-decoration: underline;
-    }
+	.create-resume,
+	.draft-job {
+		color: $black;
+		text-decoration: underline;
+	}
 
-    .policy {
-        margin-top: 20px;
-        margin-bottom: 10px;
+	.policy {
+		margin-top: 20px;
+		margin-bottom: 10px;
 
-        @include media('>=tablet') {
-            text-align: center;
-        }
+		@include media('>=tablet') {
+			text-align: center;
+		}
 
-        a {
-            color: $black;
-            display: block;
+		a {
+			color: $black;
 
-            &:not(:last-child) {
-                margin-right: 10px;
-            }
+			&:not(:last-child) {
+				margin-right: 10px;
+			}
 
-            &:hover {
-                text-decoration: none;
-            }
-        }
-    }
+			&:hover {
+				text-decoration: none;
+			}
+		}
+	}
 
-    .copyright {
-        margin-bottom: 0;
-        color: $black;
+	.copyright {
+		margin-bottom: 0;
+		color: $lightGray;
 
-        @include media('>=tablet') {
-            text-align: center;
-        }
+		@include media('>=tablet') {
+			text-align: center;
+		}
 
-        a {
-            color: $black;
-        }
-    }
+		a {
+			color: $black;
+		}
+	}
+
+	.trademark {
+		color: $black;
+
+		@include media('>=tablet') {
+			text-align: center;
+		}
+	}
 }
