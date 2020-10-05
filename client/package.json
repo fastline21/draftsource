@@ -21,6 +21,7 @@
     "react-dom": "^16.13.1",
     "react-easy-crop": "^3.1.1",
     "react-js-pagination": "^3.0.3",
+    "react-multi-carousel": "^2.5.5",
     "react-paginate": "^6.5.0",
     "react-pdf": "^5.0.0",
     "react-redux": "^7.2.1",
