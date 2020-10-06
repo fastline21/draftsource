@@ -63,6 +63,9 @@ const ResumeSchema = new mongoose.Schema({
 	aboutYourself: {
 		type: String,
 	},
+	headline: {
+		type: String,
+	},
 	education: {
 		type: Array,
 		choices: {

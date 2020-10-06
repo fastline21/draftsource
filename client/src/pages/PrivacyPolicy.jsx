@@ -4,10 +4,10 @@ import Sec1BG from './../images/pricing_sec_1_bg.jpg';
 
 const PrivacyPolicy = () => {
 	return (
-		<div id='privacyPolicy'>
-			<img src={Sec1BG} alt='' className='img-fluid' />
-			<div className='container'>
-				<h3 className='title'>Privacy Policy</h3>
+		<div id="privacyPolicy">
+			<img src={Sec1BG} alt="" className="img-fluid" />
+			<div className="container">
+				<h3 className="title">Privacy Policy</h3>
 				<p>
 					Draftsourcevirtual.com (“We”) are committed to protecting
 					and respecting your privacy.
@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
 				<ul>
 					<li>
 						Information that you provide by filling in forms on our
-						site www.remotestaff.com.au (our site). This includes
+						site draftsourcevirtual.com (our site). This includes
 						information provided at the time of registering to use
 						our site, subscribing to our service, posting material
 						or requesting further services. We may also ask you for
@@ -214,7 +214,7 @@ const PrivacyPolicy = () => {
 					exercise your right to prevent such processing by checking
 					certain boxes on the forms we use to collect your data. You
 					can also exercise the right at any time by contacting us at
-					www.remotestaff.com.au
+					draftsourcevirtual.com
 				</p>
 				<p>
 					Our site may, from time to time, contain links to and from

@@ -85,23 +85,23 @@ const CandidateItem = ({
 	}, [specialtySoftwareRef]);
 
 	return (
-		<div className='candidate'>
-			<div className='row'>
-				<div className='col-lg-9'>
-					<div className='row'>
-						<div className='col-lg-5'>
-							<div className='profile d-flex'>
+		<div className="candidate">
+			<div className="row">
+				<div className="col-lg-9">
+					<div className="row">
+						<div className="col-lg-5">
+							<div className="profile d-flex">
 								<img
 									src={`/uploads/${resumeImage}`}
-									alt=''
-									className='img-fluid resume-image'
+									alt=""
+									className="img-fluid resume-image"
 								/>
-								<div className=''>
-									<p className='id-code'>ID Code</p>
+								<div className="">
+									<p className="id-code">ID Code</p>
 									<audio
 										controls
-										controlsList='nodownload'
-										className='about-yourself'
+										controlsList="nodownload"
+										className="about-yourself"
 									>
 										<source
 											src={`/uploads/${aboutYourself}`}
@@ -111,12 +111,12 @@ const CandidateItem = ({
 								</div>
 							</div>
 						</div>
-						<div className='col'>
-							<p className='title'>Availability</p>
-							<p className='available'>{availability}</p>
+						<div className="col">
+							<p className="title">Availability</p>
+							<p className="available">{availability}</p>
 						</div>
-						<div className='col'>
-							<p className='title'>English Proficiency</p>
+						<div className="col">
+							<p className="title">English Proficiency</p>
 							<i
 								className={`rating-color fas fa-star${
 									rating >= 1 ? ` checked` : ''
@@ -203,26 +203,26 @@ const CandidateItem = ({
                             </div>
                         </div>
                     </div> */}
-					<hr className='line-break' />
-					<div className='mb-3'>
-						<div className='specialty-software-div'>
+					<hr className="line-break" />
+					<div className="mb-3">
+						<div className="specialty-software-div">
 							{visibleArrow && (
 								<button
-									className='specialty-software-arrow'
+									className="specialty-software-arrow"
 									onClick={() =>
 										(specialtySoftwareRef.current.scrollLeft -= 40)
 									}
 								>
-									<i className='fas fa-angle-left'></i>
+									<i className="fas fa-angle-left"></i>
 								</button>
 							)}
 							<div
-								className='specialty-software'
+								className="specialty-software"
 								ref={specialtySoftwareRef}
 							>
 								{specialty.map((element, index) => (
 									<span
-										className='specialty-software-item'
+										className="specialty-software-item"
 										key={index}
 									>
 										{element}
@@ -230,7 +230,7 @@ const CandidateItem = ({
 								))}
 								{software.map((element, index) => (
 									<span
-										className='specialty-software-item'
+										className="specialty-software-item"
 										key={index}
 									>
 										{element}
@@ -239,42 +239,42 @@ const CandidateItem = ({
 							</div>
 							{visibleArrow && (
 								<button
-									className='specialty-software-arrow'
+									className="specialty-software-arrow"
 									onClick={() =>
 										(specialtySoftwareRef.current.scrollLeft += 40)
 									}
 								>
-									<i className='fas fa-angle-right'></i>
+									<i className="fas fa-angle-right"></i>
 								</button>
 							)}
 						</div>
 					</div>
-					<p className='title'>Recruiter's Comments:</p>
-					<p className='recruiters-comment'>{recruitmentsComment}</p>
+					<p className="title">Recruiter's Comments:</p>
+					<p className="recruiters-comment">{recruitmentsComment}</p>
 					<button
-						className='see-resume'
+						className="see-resume"
 						onClick={() => onViewResume()}
 					>
 						See resume and recruiter comments &gt;
 					</button>
 				</div>
-				<div className='col-lg-3'>
+				<div className="col-lg-3">
 					{shortlist && shortlist.includes(_id) ? (
 						<button
 							onClick={() => removeShortlist(_id)}
-							className='btn btn-primary button remove'
+							className="btn btn-primary button remove"
 						>
 							Remove from Shortlist
 						</button>
 					) : (
 						<button
 							onClick={() => addCandidate(_id)}
-							className='btn btn-primary button'
+							className="btn btn-primary button"
 						>
 							Add to Shortlist
 						</button>
 					)}
-					<div className='mini-slide shadow'>
+					<div className="mini-slide shadow">
 						<Carousel
 							activeIndex={activeMiniSlide}
 							interval={null}
@@ -282,14 +282,14 @@ const CandidateItem = ({
 							indicators={false}
 							nextIcon={
 								<i
-									className='fas fa-caret-right'
-									aria-hidden='true'
+									className="fas fa-caret-right"
+									aria-hidden="true"
 								></i>
 							}
 							prevIcon={
 								<i
-									className='fas fa-caret-left'
-									aria-hidden='true'
+									className="fas fa-caret-left"
+									aria-hidden="true"
 								></i>
 							}
 							fade={true}
@@ -298,13 +298,13 @@ const CandidateItem = ({
 								<Carousel.Item key={i}>
 									<img
 										src={`/uploads/${e.file}`}
-										className='d-block w-100'
-										alt='...'
+										className="d-block w-100"
+										alt="..."
 									/>
 								</Carousel.Item>
 							))}
 						</Carousel>
-						<span className='num'>
+						<span className="num">
 							{activeMiniSlide + 1} of {uploadWork.images.length}
 						</span>
 					</div>
