@@ -2,20 +2,27 @@
 @import 'base.scss';
 
 .pagination {
-    .page-item {
-        &.active {
-            color: $darkBlue;
+	margin-bottom: 10px;
 
-            .page-link {
-                background-color: $darkBlue;
-                color: $white;
-            }
-        }
+	@include media('>=576px') {
+		margin-right: 10px;
+		margin-bottom: 0;
+	}
 
-        .page-link {
-            border-color: transparent;
-            color: $flatBlack;
-            font-weight: 500;
-        }
-    }
+	.page-item {
+		&.active {
+			color: $darkBlue;
+
+			.page-link {
+				background-color: $darkBlue;
+				color: $white;
+			}
+		}
+
+		.page-link {
+			border-color: transparent;
+			color: $flatBlack;
+			font-weight: 500;
+		}
+	}
 }

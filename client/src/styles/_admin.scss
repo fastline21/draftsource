@@ -329,6 +329,17 @@
 			}
 		}
 
+		.specialty-software-item {
+			color: #606060;
+			background-color: #d6d6d6;
+			margin-right: 5px;
+			padding: 5px 10px;
+			border-radius: 30px;
+			font-size: 14px;
+			font-weight: 500;
+			flex: none;
+		}
+
 		.edit-button {
 			background-color: $lightBlue;
 			color: $blue;

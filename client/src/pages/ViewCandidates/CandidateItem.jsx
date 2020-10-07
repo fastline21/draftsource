@@ -13,6 +13,9 @@ import {
 	addCandidate,
 } from './../../state/actions/candidateAction';
 
+// Utils
+import useWindowSize from './../../utils/useWindowSize';
+
 const CandidateItem = ({
 	candidate,
 	viewResume,
@@ -25,6 +28,7 @@ const CandidateItem = ({
 	const history = useHistory();
 	const specialtySoftwareRef = useRef(null);
 	const [visibleArrow, setVisibleArrow] = useState(false);
+	const windowSize = useWindowSize();
 
 	const {
 		_id,
@@ -40,6 +44,8 @@ const CandidateItem = ({
 		aboutYourself,
 		rating,
 		recruitmentsComment,
+		idCode,
+		headline,
 	} = candidate;
 
 	const [activeMiniSlide, setActiveMiniSlide] = useState(0);
@@ -81,42 +87,46 @@ const CandidateItem = ({
 			specialtySoftwareRef.current.clientWidth
 		) {
 			setVisibleArrow(true);
+		} else {
+			setVisibleArrow(false);
 		}
-	}, [specialtySoftwareRef]);
+	}, [specialtySoftwareRef, windowSize]);
 
 	return (
 		<div className="candidate">
-			<div className="row">
-				<div className="col-lg-9">
-					<div className="row">
-						<div className="col-lg-5">
-							<div className="profile d-flex">
-								<img
-									src={`/uploads/${resumeImage}`}
-									alt=""
-									className="img-fluid resume-image"
-								/>
-								<div className="">
-									<p className="id-code">ID Code</p>
-									<audio
-										controls
-										controlsList="nodownload"
-										className="about-yourself"
-									>
-										<source
-											src={`/uploads/${aboutYourself}`}
-										/>
-										Your browser does not support the audio!
-									</audio>
-								</div>
-							</div>
-						</div>
-						<div className="col">
-							<p className="title">Availability</p>
-							<p className="available">{availability}</p>
-						</div>
-						<div className="col">
-							<p className="title">English Proficiency</p>
+			<div className="profile-left">
+				<div className="profile-identity" onClick={onViewResume}>
+					<div className="box-1">
+						<img
+							src={`/uploads/${resumeImage}`}
+							alt="Resume Image"
+							className="img-fluid resume-image"
+						/>
+					</div>
+					<div className="box-2">
+						<p className="id-code">
+							ID: {idCode.toString().padStart(6, '0')}
+						</p>
+						<p className="headline">{headline}</p>
+					</div>
+				</div>
+				<div className="profile-stats" onClick={onViewResume}>
+					<div className="box-1">
+						<audio
+							controls
+							className="about-yourself"
+							controlsList="nodownload"
+						>
+							<source src={`/uploads/${aboutYourself}`} />
+						</audio>
+					</div>
+					<div className="box-2">
+						<p className="box-label">Availability:</p>
+						<p className="availability">{availability}</p>
+					</div>
+					<div className="box-3">
+						<p className="box-label">English Profiecy</p>
+						<div className="rating">
 							<i
 								className={`rating-color fas fa-star${
 									rating >= 1 ? ` checked` : ''
@@ -144,170 +154,107 @@ const CandidateItem = ({
 							></i>
 						</div>
 					</div>
-					{/* <div className="d-flex justify-content-between mt-3">
-                        <div className="profile flex-fill">
-                            <img
-                                src={`/uploads/${resumeImage}`}
-                                alt=""
-                                className="img-fluid resume-image"
-                            />
-                            <audio
-                                controls
-                                controlsList="nodownload"
-                                className="about-yourself"
-                            >
-                                <source src={`/uploads/${aboutYourself}`} />
-                                Your browser does not support the audio!
-                            </audio>
-                        </div>
-                        <div className="available mr-5 flex-shrink-1">
-                            <p
-                                style={{
-                                    fontSize: '12px',
-                                    color: '#606060',
-                                    marginBottom: '6px',
-                                }}
-                            >
-                                Availability
-                            </p>
-                            <p className="available">{availability}</p>
-                        </div>
-                        <div className="available mr-5 flex-shrink-1">
-                            <p>English Proficiency</p>
-                            <div className="rating">
-                                <i
-                                    className={`rating-color fas fa-star${
-                                        rating >= 1 ? ` checked` : ''
-                                    }`}
-                                ></i>
-                                <i
-                                    className={`rating-color fas fa-star${
-                                        rating >= 2 ? ` checked` : ''
-                                    }`}
-                                ></i>
-                                <i
-                                    className={`rating-color fas fa-star${
-                                        rating >= 3 ? ` checked` : ''
-                                    }`}
-                                ></i>
-                                <i
-                                    className={`rating-color fas fa-star${
-                                        rating >= 4 ? ` checked` : ''
-                                    }`}
-                                ></i>
-                                <i
-                                    className={`rating-color fas fa-star${
-                                        rating === 5 ? ` checked` : ''
-                                    }`}
-                                ></i>
-                            </div>
-                        </div>
-                    </div> */}
-					<hr className="line-break" />
-					<div className="mb-3">
-						<div className="specialty-software-div">
-							{visibleArrow && (
-								<button
-									className="specialty-software-arrow"
-									onClick={() =>
-										(specialtySoftwareRef.current.scrollLeft -= 40)
-									}
-								>
-									<i className="fas fa-angle-left"></i>
-								</button>
-							)}
-							<div
-								className="specialty-software"
-								ref={specialtySoftwareRef}
-							>
-								{specialty.map((element, index) => (
-									<span
-										className="specialty-software-item"
-										key={index}
-									>
-										{element}
-									</span>
-								))}
-								{software.map((element, index) => (
-									<span
-										className="specialty-software-item"
-										key={index}
-									>
-										{element}
-									</span>
-								))}
-							</div>
-							{visibleArrow && (
-								<button
-									className="specialty-software-arrow"
-									onClick={() =>
-										(specialtySoftwareRef.current.scrollLeft += 40)
-									}
-								>
-									<i className="fas fa-angle-right"></i>
-								</button>
-							)}
-						</div>
-					</div>
-					<p className="title">Recruiter's Comments:</p>
-					<p className="recruiters-comment">{recruitmentsComment}</p>
-					<button
-						className="see-resume"
-						onClick={() => onViewResume()}
-					>
-						See resume and recruiter comments &gt;
-					</button>
 				</div>
-				<div className="col-lg-3">
-					{shortlist && shortlist.includes(_id) ? (
+				<hr className="line-break" />
+				<div className="specialty-software">
+					{visibleArrow && (
 						<button
-							onClick={() => removeShortlist(_id)}
-							className="btn btn-primary button remove"
+							className="specialty-software-arrow"
+							onClick={() =>
+								(specialtySoftwareRef.current.scrollLeft -= 200)
+							}
 						>
-							Remove from Shortlist
-						</button>
-					) : (
-						<button
-							onClick={() => addCandidate(_id)}
-							className="btn btn-primary button"
-						>
-							Add to Shortlist
+							<i className="fas fa-angle-left"></i>
 						</button>
 					)}
-					<div className="mini-slide shadow">
-						<Carousel
-							activeIndex={activeMiniSlide}
-							interval={null}
-							onSelect={miniSlideSelect}
-							indicators={false}
-							nextIcon={
-								<i
-									className="fas fa-caret-right"
-									aria-hidden="true"
-								></i>
-							}
-							prevIcon={
-								<i
-									className="fas fa-caret-left"
-									aria-hidden="true"
-								></i>
-							}
-							fade={true}
-						>
-							{uploadWork.images.map((e, i) => (
-								<Carousel.Item key={i}>
-									<img
-										src={`/uploads/${e.file}`}
-										className="d-block w-100"
-										alt="..."
-									/>
-								</Carousel.Item>
-							))}
-						</Carousel>
-						<span className="num">
-							{activeMiniSlide + 1} of {uploadWork.images.length}
-						</span>
+					<div
+						className="specialty-software-list"
+						ref={specialtySoftwareRef}
+					>
+						{specialty.map((e, i) => (
+							<span className="specialty-software-item" key={i}>
+								{e}
+							</span>
+						))}
+						{software.map((e, i) => (
+							<span className="specialty-software-item" key={i}>
+								{e}
+							</span>
+						))}
 					</div>
+					{visibleArrow && (
+						<button
+							className="specialty-software-arrow"
+							onClick={() =>
+								(specialtySoftwareRef.current.scrollLeft += 200)
+							}
+						>
+							<i className="fas fa-angle-right"></i>
+						</button>
+					)}
+				</div>
+				<div className="recruitment-comments" onClick={onViewResume}>
+					<p className="box-label">Recruiter's Comments:</p>
+					<p className="recruiters-comment">{recruitmentsComment}</p>
+				</div>
+				<div>
+					<button
+						className="btn btn-primary see-resume"
+						onClick={onViewResume}
+					>
+						See Full Profile and Recruiter Comments
+					</button>
+				</div>
+			</div>
+			<div className="profile-right">
+				{shortlist && shortlist.includes(_id) ? (
+					<button
+						className="btn btn-primary btn-block button remove"
+						onClick={() => removeShortlist(_id)}
+					>
+						Remove from Shortlist
+					</button>
+				) : (
+					<button
+						className="btn btn-primary btn-block button"
+						onClick={() => addCandidate(_id)}
+					>
+						Add to Shortlist
+					</button>
+				)}
+				<div className="mini-slide shadow">
+					<Carousel
+						activeIndex={activeMiniSlide}
+						interval={null}
+						onSelect={miniSlideSelect}
+						indicators={false}
+						nextIcon={
+							<i
+								className="fas fa-caret-right"
+								aria-hidden="true"
+							></i>
+						}
+						prevIcon={
+							<i
+								className="fas fa-caret-left"
+								aria-hidden="true"
+							></i>
+						}
+						fade={true}
+					>
+						{uploadWork.images.map((e, i) => (
+							<Carousel.Item key={i} onClick={onViewResume}>
+								<img
+									src={`/uploads/${e.file}`}
+									className="d-block w-100"
+									alt="..."
+								/>
+							</Carousel.Item>
+						))}
+					</Carousel>
+					<span className="num">
+						{activeMiniSlide + 1} of {uploadWork.images.length}
+					</span>
 				</div>
 			</div>
 		</div>

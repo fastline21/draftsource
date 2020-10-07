@@ -28,17 +28,19 @@ const ViewSampleWork = ({ isShow, isHide, viewSampleWork }) => {
 		<Modal
 			show={show}
 			onHide={handleClose}
-			backdrop='static'
+			backdrop="static"
 			keyboard={false}
-			size='xl'
+			size="xl"
 		>
 			<Modal.Header closeButton />
-			<Modal.Body className='text-center'>
+			<Modal.Body className="text-center">
 				<img
 					src={`/uploads/${viewSampleWork.file}`}
-					className='img-fluid'
+					className="img-fluid"
 				/>
-				<h4 className='title text-center'>{viewSampleWork.title}</h4>
+				<h4 className="title text-center mt-3">
+					{viewSampleWork.title}
+				</h4>
 			</Modal.Body>
 		</Modal>
 	);

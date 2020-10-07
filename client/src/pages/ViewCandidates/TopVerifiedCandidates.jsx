@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Carousel } from 'react-bootstrap';
@@ -6,11 +6,11 @@ import { useHistory } from 'react-router-dom';
 
 // Actions
 import {
-    viewCandidates,
-    viewResume,
-    clearResume,
-    addCandidate,
-    removeCandidate,
+	viewCandidates,
+	viewResume,
+	clearResume,
+	addCandidate,
+	removeCandidate,
 } from './../../state/actions/candidateAction';
 import { addFilter, removeFilter } from './../../state/actions/filterAction';
 
@@ -20,146 +20,160 @@ import PaginationLink from './PaginationLink';
 import Candidates from './Candidates';
 
 const TopVerifiedCandidates = ({
-    viewCandidates,
-    addFilter,
-    removeFilter,
-    viewResume,
-    clearResume,
-    addCandidate,
-    removeCandidate,
-    candidateState: { candidates, shortlist, resume },
-    filterState: { filter },
+	viewCandidates,
+	addFilter,
+	removeFilter,
+	viewResume,
+	clearResume,
+	addCandidate,
+	removeCandidate,
+	candidateState: { candidates, shortlist, resume },
+	filterState: { filter },
 }) => {
-    const queryParams = new URLSearchParams(window.location.search);
-    const newUrl = new URL(window.location.href);
-    const history = useHistory();
-    const [activeMiniSlide, setActiveMiniSlide] = useState(0);
-    const [seeResume, setSeeResume] = useState(false);
-    const [params, setParams] = useState({
-        search: '',
-        viewBy: '10',
-    });
+	const queryParams = new URLSearchParams(window.location.search);
+	const newUrl = new URL(window.location.href);
+	const history = useHistory();
+	const [activeMiniSlide, setActiveMiniSlide] = useState(0);
+	const [seeResume, setSeeResume] = useState(false);
+	const [params, setParams] = useState({
+		search: '',
+		viewBy: '10',
+	});
 
-    const miniSlideSelect = (selectedIndex) => {
-        setActiveMiniSlide(selectedIndex);
-    };
+	const miniSlideSelect = (selectedIndex) => {
+		setActiveMiniSlide(selectedIndex);
+	};
 
-    const onChange = (e) => {
-        const { name, value } = e.target;
+	const onChange = (e) => {
+		const { name, value } = e.target;
 
-        if (value === '') {
-            newUrl.searchParams.delete(name);
-        } else {
-            newUrl.searchParams.set(name, value);
-        }
+		if (value === '') {
+			newUrl.searchParams.delete(name);
+		} else {
+			newUrl.searchParams.set(name, value);
+		}
 
-        setParams({ ...params, [name]: value });
+		setParams({ ...params, [name]: value });
 
-        if (name === 'limit') {
-            addFilter({ [name]: parseInt(value) });
-        } else {
-            addFilter({ [name]: value });
-        }
+		if (name === 'limit') {
+			addFilter({ [name]: parseInt(value) });
+		} else {
+			addFilter({ [name]: value });
+		}
 
-        if (queryParams.get('page')) {
-            newUrl.searchParams.set('page', 1);
-        }
+		if (queryParams.get('page')) {
+			newUrl.searchParams.set('page', 1);
+		}
 
-        history.push({
-            pathname: newUrl.pathname,
-            search: newUrl.search,
-        });
-    };
+		history.push({
+			pathname: newUrl.pathname,
+			search: newUrl.search,
+		});
 
-    const addShortlist = (id) => {
-        addCandidate(id);
-    };
+		viewCandidates();
+	};
 
-    const removeShortlist = (id) => {
-        removeCandidate(id);
-    };
+	const addShortlist = (id) => {
+		addCandidate(id);
+	};
 
-    useEffect(() => {
-        if (queryParams.get('search') !== null) {
-            if (params.search === '') {
-                addFilter({ search: queryParams.get('search') });
-                setParams({ ...params, search: queryParams.get('search') });
-            }
-        } else {
-            if (filter.search) {
-                const { search, ...newFilter } = filter;
-                removeFilter(newFilter);
-            }
-        }
+	const removeShortlist = (id) => {
+		removeCandidate(id);
+	};
 
-        // eslint-disable-next-line
-    }, [queryParams, params, filter, candidates]);
+	useEffect(() => {
+		if (queryParams.get('search') !== null) {
+			if (params.search === '') {
+				addFilter({ search: queryParams.get('search') });
+				setParams({ ...params, search: queryParams.get('search') });
+			}
+		} else {
+			if (filter.search) {
+				const { search, ...newFilter } = filter;
+				removeFilter(newFilter);
+			}
+		}
 
-    return (
-        <div id="topVerifiedCandidates">
-            <div className="header">
-                <input
-                    type="text"
-                    name="search"
-                    className="form-control input"
-                    placeholder="Search for software, specialty or keyword"
-                    onChange={onChange}
-                    value={params.search}
-                />
-                <label className="form-label view-by-label">View by</label>
-                <select
-                    className="form-control input"
-                    name="limit"
-                    onChange={onChange}
-                    value={parseInt(queryParams.get('limit') || params.viewBy)}
-                >
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                </select>
-            </div>
-            <ViewResume isShow={resume !== null ? true : false} />
-            <Candidates isShortlisted={false} />
-            <div className="footer">
-                <PaginationLink />
-                <label className="form-label view-by-label">View by</label>
-                <select
-                    className="form-control input"
-                    name="limit"
-                    onChange={onChange}
-                    value={parseInt(queryParams.get('limit') || params.viewBy)}
-                >
-                    <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
-                </select>
-            </div>
-        </div>
-    );
+		// eslint-disable-next-line
+	}, [queryParams, params, filter, candidates]);
+
+	return (
+		<Fragment>
+			<div className="top">
+				<input
+					type="text"
+					className="form-control input"
+					name="search"
+					placeholder="Search for software, specialty or keyword"
+					onChange={onChange}
+					value={params.search}
+				/>
+				<div className="view-by">
+					<label htmlFor="viewByInput" className="form-label">
+						View By
+					</label>
+					<select
+						className="form-control input"
+						name="limit"
+						onChange={onChange}
+						value={parseInt(
+							queryParams.get('limit') || params.viewBy
+						)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+			</div>
+			<ViewResume isShow={resume !== null ? true : false} />
+			<Candidates isShortlisted={false} />
+			<div className="foot">
+				<PaginationLink />
+				<div className="view-by">
+					<label htmlFor="viewByInput" className="form-label">
+						View By
+					</label>
+					<select
+						className="form-control input"
+						name="limit"
+						onChange={onChange}
+						value={parseInt(
+							queryParams.get('limit') || params.viewBy
+						)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+			</div>
+		</Fragment>
+	);
 };
 
 TopVerifiedCandidates.propTypes = {
-    candidateState: PropTypes.object.isRequired,
-    filterState: PropTypes.object.isRequired,
-    viewCandidates: PropTypes.func.isRequired,
-    addFilter: PropTypes.func.isRequired,
-    viewResume: PropTypes.func.isRequired,
-    clearResume: PropTypes.func.isRequired,
-    addCandidate: PropTypes.func.isRequired,
-    removeCandidate: PropTypes.func.isRequired,
+	candidateState: PropTypes.object.isRequired,
+	filterState: PropTypes.object.isRequired,
+	viewCandidates: PropTypes.func.isRequired,
+	addFilter: PropTypes.func.isRequired,
+	viewResume: PropTypes.func.isRequired,
+	clearResume: PropTypes.func.isRequired,
+	addCandidate: PropTypes.func.isRequired,
+	removeCandidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    candidateState: state.candidateState,
-    filterState: state.filterState,
+	candidateState: state.candidateState,
+	filterState: state.filterState,
 });
 
 export default connect(mapStateToProps, {
-    viewCandidates,
-    addFilter,
-    removeFilter,
-    viewResume,
-    addCandidate,
-    removeCandidate,
-    clearResume,
+	viewCandidates,
+	addFilter,
+	removeFilter,
+	viewResume,
+	addCandidate,
+	removeCandidate,
+	clearResume,
 })(TopVerifiedCandidates);

@@ -34,6 +34,7 @@ const ViewResume = ({
 		_id: '',
 		resumeImage: '',
 		aboutYourself: '',
+		idCode: '',
 		firstName: '',
 		lastName: '',
 		city: '',
@@ -76,6 +77,7 @@ const ViewResume = ({
 
 	const {
 		_id,
+		idCode,
 		resumeImage,
 		aboutYourself,
 		firstName,
@@ -140,10 +142,10 @@ const ViewResume = ({
 		<Modal
 			show={show}
 			onHide={handleClose}
-			backdrop='static'
+			backdrop="static"
 			keyboard={false}
-			size='xl'
-			id='seeResume'
+			size="xl"
+			id="seeResume"
 		>
 			<Modal.Body>
 				<ViewImage
@@ -155,24 +157,24 @@ const ViewResume = ({
 					isHide={() => setViewSampleWork(initialViewSampleWork)}
 					viewSampleWork={viewSampleWork}
 				/>
-				<button className='close' onClick={handleClose}>
-					<span aria-hidden='true'>×</span>
-					<span className='sr-only'>Close</span>
+				<button className="close" onClick={handleClose}>
+					<span aria-hidden="true">×</span>
+					<span className="sr-only">Close</span>
 				</button>
-				<div className='container-fluid'>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
+				<div className="container-fluid">
+					<div className="row pb-5">
+						<div className="col-lg-3">
 							<img
 								src={`/uploads/${resumeImage}`}
-								alt=''
-								className='img-fluid resume-image mb-3'
+								alt=""
+								className="img-fluid resume-image mb-3"
 							/>
-							<audio controls controlsList='nodownload'>
+							<audio controls controlsList="nodownload">
 								<source src={`/uploads/${aboutYourself}`} />
 								Your browser does not support the audio!
 							</audio>
 						</div>
-						<div className='col-lg-6'>
+						<div className="col-lg-6">
 							<div
 								style={{
 									display: 'flex',
@@ -183,31 +185,31 @@ const ViewResume = ({
 							>
 								<div>
 									<p
-										className='data-title mb-3'
+										className="data-title mb-3"
 										style={{ fontWeight: '700' }}
 									>
-										ID Code
+										ID: {idCode.toString().padStart(6, '0')}
 									</p>
 								</div>
 								<div>
 									<p
-										className='data-title mb-0'
+										className="data-title mb-0"
 										style={{ fontWeight: '700' }}
 									>
 										Availability
 									</p>
-									<p className='availability'>
+									<p className="availability">
 										{availability}
 									</p>
 								</div>
 								<div>
 									<p
-										className='data-title mb-0'
+										className="data-title mb-0"
 										style={{ fontWeight: '700' }}
 									>
 										English Proficiency
 									</p>
-									<div className='rating d-inline'>
+									<div className="rating d-inline">
 										<i
 											style={{ cursor: 'default' }}
 											className={`rating-color fas fa-star${
@@ -241,9 +243,8 @@ const ViewResume = ({
 									</div>
 								</div>
 							</div>
-							<hr className='line-break' />
 						</div>
-						<div className='col-lg-3'>
+						<div className="col-lg-3">
 							<button
 								className={`btn btn-primary button${
 									shortlist.includes(_id)
@@ -273,48 +274,62 @@ const ViewResume = ({
 									);
 									handleClose();
 								}}
-								className='btn btn-primary button shortlist-candidates'
+								className="btn btn-primary button shortlist-candidates"
 							>
 								Shortlist Candidates
 							</button>
 						</div>
 					</div>
-					<div className='row pb-3'>
-						<div className='col-lg-3'>
-							<p className='item-title color-1 mb-0'>
+					<div className="row pb-3">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">
 								Skills & Specialties
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<p id='specialty' className='specialty mb-0'>
-								{specialty.join(', ')}
+						<div className="col-lg-8">
+							<p id="specialty" className="specialty mb-0">
+								{specialty.map((e, i) => (
+									<span
+										className="specialty-software-item"
+										key={i}
+									>
+										{e}
+									</span>
+								))}
 							</p>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-1 mb-0'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">
 								Software Use
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<p id='software' className='software mb-0'>
-								{software.join(', ')}
+						<div className="col-lg-8">
+							<p id="software" className="software mb-0">
+								{software.map((e, i) => (
+									<span
+										className="specialty-software-item"
+										key={i}
+									>
+										{e}
+									</span>
+								))}
 							</p>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>Sample Works</p>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">Sample Works</p>
 						</div>
-						<div className='col-lg-9'>
-							<div className='row pb-3 upload-work-images'>
+						<div className="col-lg-8">
+							<div className="row pb-3 upload-work-images">
 								{uploadWork.images.map((e, i) => (
-									<div className='col-lg-3' key={i}>
+									<div className="col-lg-3" key={i}>
 										<figure
-											className='figure'
+											className="figure"
 											style={{ cursor: 'pointer' }}
 											onClick={() =>
 												setViewSampleWork({
@@ -327,57 +342,57 @@ const ViewResume = ({
 											<img
 												src={`/uploads/${e.file}`}
 												alt={e.title}
-												className='figure-img img-fluid'
+												className="figure-img img-fluid"
 											/>
-											<figcaption className='figure-caption'>
+											<figcaption className="figure-caption">
 												{e.title}
 											</figcaption>
 										</figure>
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Work Experience
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<div id='workHistory' className='work-history'>
+						<div className="col-lg-8">
+							<div id="workHistory" className="work-history">
 								{workHistory.map((e, i) => (
-									<div className='work-history-item' key={i}>
-										<p className='title'>{e.title}</p>
-										<p className='company'>{e.company}</p>
-										<p className='month-year'>
+									<div className="work-history-item" key={i}>
+										<p className="title">{e.title}</p>
+										<p className="company">{e.company}</p>
+										<p className="month-year">
 											{e.monthStarted} {e.yearStarted} -{' '}
 											{e.monthEnded} {e.yearEnded}
 										</p>
-										<p className='item-title'>
+										<p className="item-title">
 											Job Description
 										</p>
-										<p className='description'>
+										<p className="description">
 											{e.description}
 										</p>
-										<p className='item-title'>About</p>
-										<p className='about'>{e.about}</p>
+										<p className="item-title">About</p>
+										<p className="about">{e.about}</p>
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>Education</p>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">Education</p>
 						</div>
-						<div className='col-lg-9'>
-							<div id='education' className='education'>
+						<div className="col-lg-8">
+							<div id="education" className="education">
 								{education.map((e, i) => (
-									<div className='education-item' key={i}>
-										<table className='education-item table table-borderless'>
+									<div className="education-item" key={i}>
+										<table className="education-item table table-borderless">
 											<tbody>
 												<tr>
 													<td
@@ -392,37 +407,37 @@ const ViewResume = ({
 												</tr>
 												{e.choices !== 'High School' ? (
 													<tr>
-														<td className='item-title pb-0 pl-0'>
+														<td className="item-title pb-0 pl-0">
 															Degree
 														</td>
-														<td className='item-degree pb-0 item-value'>
+														<td className="item-degree pb-0 item-value">
 															{e.degree}
 														</td>
 													</tr>
 												) : null}
 												<tr>
-													<td className='item-title pb-0 pl-0'>
+													<td className="item-title pb-0 pl-0">
 														School
 													</td>
-													<td className='item-school pb-0 item-value'>
+													<td className="item-school pb-0 item-value">
 														{e.school}
 													</td>
 												</tr>
 												{e.choices !== 'High School' ? (
 													<tr>
-														<td className='item-title pb-0 pl-0'>
+														<td className="item-title pb-0 pl-0">
 															Course
 														</td>
-														<td className='item-course pb-0 item-value'>
+														<td className="item-course pb-0 item-value">
 															{e.course}
 														</td>
 													</tr>
 												) : null}
 												<tr>
-													<td className='item-title pb-0 pl-0'>
+													<td className="item-title pb-0 pl-0">
 														Started - Graduated
 													</td>
-													<td className='item-month-year pb-0 item-value'>
+													<td className="item-month-year pb-0 item-value">
 														{e.monthYearStarted} -{' '}
 														{e.monthYearGraduated}
 													</td>
@@ -432,97 +447,97 @@ const ViewResume = ({
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Recruiter's Comments
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<p className='recruitments-comment pb-5'>
+						<div className="col-lg-8">
+							<p className="recruitments-comment pb-5">
 								{recruitmentsComment}
 							</p>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Work from Home Capabilites
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<table className='table table-borderless workspace-item'>
+						<div className="col-lg-8">
+							<table className="table table-borderless workspace-item">
 								<tbody>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Workspace
 										</th>
 										<td
-											id='workspace'
-											className='pt-0 item-value'
+											id="workspace"
+											className="pt-0 item-value"
 										>
 											{workspace}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Internet Type
 										</th>
 										<td
-											id='internetType'
-											className='pt-0 item-value'
+											id="internetType"
+											className="pt-0 item-value"
 										>
 											{internetType}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Hardware Type
 										</th>
 										<td
-											id='hardwareType'
-											className='pt-0 item-value'
+											id="hardwareType"
+											className="pt-0 item-value"
 										>
 											{hardwareType}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Brand Name
 										</th>
 										<td
-											id='brandName'
-											className='pt-0 item-value'
+											id="brandName"
+											className="pt-0 item-value"
 										>
 											{brandName}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Internet Speedtest Result
 										</th>
-										<td className='pt-0'>
+										<td className="pt-0">
 											<button
-												className='btn btn-primary view'
+												className="btn btn-primary view"
 												onClick={() =>
 													setViewImage({
 														show: true,
@@ -538,14 +553,14 @@ const ViewResume = ({
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Computer Specs
 										</th>
-										<td className='pt-0'>
+										<td className="pt-0">
 											<button
-												className='btn btn-primary view'
+												className="btn btn-primary view"
 												onClick={() =>
 													setViewImage({
 														show: true,
