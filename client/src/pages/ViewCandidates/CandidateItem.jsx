@@ -105,7 +105,7 @@ const CandidateItem = ({
 					</div>
 					<div className="box-2">
 						<p className="id-code">
-							ID: {idCode.toString().padStart(6, '0')}
+							{/* ID: {idCode.toString().padStart(6, '0')} */}
 						</p>
 						<p className="headline">{headline}</p>
 					</div>

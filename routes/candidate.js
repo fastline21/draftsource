@@ -46,7 +46,7 @@ router.get('/view-candidates', async (req, res) => {
 	// 	{ $sample: { size: parseInt(query.limit) || 10 } },
 	// ]);
 	let candidates = await Resume.find({ ...queryData, status: 'Approve' });
-	// shuffle(candidates);
+	shuffle(candidates);
 	const page = parseInt(query.page) || 1;
 	const limit = parseInt(query.limit) || 10;
 	const startIndex = (page - 1) * limit;
