@@ -120,6 +120,16 @@
 					border-top: 0 !important;
 					border-bottom: 0;
 
+					.rating {
+						.rating-color {
+							color: $black;
+
+							&.checked {
+								color: $lightBlue;
+							}
+						}
+					}
+
 					.filter-input {
 						display: none;
 
@@ -227,6 +237,7 @@
 					flex-direction: column;
 					margin-bottom: 10px;
 					margin-right: 0;
+					flex: 1;
 
 					@include media('>=tablet') {
 						margin-right: 20px;

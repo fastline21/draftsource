@@ -35,6 +35,31 @@ router.get('/view-candidates', async (req, res) => {
 					{ availability: { $regex: value, $options: 'i' } },
 				],
 			};
+		} else if (key === 'experience') {
+			if (value === '7-10 years') {
+				queryData = {
+					...queryData,
+					totalWorkYear: {
+						$lte: 10,
+						$gte: 7,
+					},
+				};
+			} else if (value === '11-14 years') {
+				queryData = {
+					...queryData,
+					totalWorkYear: {
+						$lte: 14,
+						$gte: 11,
+					},
+				};
+			} else if (value === '15+ years') {
+				queryData = {
+					...queryData,
+					totalWorkYear: {
+						$gte: 15,
+					},
+				};
+			}
 		} else if (key === 'page' || key === 'limit') {
 			continue;
 		} else {
@@ -230,6 +255,17 @@ router.get('/rejected-applicants', auth, async (req, res) => {
 
 	results.candidates = candidates.slice(startIndex, endIndex);
 	res.json(results);
+});
+
+// @route   PUT /api/candidate/recruiters-comment
+// @desc    Recruiters comment
+// @access  Private
+router.put('/recruiters-comment', auth, async (req, res) => {
+	const { _id, recruitmentsComment } = req.body;
+	await Resume.findByIdAndUpdate(_id, {
+		...req.body,
+		recruitmentsComment,
+	});
 });
 
 // @route   PUT /api/candidate/approve-resume

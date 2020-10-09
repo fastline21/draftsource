@@ -235,3 +235,20 @@ export const setLoading = () => (dispatch) => {
 		type: SET_LOADING,
 	});
 };
+
+// Add recruiters comment
+export const addRecruitersComment = (comment) => async (dispatch) => {
+	try {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		await axios.put('/api/candidate/recruiters-comment', comment, config);
+	} catch (error) {
+		dispatch({
+			type: CANDIDATES_ERROR,
+			payload: error.response.data,
+		});
+	}
+};

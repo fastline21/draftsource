@@ -311,7 +311,7 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
                                                 type="text"
                                                 name="otherSpecialty"
                                                 className="form-control input mt-3"
-                                                placeholder="Other specify"
+                                                placeholder="Other specify and press enter"
                                                 onKeyPress={
                                                     onkeyPressOtherSpecialty
                                                 }
@@ -363,7 +363,7 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
                                                 type="text"
                                                 name="otherSoftware"
                                                 className="form-control input mt-3"
-                                                placeholder="Other specify"
+                                                placeholder="Other specify and press enter"
                                                 onKeyPress={
                                                     onkeyPressOtherSoftware
                                                 }

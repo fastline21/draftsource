@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import { availabilityList } from './../../list/Availability';
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
-import { experienceList } from './../../list/Expirense';
+import { experienceList } from '../../list/Experience';
+import { ratingList } from '../../list/Rating';
 
 // Actions
 import {
@@ -31,6 +32,7 @@ const Filter = ({
 		specialtyCat: false,
 		softwareCat: false,
 		experienceCat: false,
+		ratingCat: false,
 	});
 	const onShow = (e) => {
 		e.preventDefault();
@@ -41,7 +43,11 @@ const Filter = ({
 		const { name, value } = e.target;
 		const { specialty, software } = filter;
 
-		if (name === 'availability' || name === 'experience') {
+		if (
+			name === 'availability' ||
+			name === 'experience' ||
+			name === 'rating'
+		) {
 			addFilter({ [name]: value });
 		}
 
@@ -75,7 +81,11 @@ const Filter = ({
 		if (oldData) {
 			newData = oldData.split(',');
 
-			if (name === 'availability' || name === 'experience') {
+			if (
+				name === 'availability' ||
+				name === 'experience' ||
+				name === 'rating'
+			) {
 				newUrl.searchParams.set(name, value);
 			} else {
 				if (newData.includes(value)) {
@@ -162,6 +172,16 @@ const Filter = ({
 			}
 		}
 
+		if (queryParams.get('rating') !== filter.rating) {
+			if (queryParams.get('rating')) {
+				addFilter({ rating: queryParams.get('rating') });
+			} else {
+				if (filter.rating) {
+					const { rating, ...newFilter } = filter;
+					removeFilter(newFilter);
+				}
+			}
+		}
 		// eslint-disable-next-line
 	}, [queryParams, filter]);
 
@@ -367,6 +387,82 @@ const Filter = ({
 									className="filter-label"
 								>
 									{e}
+								</label>
+							</li>
+						))}
+					</ul>
+				</li>
+				<li className="nav-item">
+					<Link
+						className="nav-link"
+						to="#"
+						name="ratingCat"
+						onClick={onShow}
+					>
+						Rating{' '}
+						<i
+							className={`fas float-right pt-1 fa-${
+								show.ratingCat ? 'minus' : 'plus'
+							}`}
+						></i>
+					</Link>
+					<ul
+						className={`nav flex-column filter-dropdown${
+							show.ratingCat ? ' d-block' : ' d-none'
+						}`}
+					>
+						{ratingList().map((e, i) => (
+							<li
+								key={i}
+								className={`nav-item${
+									filter.rating &&
+									filter.rating === e.toString()
+										? ' checked'
+										: ''
+								}`}
+							>
+								<input
+									type="radio"
+									name="rating"
+									className="filter-input"
+									id={`rating${i}`}
+									value={e}
+									onChange={onChange}
+									checked={
+										filter.rating && filter.rating === e
+									}
+								/>
+								<label
+									htmlFor={`rating${i}`}
+									className="filter-label"
+								>
+									<div className="rating">
+										<i
+											className={`rating-color fas fa-star${
+												e >= 1 ? ` checked` : ''
+											}`}
+										></i>
+										<i
+											className={`rating-color fas fa-star${
+												e >= 2 ? ` checked` : ''
+											}`}
+										></i>
+										<i
+											className={`rating-color fas fa-star${
+												e >= 3 ? ` checked` : ''
+											}`}
+										></i>
+										<i
+											className={`rating-color fas fa-star${
+												e >= 4 ? ` checked` : ''
+											}`}
+										></i>
+										<i
+											className={`rating-color fas fa-star${
+												e === 5 ? ` checked` : ''
+											}`}
+										></i>
+									</div>
 								</label>
 							</li>
 						))}

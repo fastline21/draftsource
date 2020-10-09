@@ -144,6 +144,9 @@ const ResumeSchema = new mongoose.Schema({
 			},
 		},
 	},
+	totalWorkYear: {
+		type: Number,
+	},
 	status: {
 		type: String,
 		default: 'Pending',

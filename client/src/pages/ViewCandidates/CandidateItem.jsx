@@ -54,10 +54,6 @@ const CandidateItem = ({
 		setActiveMiniSlide(selectedIndex);
 	};
 
-	const onViewResume = () => {
-		viewResume(_id);
-	};
-
 	const removeShortlist = (id) => {
 		removeCandidate(id);
 
@@ -77,6 +73,10 @@ const CandidateItem = ({
 				search: newUrl.search,
 			});
 		}
+	};
+
+	const onViewResume = () => {
+		viewResume(_id);
 	};
 
 	useEffect(() => {
@@ -105,7 +105,7 @@ const CandidateItem = ({
 					</div>
 					<div className="box-2">
 						<p className="id-code">
-							{/* ID: {idCode.toString().padStart(6, '0')} */}
+							ID: {idCode.toString().padStart(6, '0')}
 						</p>
 						<p className="headline">{headline}</p>
 					</div>
@@ -155,7 +155,7 @@ const CandidateItem = ({
 						</div>
 					</div>
 				</div>
-				<hr className="line-break" />
+				<hr className="line-break" onClick={onViewResume} />
 				<div className="specialty-software">
 					{visibleArrow && (
 						<button
@@ -170,6 +170,7 @@ const CandidateItem = ({
 					<div
 						className="specialty-software-list"
 						ref={specialtySoftwareRef}
+						onClick={onViewResume}
 					>
 						{specialty.map((e, i) => (
 							<span className="specialty-software-item" key={i}>
@@ -197,11 +198,8 @@ const CandidateItem = ({
 					<p className="box-label">Recruiter's Comments:</p>
 					<p className="recruiters-comment">{recruitmentsComment}</p>
 				</div>
-				<div>
-					<button
-						className="btn btn-primary see-resume"
-						onClick={onViewResume}
-					>
+				<div onClick={onViewResume}>
+					<button className="btn btn-primary see-resume">
 						See Full Profile and Recruiter Comments
 					</button>
 				</div>
@@ -217,12 +215,14 @@ const CandidateItem = ({
 				) : (
 					<button
 						className="btn btn-primary btn-block button"
-						onClick={() => addCandidate(_id)}
+						onClick={() => {
+							addCandidate(_id);
+						}}
 					>
 						Add to Shortlist
 					</button>
 				)}
-				<div className="mini-slide shadow">
+				<div className="mini-slide shadow" onClick={onViewResume}>
 					<Carousel
 						activeIndex={activeMiniSlide}
 						interval={null}
@@ -243,7 +243,7 @@ const CandidateItem = ({
 						fade={true}
 					>
 						{uploadWork.images.map((e, i) => (
-							<Carousel.Item key={i} onClick={onViewResume}>
+							<Carousel.Item key={i}>
 								<img
 									src={`/uploads/${e.file}`}
 									className="d-block w-100"

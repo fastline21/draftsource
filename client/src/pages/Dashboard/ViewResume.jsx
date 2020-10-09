@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 // Actions
-import { clearResume } from './../../state/actions/candidateAction';
+import {
+	clearResume,
+	addRecruitersComment,
+} from './../../state/actions/candidateAction';
+
 import { setAlert } from './../../state/actions/alertAction';
 
 // Components
@@ -18,16 +22,20 @@ const ViewResume = ({
 	loadCandidate,
 	candidateState: { resume },
 	clearResume,
+	addRecruitersComment,
 	setAlert,
 }) => {
 	// Initial
 	const initialData = {
 		_id: '',
+		idCode: '',
+		headline: '',
 		resumeImage: '',
 		aboutYourself: '',
 		firstName: '',
 		lastName: '',
 		city: '',
+		cellphone: '',
 		status: '',
 		rating: '',
 		availability: '',
@@ -45,6 +53,7 @@ const ViewResume = ({
 		brandName: '',
 		internetResult: '',
 		computerSpecs: '',
+		email: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -68,10 +77,14 @@ const ViewResume = ({
 
 	const {
 		_id,
+		idCode,
+		headline,
 		resumeImage,
 		aboutYourself,
 		firstName,
 		lastName,
+		cellphone,
+		email,
 		city,
 		status,
 		rating,
@@ -145,13 +158,13 @@ const ViewResume = ({
 			return (
 				<>
 					<button
-						className='btn btn-primary button'
+						className="btn btn-primary button"
 						onClick={approveResume}
 					>
 						Approve
 					</button>
 					<button
-						className='btn btn-primary button button1'
+						className="btn btn-primary button button1"
 						onClick={rejectResume}
 					>
 						Reject
@@ -161,7 +174,7 @@ const ViewResume = ({
 		} else if (status === 'Approve') {
 			return (
 				<button
-					className='btn btn-primary button button'
+					className="btn btn-primary button button"
 					onClick={rejectResume}
 				>
 					Reject
@@ -171,19 +184,31 @@ const ViewResume = ({
 			return (
 				<>
 					<button
-						className='btn btn-primary button'
+						className="btn btn-primary button"
 						onClick={reapproveResume}
 					>
 						Reapprove
 					</button>
 					<button
-						className='btn btn-primary button button1'
+						className="btn btn-primary button button1"
 						onClick={deleteResume}
 					>
 						Delete
 					</button>
 				</>
 			);
+		}
+	};
+
+	const onAddRecruitersComment = () => {
+		if (recruitmentsComment === '') {
+			return setAlert(
+				'',
+				'Please fill-in the required boxes to Proceed.'
+			);
+		} else {
+			addRecruitersComment({ _id, recruitmentsComment });
+			setAlert('', 'Add Recruiters Comment Success');
 		}
 	};
 
@@ -210,10 +235,10 @@ const ViewResume = ({
 		<Modal
 			show={show}
 			onHide={handleClose}
-			backdrop='static'
+			backdrop="static"
 			keyboard={false}
-			size='xl'
-			id='seeResume'
+			size="xl"
+			id="seeResume"
 		>
 			<Modal.Body>
 				<ViewImage
@@ -236,24 +261,24 @@ const ViewResume = ({
 						loadCandidate();
 					}}
 				/>
-				<button className='close' onClick={handleClose}>
-					<span aria-hidden='true'>×</span>
-					<span className='sr-only'>Close</span>
+				<button className="close" onClick={handleClose}>
+					<span aria-hidden="true">×</span>
+					<span className="sr-only">Close</span>
 				</button>
-				<div className='container-fluid'>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
+				<div className="container-fluid">
+					<div className="row pb-5">
+						<div className="col-lg-3">
 							<img
 								src={`/uploads/${resumeImage}`}
-								alt=''
-								className='img-fluid resume-image mb-3'
+								alt=""
+								className="img-fluid resume-image mb-3"
 							/>
-							<audio controls controlsList='nodownload'>
+							<audio controls controlsList="nodownload">
 								<source src={`/uploads/${aboutYourself}`} />
 								Your browser does not support the audio!
 							</audio>
 						</div>
-						<div className='col-lg-6'>
+						<div className="col-lg-6">
 							<div
 								style={{
 									display: 'flex',
@@ -263,18 +288,28 @@ const ViewResume = ({
 								}}
 							>
 								<div>
-									<p className='fullname'>
-										{firstName} <br />
+									<p className="data-title mb-0">
+										ID: {idCode.toString().padStart(6, '0')}
+									</p>
+									<p className="fullname mb-0">
+										{firstName}
 										{lastName}
 									</p>
-									<p className='city'>{city}</p>
+									<p className="data-title mb-0">
+										{headline}
+									</p>
+									<p className="data-title mb-0">{email}</p>
+									<p className="data-title mb-0">
+										{cellphone}
+									</p>
+									<p className="city">{city}</p>
 								</div>
-								<div className='d-flex justify-content-between'>
+								<div className="d-flex justify-content-between">
 									<div>
-										<p className='data-title mb-0'>
+										<p className="data-title mb-0">
 											English Proficiency
 										</p>
-										<div className='rating d-inline'>
+										<div className="rating d-inline">
 											<i
 												className={`rating-color fas fa-star${
 													rating >= 1
@@ -348,18 +383,18 @@ const ViewResume = ({
 										</div>
 									</div>
 									<div>
-										<p className='data-title mb-0'>
+										<p className="data-title mb-0">
 											Availability
 										</p>
-										<p className='availability'>
+										<p className="availability">
 											{availability}
 										</p>
 									</div>
-									<div className='col-lg-4'>
-										<p className='data-title mb-0'>
+									<div className="col-lg-4">
+										<p className="data-title mb-0">
 											Expected Salary
 										</p>
-										<p className='expected-salary'>
+										<p className="expected-salary">
 											{getSymbolFromCurrency(currency)}{' '}
 											{expectedSalary} /hr
 										</p>
@@ -367,44 +402,44 @@ const ViewResume = ({
 								</div>
 							</div>
 						</div>
-						<div className='col-lg-3'>{actionButton()}</div>
+						<div className="col-lg-3">{actionButton()}</div>
 					</div>
-					<div className='row pb-3'>
-						<div className='col-lg-3'>
-							<p className='item-title color-1 mb-0'>
+					<div className="row pb-3">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">
 								Skills & Specialties
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<p id='specialty' className='specialty mb-0'>
+						<div className="col-lg-9">
+							<p id="specialty" className="specialty mb-0">
 								{specialty.join(', ')}
 							</p>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-1 mb-0'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">
 								Software Use
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<p id='software' className='software mb-0'>
+						<div className="col-lg-9">
+							<p id="software" className="software mb-0">
 								{software.join(', ')}
 							</p>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>Sample Works</p>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">Sample Works</p>
 						</div>
-						<div className='col-lg-9'>
-							<div className='row pb-3 upload-work-images'>
+						<div className="col-lg-9">
+							<div className="row pb-3 upload-work-images">
 								{uploadWork.images.map((e, i) => (
-									<div className='col-lg-3' key={i}>
+									<div className="col-lg-3" key={i}>
 										<figure
-											className='figure'
+											className="figure"
 											style={{ cursor: 'pointer' }}
 											onClick={() =>
 												setViewSampleWork({
@@ -417,57 +452,57 @@ const ViewResume = ({
 											<img
 												src={`/uploads/${e.file}`}
 												alt={e.title}
-												className='figure-img img-fluid'
+												className="figure-img img-fluid"
 											/>
-											<figcaption className='figure-caption'>
+											<figcaption className="figure-caption">
 												{e.title}
 											</figcaption>
 										</figure>
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Work Experience
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<div id='workHistory' className='work-history'>
+						<div className="col-lg-9">
+							<div id="workHistory" className="work-history">
 								{workHistory.map((e, i) => (
-									<div className='work-history-item' key={i}>
-										<p className='title'>{e.title}</p>
-										<p className='company'>{e.company}</p>
-										<p className='month-year'>
+									<div className="work-history-item" key={i}>
+										<p className="title">{e.title}</p>
+										<p className="company">{e.company}</p>
+										<p className="month-year">
 											{e.monthStarted} {e.yearStarted} -{' '}
 											{e.monthEnded} {e.yearEnded}
 										</p>
-										<p className='item-title'>
+										<p className="item-title">
 											Job Description
 										</p>
-										<p className='description'>
+										<p className="description">
 											{e.description}
 										</p>
-										<p className='item-title'>About</p>
-										<p className='about'>{e.about}</p>
+										<p className="item-title">About</p>
+										<p className="about">{e.about}</p>
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>Education</p>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">Education</p>
 						</div>
-						<div className='col-lg-9'>
-							<div id='education' className='education'>
+						<div className="col-lg-9">
+							<div id="education" className="education">
 								{education.map((e, i) => (
-									<div className='education-item' key={i}>
-										<table className='education-item table table-borderless'>
+									<div className="education-item" key={i}>
+										<table className="education-item table table-borderless">
 											<tbody>
 												<tr>
 													<td
@@ -482,37 +517,37 @@ const ViewResume = ({
 												</tr>
 												{e.choices !== 'High School' ? (
 													<tr>
-														<td className='item-title pb-0 pl-0'>
+														<td className="item-title pb-0 pl-0">
 															Degree
 														</td>
-														<td className='item-degree pb-0 item-value'>
+														<td className="item-degree pb-0 item-value">
 															{e.degree}
 														</td>
 													</tr>
 												) : null}
 												<tr>
-													<td className='item-title pb-0 pl-0'>
+													<td className="item-title pb-0 pl-0">
 														School
 													</td>
-													<td className='item-school pb-0 item-value'>
+													<td className="item-school pb-0 item-value">
 														{e.school}
 													</td>
 												</tr>
 												{e.choices !== 'High School' ? (
 													<tr>
-														<td className='item-title pb-0 pl-0'>
+														<td className="item-title pb-0 pl-0">
 															Course
 														</td>
-														<td className='item-course pb-0 item-value'>
+														<td className="item-course pb-0 item-value">
 															{e.course}
 														</td>
 													</tr>
 												) : null}
 												<tr>
-													<td className='item-title pb-0 pl-0'>
+													<td className="item-title pb-0 pl-0">
 														Started - Graduated
 													</td>
-													<td className='item-month-year pb-0 item-value'>
+													<td className="item-month-year pb-0 item-value">
 														{e.monthYearStarted} -{' '}
 														{e.monthYearGraduated}
 													</td>
@@ -522,104 +557,112 @@ const ViewResume = ({
 									</div>
 								))}
 							</div>
-							<hr className='line-break' />
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Recruiter's Comments
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<div id='recruitmentsComment' className='pb-5'>
+						<div className="col-lg-9">
+							<div id="recruitmentsComment" className="pb-5">
 								<textarea
-									name='recruitmentsComment'
-									className='form-control input'
+									name="recruitmentsComment"
+									className="form-control input"
 									value={recruitmentsComment}
 									onChange={onChange}
-									cols='30'
-									rows='12'
+									cols="30"
+									rows="12"
 								></textarea>
 							</div>
-							<hr className='line-break' />
+							<div className="text-right">
+								<button
+									className="btn btn-primary button"
+									onClick={onAddRecruitersComment}
+								>
+									Save
+								</button>
+							</div>
+							<hr className="line-break" />
 						</div>
 					</div>
-					<div className='row pb-5'>
-						<div className='col-lg-3'>
-							<p className='item-title color-2'>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-2">
 								Work from Home Capabilites
 							</p>
 						</div>
-						<div className='col-lg-9'>
-							<table className='table table-borderless workspace-item'>
+						<div className="col-lg-9">
+							<table className="table table-borderless workspace-item">
 								<tbody>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Workspace
 										</th>
 										<td
-											id='workspace'
-											className='pt-0 item-value'
+											id="workspace"
+											className="pt-0 item-value"
 										>
 											{workspace}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Internet Type
 										</th>
 										<td
-											id='internetType'
-											className='pt-0 item-value'
+											id="internetType"
+											className="pt-0 item-value"
 										>
 											{internetType}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Hardware Type
 										</th>
 										<td
-											id='hardwareType'
-											className='pt-0 item-value'
+											id="hardwareType"
+											className="pt-0 item-value"
 										>
 											{hardwareType}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Brand Name
 										</th>
 										<td
-											id='brandName'
-											className='pt-0 item-value'
+											id="brandName"
+											className="pt-0 item-value"
 										>
 											{brandName}
 										</td>
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Internet Speedtest Result
 										</th>
-										<td className='pt-0'>
+										<td className="pt-0">
 											<button
-												className='btn btn-primary view'
+												className="btn btn-primary view"
 												onClick={() =>
 													setViewImage({
 														show: true,
@@ -635,14 +678,14 @@ const ViewResume = ({
 									</tr>
 									<tr>
 										<th
-											scope='row'
-											className='pt-0 item-title'
+											scope="row"
+											className="pt-0 item-title"
 										>
 											Computer Specs
 										</th>
-										<td className='pt-0'>
+										<td className="pt-0">
 											<button
-												className='btn btn-primary view'
+												className="btn btn-primary view"
 												onClick={() =>
 													setViewImage({
 														show: true,
@@ -670,10 +713,15 @@ ViewResume.propTypes = {
 	clearResume: PropTypes.func.isRequired,
 	isShow: PropTypes.bool.isRequired,
 	setAlert: PropTypes.func.isRequired,
+	addRecruitersComment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	candidateState: state.candidateState,
 });
 
-export default connect(mapStateToProps, { clearResume, setAlert })(ViewResume);
+export default connect(mapStateToProps, {
+	clearResume,
+	setAlert,
+	addRecruitersComment,
+})(ViewResume);

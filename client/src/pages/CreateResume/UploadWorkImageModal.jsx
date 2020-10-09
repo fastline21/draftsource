@@ -87,25 +87,25 @@ const UploadWorkImageModal = ({
 
 	return (
 		<Modal
-			id='uploadWorkImageModal'
+			id="uploadWorkImageModal"
 			show={show}
 			onHide={handleClose}
-			backdrop='static'
+			backdrop="static"
 			keyboard={false}
-			size='lg'
-			aria-labelledby='contained-modal-title-vcenter'
+			size="lg"
+			aria-labelledby="contained-modal-title-vcenter"
 			centered
 		>
 			<Modal.Header closeButton>
 				<Modal.Title>{titleModal}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body>
-				<div className='container-fluid'>
-					<div className='row'>
-						<div className='col-lg-7'>
+				<div className="container-fluid">
+					<div className="row">
+						<div className="col-lg-7">
 							<label
-								htmlFor='uploadWorkInput'
-								className='upload-work-label'
+								htmlFor="uploadWorkInput"
+								className="upload-work-label"
 								onClick={uploadImageFile}
 							>
 								{!fileBg ? (
@@ -119,42 +119,42 @@ const UploadWorkImageModal = ({
 										{caption}{' '}
 										<span>
 											or click add
-											<i className='fas fa-plus'></i>
+											<i className="fas fa-plus"></i>
 										</span>
 									</p>
 								) : (
-									// <Cropper
-									//     image={fileBg}
-									//     crop={crop}
-									//     zoom={zoom}
-									//     aspect={4 / 3}
-									//     onCropChange={setCrop}
-									//     onZoomChange={setZoom}
-									// />
-									<img
-										src={fileBg}
-										className='img-fluid upload-image'
+									<Cropper
+										image={fileBg}
+										crop={crop}
+										zoom={zoom}
+										aspect={4 / 3}
+										onCropChange={setCrop}
+										onZoomChange={setZoom}
 									/>
+									// <img
+									// 	src={fileBg}
+									// 	className='img-fluid upload-image'
+									// />
 								)}
 							</label>
 							<input
-								type='file'
-								id='uploadWorkInput'
-								className='form-control-file input'
-								accept='image/*'
+								type="file"
+								id="uploadWorkInput"
+								className="form-control-file input"
+								accept="image/*"
 								onChange={onUploadWorkImage}
 							/>
 						</div>
-						<div className='col-lg-5'>
-							<div className='form-group'>
-								<label className='form-label'>
+						<div className="col-lg-5">
+							<div className="form-group">
+								<label className="form-label">
 									Project Title
 								</label>
 								<input
-									type='text'
-									name='title'
-									id=''
-									className='form-control input'
+									type="text"
+									name="title"
+									id=""
+									className="form-control input"
 									value={title}
 									onChange={onChange}
 								/>
@@ -175,27 +175,27 @@ const UploadWorkImageModal = ({
 									<li key={i}>{e}</li>
 								))}
 							</ul>
-							<div className='form-inline justify-content-between footer'>
+							<div className="form-inline justify-content-between footer">
 								{fileBg ? (
 									<>
 										<label
-											htmlFor='replaceImageInput'
-											className='btn btn-primary button replace'
+											htmlFor="replaceImageInput"
+											className="btn btn-primary button replace"
 										>
 											Replace
 										</label>
 										<input
-											type='file'
-											name='replaceImage'
-											id='replaceImageInput'
-											className='form-control-file input replace-file'
-											accept='image/*'
+											type="file"
+											name="replaceImage"
+											id="replaceImageInput"
+											className="form-control-file input replace-file"
+											accept="image/*"
 											onChange={onUploadWorkImage}
 										/>
 									</>
 								) : null}
 								<button
-									className='btn btn-primary button'
+									className="btn btn-primary button"
 									style={
 										!fileBg ? { marginLeft: 'auto' } : null
 									}

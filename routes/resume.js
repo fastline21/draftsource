@@ -5,6 +5,7 @@ const path = require('path');
 const fs = require('fs');
 const gm = require('gm');
 const pdf = require('pdf-thumbnail');
+const moment = require('moment');
 
 // Models
 const Resume = require('./../models/Resume');
@@ -38,6 +39,33 @@ router.post('/', auth, async (req, res) => {
 	education = JSON.parse(education);
 	workHistory = JSON.parse(workHistory);
 	uploadWork = JSON.parse(uploadWork);
+
+	Date.monthsDiff = function (day1, day2) {
+		let d1 = day1,
+			d2 = day2;
+		if (day1 < day2) {
+			d1 = day2;
+			d2 = day1;
+		}
+		let m =
+			(d1.getFullYear() - d2.getFullYear()) * 12 +
+			(d1.getMonth() - d2.getMonth());
+		if (d1.getDate() < d2.getDate()) --m;
+		return m;
+	};
+
+	let totalWorkHistory = 0;
+	workHistory.map((e) => {
+		let d1 = new Date(
+			e.yearStarted,
+			parseInt(moment().month(e.monthStarted).format('M'))
+		);
+		let d2 = new Date(
+			e.yearEnded,
+			parseInt(moment().month(e.monthEnded).format('M'))
+		);
+		totalWorkHistory += Date.monthsDiff(d1, d2);
+	});
 
 	specialty = specialty.split(',');
 	software = software.split(',');
@@ -226,6 +254,7 @@ router.post('/', auth, async (req, res) => {
 			software,
 			uploadWork,
 			headline,
+			totalWorkYear: Math.floor(totalWorkHistory / 12),
 		};
 		const resume = new Resume(resumeFields);
 		await resume.save();

@@ -365,7 +365,9 @@ const ViewResume = ({
 								{workHistory.map((e, i) => (
 									<div className="work-history-item" key={i}>
 										<p className="title">{e.title}</p>
-										<p className="company">{e.company}</p>
+										<p className="company">
+											Employment Period
+										</p>
 										<p className="month-year">
 											{e.monthStarted} {e.yearStarted} -{' '}
 											{e.monthEnded} {e.yearEnded}
@@ -405,7 +407,21 @@ const ViewResume = ({
 														{e.choices}
 													</td>
 												</tr>
-												{e.choices !== 'High School' ? (
+												{e.choices ===
+												'License and Certification' ? (
+													<tr>
+														<td className="item-title pb-0 pl-0">
+															License and
+															Certification
+														</td>
+														<td className="item-degree pb-0 item-value">
+															{e.license}
+														</td>
+													</tr>
+												) : null}
+												{e.choices !== 'High School' &&
+												e.choices !==
+													'License and Certification' ? (
 													<tr>
 														<td className="item-title pb-0 pl-0">
 															Degree
@@ -415,15 +431,20 @@ const ViewResume = ({
 														</td>
 													</tr>
 												) : null}
-												<tr>
-													<td className="item-title pb-0 pl-0">
-														School
-													</td>
-													<td className="item-school pb-0 item-value">
-														{e.school}
-													</td>
-												</tr>
-												{e.choices !== 'High School' ? (
+												{e.choices !==
+												'License and Certification' ? (
+													<tr>
+														<td className="item-title pb-0 pl-0">
+															School
+														</td>
+														<td className="item-school pb-0 item-value">
+															{e.school}
+														</td>
+													</tr>
+												) : null}
+												{e.choices !== 'High School' &&
+												e.choices !==
+													'License and Certification' ? (
 													<tr>
 														<td className="item-title pb-0 pl-0">
 															Course

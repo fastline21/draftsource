@@ -48,12 +48,16 @@ const Step4 = ({
 		course: '',
 		monthYearStarted: '',
 		monthYearGraduated: '',
+		license: '',
 	};
 
 	const [info, setInfo] = useState(initialInfo);
 	const [education, setEducation] = useState([]);
 	const [currentEdu, setCurrentEdu] = useState(null);
-	const [disableInput, setDisableInput] = useState(true);
+	const [disableInput, setDisableInput] = useState({
+		highSchool: true,
+		license: true,
+	});
 	const [educationItem, setEducationItem] = useState(initialEducation);
 	const [uploadAudio, setUploadAudio] = useState(null);
 	const [submit, setSubmit] = useState(false);
@@ -65,18 +69,42 @@ const Step4 = ({
 		setEducationItem({ ...educationItem, [name]: value });
 		if (name === 'choices') {
 			if (value === 'High School') {
-				setDisableInput(true);
+				setDisableInput({
+					highSchool: true,
+					license: true,
+				});
 				document.querySelector('.input[name=degree]').value = '';
 				document.querySelector('.input[name=course]').value = '';
+				document.querySelector('.input[name=license]').value = '';
 				const copy = {
 					...educationItem,
 					choices: 'High School',
 					degree: '',
 					course: '',
+					license: '',
+				};
+				setEducationItem({ ...copy });
+			} else if (value === 'License and Certification') {
+				setDisableInput({
+					highSchool: true,
+					license: false,
+				});
+				document.querySelector('.input[name=degree]').value = '';
+				document.querySelector('.input[name=course]').value = '';
+				document.querySelector('.input[name=school]').value = '';
+				document.querySelector('.input[name=license]').value = '';
+				const copy = {
+					...educationItem,
+					choices: 'License and Certification',
+					degree: '',
+					course: '',
 				};
 				setEducationItem({ ...copy });
 			} else {
-				setDisableInput(false);
+				setDisableInput({
+					highSchool: false,
+					license: true,
+				});
 			}
 		}
 	};
@@ -106,6 +134,7 @@ const Step4 = ({
 			course,
 			monthYearStarted,
 			monthYearGraduated,
+			license,
 		} = educationItem;
 		if (choices === 'High School') {
 			if (
@@ -113,6 +142,13 @@ const Step4 = ({
 				monthYearStarted === '' ||
 				monthYearGraduated === ''
 			) {
+				return setAlert(
+					'',
+					'Please fill-in the required boxes to Proceed.'
+				);
+			}
+		} else if (choices === 'License and Certification') {
+			if (license === '') {
 				return setAlert(
 					'',
 					'Please fill-in the required boxes to Proceed.'
@@ -134,14 +170,33 @@ const Step4 = ({
 		}
 		setEducation((education) => [...education, educationItem]);
 		clearEducationItem();
-		setDisableInput(true);
+		setDisableInput({
+			highSchool: true,
+			license: true,
+		});
 		setDirty();
 		setMessage('Are you sure you want to leave this page?');
 	};
 
 	const editEdu = (e) => {
-		if (education[e]['choices'] !== 'High School') {
-			setDisableInput(false);
+		if (
+			education[e]['choices'] !== 'High School' &&
+			education[e]['choices'] !== 'License and Certification'
+		) {
+			setDisableInput({
+				highSchool: false,
+				license: true,
+			});
+		} else if (education[e]['choices'] === 'License and Certification') {
+			setDisableInput({
+				highSchool: true,
+				license: false,
+			});
+		} else if (education[e]['choices'] === 'High School') {
+			setDisableInput({
+				highSchool: true,
+				license: true,
+			});
 		}
 		Array.from(document.querySelectorAll('.center-col .input')).forEach(
 			(input) => (input.value = education[e][input.name])
@@ -174,7 +229,10 @@ const Step4 = ({
 
 	const clearEducationItem = () => {
 		setEducationItem({ ...initialEducation });
-		setDisableInput(true);
+		setDisableInput({
+			highSchool: true,
+			license: true,
+		});
 		Array.from(document.querySelectorAll('.center-col .input')).forEach(
 			(input) => (input.value = initialEducation[input.name])
 		);
@@ -420,7 +478,25 @@ const Step4 = ({
 													<option value="Doctor">
 														Doctor
 													</option>
+													<option value="License and Certification">
+														License and
+														Certification
+													</option>
 												</select>
+											</div>
+											<div className="form-group">
+												<label className="form-label">
+													License and Certification
+												</label>
+												<input
+													type="text"
+													name="license"
+													className="form-control input"
+													onChange={eduItem}
+													disabled={
+														disableInput.license
+													}
+												/>
 											</div>
 											<div className="form-group">
 												<label className="form-label">
@@ -431,7 +507,9 @@ const Step4 = ({
 													name="degree"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={disableInput}
+													disabled={
+														disableInput.highSchool
+													}
 												/>
 											</div>
 											<div className="form-group">
@@ -443,7 +521,9 @@ const Step4 = ({
 													name="course"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={disableInput}
+													disabled={
+														disableInput.highSchool
+													}
 												/>
 											</div>
 											<div className="form-group">
@@ -455,6 +535,9 @@ const Step4 = ({
 													name="school"
 													className="form-control input"
 													onChange={eduItem}
+													disabled={
+														!disableInput.license
+													}
 												/>
 											</div>
 											<div className="form-group">

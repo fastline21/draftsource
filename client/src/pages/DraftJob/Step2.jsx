@@ -205,6 +205,7 @@ const Step2 = ({ setAlert, addJob, setStep, jobState: { step } }) => {
                                     className="form-control input"
                                     name="roles"
                                     onKeyPress={onKeyPress}
+                                    placeholder="Type and Press Enter"
                                     ref={rolesRef}
                                 />
                                 <i className="fas fa-plus"></i>
@@ -245,6 +246,7 @@ const Step2 = ({ setAlert, addJob, setStep, jobState: { step } }) => {
                                     className="form-control input"
                                     name="keyResponsibilities"
                                     onKeyPress={onKeyPress}
+                                    placeholder="Type and Press Enter"
                                     ref={keyResponsibilitiesRef}
                                 />
                                 <i className="fas fa-plus"></i>
@@ -288,6 +290,7 @@ const Step2 = ({ setAlert, addJob, setStep, jobState: { step } }) => {
                                     className="form-control input"
                                     name="responsibilities"
                                     onKeyPress={onKeyPress}
+                                    placeholder="Type and Press Enter"
                                     ref={responsibilitiesRef}
                                 />
                                 <i className="fas fa-plus"></i>
@@ -322,7 +325,7 @@ const Step2 = ({ setAlert, addJob, setStep, jobState: { step } }) => {
                                 for="remoteStaffExpectationInput"
                                 className="form-label"
                             >
-                                Remote Staff Expectation
+                                Virtual Staff Expectation
                             </label>
                             <textarea
                                 rows="5"
