@@ -222,7 +222,7 @@ const CandidateItem = ({
 						Add to Shortlist
 					</button>
 				)}
-				<div className="mini-slide shadow" onClick={onViewResume}>
+				<div className="mini-slide shadow">
 					<Carousel
 						activeIndex={activeMiniSlide}
 						interval={null}
@@ -243,7 +243,7 @@ const CandidateItem = ({
 						fade={true}
 					>
 						{uploadWork.images.map((e, i) => (
-							<Carousel.Item key={i}>
+							<Carousel.Item key={i} onClick={onViewResume}>
 								<img
 									src={`/uploads/${e.file}`}
 									className="d-block w-100"
