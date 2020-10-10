@@ -37,7 +37,7 @@ const Step1 = ({
 		cellphone: '',
 		city: '',
 		country: 'Afghanistan',
-		facebook: '',
+		linkedIn: '',
 	};
 
 	const [info, setInfo] = useState(initialInfo);
@@ -50,7 +50,7 @@ const Step1 = ({
 		cellphone,
 		city,
 		country,
-		facebook,
+		linkedIn,
 	} = info;
 
 	const onChange = (e) => {
@@ -69,7 +69,7 @@ const Step1 = ({
 			cellphone === '' ||
 			city === '' ||
 			country === '' ||
-			facebook === ''
+			linkedIn === ''
 		) {
 			return setAlert(
 				'',
@@ -113,114 +113,114 @@ const Step1 = ({
 		// eslint-disable-next-line
 	}, [info, load, error, user]);
 	return (
-		<div className='step-1'>
+		<div className="step-1">
 			{Prompt}
-			<div className='row'>
-				<div className='col-lg-6 offset-lg-3'>
-					<form className='form' onSubmit={onSubmit}>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+			<div className="row">
+				<div className="col-lg-6 offset-lg-3">
+					<form className="form" onSubmit={onSubmit}>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='firstNameInput'
-										className='form-label'
+										htmlFor="firstNameInput"
+										className="form-label"
 									>
 										First Name
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='text'
-										className='form-control input'
-										id='firstNameInput'
-										name='firstName'
+										type="text"
+										className="form-control input"
+										id="firstNameInput"
+										name="firstName"
 										value={firstName}
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='lastNameInput'
-										className='form-label'
+										htmlFor="lastNameInput"
+										className="form-label"
 									>
 										Last Name
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='text'
-										className='form-control input'
-										id='lastNameInput'
-										name='lastName'
+										type="text"
+										className="form-control input"
+										id="lastNameInput"
+										name="lastName"
 										value={lastName}
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='emailInput'
-										className='form-label'
+										htmlFor="emailInput"
+										className="form-label"
 									>
 										Email
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='email'
-										className='form-control input'
-										id='emailInput'
-										name='email'
+										type="email"
+										className="form-control input"
+										id="emailInput"
+										name="email"
 										value={email}
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='cellphoneInput'
-										className='form-label'
+										htmlFor="cellphoneInput"
+										className="form-label"
 									>
 										Cellphone No.
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='text'
-										className='form-control input'
-										id='cellphoneInput'
+										type="text"
+										className="form-control input"
+										id="cellphoneInput"
 										value={cellphone}
-										name='cellphone'
+										name="cellphone"
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='cityInput'
-										className='form-label'
+										htmlFor="cityInput"
+										className="form-label"
 									>
 										Country
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<select
-										id='countryInput'
-										className='form-control input'
-										name='country'
+										id="countryInput"
+										className="form-control input"
+										name="country"
 										onChange={onChange}
 										value={country}
 									>
@@ -233,57 +233,57 @@ const Step1 = ({
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='cityInput'
-										className='form-label'
+										htmlFor="cityInput"
+										className="form-label"
 									>
 										City
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='text'
-										className='form-control input'
-										id='cityInput'
-										name='city'
+										type="text"
+										className="form-control input"
+										id="cityInput"
+										name="city"
 										value={city}
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
 									<label
-										htmlFor='facebookInput'
-										className='form-label'
+										htmlFor="linkedInInput"
+										className="form-label"
 									>
-										Facebook Link
+										LinkedIn Link
 									</label>
 								</div>
-								<div className='col-lg-8'>
+								<div className="col-lg-8">
 									<input
-										type='text'
-										className='form-control input'
-										id='facebookInput'
-										value={facebook}
-										name='facebook'
+										type="text"
+										className="form-control input"
+										id="linkedInInput"
+										value={linkedIn}
+										name="linkedIn"
 										onChange={onChange}
 									/>
 								</div>
 							</div>
 						</div>
-						<div className='form-group'>
-							<div className='form-row'>
-								<div className='col-lg-8 offset-lg-4'>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-8 offset-lg-4">
 									<input
-										type='submit'
-										className='btn btn-primary btn-block button'
-										value='Create Resume'
+										type="submit"
+										className="btn btn-primary btn-block button"
+										value="Create Resume"
 									/>
 								</div>
 							</div>

@@ -27,7 +27,7 @@ const ResumeSchema = new mongoose.Schema({
 	country: {
 		type: String,
 	},
-	facebook: {
+	linkedIn: {
 		type: String,
 	},
 	resumeImage: {

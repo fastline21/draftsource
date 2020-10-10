@@ -10,77 +10,77 @@ import { addResume } from './../state/actions/resumeAction';
 import { setStep } from './../state/actions/employerAction';
 
 const Verify = ({
-    verifyUser,
-    setAlert,
-    clearError,
-    addResume,
-    setStep,
-    userState: { user, error },
+	verifyUser,
+	setAlert,
+	clearError,
+	addResume,
+	setStep,
+	userState: { user, error },
 }) => {
-    let { token } = useParams();
-    const [load, setLoad] = useState(true);
-    const [link, setLink] = useState(null);
-    useEffect(() => {
-        if (load) {
-            verifyUser({ verificationToken: token });
-            setLoad(false);
-        }
-        if (error) {
-            setAlert('/', error.msg);
-            clearError();
-        }
+	let { token } = useParams();
+	const [load, setLoad] = useState(true);
+	const [link, setLink] = useState(null);
+	useEffect(() => {
+		if (load) {
+			verifyUser({ verificationToken: token });
+			setLoad(false);
+		}
+		if (error) {
+			setAlert('/', error.msg);
+			clearError();
+		}
 
-        if (user) {
-            if (user.type === 'Remote Worker') {
-                const {
-                    firstName,
-                    lastName,
-                    email,
-                    cellphone,
-                    city,
-                    country,
-                    facebook,
-                } = localStorage;
-                const resume = {
-                    firstName,
-                    lastName,
-                    email,
-                    cellphone,
-                    city,
-                    country,
-                    facebook,
-                };
-                localStorage.clear();
-                addResume(resume);
-                setLink('/create-resume?step=2');
-            } else if (user.type === 'Employer') {
-                setStep(2);
-                setLink('/signup/employer?step=2');
-            }
-        }
+		if (user) {
+			if (user.type === 'Remote Worker') {
+				const {
+					firstName,
+					lastName,
+					email,
+					cellphone,
+					city,
+					country,
+					linkedIn,
+				} = localStorage;
+				const resume = {
+					firstName,
+					lastName,
+					email,
+					cellphone,
+					city,
+					country,
+					linkedIn,
+				};
+				localStorage.clear();
+				addResume(resume);
+				setLink('/create-resume?step=2');
+			} else if (user.type === 'Employer') {
+				setStep(2);
+				setLink('/signup/employer?step=2');
+			}
+		}
 
-        // eslint-disable-next-line
-    }, [error, load, user]);
+		// eslint-disable-next-line
+	}, [error, load, user]);
 
-    return <Route render={() => link && <Redirect to={link} />} />;
+	return <Route render={() => link && <Redirect to={link} />} />;
 };
 
 Verify.propTypes = {
-    verifyUser: PropTypes.func.isRequired,
-    setAlert: PropTypes.func.isRequired,
-    clearError: PropTypes.func.isRequired,
-    addResume: PropTypes.func.isRequired,
-    setStep: PropTypes.func.isRequired,
+	verifyUser: PropTypes.func.isRequired,
+	setAlert: PropTypes.func.isRequired,
+	clearError: PropTypes.func.isRequired,
+	addResume: PropTypes.func.isRequired,
+	setStep: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    userState: state.userState,
+	userState: state.userState,
 });
 
 export default connect(mapStateToProps, {
-    verifyUser,
-    setAlert,
-    clearError,
-    addResume,
-    setStep,
+	verifyUser,
+	setAlert,
+	clearError,
+	addResume,
+	setStep,
 })(Verify);

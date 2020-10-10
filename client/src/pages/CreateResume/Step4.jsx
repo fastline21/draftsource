@@ -389,7 +389,7 @@ const Step4 = ({
 										</div>
 										<p>
 											Record an mp4 audio (not more than
-											30 sec) about yourself in English
+											60 sec) about yourself in English
 											<br />
 											<br />
 											<span>
@@ -558,7 +558,7 @@ const Step4 = ({
 																		: null
 																}
 															>
-																Mo/Year Started
+																Year Started
 															</label>
 															<input
 																type="text"
@@ -573,8 +573,7 @@ const Step4 = ({
 													<div className="col-lg-6">
 														<div className="form-group">
 															<label className="form-label">
-																Mo/Year
-																Graduated
+																Year Graduated
 															</label>
 															<input
 																type="text"
