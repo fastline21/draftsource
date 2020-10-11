@@ -378,7 +378,7 @@ const ViewResume = ({
 										<p className="description">
 											{e.description}
 										</p>
-										<p className="item-title">About</p>
+										<p className="item-title">About the company</p>
 										<p className="about">{e.about}</p>
 									</div>
 								))}

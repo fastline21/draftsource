@@ -89,7 +89,17 @@ const ViewCandidates = ({
 				</main>
 			</div>
 			{menu === 'top-verified-candidates' && (
-				<div></div>
+				<div className="talk-recruiter">
+					<h1 className="title">
+						Didn’t see the talent you’re looking for?
+					</h1>
+					<button
+						className="btn btn-primary button"
+						onClick={talkRecruiter}
+					>
+						Talk to a Recruiter
+					</button>
+				</div>
 				// <div className="row">
 				// 	<div className="col-lg-12">
 				// 		<footer>

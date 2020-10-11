@@ -461,6 +461,35 @@
 			border-radius: 30px;
 		}
 	}
+
+	.talk-recruiter {
+		display: flex;
+		justify-content: center;
+		padding: 200px 0 150px;
+		flex-direction: column;
+
+		@include media('>=desktop') {
+			flex-direction: row;
+		}
+
+		.title {
+			margin-bottom: 20px;
+			margin-right: 30px;
+
+			@include media('>=desktop') {
+				margin-bottom: 5px;
+			}
+		}
+
+		.button {
+			width: 204px;
+			padding: 12px 24px;
+
+			@include media('>=desktop') {
+				width: auto;
+			}
+		}
+	}
 }
 
 // #seeResume {
