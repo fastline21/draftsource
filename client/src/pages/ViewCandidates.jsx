@@ -89,30 +89,31 @@ const ViewCandidates = ({
 				</main>
 			</div>
 			{menu === 'top-verified-candidates' && (
-				<div className="row">
-					<div className="col-lg-12">
-						<footer>
-							<div className="container">
-								<div className="row">
-									<div className="col-lg-9 text-right">
-										<h1 className="title">
-											Didn’t see the talent you’re looking
-											for?
-										</h1>
-									</div>
-									<div className="col-lg-3">
-										<button
-											className="btn btn-primary button"
-											onClick={talkRecruiter}
-										>
-											Talk to a Recruiter
-										</button>
-									</div>
-								</div>
-							</div>
-						</footer>
-					</div>
-				</div>
+				<div></div>
+				// <div className="row">
+				// 	<div className="col-lg-12">
+				// 		<footer>
+				// 			<div className="container">
+				// 				<div className="row">
+				// 					<div className="col-lg-9 text-right">
+				// 						<h1 className="title">
+				// 							Didn’t see the talent you’re looking
+				// 							for?
+				// 						</h1>
+				// 					</div>
+				// 					<div className="col-lg-3">
+				// 						<button
+				// 							className="btn btn-primary button"
+				// 							onClick={talkRecruiter}
+				// 						>
+				// 							Talk to a Recruiter
+				// 						</button>
+				// 					</div>
+				// 				</div>
+				// 			</div>
+				// 		</footer>
+				// 	</div>
+				// </div>
 			)}
 		</div>
 	);

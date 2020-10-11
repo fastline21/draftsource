@@ -224,12 +224,18 @@
 
 				@include media('>=tablet') {
 					flex-direction: row;
-					padding-bottom: 24px;
+					padding-bottom: 10px;
 				}
 
 				@include media('>=desktop') {
 					flex-direction: row;
 					padding-left: 30px;
+					padding-bottom: 10px;
+				}
+
+				@include media('>1300px') {
+					flex-direction: row;
+					padding-bottom: 40px;
 				}
 
 				.profile-left {
@@ -370,7 +376,7 @@
 					.see-resume {
 						background-color: transparent;
 						border: none;
-						color: $lightBlue;
+						color: $darkBlue;
 						font-weight: 700;
 						padding: 0;
 
@@ -419,7 +425,9 @@
 
 						.carousel-item {
 							img {
+								display: block;
 								height: 270px;
+								width: 300px;
 
 								@include media('>=tablet') {
 									height: 180px;

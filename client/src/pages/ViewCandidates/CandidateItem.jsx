@@ -244,11 +244,7 @@ const CandidateItem = ({
 					>
 						{uploadWork.images.map((e, i) => (
 							<Carousel.Item key={i} onClick={onViewResume}>
-								<img
-									src={`/uploads/${e.file}`}
-									className="d-block w-100"
-									alt="..."
-								/>
+								<img src={`/uploads/${e.file}`} alt="..." />
 							</Carousel.Item>
 						))}
 					</Carousel>

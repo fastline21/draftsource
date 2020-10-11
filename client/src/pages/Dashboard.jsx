@@ -7,14 +7,14 @@ import PropTypes from 'prop-types';
 // Actions
 import { getUserInfo } from './../state/actions/userAction';
 import {
-    approvedApplicants,
-    newApplicants,
-    rejectedApplicants,
+	approvedApplicants,
+	newApplicants,
+	rejectedApplicants,
 } from './../state/actions/candidateAction';
 import {
-    newJobs,
-    approvedJobs,
-    rejectedJobs,
+	newJobs,
+	approvedJobs,
+	rejectedJobs,
 } from './../state/actions/jobAction';
 
 // Components
@@ -27,270 +27,270 @@ import ApprovedJobs from './Dashboard/ApprovedJobs';
 import RejectedJobs from './Dashboard/RejectedJobs';
 
 const Dashboard = ({
-    getUserInfo,
-    newApplicants,
-    approvedApplicants,
-    rejectedApplicants,
-    newJobs,
-    approvedJobs,
-    rejectedJobs,
-    userState: { user, info },
-    filterState: { filter },
+	getUserInfo,
+	newApplicants,
+	approvedApplicants,
+	rejectedApplicants,
+	newJobs,
+	approvedJobs,
+	rejectedJobs,
+	userState: { user, info },
+	filterState: { filter },
 }) => {
-    const { menu } = useParams();
-    const location = useLocation();
-    const initialPersonalInfo = {
-        firstName: '',
-        lastName: '',
-    };
-    const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
-    const [load, setLoad] = useState(true);
-    const [isAdmin, setIsAdmin] = useState(false);
+	const { menu } = useParams();
+	const location = useLocation();
+	const initialPersonalInfo = {
+		firstName: '',
+		lastName: '',
+	};
+	const [personalInfo, setPersonalInfo] = useState(initialPersonalInfo);
+	const [load, setLoad] = useState(true);
+	const [isAdmin, setIsAdmin] = useState(false);
 
-    const { firstName, lastName } = personalInfo;
+	const { firstName, lastName } = personalInfo;
 
-    useEffect(() => {
-        if (load) {
-            getUserInfo();
-            setLoad(false);
-        }
+	useEffect(() => {
+		if (load) {
+			getUserInfo();
+			setLoad(false);
+		}
 
-        if (user && user.type === 'Admin') {
-            setIsAdmin(true);
-        }
+		if (user && user.type === 'Admin') {
+			setIsAdmin(true);
+		}
 
-        if (
-            info !== null &&
-            JSON.stringify(personalInfo) === JSON.stringify(initialPersonalInfo)
-        ) {
-            setPersonalInfo(info);
-        }
+		if (
+			info !== null &&
+			JSON.stringify(personalInfo) === JSON.stringify(initialPersonalInfo)
+		) {
+			setPersonalInfo(info);
+		}
 
-        if (menu === 'new-applicants') {
-            newApplicants();
-        }
+		if (menu === 'new-applicants') {
+			newApplicants();
+		}
 
-        if (menu === 'approved-applicants') {
-            approvedApplicants();
-        }
+		if (menu === 'approved-applicants') {
+			approvedApplicants();
+		}
 
-        if (menu === 'rejected-applicants') {
-            rejectedApplicants();
-        }
+		if (menu === 'rejected-applicants') {
+			rejectedApplicants();
+		}
 
-        if (menu === 'new-jobs') {
-            newJobs();
-        }
+		if (menu === 'new-jobs') {
+			newJobs();
+		}
 
-        if (menu === 'approved-jobs') {
-            approvedJobs();
-        }
+		if (menu === 'approved-jobs') {
+			approvedJobs();
+		}
 
-        if (menu === 'rejected-jobs') {
-            rejectedJobs();
-        }
+		if (menu === 'rejected-jobs') {
+			rejectedJobs();
+		}
 
-        // eslint-disable-next-line
-    }, [load, info, personalInfo, user, menu, filter, location]);
-    return (
-        <div id="dashboard">
-            <div className="container-fluid">
-                <div className="header">
-                    <h2 className="title">
-                        Welcome,{' '}
-                        <span>
-                            {firstName} {lastName}
-                        </span>
-                    </h2>
-                    <div className="line-break" />
-                </div>
-                <div className="row">
-                    <nav className="d-none d-sm-block col-sm-2 sidebar">
-                        <div className="remote-worker">
-                            <h5 className="title">Remote Worker</h5>
-                            <ul className="nav flex-column">
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'new-applicants'
-                                            ? ' active'
-                                            : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/new-applicants"
-                                        className="nav-link"
-                                    >
-                                        New Applicants{' '}
-                                        <i
-                                            className={`fas fa-${
-                                                menu === 'new-applicants'
-                                                    ? 'minus'
-                                                    : 'plus'
-                                            } float-right pt-1`}
-                                        ></i>
-                                    </Link>
-                                    {menu === 'new-applicants' ? (
-                                        <Filter loadData={newApplicants} />
-                                    ) : null}
-                                </li>
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'approved-applicants'
-                                            ? ' active'
-                                            : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/approved-applicants"
-                                        className="nav-link"
-                                    >
-                                        Approved Applicants{' '}
-                                        <i
-                                            className={`fas fa-${
-                                                menu === 'approved-applicants'
-                                                    ? 'minus'
-                                                    : 'plus'
-                                            } float-right pt-1`}
-                                        ></i>
-                                    </Link>
-                                    {menu === 'approved-applicants' ? (
-                                        <Filter loadData={approvedApplicants} />
-                                    ) : null}
-                                </li>
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'rejected-applicants'
-                                            ? ' active'
-                                            : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/rejected-applicants"
-                                        className="nav-link"
-                                    >
-                                        Rejected Appplicants{' '}
-                                        <i
-                                            className={`fas fa-${
-                                                menu === 'rejected-applicants'
-                                                    ? 'minus'
-                                                    : 'plus'
-                                            } float-right pt-1`}
-                                        ></i>
-                                    </Link>
-                                    {menu === 'rejected-applicants' ? (
-                                        <Filter loadData={rejectedApplicants} />
-                                    ) : null}
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="employer">
-                            <h5 className="title">Employer</h5>
-                            <ul className="nav flex-column">
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'new-jobs' ? ' active' : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/new-jobs"
-                                        className="nav-link"
-                                    >
-                                        New Job Request
-                                    </Link>
-                                </li>
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'approved-jobs'
-                                            ? ' active'
-                                            : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/approved-jobs"
-                                        className="nav-link"
-                                    >
-                                        Approved Job Request
-                                    </Link>
-                                </li>
-                                <li
-                                    className={`nav-item sidebar-item${
-                                        menu === 'rejected-jobs'
-                                            ? ' active'
-                                            : ''
-                                    }`}
-                                >
-                                    <Link
-                                        to="/dashboard/rejected-jobs"
-                                        className="nav-link"
-                                    >
-                                        Rejected Job Request
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-                        {isAdmin && (
-                            <div className="settings">
-                                <h5 className="title">Settings</h5>
-                                <ul className="nav flex-column">
-                                    <li
-                                        className={`nav-item sidebar-item${
-                                            menu === 'roles-permissions'
-                                                ? ' active'
-                                                : ''
-                                        }`}
-                                    >
-                                        <Link
-                                            to="/dashboard/roles-permissions"
-                                            className="nav-link"
-                                        >
-                                            Roles & Permissions
-                                        </Link>
-                                    </li>
-                                </ul>
-                            </div>
-                        )}
-                    </nav>
-                    <main className="col-sm-10 main">
-                        {menu === 'new-applicants' && <NewApplicants />}
-                        {menu === 'approved-applicants' && (
-                            <ApprovedApplicants />
-                        )}
-                        {menu === 'rejected-applicants' && (
-                            <RejectedApplicants />
-                        )}
-                        {menu === 'new-jobs' && <NewJobs />}
-                        {menu === 'approved-jobs' && <ApprovedJobs />}
-                        {menu === 'rejected-jobs' && <RejectedJobs />}
-                    </main>
-                </div>
-            </div>
-        </div>
-    );
+		// eslint-disable-next-line
+	}, [load, info, personalInfo, user, menu, filter, location]);
+	return (
+		<div id="dashboard">
+			<div className="container-fluid">
+				<div className="header">
+					<h2 className="title">
+						Welcome,{' '}
+						<span>
+							{firstName} {lastName}
+						</span>
+					</h2>
+					<div className="line-break" />
+				</div>
+				<div className="row">
+					<nav className="d-none d-sm-block col-sm-2 sidebar">
+						<div className="remote-worker">
+							<h5 className="title">Remote Worker</h5>
+							<ul className="nav flex-column">
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'new-applicants'
+											? ' active'
+											: ''
+									}`}
+								>
+									<Link
+										to="/dashboard/new-applicants"
+										className="nav-link"
+									>
+										New Applicants{' '}
+										<i
+											className={`fas fa-${
+												menu === 'new-applicants'
+													? 'minus'
+													: 'plus'
+											} float-right pt-1`}
+										></i>
+									</Link>
+									{menu === 'new-applicants' ? (
+										<Filter loadData={newApplicants} />
+									) : null}
+								</li>
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'approved-applicants'
+											? ' active'
+											: ''
+									}`}
+								>
+									<Link
+										to="/dashboard/approved-applicants"
+										className="nav-link"
+									>
+										Approved Applicants{' '}
+										<i
+											className={`fas fa-${
+												menu === 'approved-applicants'
+													? 'minus'
+													: 'plus'
+											} float-right pt-1`}
+										></i>
+									</Link>
+									{menu === 'approved-applicants' ? (
+										<Filter loadData={approvedApplicants} />
+									) : null}
+								</li>
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'rejected-applicants'
+											? ' active'
+											: ''
+									}`}
+								>
+									<Link
+										to="/dashboard/rejected-applicants"
+										className="nav-link"
+									>
+										Rejected Appplicants{' '}
+										<i
+											className={`fas fa-${
+												menu === 'rejected-applicants'
+													? 'minus'
+													: 'plus'
+											} float-right pt-1`}
+										></i>
+									</Link>
+									{menu === 'rejected-applicants' ? (
+										<Filter loadData={rejectedApplicants} />
+									) : null}
+								</li>
+							</ul>
+						</div>
+						<div className="employer">
+							<h5 className="title">Employer</h5>
+							<ul className="nav flex-column">
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'new-jobs' ? ' active' : ''
+									}`}
+								>
+									<Link
+										to="/dashboard/new-jobs"
+										className="nav-link"
+									>
+										New Job Request
+									</Link>
+								</li>
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'approved-jobs'
+											? ' active'
+											: ''
+									}`}
+								>
+									<Link
+										to="/dashboard/approved-jobs"
+										className="nav-link"
+									>
+										Approved Job Request
+									</Link>
+								</li>
+								<li
+									className={`nav-item sidebar-item${
+										menu === 'rejected-jobs'
+											? ' active'
+											: ''
+									}`}
+								>
+									<Link
+										to="/dashboard/rejected-jobs"
+										className="nav-link"
+									>
+										Rejected Job Request
+									</Link>
+								</li>
+							</ul>
+						</div>
+						{isAdmin && (
+							<div className="settings">
+								<h5 className="title">Settings</h5>
+								<ul className="nav flex-column">
+									<li
+										className={`nav-item sidebar-item${
+											menu === 'roles-permissions'
+												? ' active'
+												: ''
+										}`}
+									>
+										<Link
+											to="/dashboard/roles-permissions"
+											className="nav-link"
+										>
+											Roles & Permissions
+										</Link>
+									</li>
+								</ul>
+							</div>
+						)}
+					</nav>
+					<main className="col-sm-10 main">
+						{menu === 'new-applicants' ? <NewApplicants /> : null}
+						{menu === 'approved-applicants' ? (
+							<ApprovedApplicants />
+						) : null}
+						{menu === 'rejected-applicants' ? (
+							<RejectedApplicants />
+						) : null}
+						{menu === 'new-jobs' ? <NewJobs /> : null}
+						{menu === 'approved-jobs' ? <ApprovedJobs /> : null}
+						{menu === 'rejected-jobs' ? <RejectedJobs /> : null}
+					</main>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 Dashboard.propTypes = {
-    getUserInfo: PropTypes.func.isRequired,
-    userState: PropTypes.object.isRequired,
-    newApplicants: PropTypes.func.isRequired,
-    approvedApplicants: PropTypes.func.isRequired,
-    rejectedApplicants: PropTypes.func.isRequired,
-    filterState: PropTypes.object.isRequired,
-    newJobs: PropTypes.func.isRequired,
-    approvedJobs: PropTypes.func.isRequired,
-    rejectedJobs: PropTypes.func.isRequired,
+	getUserInfo: PropTypes.func.isRequired,
+	userState: PropTypes.object.isRequired,
+	newApplicants: PropTypes.func.isRequired,
+	approvedApplicants: PropTypes.func.isRequired,
+	rejectedApplicants: PropTypes.func.isRequired,
+	filterState: PropTypes.object.isRequired,
+	newJobs: PropTypes.func.isRequired,
+	approvedJobs: PropTypes.func.isRequired,
+	rejectedJobs: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-    userState: state.userState,
-    filterState: state.filterState,
+	userState: state.userState,
+	filterState: state.filterState,
 });
 
 export default connect(mapStateToProps, {
-    getUserInfo,
-    newApplicants,
-    approvedApplicants,
-    rejectedApplicants,
-    newJobs,
-    approvedJobs,
-    rejectedJobs,
+	getUserInfo,
+	newApplicants,
+	approvedApplicants,
+	rejectedApplicants,
+	newJobs,
+	approvedJobs,
+	rejectedJobs,
 })(Dashboard);
