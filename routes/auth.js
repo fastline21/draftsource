@@ -177,7 +177,7 @@ router.post('/signup', async (req, res) => {
                         <span style="font-weight: bold;">James 1:8-9</span>
                         “ 8 Keep this Book of the Law always on your lips; meditate on it day and night, so that you may be careful to do everything written in it. Then you will be <span style="font-weight: bold;">prosperous and successful.</span><br />
                         <br /><br />
-                        9 Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.”Create a Resume Access<br />
+                        9 Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.<br />
                         <br /><br />
                         Draftsource Team
                     `;
