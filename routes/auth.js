@@ -145,7 +145,7 @@ router.post('/signup', async (req, res) => {
                         <br /><br />
                         <span style="color: red;">GOLDEN RULE #1 = NEVER FAKE YOUR PROFILE, FAKING OF PROFILES WILL RESULT TO BEING BANNED FROM APPLYING WITH DRAFTSOURCE VIRTUAL</span>
                         <br /><br />
-                        <span style="color: red;">Watch the video for proper instructions:</span> Watch Video
+                        <span style="color: red;">Watch the video for proper instructions:</span> <a href="https://bit.ly/3lF1sX0" target="_blank">Watch Video</a>
                         <br /><br /><br />
                         <strong>FAQ</strong>
                         <strong>1. What are the next steps after creating a profile?</strong><br />

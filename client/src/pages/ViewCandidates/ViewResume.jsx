@@ -327,7 +327,7 @@ const ViewResume = ({
 						<div className="col-lg-8">
 							<div className="row pb-3 upload-work-images">
 								{uploadWork.images.map((e, i) => (
-									<div className="col-lg-3" key={i}>
+									<div className="col-lg-4" key={i}>
 										<figure
 											className="figure"
 											style={{ cursor: 'pointer' }}
@@ -342,7 +342,7 @@ const ViewResume = ({
 											<img
 												src={`/uploads/${e.file}`}
 												alt={e.title}
-												className="figure-img img-fluid"
+												className="figure-img img-fluid shadow"
 											/>
 											<figcaption className="figure-caption">
 												{e.title}
@@ -378,7 +378,9 @@ const ViewResume = ({
 										<p className="description">
 											{e.description}
 										</p>
-										<p className="item-title">About the company</p>
+										<p className="item-title">
+											About the company
+										</p>
 										<p className="about">{e.about}</p>
 									</div>
 								))}
