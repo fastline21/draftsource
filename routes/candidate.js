@@ -36,12 +36,12 @@ router.get('/view-candidates', async (req, res) => {
 				],
 			};
 		} else if (key === 'experience') {
-			if (value === '7-10 years') {
+			if (value === '5-10 years') {
 				queryData = {
 					...queryData,
 					totalWorkYear: {
 						$lte: 10,
-						$gte: 7,
+						$gte: 5,
 					},
 				};
 			} else if (value === '11-14 years') {

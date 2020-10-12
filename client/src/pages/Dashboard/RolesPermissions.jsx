@@ -7,6 +7,10 @@ import moment from 'moment';
 import { getUsers } from './../../state/actions/userAction';
 
 const RolesPermissions = ({ getUsers, user: { users } }) => {
+	const onDelete = (id) => {
+		console.log(id);
+	};
+
 	useEffect(() => {
 		getUsers();
 	}, [users]);
@@ -29,6 +33,7 @@ const RolesPermissions = ({ getUsers, user: { users } }) => {
 							<th>Type</th>
 							<th>Status</th>
 							<th>Date Created</th>
+							<th style={{ textAlign: 'center' }}>Action</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,6 +50,13 @@ const RolesPermissions = ({ getUsers, user: { users } }) => {
 										{moment(e.dateCreated).format(
 											'MMMM DD, YYYY, h:mm:ss a'
 										)}
+									</td>
+									<td style={{ textAlign: 'center' }}>
+										<i
+											className="fas fa-trash-alt"
+											style={{ cursor: 'pointer' }}
+											onClick={onDelete}
+										></i>
 									</td>
 								</tr>
 							))}

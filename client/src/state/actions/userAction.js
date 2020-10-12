@@ -143,10 +143,10 @@ export const getUsers = () => async (dispatch) => {
             type: GET_USERS,
             payload: res.data,
         });
-    } catch (err) {
+    } catch (error) {
         dispatch({
             type: USERS_ERROR,
-            payload: err.response.data,
+            payload: error.response.data,
         });
     }
 };
