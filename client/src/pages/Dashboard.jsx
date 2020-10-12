@@ -25,6 +25,7 @@ import RejectedApplicants from './Dashboard/RejectedApplicants';
 import NewJobs from './Dashboard/NewJobs';
 import ApprovedJobs from './Dashboard/ApprovedJobs';
 import RejectedJobs from './Dashboard/RejectedJobs';
+import RolesPermissions from './Dashboard/RolesPermissions';
 
 const Dashboard = ({
 	getUserInfo,
@@ -261,6 +262,7 @@ const Dashboard = ({
 						{menu === 'new-jobs' ? <NewJobs /> : null}
 						{menu === 'approved-jobs' ? <ApprovedJobs /> : null}
 						{menu === 'rejected-jobs' ? <RejectedJobs /> : null}
+						{menu === 'roles-permissions' ? <RolesPermissions /> : null}
 					</main>
 				</div>
 			</div>
