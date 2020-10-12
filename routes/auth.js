@@ -442,4 +442,68 @@ router.get('/get-users', auth, async (req, res) => {
     res.json(users);
 });
 
+// @route	DELETE /api/auth/delete-user
+// @desc	Delete user
+// @access	Private
+router.delete('/delete-users/:id', auth, async (req, res) => {
+	const { id } = req.params;
+	const user = await User.findById(id);
+	
+	if (user.type) {
+		let resume = await Resume.findById(id);
+		const {
+			resumeImage,
+			internetResult,
+			computerSpecs,
+			aboutYourself,
+			uploadWork,
+			user,
+		} = resume;
+		fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+		fs.unlink(`${__dirname}/../public/uploads/${internetResult}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+		fs.unlink(`${__dirname}/../public/uploads/${computerSpecs}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+		fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+
+		uploadWork.images.map((e) => {
+			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+			});
+		});
+
+		uploadWork.documents.map((e) => {
+			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+			});
+		});
+		await User.findByIdAndDelete(user);
+		await Resume.findByIdAndDelete(id);
+	}
+})
+
 module.exports = router;

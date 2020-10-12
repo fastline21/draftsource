@@ -6,14 +6,16 @@ import moment from 'moment';
 // Actions
 import { getUsers } from './../../state/actions/userAction';
 
-const RolesPermissions = ({ getUsers, user: { users } }) => {
+const RolesPermissions = ({ getUsers, userState: { users } }) => {
 	const onDelete = (id) => {
 		console.log(id);
 	};
 
 	useEffect(() => {
 		getUsers();
-	}, [users]);
+
+		// eslint-disable-next-line
+	}, []);
 
 	return (
 		<div id="admin">
@@ -40,7 +42,7 @@ const RolesPermissions = ({ getUsers, user: { users } }) => {
 						{users &&
 							users.map((e, i) => (
 								<tr key={i}>
-									<td>{i}</td>
+									<td>{i + 1}</td>
 									<td>{e.email}</td>
 									<td>{e.type}</td>
 									<td>
@@ -55,7 +57,7 @@ const RolesPermissions = ({ getUsers, user: { users } }) => {
 										<i
 											className="fas fa-trash-alt"
 											style={{ cursor: 'pointer' }}
-											onClick={onDelete}
+											onClick={() => onDelete(e._id)}
 										></i>
 									</td>
 								</tr>
@@ -68,12 +70,12 @@ const RolesPermissions = ({ getUsers, user: { users } }) => {
 };
 
 RolesPermissions.propTypes = {
-	user: PropTypes.object.isRequired,
+	userState: PropTypes.object.isRequired,
 	getUsers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-	user: state.userState,
+	userState: state.userState,
 });
 
 export default connect(mapStateToProps, { getUsers })(RolesPermissions);
