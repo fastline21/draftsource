@@ -464,29 +464,47 @@
 
 	.talk-recruiter {
 		display: flex;
-		justify-content: center;
+		align-items: center;
 		padding: 200px 0 150px;
 		flex-direction: column;
 
-		@include media('>=desktop') {
-			flex-direction: row;
-		}
-
 		.title {
 			margin-bottom: 20px;
-			margin-right: 30px;
-
-			@include media('>=desktop') {
-				margin-bottom: 5px;
-			}
+			text-align: center;
 		}
 
 		.button {
-			width: 204px;
+			background-color: $white;
+			border-color: $darkBlue;
+			color: $darkBlue;
+			border-radius: 30px;
+			font-weight: 700;
+			font-size: 16px;
 			padding: 12px 24px;
+			margin: 10px 0;
+		}
 
-			@include media('>=desktop') {
-				width: auto;
+		.list {
+			margin-top: 10px;
+			list-style-type: none;
+			display: flex;
+			flex-direction: column;
+
+			@include media('>=576px') {
+				flex-direction: row;
+			}
+
+			.item {
+				margin-right: 10px;
+
+				&::before {
+					color: $darkGray;
+					font-family: 'Font Awesome 5 Free';
+					font-weight: 900;
+					content: '\f00c';
+					// margin-right: 10px;
+					margin-right: 5px;
+				}
 			}
 		}
 	}

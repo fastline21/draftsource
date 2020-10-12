@@ -99,6 +99,11 @@ const ViewCandidates = ({
 					>
 						Talk to a Recruiter
 					</button>
+					<ul className="list">
+						<li className="item">No hiring headcaches</li>
+						<li className="item">No interviews</li>
+						<li className="item">No dramas</li>
+					</ul>
 				</div>
 				// <div className="row">
 				// 	<div className="col-lg-12">

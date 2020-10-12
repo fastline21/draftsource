@@ -10,6 +10,8 @@ import {
     LOGIN_USER,
     GET_USER_INFO,
     LOGOUT_USER,
+    GET_USERS,
+    SET_LOADING
 } from './types';
 
 // Add user
@@ -129,4 +131,29 @@ export const logoutUser = () => {
     return {
         type: LOGOUT_USER,
     };
+};
+
+// Get users
+export const getUsers = () => async (dispatch) => {
+    try {
+        setLoading()(dispatch);
+
+        const res = await axios.get('/api/auth/get-users');
+        dispatch({
+            type: GET_USERS,
+            payload: res.data,
+        });
+    } catch (err) {
+        dispatch({
+            type: USERS_ERROR,
+            payload: err.response.data,
+        });
+    }
+};
+
+// Set loading to true
+export const setLoading = () => (dispatch) => {
+	dispatch({
+		type: SET_LOADING,
+	});
 };

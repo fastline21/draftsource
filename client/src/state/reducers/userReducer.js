@@ -8,12 +8,16 @@ import {
     LOGIN_USER,
     GET_USER_INFO,
     LOGOUT_USER,
+    GET_USERS,
+    SET_LOADING
 } from './../actions/types';
 
 const initialState = {
+    users: null,
     user: null,
     error: null,
     info: null,
+    loading: false
 };
 
 export default (state = initialState, action) => {
@@ -50,11 +54,22 @@ export default (state = initialState, action) => {
                 ...state,
                 info: action.payload,
             };
+        case GET_USERS:
+            return {
+                ...state,
+                users: action.payload,
+                loading: false
+            }
         case CLEAR_ERROR:
             return {
                 ...state,
                 error: null,
             };
+        case SET_LOADING:
+            return {
+                ...state,
+                loading: true
+            }
         default:
             return state;
     }

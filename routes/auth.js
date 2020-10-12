@@ -434,4 +434,12 @@ router.get('/get-user-info', auth, async (req, res) => {
 	}
 });
 
+// @route   GET /api/auth/get-users
+// @desc    Get all users
+// @access  Private
+router.get('/get-users', auth, async (req, res) => {
+    const users = await User.find().select('-password -verificationToken');
+    res.json(users);
+});
+
 module.exports = router;

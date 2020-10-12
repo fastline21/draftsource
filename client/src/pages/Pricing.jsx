@@ -67,6 +67,9 @@ const Pricing = () => {
 											Profile Verification
 										</li>
 										<li className="item">
+											Salary Negotiation
+										</li>
+										<li className="item">
 											No Long Term Contracts
 										</li>
 										<li className="item">
@@ -113,9 +116,10 @@ const Pricing = () => {
 								<h6 className="font-weight-bold mb-4">
 									Are we required to pay in advance?
 								</h6>
+								<p className="text">Yes!</p>
 								<p className="text">
-									Yes, in order to attract good talent, they
-									must feel secure that they are working for a
+									In order to attract good talent, they must
+									feel secure that they are working for a
 									legit employer who can actually pay and not
 									a bogus freeloader.
 								</p>
@@ -166,11 +170,12 @@ const Pricing = () => {
 								<h6 className="font-weight-bold mb-4">
 									Will they work according to our timezones?
 								</h6>
+								<p className="text">Absolutely!</p>
 								<p className="text">
-									Absolutely! We only get people who are
-									willing to work according to your timezones.
-									We don’t force people to work if they are
-									not comfortable with the arrangement
+									We only get people who are willing to work
+									according to your timezones. We don’t force
+									people to work if they are not comfortable
+									with the arrangement.
 								</p>
 								<p className="text">
 									You will be assured that the person we will
@@ -251,8 +256,8 @@ const Pricing = () => {
 					<Row className="task mb-5">
 						<Col sm="12">
 							<h1 className="title">
-								Find the talent that will help you grow your
-								business the fastest
+								Build an extension of your drafting team and
+								focus on closing more projects
 							</h1>
 							<div className="cta mt-4">
 								<Link
