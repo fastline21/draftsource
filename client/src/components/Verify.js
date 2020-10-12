@@ -56,6 +56,8 @@ const Verify = ({
 			} else if (user.type === 'Employer') {
 				setStep(2);
 				setLink('/signup/employer?step=2');
+			} else if (user.type === 'Recruiter') {
+				setLink('/login');
 			}
 		}
 

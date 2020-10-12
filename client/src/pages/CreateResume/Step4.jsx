@@ -388,8 +388,9 @@ const Step4 = ({
 											</div>
 										</div>
 										<p>
-											Record an mp4 audio (not more than
-											60 sec) about yourself in English
+											Record an mp3 or mp4 audio (not more
+											than 60 sec) about yourself in
+											English
 											<br />
 											<br />
 											<span>
