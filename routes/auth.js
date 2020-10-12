@@ -3,10 +3,12 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const randomstring = require('randomstring');
 const jwt = require('jsonwebtoken');
+const fs = require('fs');
 
 // Models
 const User = require('./../models/User');
 const Admin = require('./../models/Admin');
+const Resume = require('./../models/Resume');
 
 // Config
 const { sendEmail } = require('./../config/mailer');
@@ -445,19 +447,20 @@ router.get('/get-users', auth, async (req, res) => {
 // @route	DELETE /api/auth/delete-user
 // @desc	Delete user
 // @access	Private
-router.delete('/delete-users/:id', auth, async (req, res) => {
+router.delete('/delete-user/:id', auth, async (req, res) => {
 	const { id } = req.params;
 	const user = await User.findById(id);
 	
-	if (user.type) {
-		let resume = await Resume.findById(id);
+	if (user.type === 'Remote Worker') {
+		const resume = await Resume.findOne({ user: id});
+	
 		const {
+			_id,
 			resumeImage,
 			internetResult,
 			computerSpecs,
 			aboutYourself,
 			uploadWork,
-			user,
 		} = resume;
 		fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
 			if (err) {
@@ -492,18 +495,10 @@ router.delete('/delete-users/:id', auth, async (req, res) => {
 				}
 			});
 		});
+		await Resume.findByIdAndDelete(_id);
+	} 
 
-		uploadWork.documents.map((e) => {
-			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-			});
-		});
-		await User.findByIdAndDelete(user);
-		await Resume.findByIdAndDelete(id);
-	}
+	await User.findByIdAndDelete(id);
 })
 
 module.exports = router;

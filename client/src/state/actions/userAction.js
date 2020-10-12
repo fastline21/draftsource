@@ -157,3 +157,20 @@ export const setLoading = () => (dispatch) => {
 		type: SET_LOADING,
 	});
 };
+
+// Remove user
+export const deleteUser = (id) => async (dispatch) => {
+	try {
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		await axios.delete(`/api/auth/delete-user/${id}`);
+	} catch (error) {
+		dispatch({
+			type: USERS_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
