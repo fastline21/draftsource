@@ -82,7 +82,7 @@ router.post('/signup', async (req, res) => {
                         <br /><br />
                         <span style="font-weight: bold;">Step 4</span><br />
                         - Full-time work = 40 hours per week and Part-time work = 20 hours per week<br />
-                        - You may use vocaroo.com for video recording<br />
+                        - You may use (vocaroo dot com) for video recording<br />
                         - Do not say hi, hello, hey and uhm in any part of the video<br />
                         - Make the audio clear and avoid disturbing background noises<br />
                         - Do not include name, email and personal details<br />
