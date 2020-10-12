@@ -72,48 +72,48 @@ router.post('/signup', async (req, res) => {
                         Password: 4321
                         <br /><br />
                         <br />
-                        <strong>Step 2</strong>
-                        - Make a well lit, professional clear headshot
-                        - No half/full body shots
+                        <strong>Step 2</strong><br />
+                        - Make a well lit, professional clear headshot<br />
+                        - No half/full body shots<br />
                         - No selfies and no unprofessional headshots (This is a CV - Profile)
                         <br /><br />
-                        <strong>Step 3</strong>
-                        - Upload all photos not more than 5 min
-                        - 8GB RAM minimum for 2D and 16 GB RAM minimum for 3D
+                        <strong>Step 3</strong><br />
+                        - Upload all photos not more than 5 min<br />
+                        - 8GB RAM minimum for 2D and 16 GB RAM minimum for 3D<br />
                         - Do not crop your screenshots make sure the time is included in the photo
                         <br /><br />
-                        <strong>Step 4</strong>
-                        - Full-time work = 40 hours per week and Part-time work = 20 hours per week
-                        - You may use vocaroo.com for video recording 
-                        - Do not say hi, hello, hey and uhm in any part of the video
-                        - Make the audio clear and avoid disturbing background noises 
-                        - Do not include name, email and personal details
-                        - Headlines should be your core competencies 
+                        <strong>Step 4</strong><br />
+                        - Full-time work = 40 hours per week and Part-time work = 20 hours per week<br />
+                        - You may use vocaroo.com for video recording<br />
+                        - Do not say hi, hello, hey and uhm in any part of the video<br />
+                        - Make the audio clear and avoid disturbing background noises<br />
+                        - Do not include name, email and personal details<br />
+                        - Headlines should be your core competencies
                         <br /><br />
-                        <strong>Please follow the format for the 60 sec.</strong>
+                        <strong>Please follow the format for the 60 sec.</strong><br />
                         Introduction <br />
                         " I am a _______ and a _______. I have been in the industry for over _____ years and I have handled projects such as __________. My best project was completing a ________ for ________ and a ________ for _________. I am skilled at __________. + <strong>Include Final Pitch</strong>
                         <br /><br />
-                        <strong>Final Pitch Samples</strong>
+                        <strong>Final Pitch Samples</strong><br />
                         " I have experience running an Interior Design Firm of 10 people and I have generated over P100M in sales in 4 years as CEO of the company. "
                         <br /><br />
                         " I have led a team of 14 drafters while working for Australian and US companies for over 6 years " 
                         <br /><br />
                         " I was awarded as the best CAD Manager for 6 consecutive years with a US Based Engineering Company" 
                         <br /><br />
-                        <strong>Sample Voice Recordings</strong>
+                        <strong>Sample Voice Recordings</strong><br />
                         “I am a licensed mechanical engineer and  I have been in the industry for over 15 years and worked as a senior mechanical draftsman for 8 years for a global engineering company and I have handled multiple complex projects such as hotels, resorts, and malls. My best project was designing/drafting a 60 story residential condominium and a 2000 sqm packaging manufacturing plant. I am skilled at using Revit, AutoCAD and Quantity Surveying. I have a led a team of 14 drafters while working for Australian and US companies for over 6 years.” 
                         <br /><br />
                         “I am a furniture maker and a general contractor. I have been in the industry for over 4 years and I have handled complex interior renovation projects such as hotels, resorts, malls, restaurants and offices. My biggest accomplishment was completing the 500sqm office of Red Bull Philippines and connecting 407m of HDPE pipes via Horizontal Directional Drilling for Manila Water. I am skilled at manufacturing solid wood, outdoor weaved, kitchen cabinetry, metal works, sofas and upholstered furniture. I have experience running an interior design firm of 10 people and I have generated P100M in sales over 4 years as Founder and CEO of my company."
                         <br /><br />
-                        <strong>Sample Headlines</strong>
+                        <strong>Sample Headlines</strong><br /><br />
                         <strong>- Professional Civil Engineer (PE)</strong><br />
                         <strong>- Architect Designer | Civil & Structural Engineer</strong><br />
                         <strong>- Civil Engineer | Civil 3D & AutoCAD Specialist | CAD Designer</strong><br />
                         <strong>- BIM & CAD Expert (Arch/Struct, MEP, Civil, Point Cloud) (US-Based)</strong><br />
                         <strong>- MEP Design Engineer | MEP Estimator | Mechanical Engineer</strong><br />
                         <br />
-                        <strong>Step 5</strong>
+                        <strong>Step 5</strong><br />
                         - Put your most recent employment history, descending<br />
                         - Do not put irrelevant information such as Worked as a Cook for a Fastfood Restaurant, Franchised Master Siomai, Network Marketer for Usana and Front Row etc.<br />
                         -  Do not include company names in About the company instead change the names to "they" or "the company"<br />
@@ -128,13 +128,13 @@ router.post('/signup', async (req, res) => {
                         The company is a total interior finishing company in the Philippines.<br />
                         They offer end to end solutions from Interior Conceptualization + Design Development + Construction Management Services and Custom Furniture. They cater to Restaurants & Bars, Hotels, Offices, Residential and Hospitality companies.<br />
                         <br />
-                        <strong style="color: red;">STRICT JOB DESCRIPTION FORMAT</strong>
-                        <strong>Example</strong>
+                        <strong style="color: red;">STRICT JOB DESCRIPTION FORMAT</strong><br />
+                        <strong>Example</strong><br />
                         • Leads all managers in the organization including construction managers, design managers, and plant managers.
                         <br /><br />
                         <strong>Bullet + Space + Job Description</strong>
                         <br /><br />
-                        <strong>Step 6</strong>
+                        <strong>Step 6</strong><br />
                         - Include all Software and Skills even not included (press add or enter)<br />
                         - Include at least 3 but put all for keyword search <br />
                         - Include a minimum of 6 best projects (the more the better, the bigger the better)<br />
