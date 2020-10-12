@@ -49,9 +49,7 @@ const Footer = () => {
 							className='img-fluid logo'
 						/>
 						<p className='address'>
-							Draftsource Virtual is a full-service BPO company
-							providing top rated staff to Architecture,
-							Engineering and Construction companies worldwide
+							Draftsource Virtual is a full-service BPO company providing top rated staff to AEC companies worldwide
 						</p>
 						<p className='social-media'>
 							Follow us

@@ -2,7 +2,7 @@ export const popularJobsList = () => {
     const list = [
         'Architectural Drafter',
         'MEP Drafter',
-        '3D Renderer',
+        'Electrical Drafter',
         'Quantity Surveyor',
         'Structural Drafter',
     ];
