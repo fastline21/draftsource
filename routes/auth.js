@@ -59,7 +59,6 @@ router.post('/signup', async (req, res) => {
 					verificationToken,
 				});
 				await user.save();
-				res.json(user);
 				const compose = `
                         Hi ${firstName} ${lastName}<br /><br />
                         Someone has used your email to engage in Employment Activities, if this is your email click the link below to get started
@@ -183,19 +182,16 @@ router.post('/signup', async (req, res) => {
                         <br /><br />
                         Draftsource Team
                     `;
-				let isSuccess = false;
-				while (!isSuccess) {
-					try {
-						await sendEmail(
-							'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
-							email,
-							'Verify Email',
-							compose
-						);
-						isSuccess = true;
-					} catch (err) {
-						console.error('error:', err);
-					}
+				try {
+					await sendEmail(
+						'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
+						email,
+						'Verify Email',
+						compose
+					);
+					res.json(user);
+				} catch (err) {
+					console.error('error:', err);
 				}
 			} catch (error) {
 				console.error(error.message);
