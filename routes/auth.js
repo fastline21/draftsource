@@ -187,7 +187,7 @@ router.post('/signup', async (req, res) => {
 				while (!isSuccess) {
 					try {
 						await sendEmail(
-							'Draftsource Virtual <do-not-reply@draftsourcebpo.com>',
+							'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
 							email,
 							'Verify Email',
 							compose
@@ -242,7 +242,7 @@ router.post('/signup', async (req, res) => {
 					res.json(user);
 					try {
 						await sendEmail(
-							'Draftsource BPO <do-not-reply@draftsourcebpo.com>',
+							'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
 							email,
 							'Verify Email',
 							compose
@@ -299,7 +299,7 @@ router.post('/signup', async (req, res) => {
 					while (!isSuccess) {
 						try {
 							await sendEmail(
-								'Draftsource BPO <do-not-reply@draftsourcebpo.com>',
+								'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
 								email,
 								'Verify Email',
 								compose
@@ -440,8 +440,8 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @desc    Get all users
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
-    const users = await User.find().select('-password -verificationToken');
-    res.json(users);
+	const users = await User.find().select('-password -verificationToken');
+	res.json(users);
 });
 
 // @route	DELETE /api/auth/delete-user
@@ -450,10 +450,10 @@ router.get('/get-users', auth, async (req, res) => {
 router.delete('/delete-user/:id', auth, async (req, res) => {
 	const { id } = req.params;
 	const user = await User.findById(id);
-	
+
 	if (user.type === 'Remote Worker') {
-		const resume = await Resume.findOne({ user: id});
-	
+		const resume = await Resume.findOne({ user: id });
+
 		const {
 			_id,
 			resumeImage,
@@ -496,9 +496,9 @@ router.delete('/delete-user/:id', auth, async (req, res) => {
 			});
 		});
 		await Resume.findByIdAndDelete(_id);
-	} 
+	}
 
 	await User.findByIdAndDelete(id);
-})
+});
 
 module.exports = router;
