@@ -293,22 +293,32 @@ router.post('/signup', async (req, res) => {
                         Have a great day!<br />
                         Team Draftsource Virtual
                     `;
-
-					res.json(user);
-					let isSuccess = false;
-					while (!isSuccess) {
-						try {
-							await sendEmail(
-								'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
-								email,
-								'Verify Email',
-								compose
-							);
-							isSuccess = true;
-						} catch (err) {
-							console.error('error:', err);
-						}
+					try {
+						await sendEmail(
+							'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
+							email,
+							'Verify Email',
+							compose
+						);
+						res.json(user);
+					} catch (err) {
+						console.error('error:', err);
 					}
+
+					// let isSuccess = false;
+					// while (!isSuccess) {
+					// 	try {
+					// 		await sendEmail(
+					// 			'Draftsource Virtual <do-not-reply@draftsourcevirtual.com>',
+					// 			email,
+					// 			'Verify Email',
+					// 			compose
+					// 		);
+					// 		isSuccess = true;
+					// 	} catch (err) {
+					// 		console.error('error:', err);
+					// 	}
+					// }
 				}
 			} catch (error) {
 				console.error(error.message);
