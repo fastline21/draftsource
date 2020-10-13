@@ -6,9 +6,13 @@ if (process.env.NODE_ENV === 'production') {
 	mailConfig = {
 		host: process.env.MAILER_HOST,
 		port: process.env.MAILER_PORT,
+		secure: true,
 		auth: {
 			user: process.env.MAILER_USER,
 			pass: process.env.MAILER_PASSWORD,
+		},
+		tls: {
+			secureProtocol: 'TLSv1_method',
 		},
 	};
 } else {
