@@ -24,14 +24,13 @@ router.post('/', auth, async (req, res) => {
 		cellphone,
 		city,
 		country,
-		facebook,
-		workspace,
+		linkedIn,
 		internetType,
-		hardwareType,
-		brandName,
+		havePC,
 		availability,
 		expectedSalary,
-		currency,
+		internetResult,
+		// currency,
 		headline,
 	} = req.body;
 	let { specialty, software, education, workHistory, uploadWork } = req.body;
@@ -93,34 +92,34 @@ router.post('/', auth, async (req, res) => {
 	);
 	resumeImage = resumeImageFile;
 
-	let internetResult = uploadFile.internetResult;
-	const internetResultFile = generateFileName(
-		internetResult,
-		'internetResult'
-	);
-	internetResult.mv(
-		`${__dirname}/../public/uploads/${internetResultFile}`,
-		(err) => {
-			if (err) {
-				console.error(err);
-				return res.status(500).send(err);
-			}
-		}
-	);
-	internetResult = internetResultFile;
+	// let internetResult = uploadFile.internetResult;
+	// const internetResultFile = generateFileName(
+	// 	internetResult,
+	// 	'internetResult'
+	// );
+	// internetResult.mv(
+	// 	`${__dirname}/../public/uploads/${internetResultFile}`,
+	// 	(err) => {
+	// 		if (err) {
+	// 			console.error(err);
+	// 			return res.status(500).send(err);
+	// 		}
+	// 	}
+	// );
+	// internetResult = internetResultFile;
 
-	let computerSpecs = uploadFile.computerSpecs;
-	const computerSpecsFile = generateFileName(computerSpecs, 'computerSpecs');
-	computerSpecs.mv(
-		`${__dirname}/../public/uploads/${computerSpecsFile}`,
-		(err) => {
-			if (err) {
-				console.error(err);
-				return res.status(500).send(err);
-			}
-		}
-	);
-	computerSpecs = computerSpecsFile;
+	// let computerSpecs = uploadFile.computerSpecs;
+	// const computerSpecsFile = generateFileName(computerSpecs, 'computerSpecs');
+	// computerSpecs.mv(
+	// 	`${__dirname}/../public/uploads/${computerSpecsFile}`,
+	// 	(err) => {
+	// 		if (err) {
+	// 			console.error(err);
+	// 			return res.status(500).send(err);
+	// 		}
+	// 	}
+	// );
+	// computerSpecs = computerSpecsFile;
 
 	let aboutYourself = uploadFile.aboutYourself;
 	const aboutYourselfFile = generateFileName(aboutYourself, 'aboutYourself');
@@ -236,17 +235,17 @@ router.post('/', auth, async (req, res) => {
 			cellphone,
 			city,
 			country,
-			facebook,
+			linkedIn,
 			resumeImage,
-			workspace,
 			internetType,
-			hardwareType,
-			brandName,
-			internetResult,
-			computerSpecs,
+			brandName: havePC ? req.body.brandName : '',
+			internetResult: havePC ? req.body.internetResult : '',
+			processor: havePC ? req.body.processor : '',
+			ram: havePC ? req.body.ram : '',
+			// computerSpecs,
 			availability,
 			expectedSalary,
-			currency,
+			// currency,
 			aboutYourself,
 			education,
 			workHistory,

@@ -16,8 +16,10 @@ const RolesPermissions = ({
 	userState: { users, loading },
 }) => {
 	const onDelete = (id) => {
-		deleteUser(id);
-		getUsers();
+		if (window.confirm('Are you sure to delete this user?')) {
+			deleteUser(id);
+			getUsers();
+		}
 	};
 
 	useEffect(() => {

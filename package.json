@@ -25,7 +25,7 @@
         "moment": "^2.29.1",
         "mongoose": "^5.10.7",
         "mongoose-sequence": "^5.2.2",
-        "nodemailer": "^6.4.11",
+        "nodemailer": "^6.4.14",
         "pdf-thumbnail": "^1.0.6",
         "randomstring": "^1.1.5"
     },

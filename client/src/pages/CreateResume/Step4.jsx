@@ -13,6 +13,7 @@ import { addResume, clearError } from './../../state/actions/resumeAction';
 
 // List
 import { availabilityList } from './../../list/Availability';
+import { salaryList } from './../../list/Salary';
 
 // Components
 import EducationItem from './EducationItem';
@@ -37,8 +38,7 @@ const Step4 = ({
 
 	const initialInfo = {
 		availability: 'Full Time',
-		expectedSalary: '',
-		currency: 'USD',
+		expectedSalary: '$500-$600',
 		headline: '',
 	};
 	const initialEducation = {
@@ -62,7 +62,7 @@ const Step4 = ({
 	const [uploadAudio, setUploadAudio] = useState(null);
 	const [submit, setSubmit] = useState(false);
 
-	const { availability, expectedSalary, currency, headline } = info;
+	const { availability, expectedSalary, headline } = info;
 
 	const eduItem = (e) => {
 		const { name, value } = e.target;
@@ -254,7 +254,6 @@ const Step4 = ({
 		if (
 			availability === '' ||
 			expectedSalary === '' ||
-			currency === '' ||
 			headline === '' ||
 			uploadAudio === null ||
 			education.length === 0
@@ -338,10 +337,24 @@ const Step4 = ({
 										))}
 									</div>
 									<div className="form-group">
-										<label className="form-label">
+										<label
+											className="form-label"
+											htmlFor="expectedSalaryInput"
+										>
 											Expected Salary
 										</label>
-										<div className="form-inline">
+										<select
+											name="expectedSalary"
+											className="form-control input"
+											id="expectedSalaryInput"
+										>
+											{salaryList().map((e, i) => (
+												<option value={e} key={i}>
+													{e}
+												</option>
+											))}
+										</select>
+										{/* <div className="form-inline">
 											<input
 												type="number"
 												name="expectedSalary"
@@ -358,7 +371,7 @@ const Step4 = ({
 											>
 												<option value="USD">USD</option>
 											</select>
-										</div>
+										</div> */}
 									</div>
 									<div className="form-group mb-0">
 										<div className="form-inline">
@@ -639,16 +652,16 @@ const Step4 = ({
 												<>
 													<p className="text">
 														This section is for the
-														viewing onwhat you added
-														on your educational
-														background from the left
-														portion.
+														viewing on what you
+														added on your
+														educational background
+														from the left portion.
 													</p>
 													<p className="text">
 														You can fill up and add
 														as much as you want but
 														always remember that you
-														mush add an info that
+														must add an info that
 														will or somehow
 														contribute to a job
 														you're applying for.

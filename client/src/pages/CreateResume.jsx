@@ -24,21 +24,21 @@ const CreateResume = () => {
 	};
 
 	const renderStep = () => {
-		let r = '';
-		if (parseInt(step) === 1) {
-			r = <Step1 />;
-		} else if (parseInt(step) === 2) {
-			r = <Step2 uploadFile={onUploadFile} />;
-		} else if (parseInt(step) === 3) {
-			r = <Step3 uploadFile={onUploadFile} />;
-		} else if (parseInt(step) === 4) {
-			r = <Step4 uploadFile={onUploadFile} />;
-		} else if (parseInt(step) === 5) {
-			r = <Step5 />;
-		} else if (parseInt(step) === 6) {
-			r = <Step6 check={onCheck} />;
+		const parseStep = parseInt(step);
+
+		if (parseStep === 1) {
+			return <Step1 />;
+		} else if (parseStep === 2) {
+			return <Step2 uploadFile={onUploadFile} />;
+		} else if (parseStep === 3) {
+			return <Step3 uploadFile={onUploadFile} />;
+		} else if (parseStep === 4) {
+			return <Step4 uploadFile={onUploadFile} />;
+		} else if (parseStep === 5) {
+			return <Step5 />;
+		} else if (parseStep === 6) {
+			return <Step6 check={onCheck} />;
 		}
-		return r;
 	};
 
 	return (

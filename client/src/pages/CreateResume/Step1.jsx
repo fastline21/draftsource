@@ -21,7 +21,7 @@ const Step1 = ({
 	addUser,
 	clearError,
 	clearUser,
-	userState: { user, error },
+	userState: { success, error },
 }) => {
 	const [
 		Prompt,
@@ -76,9 +76,6 @@ const Step1 = ({
 				'Please fill-in the required boxes to Proceed.'
 			);
 		} else {
-			for (const property in info) {
-				localStorage.setItem([property], info[property]);
-			}
 			addUser({ ...info, type: 'Remote Worker' });
 			setInfo(initialInfo);
 			setPristine();
@@ -102,7 +99,7 @@ const Step1 = ({
 			clearError();
 		}
 
-		if (user) {
+		if (success) {
 			setAlert(
 				'/',
 				'Kindly check <span>email</span> for confirmation to proceed.'
@@ -111,7 +108,7 @@ const Step1 = ({
 		}
 
 		// eslint-disable-next-line
-	}, [info, load, error, user]);
+	}, [info, load, error, success]);
 	return (
 		<div className="step-1">
 			{Prompt}

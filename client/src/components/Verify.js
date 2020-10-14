@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 // Actions
 import { verifyUser, clearError } from './../state/actions/userAction';
 import { setAlert } from './../state/actions/alertAction';
-import { addResume } from './../state/actions/resumeAction';
+import { addResume, tempUser } from './../state/actions/resumeAction';
 import { setStep } from './../state/actions/employerAction';
 
 const Verify = ({
@@ -15,6 +15,7 @@ const Verify = ({
 	clearError,
 	addResume,
 	setStep,
+	tempUser,
 	userState: { user, error },
 }) => {
 	let { token } = useParams();
@@ -32,26 +33,7 @@ const Verify = ({
 
 		if (user) {
 			if (user.type === 'Remote Worker') {
-				const {
-					firstName,
-					lastName,
-					email,
-					cellphone,
-					city,
-					country,
-					linkedIn,
-				} = localStorage;
-				const resume = {
-					firstName,
-					lastName,
-					email,
-					cellphone,
-					city,
-					country,
-					linkedIn,
-				};
-				localStorage.clear();
-				addResume(resume);
+				tempUser(user._id);
 				setLink('/create-resume?step=2');
 			} else if (user.type === 'Employer') {
 				setStep(2);
@@ -73,6 +55,7 @@ Verify.propTypes = {
 	clearError: PropTypes.func.isRequired,
 	addResume: PropTypes.func.isRequired,
 	setStep: PropTypes.func.isRequired,
+	tempUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -85,4 +68,5 @@ export default connect(mapStateToProps, {
 	clearError,
 	addResume,
 	setStep,
+	tempUser,
 })(Verify);

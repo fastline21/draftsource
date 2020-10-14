@@ -92,7 +92,7 @@ const Dashboard = ({
 		}
 
 		// eslint-disable-next-line
-	}, [load, info, personalInfo, user, menu, filter, location]);
+	}, [load, menu, user]);
 	return (
 		<div id="dashboard">
 			<div className="container-fluid">
@@ -262,7 +262,9 @@ const Dashboard = ({
 						{menu === 'new-jobs' ? <NewJobs /> : null}
 						{menu === 'approved-jobs' ? <ApprovedJobs /> : null}
 						{menu === 'rejected-jobs' ? <RejectedJobs /> : null}
-						{menu === 'roles-permissions' ? <RolesPermissions /> : null}
+						{menu === 'roles-permissions' ? (
+							<RolesPermissions />
+						) : null}
 					</main>
 				</div>
 			</div>

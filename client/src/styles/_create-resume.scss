@@ -222,7 +222,6 @@
 				font-weight: 600;
 				width: 100%;
 				text-align: center;
-				margin-bottom: 15px;
 
 				@include media('<=desktop') {
 					padding: 6px 12px;
@@ -239,7 +238,7 @@
 				border-bottom: 2px solid #d5d5d5;
 				color: #606060;
 				font-weight: 500;
-				visibility: hidden;
+				margin-top: 15px;
 
 				.selected-file {
 					display: inline-block;
@@ -419,29 +418,12 @@
 
 		.input {
 			&[name='expectedSalary'] {
-				width: 215px;
 				-moz-appearance: textfield;
-
-				@include media('<=320px') {
-					width: 180px;
-				}
-
-				@include media('>tablet', '<=desktop') {
-					width: 175px;
-				}
 
 				&::-webkit-outer-spin-button,
 				&::-webkit-inner-spin-button {
 					-webkit-appearance: none;
 					margin: 0;
-				}
-			}
-
-			&[name='currency'] {
-				margin-left: auto;
-
-				@include media('<576px') {
-					width: 100px;
 				}
 			}
 		}

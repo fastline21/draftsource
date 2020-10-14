@@ -1,36 +1,17 @@
 const nodemailer = require('nodemailer');
 
-let mailConfig;
-
-if (process.env.NODE_ENV === 'production') {
-	mailConfig = {
-		host: process.env.MAILER_HOST,
-		port: process.env.MAILER_PORT,
-		secure: false,
-		auth: {
-			user: process.env.MAILER_USER,
-			pass: process.env.MAILER_PASSWORD,
-		},
-		tls: {
-			secureProtocol: 'TLSv1_method',
-		},
-	};
-} else {
-	mailConfig = {
-		host: process.env.MAILER_HOST,
-		port: process.env.MAILER_PORT,
-		secure: false,
-		auth: {
-			user: process.env.MAILER_USER,
-			pass: process.env.MAILER_PASSWORD,
-		},
-		tls: {
-			secureProtocol: 'TLSv1_method',
-		},
-	};
-}
-
-const transport = nodemailer.createTransport(mailConfig);
+const transport = nodemailer.createTransport({
+	host: process.env.MAILER_HOST,
+	port: process.env.MAILER_PORT,
+	secure: false,
+	auth: {
+		user: process.env.MAILER_USER,
+		pass: process.env.MAILER_PASSWORD,
+	},
+	tls: {
+		secureProtocol: 'TLSv1_method',
+	},
+});
 
 module.exports = {
 	sendEmail(from, to, subject, html) {

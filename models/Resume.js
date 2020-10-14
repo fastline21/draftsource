@@ -33,9 +33,6 @@ const ResumeSchema = new mongoose.Schema({
 	resumeImage: {
 		type: String,
 	},
-	workspace: {
-		type: String,
-	},
 	internetType: {
 		type: String,
 	},
@@ -45,19 +42,19 @@ const ResumeSchema = new mongoose.Schema({
 	brandName: {
 		type: String,
 	},
-	internetResult: {
+	processor: {
 		type: String,
 	},
-	computerSpecs: {
+	ram: {
+		type: String,
+	},
+	internetResult: {
 		type: String,
 	},
 	availability: {
 		type: String,
 	},
 	expectedSalary: {
-		type: Number,
-	},
-	currency: {
 		type: String,
 	},
 	aboutYourself: {
@@ -128,18 +125,6 @@ const ResumeSchema = new mongoose.Schema({
 				type: String,
 			},
 			title: {
-				type: String,
-			},
-		},
-		documents: {
-			type: Array,
-			file: {
-				type: String,
-			},
-			title: {
-				type: String,
-			},
-			description: {
 				type: String,
 			},
 		},

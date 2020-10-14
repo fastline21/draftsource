@@ -11,6 +11,7 @@ import {
 	viewResume,
 	removeCandidate,
 	addCandidate,
+	getShortlisted,
 } from './../../state/actions/candidateAction';
 
 // Utils

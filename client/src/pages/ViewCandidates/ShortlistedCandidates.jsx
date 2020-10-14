@@ -79,21 +79,21 @@ const ShortlistedCandidates = ({
 		addCandidate(id);
 	};
 
-	const removeShortlist = (id) => {
-		removeCandidate(id);
-		const oldQuery = queryParams.get('candidates');
-		let newQuery = '';
-		newQuery = oldQuery.split(',');
-		newQuery = newQuery.filter((e) => e !== id);
-		if (newQuery.length === 0) {
-			newUrl.searchParams.delete('candidates');
-		}
-
-		history.push({
-			pathname: newUrl.pathname,
-			search: newUrl.search,
-		});
-	};
+	// const removeShortlist = (id) => {
+	// 	setRecheck(true);
+	// 	removeCandidate(id);
+	// 	const oldQuery = queryParams.get('candidates');
+	// 	let newQuery = '';
+	// 	newQuery = oldQuery.split(',');
+	// 	newQuery = newQuery.filter((e) => e !== id);
+	// 	if (newQuery.length === 0) {
+	// 		newUrl.searchParams.delete('candidates');
+	// 	}
+	// 	history.push({
+	// 		pathname: newUrl.pathname,
+	// 		search: newUrl.search,
+	// 	});
+	// };
 
 	useEffect(() => {
 		if (queryParams.get('search') !== null) {
@@ -114,17 +114,34 @@ const ShortlistedCandidates = ({
 			}
 		}
 
+		if (shortlistedInfo.length !== shortlist.length) {
+			getShortlisted(
+				queryParams.get('candidates') !== null
+					? queryParams.get('candidates').split(',')
+					: []
+			);
+		}
+
+		// if (
+		// 	JSON.stringify(queryParams.get('candidates')) !==
+		// 	JSON.stringify(shortlist)
+		// ) {
+		// 	getShortlisted(
+		// 		queryParams.get('candidates') !== null
+		// 			? queryParams.get('candidates').split(',')
+		// 			: []
+		// 	);
+		// 	console.log(
+		// 		JSON.stringify(shortlist),
+		// 		JSON.stringify(queryParams.get('candidates'))
+		// 	);
+		// }
+
 		if (shortlist.length === 0) {
 			if (queryParams.get('candidates')) {
 				setShortlisted(queryParams.get('candidates').split(','));
 			}
 		}
-
-		getShortlisted(
-			queryParams.get('candidates') !== null
-				? queryParams.get('candidates').split(',')
-				: []
-		);
 
 		// eslint-disable-next-line
 	}, [queryParams, params, filter, shortlist, shortlistedInfo]);

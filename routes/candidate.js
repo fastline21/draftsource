@@ -312,18 +312,18 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 			return;
 		}
 	});
-	fs.unlink(`${__dirname}/../public/uploads/${internetResult}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
-	fs.unlink(`${__dirname}/../public/uploads/${computerSpecs}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
+	// fs.unlink(`${__dirname}/../public/uploads/${internetResult}`, (err) => {
+	// 	if (err) {
+	// 		console.error(err);
+	// 		return;
+	// 	}
+	// });
+	// fs.unlink(`${__dirname}/../public/uploads/${computerSpecs}`, (err) => {
+	// 	if (err) {
+	// 		console.error(err);
+	// 		return;
+	// 	}
+	// });
 	fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
 		if (err) {
 			console.error(err);
@@ -340,14 +340,14 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 		});
 	});
 
-	uploadWork.documents.map((e) => {
-		fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
-			if (err) {
-				console.error(err);
-				return;
-			}
-		});
-	});
+	// uploadWork.documents.map((e) => {
+	// 	fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+	// 		if (err) {
+	// 			console.error(err);
+	// 			return;
+	// 		}
+	// 	});
+	// });
 	await User.findByIdAndDelete(user);
 	await Resume.findByIdAndDelete(id);
 });
