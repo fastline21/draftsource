@@ -83,13 +83,15 @@ const Step3 = ({
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		console.log(internetType, internetResult);
+
 		if (internetType === '' || internetResult === '') {
 			return setAlert(
 				'',
 				'Please fill-in the required boxes to Proceed.'
 			);
-		} else if (havePC) {
+		}
+
+		if (havePC) {
 			if (
 				hardwareType === '' ||
 				brandName === '' ||
@@ -101,24 +103,19 @@ const Step3 = ({
 					'Please fill-in the required boxes to Proceed.'
 				);
 			}
-		} else {
-			// uploadFile({
-			// 	internetResult,
-			// });
-
-			addResume({
-				internetType,
-				hardwareType,
-				brandName,
-				processor,
-				ram,
-				havePC,
-			});
-
-			setInfo(initialInfo);
-			setSubmit(true);
-			setPristine();
 		}
+
+		addResume({
+			internetType,
+			hardwareType,
+			brandName,
+			processor,
+			ram,
+			havePC,
+		});
+		setInfo(initialInfo);
+		setSubmit(true);
+		setPristine();
 	};
 
 	useEffect(() => {
