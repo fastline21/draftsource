@@ -32,24 +32,31 @@ router.get('/view-candidates', async (req, res) => {
 				$or: [
 					{ specialty: { $regex: value, $options: 'i' } },
 					{ software: { $regex: value, $options: 'i' } },
-					{ availability: { $regex: value, $options: 'i' } },
 				],
 			};
 		} else if (key === 'experience') {
-			if (value === '5-10 years') {
+			if (value === '1-4 years') {
 				queryData = {
 					...queryData,
 					totalWorkYear: {
-						$lte: 10,
+						$lte: 4,
+						$gte: 1,
+					},
+				};
+			} else if (value === '5-9 years') {
+				queryData = {
+					...queryData,
+					totalWorkYear: {
+						$lte: 9,
 						$gte: 5,
 					},
 				};
-			} else if (value === '11-14 years') {
+			} else if (value === '10-14 years') {
 				queryData = {
 					...queryData,
 					totalWorkYear: {
 						$lte: 14,
-						$gte: 11,
+						$gte: 10,
 					},
 				};
 			} else if (value === '15+ years') {
@@ -60,6 +67,11 @@ router.get('/view-candidates', async (req, res) => {
 					},
 				};
 			}
+		} else if (key === 'country') {
+			queryData = {
+				...queryData,
+				countryExperience: { $regex: value, $options: 'i' },
+			};
 		} else if (key === 'page' || key === 'limit') {
 			continue;
 		} else {

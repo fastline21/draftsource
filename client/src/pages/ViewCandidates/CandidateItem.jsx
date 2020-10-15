@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Overlay, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MultiCarousel from 'react-multi-carousel';
@@ -31,6 +31,11 @@ const CandidateItem = ({
 	const [visibleArrow, setVisibleArrow] = useState(false);
 	const windowSize = useWindowSize();
 
+	const [showYear, setShowYear] = useState(false);
+	const [showSalary, setShowSalary] = useState(false);
+	const targetYear = useRef(null);
+	const targetSalary = useRef(null);
+
 	const {
 		_id,
 		resumeImage,
@@ -47,6 +52,9 @@ const CandidateItem = ({
 		recruitmentsComment,
 		idCode,
 		headline,
+		totalWorkYear,
+		expectedSalary,
+		countryExperience,
 	} = candidate;
 
 	const [activeMiniSlide, setActiveMiniSlide] = useState(0);
@@ -111,48 +119,127 @@ const CandidateItem = ({
 						<p className="headline">{headline}</p>
 					</div>
 				</div>
-				<div className="profile-stats" onClick={onViewResume}>
-					<div className="box-1">
-						<audio
-							controls
-							className="about-yourself"
-							controlsList="nodownload"
-						>
-							<source src={`/uploads/${aboutYourself}`} />
-						</audio>
+				<audio
+					controls
+					className="about-yourself"
+					controlsList="nodownload"
+				>
+					<source src={`/uploads/${aboutYourself}`} />
+				</audio>
+				<div className="profile-stats">
+					<div className="box-a">
+						<div className="box-1">
+							<p className="box-label">Relevant Experience:</p>
+							<p className="total-work-history">
+								{totalWorkYear}{' '}
+								{totalWorkYear > 1 ? 'Years' : 'Year'}{' '}
+								<i
+									className="fas fa-question-circle"
+									ref={targetYear}
+									onClick={() => setShowYear(!showYear)}
+								></i>
+								<Overlay
+									target={targetYear.current}
+									show={showYear}
+									placement="right"
+								>
+									{(props) => (
+										<Tooltip
+											id="overlay-example"
+											{...props}
+										>
+											Expected salaries placed by the
+											candidates are based on
+											Draftsource’s fair market standards
+											<br />
+											Salaries can be negotiated before or
+											during the interview by the client
+											or by the Draftsource team if
+											requested
+											<br />
+											Equipment rental, internet
+											connection and service fee not
+											included in expected salary
+										</Tooltip>
+									)}
+								</Overlay>
+							</p>
+						</div>
+						<div className="box-2" onClick={onViewResume}>
+							<p
+								className="box-label"
+								style={{ minWidth: '153px' }}
+							>
+								Country Experience:
+							</p>
+							<p className="country">
+								{countryExperience.join(', ')}
+							</p>
+						</div>
 					</div>
-					<div className="box-2">
-						<p className="box-label">Availability:</p>
-						<p className="availability">{availability}</p>
-					</div>
-					<div className="box-3">
-						<p className="box-label">English Profiecy</p>
-						<div className="rating">
-							<i
-								className={`rating-color fas fa-star${
-									rating >= 1 ? ` checked` : ''
-								}`}
-							></i>
-							<i
-								className={`rating-color fas fa-star${
-									rating >= 2 ? ` checked` : ''
-								}`}
-							></i>
-							<i
-								className={`rating-color fas fa-star${
-									rating >= 3 ? ` checked` : ''
-								}`}
-							></i>
-							<i
-								className={`rating-color fas fa-star${
-									rating >= 4 ? ` checked` : ''
-								}`}
-							></i>
-							<i
-								className={`rating-color fas fa-star${
-									rating === 5 ? ` checked` : ''
-								}`}
-							></i>
+					<div className="box-b">
+						<div className="box-3">
+							<p className="box-label">Expected Salary:</p>
+							<p className="expected-salary">
+								{expectedSalary}{' '}
+								<i
+									className="fas fa-question-circle"
+									ref={targetSalary}
+									onClick={() => setShowSalary(!showSalary)}
+								></i>
+								<Overlay
+									target={targetSalary.current}
+									show={showSalary}
+									placement="right"
+								>
+									{(props) => (
+										<Tooltip
+											id="overlay-example"
+											{...props}
+										>
+											Experience is computed and counted
+											depending on years of experience in
+											the industry
+											<br />
+											Irrelevant work experiences is not
+											included in the computation and
+											resumes such as marketing, sales,
+											customer support and other
+											non-related industries
+										</Tooltip>
+									)}
+								</Overlay>
+							</p>
+						</div>
+						<div className="box-4" onClick={onViewResume}>
+							<p className="box-label">English Profiecy:</p>
+							<div className="rating">
+								<i
+									className={`rating-color fas fa-star${
+										rating >= 1 ? ` checked` : ''
+									}`}
+								></i>
+								<i
+									className={`rating-color fas fa-star${
+										rating >= 2 ? ` checked` : ''
+									}`}
+								></i>
+								<i
+									className={`rating-color fas fa-star${
+										rating >= 3 ? ` checked` : ''
+									}`}
+								></i>
+								<i
+									className={`rating-color fas fa-star${
+										rating >= 4 ? ` checked` : ''
+									}`}
+								></i>
+								<i
+									className={`rating-color fas fa-star${
+										rating === 5 ? ` checked` : ''
+									}`}
+								></i>
+							</div>
 						</div>
 					</div>
 				</div>

@@ -581,6 +581,9 @@ const Step4 = ({
 																onChange={
 																	eduItem
 																}
+																disabled={
+																	!disableInput.license
+																}
 															/>
 														</div>
 													</div>
@@ -595,6 +598,9 @@ const Step4 = ({
 																className="form-control input"
 																onChange={
 																	eduItem
+																}
+																disabled={
+																	!disableInput.license
 																}
 															/>
 														</div>

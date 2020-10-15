@@ -56,9 +56,9 @@ const Dashboard = ({
 			setLoad(false);
 		}
 
-		if (user && user.type === 'Admin') {
-			setIsAdmin(true);
-		}
+		// if (user && user.type === 'Admin') {
+		// 	setIsAdmin(true);
+		// }
 
 		if (
 			info !== null &&
@@ -92,7 +92,7 @@ const Dashboard = ({
 		}
 
 		// eslint-disable-next-line
-	}, [load, menu, user]);
+	}, [menu]);
 	return (
 		<div id="dashboard">
 			<div className="container-fluid">
@@ -229,7 +229,7 @@ const Dashboard = ({
 								</li>
 							</ul>
 						</div>
-						{isAdmin && (
+						{user && user.type === 'Admin' && (
 							<div className="settings">
 								<h5 className="title">Settings</h5>
 								<ul className="nav flex-column">

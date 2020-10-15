@@ -35,43 +35,44 @@ const App = () => {
 					<ScrollToTop />
 					<LoadUser />
 					<Alert />
-					<div id='mobileOverlay' />
+					<div id="mobileOverlay" />
+					<div id="mobileOverlay1" />
 					<Header />
 					<Switch>
-						<Route exact path='/' component={Home} />
+						<Route exact path="/" component={Home} />
 						<Route
 							exact
-							path='/view-candidates'
+							path="/view-candidates"
 							component={VerifyViewCandidates}
 						/>
 						<Route
-							path='/view-candidates/:menu'
+							path="/view-candidates/:menu"
 							component={ViewCandidates}
 						/>
-						<Route path='/pricing' component={Pricing} />
+						<Route path="/pricing" component={Pricing} />
 						<CreateResumeRoute
-							path='/create-resume'
+							path="/create-resume"
 							component={CreateResume}
 						/>
-						<DraftJobRoute path='/draft-job' component={DraftJob} />
-						<Route path='/verify/:token' component={Verify} />
+						<DraftJobRoute path="/draft-job" component={DraftJob} />
+						<Route path="/verify/:token" component={Verify} />
 						<PrivateRoute
 							exact
-							path='/dashboard'
+							path="/dashboard"
 							component={VerifyDashboard}
 						/>
 						<PrivateRoute
-							path='/dashboard/:menu'
+							path="/dashboard/:menu"
 							component={Dashboard}
 						/>
-						<Route path='/login' component={Login} />
-						<Route path='/admin-signup' component={AdminSignup} />
+						<Route path="/login" component={Login} />
+						<Route path="/admin-signup" component={AdminSignup} />
 						<Route
-							path='/privacy-policy'
+							path="/privacy-policy"
 							component={PrivacyPolicy}
 						/>
-						<Route path='/signup/:type' component={Signup} />
-						<Route path='*' component={NotFound} />
+						<Route path="/signup/:type" component={Signup} />
+						<Route path="*" component={NotFound} />
 					</Switch>
 					<Footer />
 				</Fragment>

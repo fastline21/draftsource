@@ -26,10 +26,10 @@ router.post('/', auth, async (req, res) => {
 		country,
 		linkedIn,
 		internetType,
+		internetResult,
 		havePC,
 		availability,
 		expectedSalary,
-		internetResult,
 		// currency,
 		headline,
 	} = req.body;
@@ -91,6 +91,11 @@ router.post('/', auth, async (req, res) => {
 		}
 	);
 	resumeImage = resumeImageFile;
+
+	let countryExperience = workHistory.map((e) => e.country);
+	countryExperience = countryExperience.filter(
+		(a, b) => countryExperience.indexOf(a) === b
+	);
 
 	// let internetResult = uploadFile.internetResult;
 	// const internetResultFile = generateFileName(
@@ -238,8 +243,9 @@ router.post('/', auth, async (req, res) => {
 			linkedIn,
 			resumeImage,
 			internetType,
+			internetResult,
+			hardwareType: havePC ? req.body.hardwareType : '',
 			brandName: havePC ? req.body.brandName : '',
-			internetResult: havePC ? req.body.internetResult : '',
 			processor: havePC ? req.body.processor : '',
 			ram: havePC ? req.body.ram : '',
 			// computerSpecs,
@@ -249,6 +255,7 @@ router.post('/', auth, async (req, res) => {
 			aboutYourself,
 			education,
 			workHistory,
+			countryExperience,
 			specialty,
 			software,
 			uploadWork,

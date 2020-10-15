@@ -54,7 +54,9 @@ const ViewResume = ({
 		hardwareType: '',
 		brandName: '',
 		internetResult: '',
-		computerSpecs: '',
+		processort: '',
+		ram: '',
+		countryExperience: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -94,12 +96,13 @@ const ViewResume = ({
 		workHistory,
 		education,
 		recruitmentsComment,
-		workspace,
 		internetType,
 		hardwareType,
 		brandName,
+		process,
+		ram,
 		internetResult,
-		computerSpecs,
+		countryExperience,
 	} = data;
 
 	const removeShortlist = (id) => {
@@ -287,7 +290,10 @@ const ViewResume = ({
 							</p>
 						</div>
 						<div className="col-lg-8">
-							<p id="specialty" className="specialty mb-0">
+							<p
+								id="specialty"
+								className="specialty-software mb-0"
+							>
 								{specialty.map((e, i) => (
 									<span
 										className="specialty-software-item"
@@ -307,7 +313,10 @@ const ViewResume = ({
 							</p>
 						</div>
 						<div className="col-lg-8">
-							<p id="software" className="software mb-0">
+							<p
+								id="software"
+								className="specialty-software mb-0"
+							>
 								{software.map((e, i) => (
 									<span
 										className="specialty-software-item"
@@ -381,7 +390,15 @@ const ViewResume = ({
 										<p className="item-title">
 											About the company
 										</p>
-										<p className="about">{e.about}</p>
+										<p className="item-title">
+											Company Expertise
+										</p>
+										<p className="company-expertise">
+											{e.companyExpertise.join(', ')}
+										</p>
+										<br />
+										<p className="item-title">Country</p>
+										<p className="country">{e.country}</p>
 									</div>
 								))}
 							</div>
@@ -398,21 +415,30 @@ const ViewResume = ({
 									<div className="education-item" key={i}>
 										<table className="education-item table table-borderless">
 											<tbody>
-												<tr>
-													<td
-														className={`item-choices pl-0${
-															i === 0
-																? ' pt-0'
-																: ''
-														}`}
-													>
-														{e.choices}
-													</td>
-												</tr>
+												{e.choices !==
+												'License and Certification' ? (
+													<tr>
+														<td
+															className={`item-choices pl-0${
+																i === 0
+																	? ' pt-0'
+																	: ''
+															}`}
+														>
+															{e.choices}
+														</td>
+													</tr>
+												) : null}
 												{e.choices ===
 												'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
+														<td
+															className="item-title pb-0 pl-0"
+															style={{
+																color:
+																	'#298494',
+															}}
+														>
 															License and
 															Certification
 														</td>
@@ -456,15 +482,22 @@ const ViewResume = ({
 														</td>
 													</tr>
 												) : null}
-												<tr>
-													<td className="item-title pb-0 pl-0">
-														Started - Graduated
-													</td>
-													<td className="item-month-year pb-0 item-value">
-														{e.monthYearStarted} -{' '}
-														{e.monthYearGraduated}
-													</td>
-												</tr>
+												{e.choices !== 'High School' &&
+												e.choices !==
+													'License and Certification' ? (
+													<tr>
+														<td className="item-title pb-0 pl-0">
+															Started - Graduated
+														</td>
+														<td className="item-month-year pb-0 item-value">
+															{e.monthYearStarted}{' '}
+															-{' '}
+															{
+																e.monthYearGraduated
+															}
+														</td>
+													</tr>
+												) : null}
 											</tbody>
 										</table>
 									</div>
@@ -500,20 +533,6 @@ const ViewResume = ({
 											scope="row"
 											className="pt-0 item-title"
 										>
-											Workspace
-										</th>
-										<td
-											id="workspace"
-											className="pt-0 item-value"
-										>
-											{workspace}
-										</td>
-									</tr>
-									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
 											Internet Type
 										</th>
 										<td
@@ -528,72 +547,19 @@ const ViewResume = ({
 											scope="row"
 											className="pt-0 item-title"
 										>
-											Hardware Type
+											Internet Result
 										</th>
 										<td
-											id="hardwareType"
+											id="internetType"
 											className="pt-0 item-value"
 										>
-											{hardwareType}
-										</td>
-									</tr>
-									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
-											Brand Name
-										</th>
-										<td
-											id="brandName"
-											className="pt-0 item-value"
-										>
-											{brandName}
-										</td>
-									</tr>
-									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
-											Internet Speedtest Result
-										</th>
-										<td className="pt-0">
-											<button
+											<a
+												href={internetResult}
+												target="_blank"
 												className="btn btn-primary view"
-												onClick={() =>
-													setViewImage({
-														show: true,
-														title:
-															'Internet Speedtest Result',
-														file: internetResult,
-													})
-												}
 											>
 												View
-											</button>
-										</td>
-									</tr>
-									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
-											Computer Specs
-										</th>
-										<td className="pt-0">
-											<button
-												className="btn btn-primary view"
-												onClick={() =>
-													setViewImage({
-														show: true,
-														title: 'Computer Specs',
-														file: computerSpecs,
-													})
-												}
-											>
-												View
-											</button>
+											</a>
 										</td>
 									</tr>
 								</tbody>

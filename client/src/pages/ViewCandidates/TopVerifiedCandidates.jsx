@@ -19,6 +19,9 @@ import ViewResume from './ViewResume';
 import PaginationLink from './PaginationLink';
 import Candidates from './Candidates';
 
+// Utils
+import useWindowSize from './../../utils/useWindowSize';
+
 const TopVerifiedCandidates = ({
 	viewCandidates,
 	addFilter,
@@ -35,10 +38,12 @@ const TopVerifiedCandidates = ({
 	const history = useHistory();
 	const [activeMiniSlide, setActiveMiniSlide] = useState(0);
 	const [seeResume, setSeeResume] = useState(false);
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState({
 		search: '',
 		viewBy: '10',
 	});
+	const windowSize = useWindowSize();
 
 	const miniSlideSelect = (selectedIndex) => {
 		setActiveMiniSlide(selectedIndex);
@@ -94,8 +99,20 @@ const TopVerifiedCandidates = ({
 			}
 		}
 
+		if (windowSize.width > 1023) {
+			document.getElementById('filterMobile').removeAttribute('style');
+			document.getElementById('mobileOverlay1').removeAttribute('style');
+		}
+
+		if (showFilter) {
+			document.getElementById('filterMobile').style.left = 0;
+			document.getElementById('mobileOverlay1').style.cssText =
+				'visibility: visible; opacity: 1';
+			setShowFilter(false);
+		}
+
 		// eslint-disable-next-line
-	}, [queryParams, params, filter, candidates]);
+	}, [queryParams, params, filter, candidates, windowSize]);
 
 	return (
 		<Fragment>
@@ -124,6 +141,12 @@ const TopVerifiedCandidates = ({
 						<option value="20">20</option>
 						<option value="50">50</option>
 					</select>
+					<button
+						className="btn btn-primary button filter"
+						onClick={() => setShowFilter(true)}
+					>
+						<i className="fas fa-filter"></i> Filter
+					</button>
 				</div>
 			</div>
 			<ViewResume isShow={resume !== null ? true : false} />

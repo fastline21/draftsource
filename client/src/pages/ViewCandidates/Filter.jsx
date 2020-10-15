@@ -8,6 +8,8 @@ import { availabilityList } from './../../list/Availability';
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
 import { experienceList } from '../../list/Experience';
+import { countryList } from '../../list/Country';
+import { salaryList } from '../../list/Salary';
 import { ratingList } from '../../list/Rating';
 
 // Actions
@@ -28,10 +30,12 @@ const Filter = ({
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
 	const [show, setShow] = useState({
-		availabilityCat: false,
+		// availabilityCat: false,
 		specialtyCat: false,
 		softwareCat: false,
 		experienceCat: false,
+		countryCat: false,
+		salaryCat: false,
 		ratingCat: false,
 	});
 	const onShow = (e) => {
@@ -44,8 +48,10 @@ const Filter = ({
 		const { specialty, software } = filter;
 
 		if (
-			name === 'availability' ||
+			// name === 'availability' ||
 			name === 'experience' ||
+			name === 'country' ||
+			name === 'salary' ||
 			name === 'rating'
 		) {
 			addFilter({ [name]: value });
@@ -82,8 +88,10 @@ const Filter = ({
 			newData = oldData.split(',');
 
 			if (
-				name === 'availability' ||
+				// name === 'availability' ||
 				name === 'experience' ||
+				name === 'country' ||
+				name === 'salary' ||
 				name === 'rating'
 			) {
 				newUrl.searchParams.set(name, value);
@@ -118,16 +126,16 @@ const Filter = ({
 	};
 
 	useEffect(() => {
-		if (queryParams.get('availability') !== filter.availability) {
-			if (queryParams.get('availability')) {
-				addFilter({ availability: queryParams.get('availability') });
-			} else {
-				if (filter.availability) {
-					const { availability, ...newFilter } = filter;
-					removeFilter(newFilter);
-				}
-			}
-		}
+		// if (queryParams.get('availability') !== filter.availability) {
+		// 	if (queryParams.get('availability')) {
+		// 		addFilter({ availability: queryParams.get('availability') });
+		// 	} else {
+		// 		if (filter.availability) {
+		// 			const { availability, ...newFilter } = filter;
+		// 			removeFilter(newFilter);
+		// 		}
+		// 	}
+		// }
 
 		const specialty =
 			queryParams.get('specialty') !== null
@@ -172,6 +180,28 @@ const Filter = ({
 			}
 		}
 
+		if (queryParams.get('country') !== filter.country) {
+			if (queryParams.get('country')) {
+				addFilter({ country: queryParams.get('country') });
+			} else {
+				if (filter.country) {
+					const { country, ...newFilter } = filter;
+					removeFilter(newFilter);
+				}
+			}
+		}
+
+		if (queryParams.get('salary') !== filter.salary) {
+			if (queryParams.get('salary')) {
+				addFilter({ salary: queryParams.get('salary') });
+			} else {
+				if (filter.salary) {
+					const { salary, ...newFilter } = filter;
+					removeFilter(newFilter);
+				}
+			}
+		}
+
 		if (queryParams.get('rating') !== filter.rating) {
 			if (queryParams.get('rating')) {
 				addFilter({ rating: queryParams.get('rating') });
@@ -189,7 +219,7 @@ const Filter = ({
 		<div className="filter">
 			<h4 className="title">Filter by</h4>
 			<ul className="nav flex-column">
-				<li className="nav-item">
+				{/* <li className="nav-item">
 					<Link
 						className="nav-link"
 						to="#"
@@ -239,7 +269,7 @@ const Filter = ({
 							</li>
 						))}
 					</ul>
-				</li>
+				</li> */}
 				<li className="nav-item">
 					<Link
 						className="nav-link"
@@ -298,7 +328,7 @@ const Filter = ({
 						name="softwareCat"
 						onClick={onShow}
 					>
-						Software Use{' '}
+						Software Expertise{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
 								show.softwareCat ? 'minus' : 'plus'
@@ -349,7 +379,7 @@ const Filter = ({
 						name="experienceCat"
 						onClick={onShow}
 					>
-						Experience{' '}
+						Years of Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
 								show.experienceCat ? 'minus' : 'plus'
@@ -396,10 +426,108 @@ const Filter = ({
 					<Link
 						className="nav-link"
 						to="#"
+						name="countryCat"
+						onClick={onShow}
+					>
+						Country Experience{' '}
+						<i
+							className={`fas float-right pt-1 fa-${
+								show.countryCat ? 'minus' : 'plus'
+							}`}
+						></i>
+					</Link>
+					<ul
+						className={`nav flex-column filter-dropdown${
+							show.countryCat ? ' d-block' : ' d-none'
+						}`}
+					>
+						{countryList().map((e, i) => (
+							<li
+								key={i}
+								className={`nav-item${
+									filter.country && filter.country === e
+										? ' checked'
+										: ''
+								}`}
+							>
+								<input
+									type="radio"
+									name="country"
+									className="filter-input"
+									id={`country${i}`}
+									value={e}
+									onChange={onChange}
+									checked={
+										filter.country && filter.country === e
+									}
+								/>
+								<label
+									htmlFor={`country${i}`}
+									className="filter-label"
+								>
+									{e}
+								</label>
+							</li>
+						))}
+					</ul>
+				</li>
+				<li className="nav-item">
+					<Link
+						className="nav-link"
+						to="#"
+						name="salaryCat"
+						onClick={onShow}
+					>
+						Expected Salaries{' '}
+						<i
+							className={`fas float-right pt-1 fa-${
+								show.salaryCat ? 'minus' : 'plus'
+							}`}
+						></i>
+					</Link>
+					<ul
+						className={`nav flex-column filter-dropdown${
+							show.salaryCat ? ' d-block' : ' d-none'
+						}`}
+					>
+						{salaryList().map((e, i) => (
+							<li
+								key={i}
+								className={`nav-item${
+									filter.salary && filter.salary === e
+										? ' checked'
+										: ''
+								}`}
+							>
+								<input
+									type="radio"
+									name="salary"
+									className="filter-input"
+									id={`salary${i}`}
+									value={e}
+									onChange={onChange}
+									checked={
+										filter.salary && filter.salary === e
+									}
+								/>
+								<label
+									htmlFor={`salary${i}`}
+									className="filter-label"
+								>
+									{e}
+								</label>
+							</li>
+						))}
+					</ul>
+				</li>
+				<li className="nav-item">
+					<Link
+						className="nav-link"
+						to="#"
 						name="ratingCat"
 						onClick={onShow}
 					>
-						Rating{' '}
+						English Proficiency{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
 								show.ratingCat ? 'minus' : 'plus'

@@ -76,6 +76,24 @@ const ViewCandidates = ({
 				)}
 			</div>
 			<div className="content">
+				<div id="filterMobile" className="sidebar d-block px-3">
+					<a
+						className="mobile-close"
+						href="/"
+						onClick={(e) => {
+							e.preventDefault();
+							document
+								.getElementById('filterMobile')
+								.removeAttribute('style');
+							document
+								.getElementById('mobileOverlay1')
+								.removeAttribute('style');
+						}}
+					>
+						CLOSE X
+					</a>
+					<Filter loadData={viewCandidates} />
+				</div>
 				<nav className="sidebar">
 					<Filter loadData={viewCandidates} />
 				</nav>

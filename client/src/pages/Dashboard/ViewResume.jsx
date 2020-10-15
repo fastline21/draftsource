@@ -47,7 +47,6 @@ const ViewResume = ({
 		workHistory: [],
 		education: [],
 		recruitmentsComment: '',
-		workspace: '',
 		internetType: '',
 		hardwareType: '',
 		brandName: '',

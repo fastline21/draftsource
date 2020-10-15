@@ -107,6 +107,7 @@ const Step3 = ({
 
 		addResume({
 			internetType,
+			internetResult,
 			hardwareType,
 			brandName,
 			processor,

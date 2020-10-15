@@ -107,9 +107,15 @@ const ResumeSchema = new mongoose.Schema({
 		description: {
 			type: String,
 		},
-		about: {
+		companyExpertise: {
+			type: Array,
+		},
+		country: {
 			type: String,
 		},
+	},
+	countryExpertise: {
+		type: Array,
 	},
 	specialty: {
 		type: Array,
