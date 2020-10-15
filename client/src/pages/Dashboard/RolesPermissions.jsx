@@ -48,6 +48,7 @@ const RolesPermissions = ({
 								<th>Email</th>
 								<th>Type</th>
 								<th>Status</th>
+								<th>Have Resume</th>
 								<th>Date Created</th>
 								<th style={{ textAlign: 'center' }}>Action</th>
 							</tr>
@@ -62,6 +63,7 @@ const RolesPermissions = ({
 										<td>
 											{e.active ? 'Acitve' : 'Not Active'}
 										</td>
+										<td>{e.haveResume ? 'Yes' : 'No'}</td>
 										<td>
 											{moment(e.dateCreated).format(
 												'MMMM DD, YYYY, h:mm:ss a'

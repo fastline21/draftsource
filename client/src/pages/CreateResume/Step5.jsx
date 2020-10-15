@@ -379,6 +379,8 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 												name="country"
 												id="countryInput"
 												className="form-control input"
+												onChange={onChange}
+												value={country}
 											>
 												{countryList().map((e, i) => (
 													<option key={i} value={e}>

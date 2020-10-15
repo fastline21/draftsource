@@ -502,21 +502,43 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @desc    Get all users
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
-	const users = await User.find().select('-password -verificationToken');
-
-	// const resultUsers = users.map(async (e) => {
-	// 	if (e.type === 'Remote Worker') {
-	// 		const resume = await Resume.findOne({ user: e._id });
-	// 		if (resume) {
-	// 			return { e, haveResume: true };
-	// 		} else {
-	// 			return { e, haveResume: false };
-	// 		}
-	// 	} else {
-	// 		return { e };
-	// 	}
-	// });
-	res.json(users);
+	const users = await User.find();
+	const resultUsers = [];
+	users.map(async (e) => {
+		const { active, _id, email, type, dateCreated } = e;
+		if (type === 'Remote Worker') {
+			const resume = await Resume.findOne({ user: _id });
+			if (resume) {
+				resultUsers.push({
+					active,
+					_id,
+					email,
+					type,
+					dateCreated,
+					haveResume: true,
+				});
+			} else {
+				resultUsers.push({
+					active,
+					_id,
+					email,
+					type,
+					dateCreated,
+					haveResume: false,
+				});
+			}
+		} else {
+			resultUsers.push({
+				active,
+				_id,
+				email,
+				type,
+				dateCreated,
+				haveResume: false,
+			});
+		}
+	});
+	res.json(resultUsers);
 });
 
 // @route	DELETE /api/auth/delete-user
