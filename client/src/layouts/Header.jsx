@@ -60,35 +60,35 @@ const Header = ({ logoutUser, userState: { user } }) => {
 	}, [mobileNav, windowSize]);
 
 	return (
-		<Navbar bg='white' expand='lg' id='header'>
-			<Navbar.Brand as={NavLink} to='/'>
+		<Navbar bg="white" expand="lg" id="header">
+			<Navbar.Brand as={NavLink} to="/">
 				<img
 					src={draftsourceLogo}
-					className='d-inline-block align-top'
-					alt='Draftsource Logo'
-					height='40'
+					className="d-inline-block align-top"
+					alt="Draftsource Logo"
+					height="40"
 				/>
 			</Navbar.Brand>
 			<button
-				className='navbar-toggler'
-				type='button'
+				className="navbar-toggler"
+				type="button"
 				onClick={onOpenNav}
 			>
-				<i className='fas fa-bars'></i>
+				<i className="fas fa-bars"></i>
 			</button>
-			<Navbar.Collapse className='mt-2'>
-				<Nav className='mr-auto'>
-					<Nav.Link as={NavLink} to='/view-candidates'>
+			<Navbar.Collapse className="mt-2">
+				<Nav className="mr-auto">
+					<Nav.Link as={NavLink} to="/view-candidates">
 						View Ready to Hire Candidates
 					</Nav.Link>
-					<Nav.Link as={NavLink} to='/pricing'>
+					<Nav.Link as={NavLink} to="/pricing">
 						Pricing
 					</Nav.Link>
 				</Nav>
-				<Nav className='ml-auto'>
+				<Nav className="ml-auto">
 					<Nav.Link
 						onClick={talkRecruiter}
-						className='talk-recruiter'
+						className="talk-recruiter"
 					>
 						Talk to a Recruiter
 					</Nav.Link>
@@ -97,7 +97,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					{(user && user.type === 'Admin') ||
 					(user && user.type === 'Recruiter') ? (
 						<Fragment>
-							<Nav.Link as={NavLink} to='/dashboard'>
+							<Nav.Link as={NavLink} to="/dashboard">
 								Dashboard
 							</Nav.Link>
 							<Nav.Link onClick={onLogout}>Logout</Nav.Link>
@@ -105,62 +105,63 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					) : null}
 				</Nav>
 			</Navbar.Collapse>
-			<div id='mobileMenu' className='overlay'>
-				<a className='mobile-close' href='/' onClick={onCloseNav}>
+			<div id="mobileMenu" className="overlay">
+				<a className="mobile-close" href="/" onClick={onCloseNav}>
 					CLOSE X
 				</a>
-				<ul className='mobile-main-menu'>
+				<ul className="mobile-main-menu">
 					<li>
-						<NavLink to='/view-candidates' onClick={mobileLink}>
+						<NavLink to="/view-candidates" onClick={mobileLink}>
 							View Ready to Hire Candidates
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to='/pricing' onClick={mobileLink}>
+						<NavLink to="/pricing" onClick={mobileLink}>
 							Pricing
 						</NavLink>
 					</li>
 					<li>
-						<NavLink to='/watch-video' onClick={mobileLink}>
-							Watch Video
-						</NavLink>
-					</li>
-					<li>
-						<NavLink to='/talk-recruiter' onClick={mobileLink}>
+						<Nav.Link onClick={talkRecruiter}>
 							Talk to a Recruiter
-						</NavLink>
+						</Nav.Link>
 					</li>
-				</ul>
-				<ul className='mobile-main-menu d-block d-sm-none'>
-					<li>
-						<NavLink
-							to='/dashboard/new-applicant'
-							onClick={mobileLink}
-						>
-							New Applicant
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-							to='/dashboard/approved-applicants'
-							onClick={mobileLink}
-						>
-							Approve Applicants
-						</NavLink>
-					</li>
-					<li>
-						<NavLink
-							to='/dashboard/rejected-applicants'
-							onClick={mobileLink}
-						>
-							Rejected Applicants
-						</NavLink>
-					</li>
-					<li>
-						<NavLink to='/talk-recruiter' onClick={mobileLink}>
-							Talk to a Recruiter
-						</NavLink>
-					</li>
+					{(user && user.type === 'Admin') ||
+					(user && user.type === 'Recruiter') ? (
+						<Fragment>
+							<li>
+								<Nav.Link as={NavLink} to="/dashboard">
+									Dashboard
+								</Nav.Link>
+							</li>
+							<li>
+								<Nav.Link
+									as={NavLink}
+									to="/dashboard/new-applicants"
+								>
+									New Applicants
+								</Nav.Link>
+							</li>
+							<li>
+								<Nav.Link
+									as={NavLink}
+									to="/dashboard/approved-applicants"
+								>
+									Approved Applicants
+								</Nav.Link>
+							</li>
+							<li>
+								<Nav.Link
+									as={NavLink}
+									to="/dashboard/rejected-applicant"
+								>
+									Rejected Applicants
+								</Nav.Link>
+							</li>
+							<li>
+								<Nav.Link onClick={onLogout}>Logout</Nav.Link>
+							</li>
+						</Fragment>
+					) : null}
 				</ul>
 			</div>
 		</Navbar>
