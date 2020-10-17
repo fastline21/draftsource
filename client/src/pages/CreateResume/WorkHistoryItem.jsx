@@ -11,6 +11,7 @@ const WorkHistoryItem = ({ index, workHistory, editWork, deleteWork }) => {
 		description,
 		companyExpertise,
 		country,
+		companySize,
 	} = workHistory;
 
 	const onEdit = (e) => {
@@ -66,9 +67,10 @@ const WorkHistoryItem = ({ index, workHistory, editWork, deleteWork }) => {
 						<div className="col-lg-12 mt-4">
 							<h6 className="about">About the company</h6>
 							<p className="item">
-								{companyExpertise.join(', ')}
+								Company Expertise: {companyExpertise.join(', ')}
 							</p>
-							<p className="item">{country}</p>
+							<p className="item">Country: {country}</p>
+							<p className="item">Company Size: {companySize}</p>
 						</div>
 					</div>
 				</div>

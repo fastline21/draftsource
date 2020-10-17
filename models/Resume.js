@@ -51,9 +51,6 @@ const ResumeSchema = new mongoose.Schema({
 	internetResult: {
 		type: String,
 	},
-	availability: {
-		type: String,
-	},
 	expectedSalary: {
 		type: String,
 	},
@@ -146,8 +143,7 @@ const ResumeSchema = new mongoose.Schema({
 		type: String,
 	},
 	rating: {
-		type: Number,
-		default: 0,
+		type: String,
 	},
 	dateCreated: {
 		type: Date,

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -107,56 +107,66 @@ const NewApplicants = ({
 	}, [queryParams, params, filter, candidates, resume, windowSize]);
 
 	return (
-		<div id="admin">
-			<div className="header">
+		<Fragment>
+			<div className="top">
 				<input
 					type="text"
-					name="search"
 					className="form-control input"
+					name="search"
 					placeholder="Search for software, specialty or keyword"
 					onChange={onChange}
 					value={params.search}
 				/>
-				<label className="form-label view-by-label">View by</label>
-				<select
-					className="form-control input"
-					name="limit"
-					onChange={onChange}
-					value={parseInt(queryParams.get('limit') || params.viewBy)}
-				>
-					<option value="10">10</option>
-					<option value="20">20</option>
-					<option value="50">50</option>
-				</select>
-				<button
-					className="btn btn-primary button filter"
-					onClick={() => setShowFilter(true)}
-				>
-					<i className="fas fa-filter"></i> Filter
-				</button>
+				<div className="view-by">
+					<label htmlFor="viewByInput" className="form-label">
+						View By
+					</label>
+					<select
+						className="form-control input"
+						name="limit"
+						onChange={onChange}
+						value={parseInt(
+							queryParams.get('limit') || params.viewBy
+						)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+					<button
+						className="btn btn-primary button filter"
+						onClick={() => setShowFilter(true)}
+					>
+						<i className="fas fa-filter"></i> Filter
+					</button>
+				</div>
 			</div>
-			<div id="newApplicants">
-				<ViewResume
-					isShow={resume !== null ? true : false}
-					loadCandidate={() => newApplicants()}
-				/>
-				<Candidates />
-			</div>
-			<div className="footer">
+			<ViewResume
+				isShow={resume !== null ? true : false}
+				loadCandidate={() => newApplicants()}
+			/>
+			<Candidates />
+			<div className="foot">
 				<PaginationLink />
-				<label className="form-label view-by-label">View by</label>
-				<select
-					className="form-control input"
-					name="limit"
-					onChange={onChange}
-					value={parseInt(queryParams.get('limit') || params.viewBy)}
-				>
-					<option value="10">10</option>
-					<option value="20">20</option>
-					<option value="50">50</option>
-				</select>
+				<div className="view-by">
+					<label htmlFor="viewByInput" className="form-label">
+						View By
+					</label>
+					<select
+						className="form-control input"
+						name="limit"
+						onChange={onChange}
+						value={parseInt(
+							queryParams.get('limit') || params.viewBy
+						)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
 			</div>
-		</div>
+		</Fragment>
 	);
 };
 

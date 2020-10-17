@@ -15,6 +15,7 @@ import { addResume, clearError } from './../../state/actions/resumeAction';
 import { monthList } from './../../list/Month';
 import { yearList } from './../../list/Year';
 import { companyExpertiseList } from './../../list/CompanyExpertise';
+import { companySizeList } from './../../list/CompanySize';
 
 // Components
 import WorkHistoryItem from './WorkHistoryItem';
@@ -44,6 +45,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 		description: '',
 		companyExpertise: [],
 		country: 'Afghanistan',
+		companySize: '1-10',
 	};
 
 	const [workHistory, setWorkHistory] = useState([]);
@@ -61,6 +63,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 		description,
 		companyExpertise,
 		country,
+		companySize,
 	} = workHistoryItem;
 
 	const clearWorkHistoryItem = () => {
@@ -80,7 +83,8 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 			yearEnded === '' ||
 			description === '' ||
 			companyExpertise.length === 0 ||
-			country === ''
+			country === '' ||
+			companySize === ''
 		) {
 			return setAlert(
 				'',
@@ -368,26 +372,59 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 												</label>
 											</div>
 										))}
-										<label
-											htmlFor="countryInput"
-											className="form-label"
-										>
-											Country
-										</label>
-										<div className="form-inline">
-											<select
-												name="country"
-												id="countryInput"
-												className="form-control input"
-												onChange={onChange}
-												value={country}
-											>
-												{countryList().map((e, i) => (
-													<option key={i} value={e}>
-														{e}
-													</option>
-												))}
-											</select>
+										<div className="form-group row">
+											<div className="form-group col">
+												<label
+													htmlFor="countryInput"
+													className="form-label"
+												>
+													Country
+												</label>
+												<select
+													name="country"
+													id="countryInput"
+													className="form-control input"
+													onChange={onChange}
+													value={country}
+												>
+													{countryList().map(
+														(e, i) => (
+															<option
+																key={i}
+																value={e}
+															>
+																{e}
+															</option>
+														)
+													)}
+												</select>
+											</div>
+											<div className="form-group col">
+												<label
+													htmlFor="countryInput"
+													className="form-label"
+												>
+													Company Size
+												</label>
+												<select
+													name="companySize"
+													id="companySizeInput"
+													className="form-control input"
+													onChange={onChange}
+													value={companySize}
+												>
+													{companySizeList().map(
+														(e, i) => (
+															<option
+																key={i}
+																value={e}
+															>
+																{e}
+															</option>
+														)
+													)}
+												</select>
+											</div>
 										</div>
 									</div>
 								</div>

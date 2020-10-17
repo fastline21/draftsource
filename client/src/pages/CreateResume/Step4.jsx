@@ -37,8 +37,8 @@ const Step4 = ({
 	const history = useHistory();
 
 	const initialInfo = {
-		availability: 'Full Time',
-		expectedSalary: '$500-$600',
+		// availability: 'Full Time',
+		expectedSalary: '$400-$600',
 		headline: '',
 	};
 	const initialEducation = {
@@ -62,7 +62,7 @@ const Step4 = ({
 	const [uploadAudio, setUploadAudio] = useState(null);
 	const [submit, setSubmit] = useState(false);
 
-	const { availability, expectedSalary, headline } = info;
+	const { expectedSalary, headline } = info;
 
 	const eduItem = (e) => {
 		const { name, value } = e.target;
@@ -252,7 +252,6 @@ const Step4 = ({
 		e.preventDefault();
 
 		if (
-			availability === '' ||
 			expectedSalary === '' ||
 			headline === '' ||
 			uploadAudio === null ||
@@ -312,7 +311,7 @@ const Step4 = ({
 						<div className="form-row">
 							<div className="col-lg-4 col-md-6">
 								<div className="content">
-									<div className="form-group">
+									{/* <div className="form-group">
 										<h5 className="title">
 											Are you looking to work?
 										</h5>
@@ -335,7 +334,7 @@ const Step4 = ({
 												</label>
 											</div>
 										))}
-									</div>
+									</div> */}
 									<div className="form-group">
 										<label
 											className="form-label"
@@ -449,7 +448,7 @@ const Step4 = ({
 											htmlFor="headlineInput"
 											className="form-label"
 										>
-											Headline
+											Headline (Core Competencies)
 										</label>
 										<textarea
 											name="headline"
@@ -460,6 +459,34 @@ const Step4 = ({
 											onChange={onChange}
 											value={headline}
 										></textarea>
+										<p className="pt-3">
+											Sample headlines
+											<ul className="list">
+												<li className="item">
+													Professional Civil Engineer
+													(PE)
+												</li>
+												<li className="item">
+													Architect Designer | Civil &
+													Structural Engineer
+												</li>
+												<li className="item">
+													Civil Engineer | Civil 3D &
+													AutoCAD Specialist | CAD
+													Designer
+												</li>
+												<li className="item">
+													BIM & CAD Expert
+													(Arch/Struct, MEP, Civil,
+													Point Cloud) (US-Based)
+												</li>
+												<li className="item">
+													MEP Design Engineer | MEP
+													Estimator | Mechanical
+													Engineer
+												</li>
+											</ul>
+										</p>
 									</div>
 								</div>
 							</div>
@@ -671,6 +698,11 @@ const Step4 = ({
 														will or somehow
 														contribute to a job
 														you're applying for.
+													</p>
+													<p className="text">
+														If you enter college do
+														not include highschool
+														details
 													</p>
 												</>
 											) : (

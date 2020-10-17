@@ -310,6 +310,22 @@
 				}
 			}
 
+			.list {
+				list-style: none;
+				padding-left: 12px;
+
+				.item {
+					text-indent: -12px;
+
+					&::before {
+						color: $darkGray;
+						font-weight: 900;
+						content: '-';
+						margin-right: 5px;
+					}
+				}
+			}
+
 			.summary {
 				.text {
 					color: $lightGray;
