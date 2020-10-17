@@ -25,6 +25,8 @@ const ViewResume = ({
 	addRecruitersComment,
 	setAlert,
 }) => {
+	const [isEdit, setIsEdit] = useState(false);
+
 	// Initial
 	const initialData = {
 		_id: '',
@@ -216,6 +218,10 @@ const ViewResume = ({
 		setData({ ...data, [name]: value });
 	};
 
+	const onClickEdit = () => {
+		setIsEdit(!isEdit);
+	};
+
 	const handleClose = () => {
 		setShow(false);
 		clearResume();
@@ -291,8 +297,7 @@ const ViewResume = ({
 										ID: {idCode.toString().padStart(6, '0')}
 									</p>
 									<p className="fullname mb-0">
-										{firstName}
-										{lastName}
+										{firstName} {lastName}
 									</p>
 									<p className="data-title mb-0">
 										{headline}
@@ -401,7 +406,24 @@ const ViewResume = ({
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-3">{actionButton()}</div>
+						<div className="col-lg-3">
+							{isEdit ? (
+								<button
+									className="btn btn-primary button"
+									onClick={onClickEdit}
+								>
+									Save
+								</button>
+							) : (
+								<button
+									className="btn btn-primary button"
+									onClick={onClickEdit}
+								>
+									Edit
+								</button>
+							)}
+							{actionButton()}
+						</div>
 					</div>
 					<div className="row pb-3">
 						<div className="col-lg-3">
