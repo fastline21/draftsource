@@ -84,6 +84,9 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					<Nav.Link as={NavLink} to="/pricing">
 						Pricing
 					</Nav.Link>
+					<Nav.Link as={NavLink} to="/draft-job">
+						Draft a Job
+					</Nav.Link>
 				</Nav>
 				<Nav className="ml-auto">
 					<Nav.Link

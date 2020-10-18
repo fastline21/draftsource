@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -25,7 +25,26 @@ const ViewResume = ({
 	addRecruitersComment,
 	setAlert,
 }) => {
-	const [isEdit, setIsEdit] = useState(false);
+	const [isEdit, setIsEdit] = useState({
+		fullname: false,
+		headline: false,
+		email: false,
+		contactNo: false,
+		city: false,
+		rating: false,
+		expectedSalary: false,
+		skill: false,
+		software: false,
+		workHistory: false,
+		education: false,
+		recruitmentsComment: false,
+		internetResult: false,
+		internetType: false,
+		hardwareType: false,
+		brandName: false,
+		processor: false,
+		ram: false,
+	});
 
 	// Initial
 	const initialData = {
@@ -218,8 +237,8 @@ const ViewResume = ({
 		setData({ ...data, [name]: value });
 	};
 
-	const onClickEdit = () => {
-		setIsEdit(!isEdit);
+	const onClickEdit = (category) => {
+		setIsEdit({ ...isEdit, [category]: !isEdit[category] });
 	};
 
 	const handleClose = () => {
@@ -297,7 +316,34 @@ const ViewResume = ({
 										ID: {idCode.toString().padStart(6, '0')}
 									</p>
 									<p className="fullname mb-0">
-										{firstName} {lastName}
+										{isEdit.fullname ? (
+											<Fragment>
+												<input
+													type="text"
+													name="firstName"
+													placeholder={firstName}
+													className="form-control input"
+												/>
+												<input
+													type="text"
+													name="lastName"
+													placeholder={lastName}
+													className="form-control input"
+												/>
+											</Fragment>
+										) : (
+											`${firstName} ${lastName}`
+										)}
+										<i
+											className={`fas ${
+												isEdit.fullname
+													? 'fa-save'
+													: 'fa-edit'
+											}`}
+											onClick={() =>
+												onClickEdit('fullname')
+											}
+										></i>
 									</p>
 									<p className="data-title mb-0">
 										{headline}
@@ -313,78 +359,7 @@ const ViewResume = ({
 										<p className="data-title mb-0">
 											English Proficiency
 										</p>
-										<div className="rating d-inline">
-											<i
-												className={`rating-color fas fa-star${
-													rating >= 1
-														? ' checked'
-														: ''
-												}`}
-												onClick={(e) => {
-													e.preventDefault();
-													setData({
-														...data,
-														rating: 1,
-													});
-												}}
-											></i>
-											<i
-												className={`rating-color fas fa-star${
-													rating >= 2
-														? ' checked'
-														: ''
-												}`}
-												onClick={(e) => {
-													e.preventDefault();
-													setData({
-														...data,
-														rating: 2,
-													});
-												}}
-											></i>
-											<i
-												className={`rating-color fas fa-star${
-													rating >= 3
-														? ' checked'
-														: ''
-												}`}
-												onClick={(e) => {
-													e.preventDefault();
-													setData({
-														...data,
-														rating: 3,
-													});
-												}}
-											></i>
-											<i
-												className={`rating-color fas fa-star${
-													rating >= 4
-														? ' checked'
-														: ''
-												}`}
-												onClick={(e) => {
-													e.preventDefault();
-													setData({
-														...data,
-														rating: 4,
-													});
-												}}
-											></i>
-											<i
-												className={`rating-color fas fa-star${
-													rating === 5
-														? ' checked'
-														: ''
-												}`}
-												onClick={(e) => {
-													e.preventDefault();
-													setData({
-														...data,
-														rating: 5,
-													});
-												}}
-											></i>
-										</div>
+										<div className="rating">{rating}</div>
 									</div>
 									<div>
 										<p className="data-title mb-0">
@@ -410,7 +385,7 @@ const ViewResume = ({
 							{isEdit ? (
 								<button
 									className="btn btn-primary button"
-									onClick={onClickEdit}
+									onClick={() => console.log(isEdit.fullname)}
 								>
 									Save
 								</button>

@@ -620,6 +620,10 @@
 			}
 		}
 
+		.fas {
+			cursor: pointer;
+		}
+
 		.edit-button {
 			background-color: $lightBlue;
 			color: $blue;
@@ -632,6 +636,10 @@
 		.fullname {
 			color: #0c3961;
 			font-weight: 700;
+			display: flex;
+
+			.input {
+			}
 		}
 
 		.city {

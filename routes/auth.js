@@ -504,19 +504,30 @@ router.get('/get-user-info', auth, async (req, res) => {
 router.get('/get-users', auth, async (req, res) => {
 	const users = await User.find();
 	const resultUsers = [];
-	users.map(async (e) => {
-		const { active, _id, email, type, dateCreated } = e;
-		if (type === 'Remote Worker') {
-			const resume = await Resume.findOne({ user: _id });
-			if (resume) {
-				resultUsers.push({
-					active,
-					_id,
-					email,
-					type,
-					dateCreated,
-					haveResume: true,
-				});
+	await Promise.all(
+		users.map(async (e) => {
+			const { active, _id, email, type, dateCreated } = e;
+			if (type === 'Remote Worker') {
+				const resume = await Resume.findOne({ user: _id });
+				if (resume) {
+					resultUsers.push({
+						active,
+						_id,
+						email,
+						type,
+						dateCreated,
+						haveResume: true,
+					});
+				} else {
+					resultUsers.push({
+						active,
+						_id,
+						email,
+						type,
+						dateCreated,
+						haveResume: false,
+					});
+				}
 			} else {
 				resultUsers.push({
 					active,
@@ -527,17 +538,8 @@ router.get('/get-users', auth, async (req, res) => {
 					haveResume: false,
 				});
 			}
-		} else {
-			resultUsers.push({
-				active,
-				_id,
-				email,
-				type,
-				dateCreated,
-				haveResume: false,
-			});
-		}
-	});
+		})
+	)
 	res.json(resultUsers);
 });
 
