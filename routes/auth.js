@@ -503,31 +503,21 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
 	const users = await User.find();
+	console.log(users)
 	const resultUsers = [];
 	await Promise.all(
 		users.map(async (e) => {
 			const { active, _id, email, type, dateCreated } = e;
 			if (type === 'Remote Worker') {
 				const resume = await Resume.findOne({ user: _id });
-				if (resume) {
-					resultUsers.push({
-						active,
-						_id,
-						email,
-						type,
-						dateCreated,
-						haveResume: true,
-					});
-				} else {
-					resultUsers.push({
-						active,
-						_id,
-						email,
-						type,
-						dateCreated,
-						haveResume: false,
-					});
-				}
+				resultUsers.push({
+					active,
+					_id,
+					email,
+					type,
+					dateCreated,
+					haveResume: resume ? true: false,
+				});
 			} else {
 				resultUsers.push({
 					active,
@@ -581,11 +571,13 @@ router.delete('/delete-user/:id', auth, async (req, res) => {
 					}
 				});
 			});
-			await Resume.findByIdAndDelete(_id);
+			// await Resume.findByIdAndDelete(_id);
+			resume.delete();
 		}
 	}
 
-	await User.findByIdAndDelete(id);
+	// await User.findByIdAndDelete(id);
+	user.delete();
 });
 
 module.exports = router;

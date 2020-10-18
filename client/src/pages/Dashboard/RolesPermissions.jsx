@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
@@ -21,12 +21,6 @@ const RolesPermissions = ({
 			getUsers();
 		}
 	};
-
-	useEffect(() => {
-		getUsers();
-
-		// eslint-disable-next-line
-	}, []);
 
 	return (
 		<div id="admin">

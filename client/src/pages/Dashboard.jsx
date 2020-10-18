@@ -15,6 +15,7 @@ import {
 	approvedJobs,
 	rejectedJobs,
 } from './../state/actions/jobAction';
+import { getUsers } from './../state/actions/userAction';
 
 // Components
 import Filter from './Dashboard/Filter';
@@ -34,6 +35,7 @@ const Dashboard = ({
 	newJobs,
 	approvedJobs,
 	rejectedJobs,
+	getUsers,
 	userState: { user, info },
 	filterState: { filter },
 }) => {
@@ -44,26 +46,18 @@ const Dashboard = ({
 	useEffect(() => {
 		if (menu === 'new-applicants') {
 			newApplicants();
-		}
-
-		if (menu === 'approved-applicants') {
+		} else if (menu === 'approved-applicants') {
 			approvedApplicants();
-		}
-
-		if (menu === 'rejected-applicants') {
+		} else if (menu === 'rejected-applicants') {
 			rejectedApplicants();
-		}
-
-		if (menu === 'new-jobs') {
+		} else if (menu === 'new-jobs') {
 			newJobs();
-		}
-
-		if (menu === 'approved-jobs') {
+		} else if (menu === 'approved-jobs') {
 			approvedJobs();
-		}
-
-		if (menu === 'rejected-jobs') {
+		} else if (menu === 'rejected-jobs') {
 			rejectedJobs();
+		} else if (menu === 'roles-permissions') {
+			getUsers();
 		}
 
 		// eslint-disable-next-line
@@ -420,6 +414,7 @@ Dashboard.propTypes = {
 	newJobs: PropTypes.func.isRequired,
 	approvedJobs: PropTypes.func.isRequired,
 	rejectedJobs: PropTypes.func.isRequired,
+	getUsers: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -434,4 +429,5 @@ export default connect(mapStateToProps, {
 	newJobs,
 	approvedJobs,
 	rejectedJobs,
+	getUsers
 })(Dashboard);
