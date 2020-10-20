@@ -21,13 +21,22 @@ const ResumeSchema = new mongoose.Schema({
 	cellphone: {
 		type: String,
 	},
+	age: {
+		type: Number,
+	},
+	gender: {
+		type: String,
+	},
 	city: {
 		type: String,
 	},
-	country: {
+	// country: {
+	// 	type: String,
+	// },
+	linkedIn: {
 		type: String,
 	},
-	linkedIn: {
+	govID: {
 		type: String,
 	},
 	resumeImage: {
@@ -80,6 +89,9 @@ const ResumeSchema = new mongoose.Schema({
 		monthYearGraduated: {
 			type: String,
 		},
+		license: {
+			type: Array,
+		},
 	},
 	workHistory: {
 		type: Array,
@@ -111,7 +123,7 @@ const ResumeSchema = new mongoose.Schema({
 			type: String,
 		},
 	},
-	countryExpertise: {
+	countryExperience: {
 		type: Array,
 	},
 	specialty: {

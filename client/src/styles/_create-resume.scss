@@ -211,6 +211,32 @@
 				padding: 2.5px 0;
 			}
 
+			.upload-file {
+				margin-left: auto;
+
+				.form-label {
+					width: 140px;
+					border-radius: 20px;
+					padding-top: 5px;
+					padding-bottom: 5px;
+					background-color: $blue;
+					border-color: $blue;
+					text-align: center;
+					color: $white;
+					cursor: pointer;
+
+					&.disabled {
+						cursor: default;
+						background-color: #ccc;
+						color: $lightGray;
+					}
+				}
+
+				.form-control-file {
+					display: none;
+				}
+			}
+
 			.upload-button {
 				border: 1px solid #606060;
 				display: inline-block;
@@ -238,7 +264,6 @@
 				border-bottom: 2px solid #d5d5d5;
 				color: #606060;
 				font-weight: 500;
-				margin-top: 15px;
 
 				.selected-file {
 					display: inline-block;

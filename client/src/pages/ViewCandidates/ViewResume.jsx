@@ -38,6 +38,9 @@ const ViewResume = ({
 		firstName: '',
 		lastName: '',
 		city: '',
+		headline: '',
+		age: '',
+		gender: '',
 		status: '',
 		rating: '',
 		availability: '',
@@ -85,6 +88,9 @@ const ViewResume = ({
 		firstName,
 		lastName,
 		city,
+		gender,
+		headline,
+		age,
 		status,
 		rating,
 		availability,
@@ -187,32 +193,22 @@ const ViewResume = ({
 								}}
 							>
 								<div>
-									<p
-										className="data-title mb-3"
-										style={{ fontWeight: '700' }}
-									>
+									<p className="data-title mb-3" style={{ fontWeight: '700' }}>
 										ID: {idCode.toString().padStart(6, '0')}
 									</p>
 								</div>
 								<div>
-									<p
-										className="data-title mb-0"
-										style={{ fontWeight: '700' }}
-									>
-										Availability
+									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
+										Headline
 									</p>
-									<p className="availability">
-										{availability}
-									</p>
+									<p className="availability">{headline}</p>
 								</div>
 								<div>
-									<p
-										className="data-title mb-0"
-										style={{ fontWeight: '700' }}
-									>
-										English Proficiency
+									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
+										English Level
 									</p>
-									<div className="rating d-inline">
+									<p className="availability">{rating}</p>
+									{/* <div className="rating d-inline">
 										<i
 											style={{ cursor: 'default' }}
 											className={`rating-color fas fa-star${
@@ -243,7 +239,7 @@ const ViewResume = ({
 												rating === 5 ? ' checked' : ''
 											}`}
 										></i>
-									</div>
+									</div> */}
 								</div>
 							</div>
 						</div>
@@ -269,9 +265,7 @@ const ViewResume = ({
 									history.push(
 										`/view-candidates/shortlisted-candidates${
 											shortlist.length > 0
-												? `?candidates=${shortlist.join(
-														','
-												  )}`
+												? `?candidates=${shortlist.join(',')}`
 												: ''
 										}`
 									);
@@ -285,20 +279,12 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-3">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">
-								Skills & Specialties
-							</p>
+							<p className="item-title color-1 mb-0">Skills & Specialties</p>
 						</div>
 						<div className="col-lg-8">
-							<p
-								id="specialty"
-								className="specialty-software mb-0"
-							>
+							<p id="specialty" className="specialty-software mb-0">
 								{specialty.map((e, i) => (
-									<span
-										className="specialty-software-item"
-										key={i}
-									>
+									<span className="specialty-software-item" key={i}>
 										{e}
 									</span>
 								))}
@@ -306,22 +292,38 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
+					<div className="row pb-3">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">Personal Information</p>
+						</div>
+						<div className="col-lg-9">
+							<div className="row">
+								<div className="col-lg-6">
+									<table className="table table-borderless personal-info">
+										<tbody>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Age</th>
+												<td className="pt-0 item-value">{age}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Gender</th>
+												<td className="pt-0 item-value">{gender}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<hr className="line-break" />
+						</div>
+					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">
-								Software Use
-							</p>
+							<p className="item-title color-1 mb-0">Software Use</p>
 						</div>
 						<div className="col-lg-8">
-							<p
-								id="software"
-								className="specialty-software mb-0"
-							>
+							<p id="software" className="specialty-software mb-0">
 								{software.map((e, i) => (
-									<span
-										className="specialty-software-item"
-										key={i}
-									>
+									<span className="specialty-software-item" key={i}>
 										{e}
 									</span>
 								))}
@@ -365,34 +367,22 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Work Experience
-							</p>
+							<p className="item-title color-2">Work Experience</p>
 						</div>
 						<div className="col-lg-8">
 							<div id="workHistory" className="work-history">
 								{workHistory.map((e, i) => (
 									<div className="work-history-item" key={i}>
 										<p className="title">{e.title}</p>
-										<p className="company">
-											Employment Period
-										</p>
+										<p className="company">Employment Period</p>
 										<p className="month-year">
-											{e.monthStarted} {e.yearStarted} -{' '}
-											{e.monthEnded} {e.yearEnded}
+											{e.monthStarted} {e.yearStarted} - {e.monthEnded}{' '}
+											{e.yearEnded}
 										</p>
-										<p className="item-title">
-											Job Description
-										</p>
-										<p className="description">
-											{e.description}
-										</p>
-										<p className="item-title">
-											About the company
-										</p>
-										<p className="item-title">
-											Company Expertise
-										</p>
+										<p className="item-title">Job Description</p>
+										<p className="description">{e.description}</p>
+										<p className="item-title">About the company</p>
+										<p className="item-title">Company Expertise</p>
 										<p className="company-expertise">
 											{e.companyExpertise.join(', ')}
 										</p>
@@ -415,32 +405,26 @@ const ViewResume = ({
 									<div className="education-item" key={i}>
 										<table className="education-item table table-borderless">
 											<tbody>
-												{e.choices !==
-												'License and Certification' ? (
+												{e.choices !== 'License and Certification' ? (
 													<tr>
 														<td
 															className={`item-choices pl-0${
-																i === 0
-																	? ' pt-0'
-																	: ''
+																i === 0 ? ' pt-0' : ''
 															}`}
 														>
 															{e.choices}
 														</td>
 													</tr>
 												) : null}
-												{e.choices ===
-												'License and Certification' ? (
+												{e.choices === 'License and Certification' ? (
 													<tr>
 														<td
 															className="item-title pb-0 pl-0"
 															style={{
-																color:
-																	'#298494',
+																color: '#298494',
 															}}
 														>
-															License and
-															Certification
+															License and Certification
 														</td>
 														<td className="item-degree pb-0 item-value">
 															{e.license}
@@ -448,53 +432,39 @@ const ViewResume = ({
 													</tr>
 												) : null}
 												{e.choices !== 'High School' &&
-												e.choices !==
-													'License and Certification' ? (
+												e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															Degree
-														</td>
+														<td className="item-title pb-0 pl-0">Degree</td>
 														<td className="item-degree pb-0 item-value">
 															{e.degree}
 														</td>
 													</tr>
 												) : null}
-												{e.choices !==
-												'License and Certification' ? (
+												{e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															School
-														</td>
+														<td className="item-title pb-0 pl-0">School</td>
 														<td className="item-school pb-0 item-value">
 															{e.school}
 														</td>
 													</tr>
 												) : null}
 												{e.choices !== 'High School' &&
-												e.choices !==
-													'License and Certification' ? (
+												e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															Course
-														</td>
+														<td className="item-title pb-0 pl-0">Course</td>
 														<td className="item-course pb-0 item-value">
 															{e.course}
 														</td>
 													</tr>
 												) : null}
 												{e.choices !== 'High School' &&
-												e.choices !==
-													'License and Certification' ? (
+												e.choices !== 'License and Certification' ? (
 													<tr>
 														<td className="item-title pb-0 pl-0">
 															Started - Graduated
 														</td>
 														<td className="item-month-year pb-0 item-value">
-															{e.monthYearStarted}{' '}
-															-{' '}
-															{
-																e.monthYearGraduated
-															}
+															{e.monthYearStarted} - {e.monthYearGraduated}
 														</td>
 													</tr>
 												) : null}
@@ -508,51 +478,33 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Recruiter's Comments
-							</p>
+							<p className="item-title color-2">Recruiter's Comments</p>
 						</div>
 						<div className="col-lg-8">
-							<p className="recruitments-comment pb-5">
-								{recruitmentsComment}
-							</p>
+							<p className="recruitments-comment pb-5">{recruitmentsComment}</p>
 							<hr className="line-break" />
 						</div>
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Work from Home Capabilites
-							</p>
+							<p className="item-title color-2">Work from Home Capabilites</p>
 						</div>
 						<div className="col-lg-8">
 							<table className="table table-borderless workspace-item">
 								<tbody>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Internet Type
 										</th>
-										<td
-											id="internetType"
-											className="pt-0 item-value"
-										>
+										<td id="internetType" className="pt-0 item-value">
 											{internetType}
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Internet Result
 										</th>
-										<td
-											id="internetType"
-											className="pt-0 item-value"
-										>
+										<td id="internetType" className="pt-0 item-value">
 											<a
 												href={internetResult}
 												target="_blank"

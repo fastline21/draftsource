@@ -280,6 +280,18 @@ router.put('/recruiters-comment', auth, async (req, res) => {
 	});
 });
 
+// @route	PUT /api/candidate/update-resume
+// @desc	Update resume
+// @access	Private
+router.put('/update-resume/:id', async (req, res) => {
+	const { id } = req.params;
+	await Resume.findByIdAndUpdate(id, {
+		...req.body,
+	});
+	// console.log(id);
+	// res.json({ id });
+});
+
 // @route   PUT /api/candidate/approve-resume
 // @desc    Approve resume
 // @access  Private

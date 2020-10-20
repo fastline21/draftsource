@@ -17,9 +17,7 @@ export const newApplicants = () => async (dispatch) => {
 		setLoading()(dispatch);
 
 		const getSearch = window.location.search;
-		const res = await axios.get(
-			`/api/candidate/new-applicants${getSearch}`
-		);
+		const res = await axios.get(`/api/candidate/new-applicants${getSearch}`);
 		dispatch({
 			type: GET_CANDIDATES,
 			payload: res.data,
@@ -111,12 +109,25 @@ export const rejectResume = (data) => async (dispatch) => {
 // Delete resume
 export const deleteResume = (id) => async (dispatch) => {
 	try {
+		await axios.delete(`/api/candidate/delete-resume/${id}`);
+	} catch (error) {
+		dispatch({
+			type: CANDIDATES_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
+
+// Update resume
+export const updateResume = (resume) => async (dispatch) => {
+	try {
+		const { _id, ...rest } = resume;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.delete(`/api/candidate/delete-resume/${id}`);
+		await axios.put(`/api/candidate/update-resume/${_id}`, rest, config);
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,
@@ -133,11 +144,7 @@ export const viewResume = (id) => async (dispatch) => {
 				'Content-Type': 'application/json',
 			},
 		};
-		const res = await axios.post(
-			'/api/candidate/view-resume',
-			{ id },
-			config
-		);
+		const res = await axios.post('/api/candidate/view-resume', { id }, config);
 		dispatch({
 			type: VIEW_RESUME,
 			payload: res.data,
@@ -163,9 +170,7 @@ export const viewCandidates = () => async (dispatch) => {
 		setLoading()(dispatch);
 
 		const getSearch = window.location.search;
-		const res = await axios.get(
-			`/api/candidate/view-candidates${getSearch}`
-		);
+		const res = await axios.get(`/api/candidate/view-candidates${getSearch}`);
 		dispatch({
 			type: GET_CANDIDATES,
 			payload: res.data,

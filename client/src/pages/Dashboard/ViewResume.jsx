@@ -8,9 +8,15 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 import {
 	clearResume,
 	addRecruitersComment,
+	updateResume,
 } from './../../state/actions/candidateAction';
-
 import { setAlert } from './../../state/actions/alertAction';
+
+// Lists
+import { ratingList } from './../../list/Rating';
+import { salaryList } from './../../list/Salary';
+import { monthList } from './../../list/Month';
+import { yearList } from './../../list/Year';
 
 // Components
 import ViewImage from './ViewImage';
@@ -23,6 +29,7 @@ const ViewResume = ({
 	candidateState: { resume },
 	clearResume,
 	addRecruitersComment,
+	updateResume,
 	setAlert,
 }) => {
 	const [isEdit, setIsEdit] = useState({
@@ -46,6 +53,13 @@ const ViewResume = ({
 		ram: false,
 	});
 
+	const [isEditArr, setIsEditArr] = useState({
+		workHistory: {
+			index: null,
+			show: false,
+		},
+	});
+
 	// Initial
 	const initialData = {
 		_id: '',
@@ -56,6 +70,9 @@ const ViewResume = ({
 		firstName: '',
 		lastName: '',
 		city: '',
+		linkedIn: '',
+		age: '',
+		gender: '',
 		cellphone: '',
 		status: '',
 		rating: '',
@@ -105,6 +122,9 @@ const ViewResume = ({
 		lastName,
 		cellphone,
 		email,
+		age,
+		gender,
+		linkedIn,
 		city,
 		status,
 		rating,
@@ -123,14 +143,11 @@ const ViewResume = ({
 		brandName,
 		internetResult,
 		computerSpecs,
+		govID,
 	} = data;
 
 	const approveResume = () => {
-		if (
-			rating === 0 ||
-			recruitmentsComment === undefined ||
-			recruitmentsComment.length === 0
-		) {
+		if (recruitmentsComment === undefined || recruitmentsComment.length === 0) {
 			setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			setAction('approve');
@@ -142,11 +159,7 @@ const ViewResume = ({
 	};
 
 	const rejectResume = () => {
-		if (
-			rating === 0 ||
-			recruitmentsComment === undefined ||
-			recruitmentsComment.length === 0
-		) {
+		if (recruitmentsComment === undefined || recruitmentsComment.length === 0) {
 			setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			setAction('reject');
@@ -177,10 +190,7 @@ const ViewResume = ({
 		if (status === 'Pending') {
 			return (
 				<>
-					<button
-						className="btn btn-primary button"
-						onClick={approveResume}
-					>
+					<button className="btn btn-primary button" onClick={approveResume}>
 						Approve
 					</button>
 					<button
@@ -203,10 +213,7 @@ const ViewResume = ({
 		} else if (status === 'Reject') {
 			return (
 				<>
-					<button
-						className="btn btn-primary button"
-						onClick={reapproveResume}
-					>
+					<button className="btn btn-primary button" onClick={reapproveResume}>
 						Reapprove
 					</button>
 					<button
@@ -222,10 +229,7 @@ const ViewResume = ({
 
 	const onAddRecruitersComment = () => {
 		if (recruitmentsComment === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			addRecruitersComment({ _id, recruitmentsComment });
 			setAlert('', 'Add Recruiters Comment Success');
@@ -234,11 +238,34 @@ const ViewResume = ({
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
-		setData({ ...data, [name]: value });
+		if (isEditArr.workHistory.show) {
+			// console.log(workHistory[isEditArr.workHistory.index]);
+			// console.log(name, value);
+			workHistory[isEditArr.workHistory.index][name] = value;
+			setData({ ...data, workHistory: [...workHistory] });
+			// console.log({ ...data, workHistory: [...workHistory, newWorkHistory] });
+			// setData(data => ({ data.workHistory: {...data.workHistory, [data.workHistory[isEditArr.workHistory.index][name]: value ]}))
+		} else {
+			setData({ ...data, [name]: value });
+		}
 	};
 
 	const onClickEdit = (category) => {
 		setIsEdit({ ...isEdit, [category]: !isEdit[category] });
+		if (isEdit[category]) {
+			updateResume(data);
+		}
+	};
+
+	const onClickEditArray = (category, index) => {
+		setIsEdit({ ...isEdit, [category]: !isEdit[category] });
+		setIsEditArr({
+			...isEditArr,
+			[category]: { index, show: !isEditArr[category].show },
+		});
+		if (isEdit[category]) {
+			updateResume(data);
+		}
 	};
 
 	const handleClose = () => {
@@ -251,7 +278,7 @@ const ViewResume = ({
 	useEffect(() => {
 		if (isShow) {
 			handleShow();
-			setData(resume);
+			setData({ ...data, ...resume });
 		}
 	}, [isShow]);
 
@@ -315,20 +342,22 @@ const ViewResume = ({
 									<p className="data-title mb-0">
 										ID: {idCode.toString().padStart(6, '0')}
 									</p>
-									<p className="fullname mb-0">
+									{/* <p className="fullname mb-0">
 										{isEdit.fullname ? (
 											<Fragment>
 												<input
 													type="text"
 													name="firstName"
 													placeholder={firstName}
-													className="form-control input"
+													className="input"
+													onChange={onChange}
 												/>
 												<input
 													type="text"
 													name="lastName"
 													placeholder={lastName}
-													className="form-control input"
+													className="input"
+													onChange={onChange}
 												/>
 											</Fragment>
 										) : (
@@ -336,75 +365,179 @@ const ViewResume = ({
 										)}
 										<i
 											className={`fas ${
-												isEdit.fullname
-													? 'fa-save'
-													: 'fa-edit'
+												isEdit.fullname ? 'fa-save' : 'fa-edit'
 											}`}
-											onClick={() =>
-												onClickEdit('fullname')
-											}
+											onClick={() => onClickEdit('fullname')}
+										></i>
+									</p> */}
+									<p className="data-title mb-0">
+										Headline:{' '}
+										{isEdit.headline ? (
+											<input
+												type="text"
+												className="input"
+												name="headline"
+												onChange={onChange}
+												value={headline}
+											/>
+										) : (
+											headline
+										)}
+										<i
+											className={`fas ${
+												isEdit.headline ? 'fa-save' : 'fa-edit'
+											}`}
+											onClick={() => onClickEdit('headline')}
 										></i>
 									</p>
 									<p className="data-title mb-0">
-										{headline}
+										English Level:{' '}
+										{isEdit.rating ? (
+											<select
+												name="rating"
+												className="input"
+												onChange={onChange}
+												value={rating}
+											>
+												{ratingList().map((e, i) => (
+													<option value={e} key={i}>
+														{e}
+													</option>
+												))}
+											</select>
+										) : rating === '' ? (
+											'Basic'
+										) : (
+											rating
+										)}
+										<i
+											className={`fas ${isEdit.rating ? 'fa-save' : 'fa-edit'}`}
+											onClick={() => onClickEdit('rating')}
+										></i>
 									</p>
-									<p className="data-title mb-0">{email}</p>
 									<p className="data-title mb-0">
-										{cellphone}
+										Expected Salary:{' '}
+										{isEdit.expectedSalary ? (
+											<select
+												name="expectedSalary"
+												className="input"
+												onChange={onChange}
+												value={expectedSalary}
+											>
+												{salaryList().map((e, i) => (
+													<option value={e} key={i}>
+														{e}
+													</option>
+												))}
+											</select>
+										) : (
+											expectedSalary
+										)}
+										<i
+											className={`fas ${
+												isEdit.expectedSalary ? 'fa-save' : 'fa-edit'
+											}`}
+											onClick={() => onClickEdit('expectedSalary')}
+										></i>
 									</p>
-									<p className="city">{city}</p>
+									{/* <p className="data-title mb-0">{email}</p> */}
+									{/* <p className="data-title mb-0">{cellphone}</p> */}
+									{/* <p className="city">{city}</p> */}
 								</div>
-								<div className="d-flex justify-content-between">
+								{/* <div className="d-flex justify-content-between">
 									<div>
-										<p className="data-title mb-0">
-											English Proficiency
-										</p>
+										<p className="data-title mb-0">English Level</p>
 										<div className="rating">{rating}</div>
 									</div>
-									<div>
-										<p className="data-title mb-0">
-											Availability
-										</p>
-										<p className="availability">
-											{availability}
-										</p>
-									</div>
 									<div className="col-lg-4">
-										<p className="data-title mb-0">
-											Expected Salary
-										</p>
+										<p className="data-title mb-0">Expected Salary</p>
 										<p className="expected-salary">
-											{getSymbolFromCurrency(currency)}{' '}
-											{expectedSalary} /hr
+											{getSymbolFromCurrency(currency)} {expectedSalary} /hr
 										</p>
 									</div>
-								</div>
+								</div> */}
 							</div>
 						</div>
+						<div className="col-lg-3">{actionButton()}</div>
+					</div>
+					<div className="row pb-3">
 						<div className="col-lg-3">
-							{isEdit ? (
-								<button
-									className="btn btn-primary button"
-									onClick={() => console.log(isEdit.fullname)}
-								>
-									Save
-								</button>
-							) : (
-								<button
-									className="btn btn-primary button"
-									onClick={onClickEdit}
-								>
-									Edit
-								</button>
-							)}
-							{actionButton()}
+							<p className="item-title color-1 mb-0">Personal Information</p>
+						</div>
+						<div className="col-lg-9">
+							<div className="row">
+								<div className="col-lg-6">
+									<table className="table table-borderless personal-info">
+										<tbody>
+											<tr>
+												<th className="pt-0 pl-0 item-title">First Name</th>
+												<td className="pt-0 pl-0 item-value">{firstName}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Last Name</th>
+												<td className="pt-0 pl-0 item-value">{lastName}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Email</th>
+												<td className="pt-0 pl-0 item-value">{email}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Cellphone</th>
+												<td className="pt-0 pl-0 item-value">{cellphone}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Government ID</th>
+												<td className="pt-0 pl-0 item-value">
+													<button
+														className="btn btn-primary view"
+														onClick={() =>
+															setViewImage({
+																show: true,
+																title: 'Government ID',
+																file: govID,
+															})
+														}
+													>
+														View
+													</button>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+								<div className="col-lg-6">
+									<table className="table table-borderless personal-info">
+										<tbody>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Age</th>
+												<td className="pt-0 item-value">{age}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Gender</th>
+												<td className="pt-0 item-value">{gender}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">City</th>
+												<td className="pt-0 item-value">{city}</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">LinkedIn Link</th>
+												<td className="pt-0 item-value">
+													<a href={linkedIn} target="_blank">
+														{linkedIn}
+													</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<hr className="line-break" />
 						</div>
 					</div>
 					<div className="row pb-3">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">
-								Skills & Specialties
-							</p>
+							<p className="item-title color-1 mb-0">Skills & Specialties</p>
 						</div>
 						<div className="col-lg-9">
 							<p id="specialty" className="specialty mb-0">
@@ -415,9 +548,7 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">
-								Software Use
-							</p>
+							<p className="item-title color-1 mb-0">Software Use</p>
 						</div>
 						<div className="col-lg-9">
 							<p id="software" className="software mb-0">
@@ -462,30 +593,142 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Work Experience
-							</p>
+							<p className="item-title color-2">Work Experience</p>
 						</div>
 						<div className="col-lg-9">
 							<div id="workHistory" className="work-history">
 								{workHistory.map((e, i) => (
 									<div className="work-history-item" key={i}>
-										<p className="title">{e.title}</p>
-										<p className="company">{e.company}</p>
+										<i
+											className={`fas ${
+												isEdit.workHistory ? 'fa-save' : 'fa-edit'
+											}`}
+											onClick={() => onClickEditArray('workHistory', i)}
+										></i>
+										<p className="title">
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<input
+													type="text"
+													className="input"
+													name="title"
+													value={e.title}
+													onChange={onChange}
+												/>
+											) : (
+												e.title
+											)}
+										</p>
+										<p className="company">
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<input
+													type="text"
+													className="input"
+													name="company"
+													value={e.company}
+													onChange={onChange}
+												/>
+											) : (
+												e.company
+											)}
+										</p>
 										<p className="month-year">
-											{e.monthStarted} {e.yearStarted} -{' '}
-											{e.monthEnded} {e.yearEnded}
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<select
+													className="input"
+													name="monthStarted"
+													value={e.monthStarted}
+													onChange={onChange}
+												>
+													{monthList().map((element, index) => (
+														<option value={element} key={index}>
+															{element}
+														</option>
+													))}
+												</select>
+											) : (
+												e.monthStarted
+											)}{' '}
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<select
+													className="input"
+													name="yearStarted"
+													value={e.yearStarted}
+													onChange={onChange}
+												>
+													{yearList().map((element, index) => (
+														<option value={element} key={index}>
+															{element}
+														</option>
+													))}
+												</select>
+											) : (
+												e.yearStarted
+											)}{' '}
+											-{' '}
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<select
+													className="input"
+													name="monthEnded"
+													value={e.monthEnded}
+													onChange={onChange}
+												>
+													{monthList().map((element, index) => (
+														<option value={element} key={index}>
+															{element}
+														</option>
+													))}
+												</select>
+											) : (
+												e.monthEnded
+											)}{' '}
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<select
+													className="input"
+													name="yearEnded"
+													value={e.yearEnded}
+													onChange={onChange}
+												>
+													{yearList().map((element, index) => (
+														<option value={element} key={index}>
+															{element}
+														</option>
+													))}
+												</select>
+											) : (
+												e.yearEnded
+											)}
 										</p>
-										<p className="item-title">
-											Job Description
-										</p>
+										<p className="item-title">Job Description</p>
 										<p className="description">
-											{e.description}
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<textarea
+													className="input"
+													name="description"
+													value={e.description}
+													onChange={onChange}
+												>
+													{e.description}
+												</textarea>
+											) : (
+												e.description
+											)}
 										</p>
-										<p className="item-title">
-											About the company
+										<p className="item-title">About the company</p>
+										<br />
+										<p className="item-title">Company Expertise</p>
+										<p className="company-expertise">
+											{e.companyExpertise.join(', ')}
 										</p>
-										<p className="about">{e.about}</p>
+										<br />
+										<p className="item-title">Country</p>
+										<p className="country">{e.country}</p>
 									</div>
 								))}
 							</div>
@@ -505,20 +748,16 @@ const ViewResume = ({
 												<tr>
 													<td
 														className={`item-choices pl-0${
-															i === 0
-																? ' pt-0'
-																: ''
+															i === 0 ? ' pt-0' : ''
 														}`}
 													>
 														{e.choices}
 													</td>
 												</tr>
-												{e.choices ===
-												'License and Certification' ? (
+												{e.choices === 'License and Certification' ? (
 													<tr>
 														<td className="item-title pb-0 pl-0">
-															License and
-															Certification
+															License and Certification
 														</td>
 														<td className="item-degree pb-0 item-value">
 															{e.license}
@@ -526,35 +765,26 @@ const ViewResume = ({
 													</tr>
 												) : null}
 												{e.choices !== 'High School' &&
-												e.choices !==
-													'License and Certification' ? (
+												e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															Degree
-														</td>
+														<td className="item-title pb-0 pl-0">Degree</td>
 														<td className="item-degree pb-0 item-value">
 															{e.degree}
 														</td>
 													</tr>
 												) : null}
-												{e.choices !==
-												'License and Certification' ? (
+												{e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															School
-														</td>
+														<td className="item-title pb-0 pl-0">School</td>
 														<td className="item-school pb-0 item-value">
 															{e.school}
 														</td>
 													</tr>
 												) : null}
 												{e.choices !== 'High School' &&
-												e.choices !==
-													'License and Certification' ? (
+												e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															Course
-														</td>
+														<td className="item-title pb-0 pl-0">Course</td>
 														<td className="item-course pb-0 item-value">
 															{e.course}
 														</td>
@@ -565,8 +795,7 @@ const ViewResume = ({
 														Started - Graduated
 													</td>
 													<td className="item-month-year pb-0 item-value">
-														{e.monthYearStarted} -{' '}
-														{e.monthYearGraduated}
+														{e.monthYearStarted} - {e.monthYearGraduated}
 													</td>
 												</tr>
 											</tbody>
@@ -579,9 +808,7 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Recruiter's Comments
-							</p>
+							<p className="item-title color-2">Recruiter's Comments</p>
 						</div>
 						<div className="col-lg-9">
 							<div id="recruitmentsComment" className="pb-5">
@@ -607,74 +834,45 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-5">
 						<div className="col-lg-3">
-							<p className="item-title color-2">
-								Work from Home Capabilites
-							</p>
+							<p className="item-title color-2">Work from Home Capabilites</p>
 						</div>
 						<div className="col-lg-9">
 							<table className="table table-borderless workspace-item">
 								<tbody>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Workspace
 										</th>
-										<td
-											id="workspace"
-											className="pt-0 item-value"
-										>
+										<td id="workspace" className="pt-0 item-value">
 											{workspace}
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Internet Type
 										</th>
-										<td
-											id="internetType"
-											className="pt-0 item-value"
-										>
+										<td id="internetType" className="pt-0 item-value">
 											{internetType}
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Hardware Type
 										</th>
-										<td
-											id="hardwareType"
-											className="pt-0 item-value"
-										>
+										<td id="hardwareType" className="pt-0 item-value">
 											{hardwareType}
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Brand Name
 										</th>
-										<td
-											id="brandName"
-											className="pt-0 item-value"
-										>
+										<td id="brandName" className="pt-0 item-value">
 											{brandName}
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Internet Speedtest Result
 										</th>
 										<td className="pt-0">
@@ -683,8 +881,7 @@ const ViewResume = ({
 												onClick={() =>
 													setViewImage({
 														show: true,
-														title:
-															'Internet Speedtest Result',
+														title: 'Internet Speedtest Result',
 														file: internetResult,
 													})
 												}
@@ -694,10 +891,7 @@ const ViewResume = ({
 										</td>
 									</tr>
 									<tr>
-										<th
-											scope="row"
-											className="pt-0 item-title"
-										>
+										<th scope="row" className="pt-0 item-title">
 											Computer Specs
 										</th>
 										<td className="pt-0">
@@ -731,6 +925,7 @@ ViewResume.propTypes = {
 	isShow: PropTypes.bool.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	addRecruitersComment: PropTypes.func.isRequired,
+	updateResume: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -741,4 +936,5 @@ export default connect(mapStateToProps, {
 	clearResume,
 	setAlert,
 	addRecruitersComment,
+	updateResume,
 })(ViewResume);

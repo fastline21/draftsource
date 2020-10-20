@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // List
-import { countryList } from './../../list/Country';
+import { genderList } from './../../list/Gender';
+// import { countryList } from './../../list/Country';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
@@ -36,7 +37,9 @@ const Step1 = ({
 		email: '',
 		cellphone: '',
 		city: '',
-		country: 'Afghanistan',
+		age: '',
+		gender: 'Male',
+		// country: 'Afghanistan',
 		linkedIn: '',
 	};
 
@@ -49,7 +52,9 @@ const Step1 = ({
 		email,
 		cellphone,
 		city,
-		country,
+		// country,
+		age,
+		gender,
 		linkedIn,
 	} = info;
 
@@ -68,13 +73,12 @@ const Step1 = ({
 			email === '' ||
 			cellphone === '' ||
 			city === '' ||
-			country === '' ||
+			// country === '' ||
+			age === '' ||
+			gender === '' ||
 			linkedIn === ''
 		) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			addUser({ ...info, type: 'Remote Worker' });
 			setInfo(initialInfo);
@@ -118,10 +122,7 @@ const Step1 = ({
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="firstNameInput"
-										className="form-label"
-									>
+									<label htmlFor="firstNameInput" className="form-label">
 										First Name
 									</label>
 								</div>
@@ -140,10 +141,7 @@ const Step1 = ({
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="lastNameInput"
-										className="form-label"
-									>
+									<label htmlFor="lastNameInput" className="form-label">
 										Last Name
 									</label>
 								</div>
@@ -162,10 +160,7 @@ const Step1 = ({
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="emailInput"
-										className="form-label"
-									>
+									<label htmlFor="emailInput" className="form-label">
 										Email
 									</label>
 								</div>
@@ -184,10 +179,7 @@ const Step1 = ({
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="cellphoneInput"
-										className="form-label"
-									>
+									<label htmlFor="cellphoneInput" className="form-label">
 										Cellphone No.
 									</label>
 								</div>
@@ -203,13 +195,10 @@ const Step1 = ({
 								</div>
 							</div>
 						</div>
-						<div className="form-group">
+						{/* <div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="cityInput"
-										className="form-label"
-									>
+									<label htmlFor="cityInput" className="form-label">
 										Country
 									</label>
 								</div>
@@ -229,14 +218,53 @@ const Step1 = ({
 									</select>
 								</div>
 							</div>
+						</div> */}
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
+									<label htmlFor="ageInput" className="form-label">
+										Age
+									</label>
+								</div>
+								<div className="col-lg-8">
+									<input
+										type="number"
+										name="age"
+										value={age}
+										onChange={onChange}
+										className="form-control input"
+									/>
+								</div>
+							</div>
 						</div>
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="cityInput"
-										className="form-label"
+									<label htmlFor="genderInput" className="form-label">
+										Gender
+									</label>
+								</div>
+								<div className="col-lg-8">
+									<select
+										id="genderInput"
+										className="form-control input"
+										name="gender"
+										onChange={onChange}
+										value={gender}
 									>
+										{genderList().map((e, i) => (
+											<option key={i} value={e}>
+												{e}
+											</option>
+										))}
+									</select>
+								</div>
+							</div>
+						</div>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
+									<label htmlFor="cityInput" className="form-label">
 										City
 									</label>
 								</div>
@@ -255,10 +283,7 @@ const Step1 = ({
 						<div className="form-group">
 							<div className="form-row">
 								<div className="col-lg-4">
-									<label
-										htmlFor="linkedInInput"
-										className="form-label"
-									>
+									<label htmlFor="linkedInInput" className="form-label">
 										LinkedIn Link
 									</label>
 								</div>

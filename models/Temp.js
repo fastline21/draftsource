@@ -17,12 +17,18 @@ const TempSchema = new mongoose.Schema({
 	cellphone: {
 		type: String,
 	},
+	age: {
+		type: Number,
+	},
+	gender: {
+		type: String,
+	},
 	city: {
 		type: String,
 	},
-	country: {
-		type: String,
-	},
+	// country: {
+	// 	type: String,
+	// },
 	linkedIn: {
 		type: String,
 	},

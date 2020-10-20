@@ -36,9 +36,11 @@ router.get('/', auth, async (req, res) => {
 // @desc    Register user
 // @access  Public
 router.post('/signup', async (req, res) => {
+	// Get type
 	const { type } = req.body;
 
 	if (type === 'Remote Worker') {
+		// Get email
 		const { email } = req.body;
 
 		if (email === '') {
@@ -52,8 +54,10 @@ router.post('/signup', async (req, res) => {
 					lastName,
 					email,
 					cellphone,
+					age,
+					gender,
 					city,
-					country,
+					// country,
 					linkedIn,
 				} = req.body;
 				let user = await User.findOne({ email });
@@ -75,8 +79,10 @@ router.post('/signup', async (req, res) => {
 					lastName,
 					email,
 					cellphone,
+					age,
+					gender,
 					city,
-					country,
+					// country,
 					linkedIn,
 				});
 
@@ -242,10 +248,7 @@ router.post('/signup', async (req, res) => {
 					return res.status(400).json({ msg: 'Email already used' });
 				} else {
 					const salt = await bcrypt.genSalt(10);
-					const newPassword = await bcrypt.hash(
-						String(password),
-						salt
-					);
+					const newPassword = await bcrypt.hash(String(password), salt);
 					const verificationToken = randomstring.generate();
 					const user = new User({
 						email,
@@ -296,10 +299,7 @@ router.post('/signup', async (req, res) => {
 					return res.status(400).json({ msg: 'Email already used' });
 				} else {
 					const salt = await bcrypt.genSalt(10);
-					const newPassword = await bcrypt.hash(
-						String(password),
-						salt
-					);
+					const newPassword = await bcrypt.hash(String(password), salt);
 					const verificationToken = randomstring.generate();
 					user = new User({
 						email,
@@ -368,10 +368,7 @@ router.post('/signup', async (req, res) => {
 					return res.status(400).json({ msg: 'Email already used' });
 				} else {
 					const salt = await bcrypt.genSalt(10);
-					const newPassword = await bcrypt.hash(
-						String(password),
-						salt
-					);
+					const newPassword = await bcrypt.hash(String(password), salt);
 					const verificationToken = randomstring.generate();
 					user = new User({
 						email,
@@ -435,8 +432,10 @@ router.get('/temp/:id', async (req, res) => {
 		lastName,
 		email,
 		cellphone,
+		age,
+		gender,
 		city,
-		country,
+		// country,
 		linkedIn,
 	} = temp;
 	res.json({
@@ -444,8 +443,10 @@ router.get('/temp/:id', async (req, res) => {
 		lastName,
 		email,
 		cellphone,
+		age,
+		gender,
 		city,
-		country,
+		// country,
 		linkedIn,
 	});
 	await Temp.findByIdAndDelete(_id);
@@ -503,7 +504,7 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
 	const users = await User.find();
-	console.log(users)
+	console.log(users);
 	const resultUsers = [];
 	await Promise.all(
 		users.map(async (e) => {
@@ -516,7 +517,7 @@ router.get('/get-users', auth, async (req, res) => {
 					email,
 					type,
 					dateCreated,
-					haveResume: resume ? true: false,
+					haveResume: resume ? true : false,
 				});
 			} else {
 				resultUsers.push({
@@ -529,7 +530,7 @@ router.get('/get-users', auth, async (req, res) => {
 				});
 			}
 		})
-	)
+	);
 	res.json(resultUsers);
 });
 
@@ -545,24 +546,18 @@ router.delete('/delete-user/:id', auth, async (req, res) => {
 
 		if (resume) {
 			const { _id, resumeImage, aboutYourself, uploadWork } = resume;
-			fs.unlink(
-				`${__dirname}/../public/uploads/${resumeImage}`,
-				(err) => {
-					if (err) {
-						console.error(err);
-						return;
-					}
+			fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
 				}
-			);
-			fs.unlink(
-				`${__dirname}/../public/uploads/${aboutYourself}`,
-				(err) => {
-					if (err) {
-						console.error(err);
-						return;
-					}
+			});
+			fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
 				}
-			);
+			});
 			uploadWork.images.map((e) => {
 				fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
 					if (err) {

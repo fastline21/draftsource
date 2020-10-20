@@ -23,7 +23,7 @@ const Step3 = ({
 	setAlert,
 	addResume,
 	clearError,
-	// uploadFile,
+	uploadFile,
 	resumeState: { error },
 }) => {
 	const [
@@ -60,6 +60,7 @@ const Step3 = ({
 		internetResult,
 		processor,
 		ram,
+		govID,
 	} = info;
 
 	const onChange = (e) => {
@@ -70,6 +71,8 @@ const Step3 = ({
 			} else {
 				setHavePC(false);
 			}
+		} else if (name === 'govID') {
+			setInfo({ ...info, [name]: e.target.files[0] });
 		} else {
 			setInfo({ ...info, [name]: value });
 		}
@@ -84,11 +87,8 @@ const Step3 = ({
 	const onSubmit = (e) => {
 		e.preventDefault();
 
-		if (internetType === '' || internetResult === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+		if (internetType === '' || internetResult === '' || govID === '') {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		}
 
 		if (havePC) {
@@ -98,22 +98,28 @@ const Step3 = ({
 				processor === '' ||
 				ram === ''
 			) {
-				return setAlert(
-					'',
-					'Please fill-in the required boxes to Proceed.'
-				);
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
+
+			addResume({
+				internetType,
+				internetResult,
+				hardwareType,
+				brandName,
+				processor,
+				ram,
+				havePC,
+			});
+		} else {
+			addResume({
+				internetType,
+				internetResult,
+				havePC,
+			});
 		}
 
-		addResume({
-			internetType,
-			internetResult,
-			hardwareType,
-			brandName,
-			processor,
-			ram,
-			havePC,
-		});
+		uploadFile({ govID });
+
 		setInfo(initialInfo);
 		setSubmit(true);
 		setPristine();
@@ -170,10 +176,7 @@ const Step3 = ({
 									</select>
 								</div> */}
 								<div className="form-group">
-									<label
-										htmlFor="internetTypeInput"
-										className="form-label"
-									>
+									<label htmlFor="internetTypeInput" className="form-label">
 										Internet Type
 									</label>
 									<select
@@ -191,10 +194,7 @@ const Step3 = ({
 									</select>
 								</div>
 								<div className="form-group">
-									<label
-										className="form-label"
-										htmlFor="internetResultInput"
-									>
+									<label className="form-label" htmlFor="internetResultInput">
 										Internet Speed Result
 									</label>
 									<input
@@ -260,10 +260,7 @@ const Step3 = ({
 									)} */}
 								</div>
 								<div className="form-group">
-									<label
-										htmlFor="havePCInput"
-										className="form-label"
-									>
+									<label htmlFor="havePCInput" className="form-label">
 										Do you have a laptop or pc?
 									</label>
 									<select
@@ -276,13 +273,49 @@ const Step3 = ({
 										<option value="No">No</option>
 									</select>
 								</div>
+								<div className="form-group">
+									<label className="form-label">Government ID</label>
+									{govID ? (
+										<p id="replaceGovID" className="upload d-block">
+											<label id="govIDFile" className="selected-file">
+												{govID.name}
+											</label>
+											<label
+												htmlFor="replacegovIDInput"
+												className="replace-button"
+											>
+												Replace
+											</label>
+											<input
+												type="file"
+												accept="image/*"
+												name="govID"
+												id="replacegovIDInput"
+												className="form-control-file"
+												onChange={onChange}
+											/>
+										</p>
+									) : (
+										<div className="form-group upload-file">
+											<label htmlFor="govIDInput" className="form-label">
+												Upload Image
+											</label>
+											<input
+												type="file"
+												name="govID"
+												id="govIDInput"
+												className="form-control-file input"
+												accept="image/*"
+												onChange={onChange}
+												value={govID}
+											/>
+										</div>
+									)}
+								</div>
 							</div>
 							<div className="right col-lg-6 col-md-6 col-sm-12">
 								<div className="form-group">
-									<label
-										htmlFor="hardwareTypeInput"
-										className="form-label"
-									>
+									<label htmlFor="hardwareTypeInput" className="form-label">
 										Hardware Type
 									</label>
 									<select
@@ -301,10 +334,7 @@ const Step3 = ({
 									</select>
 								</div>
 								<div className="form-group">
-									<label
-										htmlFor="brandNameInput"
-										className="form-label"
-									>
+									<label htmlFor="brandNameInput" className="form-label">
 										Brand Name
 									</label>
 									<input
@@ -318,10 +348,7 @@ const Step3 = ({
 									/>
 								</div>
 								<div className="form-group">
-									<label
-										htmlFor="processorInput"
-										className="form-label"
-									>
+									<label htmlFor="processorInput" className="form-label">
 										Processor
 									</label>
 									<input
@@ -335,10 +362,7 @@ const Step3 = ({
 									/>
 								</div>
 								<div className="form-group">
-									<label
-										htmlFor="ramInput"
-										className="form-label"
-									>
+									<label htmlFor="ramInput" className="form-label">
 										RAM
 									</label>
 									<input
@@ -518,6 +542,7 @@ Step3.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addResume: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
+	uploadfile: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

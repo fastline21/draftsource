@@ -2,9 +2,6 @@ const express = require('express');
 const router = express.Router();
 const randomstring = require('randomstring');
 const path = require('path');
-const fs = require('fs');
-const gm = require('gm');
-const pdf = require('pdf-thumbnail');
 const moment = require('moment');
 
 // Models
@@ -12,6 +9,28 @@ const Resume = require('./../models/Resume');
 
 // Middleware
 const auth = require('./../middleware/auth');
+
+router.post('/education', async (req, res) => {
+	let { education } = req.body;
+	const licenseArr = [];
+	education.map((e) => {
+		if (e.choices === 'License and Certification') {
+			licenseArr.push(e.license);
+		}
+	});
+	const oldEducation = education.filter(
+		(edu) => edu.choices !== 'License and Certification'
+	);
+	const newEducation = [
+		...oldEducation,
+		{
+			choices: 'License and Certification',
+			license: licenseArr,
+		},
+	];
+	console.log(newEducation);
+	res.json(newEducation);
+});
 
 // @route   POST /api/resume
 // @desc    Create resume
@@ -21,9 +40,11 @@ router.post('/', auth, async (req, res) => {
 		firstName,
 		lastName,
 		email,
+		age,
+		gender,
 		cellphone,
 		city,
-		country,
+		// country,
 		linkedIn,
 		internetType,
 		internetResult,
@@ -39,6 +60,25 @@ router.post('/', auth, async (req, res) => {
 	workHistory = JSON.parse(workHistory);
 	uploadWork = JSON.parse(uploadWork);
 
+	// Combine all license into one entry
+	const licenseArr = [];
+	education.map((e) => {
+		if (e.choices === 'License and Certification') {
+			licenseArr.push(e.license);
+		}
+	});
+	const oldEducation = education.filter(
+		(edu) => edu.choices !== 'License and Certification'
+	);
+	const newEducation = [
+		...oldEducation,
+		{
+			choices: 'License and Certification',
+			license: licenseArr,
+		},
+	];
+
+	// Get duration of years
 	Date.monthsDiff = function (day1, day2) {
 		let d1 = day1,
 			d2 = day2;
@@ -53,6 +93,7 @@ router.post('/', auth, async (req, res) => {
 		return m;
 	};
 
+	// Get total work history
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
 		let d1 = new Date(
@@ -66,32 +107,42 @@ router.post('/', auth, async (req, res) => {
 		totalWorkHistory += Date.monthsDiff(d1, d2);
 	});
 
+	// string to array
 	specialty = specialty.split(',');
 	software = software.split(',');
 
+	// Generate file name for upload
 	const generateFileName = (file, fieldname) => {
 		const filename = randomstring.generate({
 			length: 6,
 			charset: 'numeric',
 		});
-		return `${fieldname}-${filename}-${Date.now()}${path.extname(
-			file.name
-		)}`;
+		return `${fieldname}-${filename}-${Date.now()}${path.extname(file.name)}`;
 	};
 
+	// Generate Resume Image
 	let resumeImage = uploadFile.resumeImage;
 	const resumeImageFile = generateFileName(resumeImage, 'resumeImage');
-	resumeImage.mv(
-		`${__dirname}/../public/uploads/${resumeImageFile}`,
-		(err) => {
-			if (err) {
-				console.error(err);
-				return res.status(500).send(err);
-			}
+	resumeImage.mv(`${__dirname}/../public/uploads/${resumeImageFile}`, (err) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send(err);
 		}
-	);
+	});
 	resumeImage = resumeImageFile;
 
+	// Generate Gov ID
+	let govID = uploadFile.govID;
+	const govIDFile = generateFileName(govID, 'govID');
+	govID.mv(`${__dirname}/../public/uploads/${govIDFile}`, (err) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send(err);
+		}
+	});
+	govID = govIDFile;
+
+	// Get all country in Work History and remove duplicate
 	let countryExperience = workHistory.map((e) => e.country);
 	countryExperience = countryExperience.filter(
 		(a, b) => countryExperience.indexOf(a) === b
@@ -126,6 +177,7 @@ router.post('/', auth, async (req, res) => {
 	// );
 	// computerSpecs = computerSpecsFile;
 
+	// Generate About Yourself file
 	let aboutYourself = uploadFile.aboutYourself;
 	const aboutYourselfFile = generateFileName(aboutYourself, 'aboutYourself');
 	aboutYourself.mv(
@@ -139,13 +191,11 @@ router.post('/', auth, async (req, res) => {
 	);
 	aboutYourself = aboutYourselfFile;
 
+	// Generate Upload Work Images
 	let uploadWorkImage = '';
 	if (uploadWork.images.length > 1) {
 		uploadFile.images.forEach((element) => {
-			const uploadWorkImageFile = generateFileName(
-				element,
-				'uploadWorkImage'
-			);
+			const uploadWorkImageFile = generateFileName(element, 'uploadWorkImage');
 			element.mv(
 				`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
 				(err) => {
@@ -158,10 +208,7 @@ router.post('/', auth, async (req, res) => {
 			uploadWorkImage = [...uploadWorkImage, uploadWorkImageFile];
 		});
 	} else {
-		const uploadWorkImageFile = generateFileName(
-			uploadFile.images,
-			'images'
-		);
+		const uploadWorkImageFile = generateFileName(uploadFile.images, 'images');
 		uploadFile.images.mv(
 			`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
 			(err) => {
@@ -213,15 +260,15 @@ router.post('/', auth, async (req, res) => {
 	// }
 
 	try {
+		// Combine Upload Work Images file to array
 		uploadWork.images = uploadWork.images.map((x, i) => {
 			return {
 				...x,
 				file:
-					uploadWork.images.length > 1
-						? uploadWorkImage[i]
-						: uploadWorkImage,
+					uploadWork.images.length > 1 ? uploadWorkImage[i] : uploadWorkImage,
 			};
 		});
+
 		// uploadWork.documents = uploadWork.documents.map((x, i) => {
 		//     return {
 		//         ...x,
@@ -237,11 +284,14 @@ router.post('/', auth, async (req, res) => {
 			firstName,
 			lastName,
 			email,
+			age,
+			gender,
 			cellphone,
 			city,
-			country,
+			// country,
 			linkedIn,
 			resumeImage,
+			govID,
 			internetType,
 			internetResult,
 			hardwareType: havePC ? req.body.hardwareType : '',
@@ -253,7 +303,7 @@ router.post('/', auth, async (req, res) => {
 			expectedSalary,
 			// currency,
 			aboutYourself,
-			education,
+			education: newEducation,
 			workHistory,
 			countryExperience,
 			specialty,

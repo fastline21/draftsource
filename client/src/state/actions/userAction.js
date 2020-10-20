@@ -160,11 +160,6 @@ export const setLoading = () => (dispatch) => {
 // Remove user
 export const deleteUser = (id) => async (dispatch) => {
 	try {
-		const config = {
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		};
 		await axios.delete(`/api/auth/delete-user/${id}`);
 	} catch (error) {
 		dispatch({

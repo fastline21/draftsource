@@ -172,9 +172,14 @@
 				display: flex;
 				justify-content: space-between;
 				border-bottom: 2px solid $gray;
-				padding-top: 50px;
+				padding-top: 49px;
 				padding-bottom: 10px;
 				flex-direction: column;
+
+				// Firefox only
+				@-moz-document url-prefix() {
+					padding-top: 50px;
+				}
 
 				@include media('>=tablet') {
 					flex-direction: row;
@@ -357,12 +362,15 @@
 							.box-4 {
 								display: flex;
 
-								.rating-color {
-									font-size: 16px;
+								.rating {
+									margin-bottom: 0;
+									color: $darkBlue;
+									font-weight: 700;
+									// font-size: 16px;
 
-									&.checked {
-										color: $lightBlue;
-									}
+									// &.checked {
+									// 	color: $lightBlue;
+									// }
 								}
 							}
 						}

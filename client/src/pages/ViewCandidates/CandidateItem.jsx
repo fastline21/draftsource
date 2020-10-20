@@ -113,17 +113,11 @@ const CandidateItem = ({
 						/>
 					</div>
 					<div className="box-2">
-						<p className="id-code">
-							ID: {idCode.toString().padStart(6, '0')}
-						</p>
+						<p className="id-code">ID: {idCode.toString().padStart(6, '0')}</p>
 						<p className="headline">{headline}</p>
 					</div>
 				</div>
-				<audio
-					controls
-					className="about-yourself"
-					controlsList="nodownload"
-				>
+				<audio controls className="about-yourself" controlsList="nodownload">
 					<source src={`/uploads/${aboutYourself}`} />
 				</audio>
 				<div className="profile-stats">
@@ -131,8 +125,7 @@ const CandidateItem = ({
 						<div className="box-1">
 							<p className="box-label">Relevant Experience:</p>
 							<p className="total-work-history">
-								{totalWorkYear}{' '}
-								{totalWorkYear > 1 ? 'Years' : 'Year'}{' '}
+								{totalWorkYear} {totalWorkYear > 1 ? 'Years' : 'Year'}{' '}
 								<i
 									className="fas fa-question-circle"
 									ref={targetYear}
@@ -144,21 +137,14 @@ const CandidateItem = ({
 									placement="right"
 								>
 									{(props) => (
-										<Tooltip
-											id="overlay-example"
-											{...props}
-										>
-											Expected salaries placed by the
-											candidates are based on
+										<Tooltip id="overlay-example" {...props}>
+											Expected salaries placed by the candidates are based on
 											Draftsource’s fair market standards
 											<br />
-											Salaries can be negotiated before or
-											during the interview by the client
-											or by the Draftsource team if
-											requested
+											Salaries can be negotiated before or during the interview
+											by the client or by the Draftsource team if requested
 											<br />
-											Equipment rental, internet
-											connection and service fee not
+											Equipment rental, internet connection and service fee not
 											included in expected salary
 										</Tooltip>
 									)}
@@ -166,15 +152,10 @@ const CandidateItem = ({
 							</p>
 						</div>
 						<div className="box-2" onClick={onViewResume}>
-							<p
-								className="box-label"
-								style={{ minWidth: '153px' }}
-							>
+							<p className="box-label" style={{ minWidth: '153px' }}>
 								Country Experience:
 							</p>
-							<p className="country">
-								{countryExperience.join(', ')}
-							</p>
+							<p className="country">{countryExperience.join(', ')}</p>
 						</div>
 					</div>
 					<div className="box-b">
@@ -193,27 +174,22 @@ const CandidateItem = ({
 									placement="right"
 								>
 									{(props) => (
-										<Tooltip
-											id="overlay-example"
-											{...props}
-										>
-											Experience is computed and counted
-											depending on years of experience in
-											the industry
+										<Tooltip id="overlay-example" {...props}>
+											Experience is computed and counted depending on years of
+											experience in the industry
 											<br />
-											Irrelevant work experiences is not
-											included in the computation and
-											resumes such as marketing, sales,
-											customer support and other
-											non-related industries
+											Irrelevant work experiences is not included in the
+											computation and resumes such as marketing, sales, customer
+											support and other non-related industries
 										</Tooltip>
 									)}
 								</Overlay>
 							</p>
 						</div>
 						<div className="box-4" onClick={onViewResume}>
-							<p className="box-label">English Profiecy:</p>
-							<div className="rating">
+							<p className="box-label">English Level:</p>
+							<p className="rating">{rating}</p>
+							{/* <div className="rating">
 								<i
 									className={`rating-color fas fa-star${
 										rating >= 1 ? ` checked` : ''
@@ -239,7 +215,7 @@ const CandidateItem = ({
 										rating === 5 ? ` checked` : ''
 									}`}
 								></i>
-							</div>
+							</div> */}
 						</div>
 					</div>
 				</div>
@@ -248,9 +224,7 @@ const CandidateItem = ({
 					{visibleArrow && (
 						<button
 							className="specialty-software-arrow"
-							onClick={() =>
-								(specialtySoftwareRef.current.scrollLeft -= 200)
-							}
+							onClick={() => (specialtySoftwareRef.current.scrollLeft -= 200)}
 						>
 							<i className="fas fa-angle-left"></i>
 						</button>
@@ -274,9 +248,7 @@ const CandidateItem = ({
 					{visibleArrow && (
 						<button
 							className="specialty-software-arrow"
-							onClick={() =>
-								(specialtySoftwareRef.current.scrollLeft += 200)
-							}
+							onClick={() => (specialtySoftwareRef.current.scrollLeft += 200)}
 						>
 							<i className="fas fa-angle-right"></i>
 						</button>
@@ -316,18 +288,8 @@ const CandidateItem = ({
 						interval={null}
 						onSelect={miniSlideSelect}
 						indicators={false}
-						nextIcon={
-							<i
-								className="fas fa-caret-right"
-								aria-hidden="true"
-							></i>
-						}
-						prevIcon={
-							<i
-								className="fas fa-caret-left"
-								aria-hidden="true"
-							></i>
-						}
+						nextIcon={<i className="fas fa-caret-right" aria-hidden="true"></i>}
+						prevIcon={<i className="fas fa-caret-left" aria-hidden="true"></i>}
 						fade={true}
 					>
 						{uploadWork.images.map((e, i) => (

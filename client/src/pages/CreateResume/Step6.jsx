@@ -66,9 +66,7 @@ const Step6 = ({
 		if (specialty.includes(specialtyList()[e])) {
 			setSpecialty((specialty) => [
 				...specialty.filter(
-					(x) =>
-						specialty.indexOf(x) !==
-						specialty.indexOf(specialtyList()[e])
+					(x) => specialty.indexOf(x) !== specialty.indexOf(specialtyList()[e])
 				),
 			]);
 			Array.from(document.querySelectorAll('.specialty .list .nav-item'))
@@ -89,9 +87,7 @@ const Step6 = ({
 		if (software.includes(softwareList()[e])) {
 			setSoftware((software) => [
 				...software.filter(
-					(x) =>
-						software.indexOf(x) !==
-						software.indexOf(softwareList()[e])
+					(x) => software.indexOf(x) !== software.indexOf(softwareList()[e])
 				),
 			]);
 			Array.from(document.querySelectorAll('.software .list .nav-item'))
@@ -111,9 +107,10 @@ const Step6 = ({
 	const specialtyListGenerate = () => {
 		let key = 0;
 		let list = [];
+		const total = Math.ceil(specialtyList().length / 4);
 		for (let x = 0; x < 4; x++) {
 			let item = [];
-			for (let y = 0; y < 5; y++) {
+			for (let y = 0; y < total; y++) {
 				item.push(
 					<SpecialtyItem
 						key={key}
@@ -137,9 +134,10 @@ const Step6 = ({
 	const softwareListGenerate = () => {
 		let key = 0;
 		let list = [];
+		const total = Math.ceil(softwareList().length / 4);
 		for (let x = 0; x < 4; x++) {
 			let item = [];
-			for (let y = 0; y < 5; y++) {
+			for (let y = 0; y < total; y++) {
 				item.push(
 					<SoftwareItem
 						key={key}
@@ -190,24 +188,14 @@ const Step6 = ({
 		e.preventDefault();
 
 		if (otherSpecialtyRef.current.value === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
-			const lowerSpecialty = specialtyList().map((el) =>
-				el.toLowerCase()
-			);
+			const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
 			const lowerOther = otherSpecialtyRef.current.value;
 			if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
 				const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
-				setSpecialty((specialty) => [
-					...specialty,
-					specialtyList()[index],
-				]);
-				Array.from(
-					document.querySelectorAll('.specialty .list .nav-item')
-				)
+				setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
+				Array.from(document.querySelectorAll('.specialty .list .nav-item'))
 					.find((el) => el.textContent === specialtyList()[index])
 					.classList.add('active');
 			} else {
@@ -224,19 +212,14 @@ const Step6 = ({
 		e.preventDefault();
 
 		if (otherSoftwareRef.current.value === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			const lowerSoftware = softwareList().map((el) => el.toLowerCase());
 			const lowerOther = otherSoftwareRef.current.value;
 			if (lowerSoftware.includes(lowerOther.toLowerCase())) {
 				const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
 				setSoftware((software) => [...software, softwareList()[index]]);
-				Array.from(
-					document.querySelectorAll('.software .list .nav-item')
-				)
+				Array.from(document.querySelectorAll('.software .list .nav-item'))
 					.find((el) => el.textContent === softwareList()[index])
 					.classList.add('active');
 			} else {
@@ -396,10 +379,7 @@ const Step6 = ({
 			uploadWork.images.length === 0
 			// uploadWork.documents.length === 0
 		) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			const formData = new FormData();
 			for (const [key, value] of Object.entries(resume)) {
@@ -496,14 +476,12 @@ const Step6 = ({
 						<div className="form-row specialty">
 							<div className="col-lg-4">
 								<h5 className="title">
-									Specialty{' '}
-									<span>Atleast (3) three skills</span>
+									Specialty <span>Atleast (3) three skills</span>
 								</h5>
 								{specialty.length === 0 ? (
 									<p className="subtitle">
-										This section wil view your selected
-										specialties. Choose atleast (3) three or
-										more skills and still relevant to the
+										This section wil view your selected specialties. Choose
+										atleast (3) three or more skills and still relevant to the
 										job position you are applying for.
 									</p>
 								) : (
@@ -519,9 +497,7 @@ const Step6 = ({
 							</div>
 							<div className="col-lg-8">
 								<div className="list">
-									<div className="form-row">
-										{specialtyListGenerate()}
-									</div>
+									<div className="form-row">{specialtyListGenerate()}</div>
 								</div>
 								<div className="form-inline">
 									<input
@@ -543,16 +519,14 @@ const Step6 = ({
 						<div className="form-row software">
 							<div className="col-lg-4">
 								<h5 className="title">
-									Software{' '}
-									<span>Atleast (3) three software use</span>
+									Software <span>Atleast (3) three software use</span>
 								</h5>
 								{software.length === 0 ? (
 									<p className="subtitle">
-										This section will view your selected
-										software you usually or regularly used
-										in order to perform on asuch of wuality
-										output and strill matched to the job
-										position you are applying for.
+										This section will view your selected software you usually or
+										regularly used in order to perform on asuch of wuality
+										output and strill matched to the job position you are
+										applying for.
 									</p>
 								) : (
 									software.map((e, i) => (
@@ -567,9 +541,7 @@ const Step6 = ({
 							</div>
 							<div className="col-lg-8">
 								<div className="list">
-									<div className="form-row">
-										{softwareListGenerate()}
-									</div>
+									<div className="form-row">{softwareListGenerate()}</div>
 								</div>
 								<div className="form-inline">
 									<input
@@ -594,48 +566,38 @@ const Step6 = ({
 									Upload Your Work <span>upto 50mb</span>
 								</h5>
 								<p className="subtitle">
-									Avoid putting names on your photos such as
-									emails, brand names, company names. such
-									action will result to revoking of resumes.
+									Avoid putting names on your photos such as emails, brand
+									names, company names. such action will result to revoking of
+									resumes.
 								</p>
 							</div>
 							<div className="col-lg-8">
 								<div className="upload-image">
-									<label className="form-label">
-										JPEG or PNG's
-									</label>
+									<label className="form-label">JPEG or PNG's</label>
 									{uploadWork.images.length === 0 ? (
 										<button
 											className="btn btn-primary button"
 											onClick={onUploadWorkImageModal}
 										>
-											Add your first sample project as
-											JPEG or PNG format
+											Add your first sample project as JPEG or PNG format
 											<i className="fas fa-plus"></i>
 										</button>
 									) : (
 										<div className="row">
 											{uploadWork.images.map((e, i) => (
-												<div
-													className="col-lg-3 col-md-3 col-sm-3"
-													key={i}
-												>
+												<div className="col-lg-3 col-md-3 col-sm-3" key={i}>
 													<UploadWorkItem
 														index={i}
 														data={e}
 														isEdit={onEditWorkImage}
-														isDelete={
-															onDeleteWorkImage
-														}
+														isDelete={onDeleteWorkImage}
 													/>
 												</div>
 											))}
 											<div className="col-lg-3 col-md-3 col-sm-3">
 												<div
 													className="add-entry"
-													onClick={
-														onUploadWorkImageModal
-													}
+													onClick={onUploadWorkImageModal}
 												>
 													<i className="fas fa-plus"></i>
 												</div>

@@ -74,10 +74,10 @@ const CandidateItem = ({ candidate, viewResume }) => {
 						</div>
 					</div>
 					<div className="box-b">
-						<div className="box-1">
+						{/* <div className="box-1">
 							<p className="box-title">Availability</p>
 							<p className="availability">{availability}</p>
-						</div>
+						</div> */}
 						<div className="box-2">
 							<p className="box-title">Date Submitted</p>
 							<p className="date-time-submitted">
@@ -97,17 +97,12 @@ const CandidateItem = ({ candidate, viewResume }) => {
 					{visibleArrow && (
 						<button
 							className="specialty-software-arrow"
-							onClick={() =>
-								(specialtySoftwareRef.current.scrollLeft -= 200)
-							}
+							onClick={() => (specialtySoftwareRef.current.scrollLeft -= 200)}
 						>
 							<i className="fas fa-angle-left"></i>
 						</button>
 					)}
-					<div
-						className="specialty-software-list"
-						ref={specialtySoftwareRef}
-					>
+					<div className="specialty-software-list" ref={specialtySoftwareRef}>
 						{specialty.map((e, i) => (
 							<span className="specialty-software-item" key={i}>
 								{e}
@@ -122,9 +117,7 @@ const CandidateItem = ({ candidate, viewResume }) => {
 					{visibleArrow && (
 						<button
 							className="specialty-software-arrow"
-							onClick={() =>
-								(specialtySoftwareRef.current.scrollLeft += 200)
-							}
+							onClick={() => (specialtySoftwareRef.current.scrollLeft += 200)}
 						>
 							<i className="fas fa-angle-right"></i>
 						</button>
@@ -133,16 +126,11 @@ const CandidateItem = ({ candidate, viewResume }) => {
 				{recruitmentsComment && (
 					<div className="recruitment-comments">
 						<p className="box-title">Recruiter's Comments:</p>
-						<p className="recruiters-comment">
-							{recruitmentsComment}
-						</p>
+						<p className="recruiters-comment">{recruitmentsComment}</p>
 					</div>
 				)}
 				<div>
-					<button
-						className="btn btn-primary see-resume"
-						onClick={onViewResume}
-					>
+					<button className="btn btn-primary see-resume" onClick={onViewResume}>
 						View Resume
 					</button>
 				</div>
@@ -154,18 +142,8 @@ const CandidateItem = ({ candidate, viewResume }) => {
 						interval={null}
 						onSelect={miniSlideSelect}
 						indicators={false}
-						nextIcon={
-							<i
-								className="fas fa-caret-right"
-								aria-hidden="true"
-							></i>
-						}
-						prevIcon={
-							<i
-								className="fas fa-caret-left"
-								aria-hidden="true"
-							></i>
-						}
+						nextIcon={<i className="fas fa-caret-right" aria-hidden="true"></i>}
+						prevIcon={<i className="fas fa-caret-left" aria-hidden="true"></i>}
 						fade={true}
 					>
 						{uploadWork.images.map((e, i) => (

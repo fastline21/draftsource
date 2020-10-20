@@ -622,6 +622,8 @@
 
 		.fas {
 			cursor: pointer;
+			margin-top: 3px;
+			margin-left: 5px;
 		}
 
 		.edit-button {
@@ -639,6 +641,7 @@
 			display: flex;
 
 			.input {
+				padding: 0 12px;
 			}
 		}
 
@@ -661,6 +664,18 @@
 
 			&.checked {
 				color: #4adad8;
+			}
+		}
+
+		.personal-info {
+			.item-title {
+				font-weight: 500;
+				color: #ababac;
+			}
+
+			.item-value {
+				color: $flatBlack;
+				font-weight: 500;
 			}
 		}
 
@@ -719,6 +734,14 @@
 		}
 
 		.work-history-item {
+			position: relative;
+
+			.fas {
+				position: absolute;
+				top: 0;
+				right: 0;
+			}
+
 			.title {
 				color: #298494;
 				font-weight: 600;

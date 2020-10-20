@@ -12,7 +12,7 @@ import { setAlert } from './../../state/actions/alertAction';
 import { addResume, clearError } from './../../state/actions/resumeAction';
 
 // List
-import { availabilityList } from './../../list/Availability';
+// import { availabilityList } from './../../list/Availability';
 import { salaryList } from './../../list/Salary';
 
 // Components
@@ -142,17 +142,11 @@ const Step4 = ({
 				monthYearStarted === '' ||
 				monthYearGraduated === ''
 			) {
-				return setAlert(
-					'',
-					'Please fill-in the required boxes to Proceed.'
-				);
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
 		} else if (choices === 'License and Certification') {
 			if (license === '') {
-				return setAlert(
-					'',
-					'Please fill-in the required boxes to Proceed.'
-				);
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
 		} else {
 			if (
@@ -162,10 +156,7 @@ const Step4 = ({
 				monthYearStarted === '' ||
 				monthYearGraduated === ''
 			) {
-				return setAlert(
-					'',
-					'Please fill-in the required boxes to Proceed.'
-				);
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
 		}
 		setEducation((education) => [...education, educationItem]);
@@ -257,10 +248,7 @@ const Step4 = ({
 			uploadAudio === null ||
 			education.length === 0
 		) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			uploadFile({
 				aboutYourself: uploadAudio,
@@ -336,10 +324,7 @@ const Step4 = ({
 										))}
 									</div> */}
 									<div className="form-group">
-										<label
-											className="form-label"
-											htmlFor="expectedSalaryInput"
-										>
+										<label className="form-label" htmlFor="expectedSalaryInput">
 											Expected Salary
 										</label>
 										<select
@@ -381,9 +366,7 @@ const Step4 = ({
 												<label
 													htmlFor="sampleAudioInput"
 													className={`form-label${
-														uploadAudio
-															? ' disabled'
-															: ''
+														uploadAudio ? ' disabled' : ''
 													}`}
 													onClick={uploadAudioClick}
 												>
@@ -400,32 +383,23 @@ const Step4 = ({
 											</div>
 										</div>
 										<p>
-											Record an mp3 or mp4 audio (not more
-											than 60 sec) about yourself in
-											English
+											Record an mp3 or mp4 audio (not more than 60 sec) about
+											yourself in English
 											<br />
 											<br />
 											<span>
-												* do not include name, email and
-												contact number
+												* do not include name, email and contact number
 											</span>
 										</p>
 										<p
 											id="sampleAudio"
 											className="upload"
 											style={{
-												display: uploadAudio
-													? 'block'
-													: 'none',
+												display: uploadAudio ? 'block' : 'none',
 											}}
 										>
-											<label
-												id="sampleAudioFile"
-												className="selected-file"
-											>
-												{uploadAudio
-													? uploadAudio.name
-													: null}
+											<label id="sampleAudioFile" className="selected-file">
+												{uploadAudio ? uploadAudio.name : null}
 											</label>
 											<label
 												htmlFor="replacesampleAudioInput"
@@ -444,10 +418,7 @@ const Step4 = ({
 										</p>
 									</div>
 									<div className="form-group">
-										<label
-											htmlFor="headlineInput"
-											className="form-label"
-										>
+										<label htmlFor="headlineInput" className="form-label">
 											Headline (Core Competencies)
 										</label>
 										<textarea
@@ -463,26 +434,21 @@ const Step4 = ({
 											Sample headlines
 											<ul className="list">
 												<li className="item">
-													Professional Civil Engineer
-													(PE)
+													Professional Civil Engineer (PE)
 												</li>
 												<li className="item">
-													Architect Designer | Civil &
-													Structural Engineer
+													Architect Designer | Civil & Structural Engineer
 												</li>
 												<li className="item">
-													Civil Engineer | Civil 3D &
-													AutoCAD Specialist | CAD
+													Civil Engineer | Civil 3D & AutoCAD Specialist | CAD
 													Designer
 												</li>
 												<li className="item">
-													BIM & CAD Expert
-													(Arch/Struct, MEP, Civil,
-													Point Cloud) (US-Based)
+													BIM & CAD Expert (Arch/Struct, MEP, Civil, Point
+													Cloud) (US-Based)
 												</li>
 												<li className="item">
-													MEP Design Engineer | MEP
-													Estimator | Mechanical
+													MEP Design Engineer | MEP Estimator | Mechanical
 													Engineer
 												</li>
 											</ul>
@@ -493,35 +459,22 @@ const Step4 = ({
 							<div className="col-lg-4 col-md-6 center-col">
 								<div className="content">
 									<div className="form-group">
-										<h5 className="title">
-											Personal Information
-										</h5>
+										<h5 className="title">Personal Information</h5>
 										<p className="subtitle">Education</p>
 										<div>
 											<div className="form-group">
-												<label className="form-label">
-													Choices
-												</label>
+												<label className="form-label">Choices</label>
 												<select
 													name="choices"
 													className="form-control input"
 													onChange={eduItem}
 												>
-													<option value="High School">
-														High School
-													</option>
-													<option value="College">
-														College
-													</option>
-													<option value="Master's">
-														Master's
-													</option>
-													<option value="Doctor">
-														Doctor
-													</option>
+													<option value="High School">High School</option>
+													<option value="College">College</option>
+													<option value="Master's">Master's</option>
+													<option value="Doctor">Doctor</option>
 													<option value="License and Certification">
-														License and
-														Certification
+														License and Certification
 													</option>
 												</select>
 											</div>
@@ -534,51 +487,37 @@ const Step4 = ({
 													name="license"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={
-														disableInput.license
-													}
+													disabled={disableInput.license}
 												/>
 											</div>
 											<div className="form-group">
-												<label className="form-label">
-													Degree
-												</label>
+												<label className="form-label">Degree</label>
 												<input
 													type="text"
 													name="degree"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={
-														disableInput.highSchool
-													}
+													disabled={disableInput.highSchool}
 												/>
 											</div>
 											<div className="form-group">
-												<label className="form-label">
-													Course
-												</label>
+												<label className="form-label">Course</label>
 												<input
 													type="text"
 													name="course"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={
-														disableInput.highSchool
-													}
+													disabled={disableInput.highSchool}
 												/>
 											</div>
 											<div className="form-group">
-												<label className="form-label">
-													School
-												</label>
+												<label className="form-label">School</label>
 												<input
 													type="text"
 													name="school"
 													className="form-control input"
 													onChange={eduItem}
-													disabled={
-														!disableInput.license
-													}
+													disabled={!disableInput.license}
 												/>
 											</div>
 											<div className="form-group">
@@ -588,13 +527,10 @@ const Step4 = ({
 															<label
 																className="form-label"
 																style={
-																	windowSize.width >=
-																		1024 &&
-																	windowSize.width <
-																		1140
+																	windowSize.width >= 1024 &&
+																	windowSize.width < 1140
 																		? {
-																				marginBottom:
-																					'34px',
+																				marginBottom: '34px',
 																		  }
 																		: null
 																}
@@ -605,12 +541,8 @@ const Step4 = ({
 																type="text"
 																name="monthYearStarted"
 																className="form-control input"
-																onChange={
-																	eduItem
-																}
-																disabled={
-																	!disableInput.license
-																}
+																onChange={eduItem}
+																disabled={!disableInput.license}
 															/>
 														</div>
 													</div>
@@ -623,12 +555,8 @@ const Step4 = ({
 																type="text"
 																name="monthYearGraduated"
 																className="form-control input"
-																onChange={
-																	eduItem
-																}
-																disabled={
-																	!disableInput.license
-																}
+																onChange={eduItem}
+																disabled={!disableInput.license}
 															/>
 														</div>
 													</div>
@@ -653,9 +581,7 @@ const Step4 = ({
 													</button>
 													<button
 														className="btn btn-primary btn-block button clear"
-														onClick={
-															clearCurrentEduBtn
-														}
+														onClick={clearCurrentEduBtn}
 													>
 														Clear
 													</button>
@@ -667,41 +593,28 @@ const Step4 = ({
 							</div>
 							<div
 								className={`col-lg-4 col-md-6${
-									windowSize.width < 1024
-										? ' offset-md-3'
-										: ''
+									windowSize.width < 1024 ? ' offset-md-3' : ''
 								}`}
 							>
 								<div className="content">
 									<div className="form-group">
-										<p
-											className="subtitle"
-											style={{ marginTop: '44px' }}
-										>
+										<p className="subtitle" style={{ marginTop: '44px' }}>
 											Summary
 										</p>
 										<div className="summary">
 											{education.length === 0 ? (
 												<>
 													<p className="text">
-														This section is for the
-														viewing on what you
-														added on your
-														educational background
-														from the left portion.
+														This section is for the viewing on what you added on
+														your educational background from the left portion.
 													</p>
 													<p className="text">
-														You can fill up and add
-														as much as you want but
-														always remember that you
-														must add an info that
-														will or somehow
-														contribute to a job
-														you're applying for.
+														You can fill up and add as much as you want but
+														always remember that you must add an info that will
+														or somehow contribute to a job you're applying for.
 													</p>
 													<p className="text">
-														If you enter college do
-														not include highschool
+														If you enter college do not include highschool
 														details
 													</p>
 												</>
