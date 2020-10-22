@@ -254,7 +254,8 @@ const Step4 = ({
 				aboutYourself: uploadAudio,
 			});
 			addResume({
-				...info,
+				headline,
+				expectedSalary,
 				education,
 			});
 			setInfo(initialInfo);
@@ -430,29 +431,25 @@ const Step4 = ({
 											onChange={onChange}
 											value={headline}
 										></textarea>
-										<p className="pt-3">
-											Sample headlines
-											<ul className="list">
-												<li className="item">
-													Professional Civil Engineer (PE)
-												</li>
-												<li className="item">
-													Architect Designer | Civil & Structural Engineer
-												</li>
-												<li className="item">
-													Civil Engineer | Civil 3D & AutoCAD Specialist | CAD
-													Designer
-												</li>
-												<li className="item">
-													BIM & CAD Expert (Arch/Struct, MEP, Civil, Point
-													Cloud) (US-Based)
-												</li>
-												<li className="item">
-													MEP Design Engineer | MEP Estimator | Mechanical
-													Engineer
-												</li>
-											</ul>
-										</p>
+										<p className="pt-3 mb-0">Sample headlines</p>
+										<ul className="list">
+											<li className="item">Professional Civil Engineer (PE)</li>
+											<li className="item">
+												Architect Designer | Civil & Structural Engineer
+											</li>
+											<li className="item">
+												Civil Engineer | Civil 3D & AutoCAD Specialist | CAD
+												Designer
+											</li>
+											<li className="item">
+												BIM & CAD Expert (Arch/Struct, MEP, Civil, Point Cloud)
+												(US-Based)
+											</li>
+											<li className="item">
+												MEP Design Engineer | MEP Estimator | Mechanical
+												Engineer
+											</li>
+										</ul>
 									</div>
 								</div>
 							</div>

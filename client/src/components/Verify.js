@@ -6,7 +6,11 @@ import PropTypes from 'prop-types';
 // Actions
 import { verifyUser, clearError } from './../state/actions/userAction';
 import { setAlert } from './../state/actions/alertAction';
-import { addResume, tempUser } from './../state/actions/resumeAction';
+import {
+	addResume,
+	tempUser,
+	setStep as resumeStep,
+} from './../state/actions/resumeAction';
 import { setStep } from './../state/actions/employerAction';
 
 const Verify = ({
@@ -14,6 +18,7 @@ const Verify = ({
 	setAlert,
 	clearError,
 	addResume,
+	resumeStep,
 	setStep,
 	tempUser,
 	userState: { user, error },
@@ -34,6 +39,7 @@ const Verify = ({
 		if (user) {
 			if (user.type === 'Remote Worker') {
 				tempUser(user._id);
+				resumeStep(2);
 				setLink('/create-resume?step=2');
 			} else if (user.type === 'Employer') {
 				setStep(2);
@@ -56,6 +62,7 @@ Verify.propTypes = {
 	addResume: PropTypes.func.isRequired,
 	setStep: PropTypes.func.isRequired,
 	tempUser: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -69,4 +76,5 @@ export default connect(mapStateToProps, {
 	addResume,
 	setStep,
 	tempUser,
+	resumeStep,
 })(Verify);

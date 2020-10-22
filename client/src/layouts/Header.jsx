@@ -69,11 +69,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					height="40"
 				/>
 			</Navbar.Brand>
-			<button
-				className="navbar-toggler"
-				type="button"
-				onClick={onOpenNav}
-			>
+			<button className="navbar-toggler" type="button" onClick={onOpenNav}>
 				<i className="fas fa-bars"></i>
 			</button>
 			<Navbar.Collapse className="mt-2">
@@ -84,16 +80,11 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					<Nav.Link as={NavLink} to="/pricing">
 						Pricing
 					</Nav.Link>
-					<Nav.Link as={NavLink} to="/draft-job">
-						Draft a Job
-					</Nav.Link>
+					<Nav.Link onClick={talkRecruiter}>Talk to a Recruiter</Nav.Link>
 				</Nav>
 				<Nav className="ml-auto">
-					<Nav.Link
-						onClick={talkRecruiter}
-						className="talk-recruiter"
-					>
-						Talk to a Recruiter
+					<Nav.Link as={NavLink} to="/draft-job" className="talk-recruiter">
+						Draft a Job
 					</Nav.Link>
 				</Nav>
 				<Nav>
@@ -124,9 +115,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 						</NavLink>
 					</li>
 					<li>
-						<Nav.Link onClick={talkRecruiter}>
-							Talk to a Recruiter
-						</Nav.Link>
+						<Nav.Link onClick={talkRecruiter}>Talk to a Recruiter</Nav.Link>
 					</li>
 					{(user && user.type === 'Admin') ||
 					(user && user.type === 'Recruiter') ? (
@@ -137,26 +126,17 @@ const Header = ({ logoutUser, userState: { user } }) => {
 								</Nav.Link>
 							</li>
 							<li>
-								<Nav.Link
-									as={NavLink}
-									to="/dashboard/new-applicants"
-								>
+								<Nav.Link as={NavLink} to="/dashboard/new-applicants">
 									New Applicants
 								</Nav.Link>
 							</li>
 							<li>
-								<Nav.Link
-									as={NavLink}
-									to="/dashboard/approved-applicants"
-								>
+								<Nav.Link as={NavLink} to="/dashboard/approved-applicants">
 									Approved Applicants
 								</Nav.Link>
 							</li>
 							<li>
-								<Nav.Link
-									as={NavLink}
-									to="/dashboard/rejected-applicant"
-								>
+								<Nav.Link as={NavLink} to="/dashboard/rejected-applicant">
 									Rejected Applicants
 								</Nav.Link>
 							</li>

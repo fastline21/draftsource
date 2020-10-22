@@ -132,6 +132,9 @@ const ResumeSchema = new mongoose.Schema({
 	software: {
 		type: Array,
 	},
+	marketType: {
+		type: Array,
+	},
 	uploadWork: {
 		type: Object,
 		images: {

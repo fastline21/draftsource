@@ -82,16 +82,11 @@ const Dashboard = ({
 									menu === 'new-applicants' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/new-applicants"
-									className="nav-link"
-								>
+								<Link to="/dashboard/new-applicants" className="nav-link">
 									New Applicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'new-applicants'
-												? 'minus'
-												: 'plus'
+											menu === 'new-applicants' ? 'arrow-up' : 'arrow-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -101,21 +96,14 @@ const Dashboard = ({
 							</li>
 							<li
 								className={`nav-item sidebar-item${
-									menu === 'approved-applicants'
-										? ' active'
-										: ''
+									menu === 'approved-applicants' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/approved-applicants"
-									className="nav-link"
-								>
+								<Link to="/dashboard/approved-applicants" className="nav-link">
 									Approved Applicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'approved-applicants'
-												? 'minus'
-												: 'plus'
+											menu === 'approved-applicants' ? 'arrow-up' : 'arrow-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -125,21 +113,14 @@ const Dashboard = ({
 							</li>
 							<li
 								className={`nav-item sidebar-item${
-									menu === 'rejected-applicants'
-										? ' active'
-										: ''
+									menu === 'rejected-applicants' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/rejected-applicants"
-									className="nav-link"
-								>
+								<Link to="/dashboard/rejected-applicants" className="nav-link">
 									Rejected Appplicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'rejected-applicants'
-												? 'minus'
-												: 'plus'
+											menu === 'rejected-applicants' ? 'arrow-up' : 'arrow-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -157,10 +138,7 @@ const Dashboard = ({
 									menu === 'new-jobs' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/new-jobs"
-									className="nav-link"
-								>
+								<Link to="/dashboard/new-jobs" className="nav-link">
 									New Job Request
 								</Link>
 							</li>
@@ -169,10 +147,7 @@ const Dashboard = ({
 									menu === 'approved-jobs' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/approved-jobs"
-									className="nav-link"
-								>
+								<Link to="/dashboard/approved-jobs" className="nav-link">
 									Approved Job Request
 								</Link>
 							</li>
@@ -181,10 +156,7 @@ const Dashboard = ({
 									menu === 'rejected-jobs' ? ' active' : ''
 								}`}
 							>
-								<Link
-									to="/dashboard/rejected-jobs"
-									className="nav-link"
-								>
+								<Link to="/dashboard/rejected-jobs" className="nav-link">
 									Rejected Job Request
 								</Link>
 							</li>
@@ -196,15 +168,10 @@ const Dashboard = ({
 							<ul className="nav flex-column">
 								<li
 									className={`nav-item sidebar-item${
-										menu === 'roles-permissions'
-											? ' active'
-											: ''
+										menu === 'roles-permissions' ? ' active' : ''
 									}`}
 								>
-									<Link
-										to="/dashboard/roles-permissions"
-										className="nav-link"
-									>
+									<Link to="/dashboard/roles-permissions" className="nav-link">
 										Roles & Permissions
 									</Link>
 								</li>
@@ -214,12 +181,8 @@ const Dashboard = ({
 				</nav>
 				<main className="main">
 					{menu === 'new-applicants' ? <NewApplicants /> : null}
-					{menu === 'approved-applicants' ? (
-						<ApprovedApplicants />
-					) : null}
-					{menu === 'rejected-applicants' ? (
-						<RejectedApplicants />
-					) : null}
+					{menu === 'approved-applicants' ? <ApprovedApplicants /> : null}
+					{menu === 'rejected-applicants' ? <RejectedApplicants /> : null}
 					{menu === 'new-jobs' ? <NewJobs /> : null}
 					{menu === 'approved-jobs' ? <ApprovedJobs /> : null}
 					{menu === 'rejected-jobs' ? <RejectedJobs /> : null}
@@ -258,8 +221,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'new-applicants'
-		// 											? 'minus'
-		// 											: 'plus'
+		// 											? 'arrow-up'
+		// 											: 'arrow-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>
@@ -282,8 +245,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'approved-applicants'
-		// 											? 'minus'
-		// 											: 'plus'
+		// 											? 'arrow-up'
+		// 											: 'arrow-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>
@@ -306,8 +269,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'rejected-applicants'
-		// 											? 'minus'
-		// 											: 'plus'
+		// 											? 'arrow-up'
+		// 											: 'arrow-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>
@@ -429,5 +392,5 @@ export default connect(mapStateToProps, {
 	newJobs,
 	approvedJobs,
 	rejectedJobs,
-	getUsers
+	getUsers,
 })(Dashboard);

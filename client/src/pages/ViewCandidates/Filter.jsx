@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 // Lists
-import { availabilityList } from './../../list/Availability';
+// import { availabilityList } from './../../list/Availability';
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
+import { marketTypeList } from './../../list/MarketType';
 import { experienceList } from '../../list/Experience';
 import { countryList } from '../../list/Country';
 import { salaryList } from '../../list/Salary';
@@ -33,6 +34,7 @@ const Filter = ({
 		// availabilityCat: false,
 		specialtyCat: false,
 		softwareCat: false,
+		marketTypeCat: false,
 		experienceCat: false,
 		countryCat: false,
 		salaryCat: false,
@@ -48,6 +50,7 @@ const Filter = ({
 		const {
 			specialty,
 			software,
+			marketType,
 			experience,
 			country,
 			salary,
@@ -85,6 +88,18 @@ const Filter = ({
 				});
 			} else {
 				updateFilter({ [name]: [...software, value] });
+			}
+		}
+
+		if (name === 'marketType') {
+			if (marketType === undefined) {
+				addFilter({ [name]: [value] });
+			} else if (marketType.includes(value)) {
+				updateFilter({
+					[name]: [...marketType.filter((x) => x !== value)],
+				});
+			} else {
+				updateFilter({ [name]: [...marketType, value] });
 			}
 		}
 
@@ -236,6 +251,22 @@ const Filter = ({
 			}
 		}
 
+		const marketType =
+			queryParams.get('marketType') !== null
+				? queryParams.get('marketType').split(',')
+				: [];
+
+		if (marketType.length > 0) {
+			if (filter.marketType === undefined) {
+				addFilter({ marketType });
+			}
+		} else {
+			if (filter.marketType) {
+				const { marketType, ...newFilter } = filter;
+				removeFilter(newFilter);
+			}
+		}
+
 		const experience =
 			queryParams.get('experience') !== null
 				? queryParams.get('experience').split(',')
@@ -317,7 +348,7 @@ const Filter = ({
 						Availability{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.availabilityCat ? 'minus' : 'plus'
+								show.availabilityCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -368,7 +399,7 @@ const Filter = ({
 						Specialty{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.specialtyCat ? 'minus' : 'plus'
+								show.specialtyCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -381,8 +412,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.specialty &&
-									filter.specialty.includes(e)
+									filter.specialty && filter.specialty.includes(e)
 										? ' checked'
 										: ''
 								}`}
@@ -394,15 +424,9 @@ const Filter = ({
 									id={`specialty${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.specialty &&
-										filter.specialty.includes(e)
-									}
+									checked={filter.specialty && filter.specialty.includes(e)}
 								/>
-								<label
-									htmlFor={`specialty${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`specialty${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
@@ -410,16 +434,11 @@ const Filter = ({
 					</ul>
 				</li>
 				<li className="nav-item">
-					<Link
-						className="nav-link"
-						to="#"
-						name="softwareCat"
-						onClick={onShow}
-					>
+					<Link className="nav-link" to="#" name="softwareCat" onClick={onShow}>
 						Software Expertise{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.softwareCat ? 'minus' : 'plus'
+								show.softwareCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -432,8 +451,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.software &&
-									filter.software.includes(e)
+									filter.software && filter.software.includes(e)
 										? ' checked'
 										: ''
 								}`}
@@ -445,15 +463,53 @@ const Filter = ({
 									id={`software${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.software &&
-										filter.software.includes(e)
-									}
+									checked={filter.software && filter.software.includes(e)}
 								/>
-								<label
-									htmlFor={`software${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`software${i}`} className="filter-label">
+									{e}
+								</label>
+							</li>
+						))}
+					</ul>
+				</li>
+				<li className="nav-item">
+					<Link
+						className="nav-link"
+						to="#"
+						name="marketTypeCat"
+						onClick={onShow}
+					>
+						Market Experience{' '}
+						<i
+							className={`fas float-right pt-1 fa-${
+								show.marketTypeCat ? 'arrow-up' : 'arrow-down'
+							}`}
+						></i>
+					</Link>
+					<ul
+						className={`nav flex-column filter-dropdown${
+							show.marketTypeCat ? ' d-block' : ' d-none'
+						}`}
+					>
+						{marketTypeList().map((e, i) => (
+							<li
+								key={i}
+								className={`nav-item${
+									filter.marketType && filter.marketType.includes(e)
+										? ' checked'
+										: ''
+								}`}
+							>
+								<input
+									type="checkbox"
+									name="marketType"
+									className="filter-input"
+									id={`marketType${i}`}
+									value={e}
+									onChange={onChange}
+									checked={filter.marketType && filter.marketType.includes(e)}
+								/>
+								<label htmlFor={`marketType${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
@@ -470,7 +526,7 @@ const Filter = ({
 						Years of Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.experienceCat ? 'minus' : 'plus'
+								show.experienceCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -483,8 +539,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.experience &&
-									filter.experience.includes(e)
+									filter.experience && filter.experience.includes(e)
 										? ' checked'
 										: ''
 								}`}
@@ -496,32 +551,21 @@ const Filter = ({
 									id={`experience${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.experience &&
-										filter.experience.includes(e)
-									}
+									checked={filter.experience && filter.experience.includes(e)}
 								/>
-								<label
-									htmlFor={`experience${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`experience${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
 						))}
 					</ul>
 				</li>
-				<li className="nav-item">
-					<Link
-						className="nav-link"
-						to="#"
-						name="salaryCat"
-						onClick={onShow}
-					>
+				{/* <li className="nav-item">
+					<Link className="nav-link" to="#" name="salaryCat" onClick={onShow}>
 						Expected Salaries{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.salaryCat ? 'minus' : 'plus'
+								show.salaryCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -534,9 +578,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.salary && filter.salary.includes(e)
-										? ' checked'
-										: ''
+									filter.salary && filter.salary.includes(e) ? ' checked' : ''
 								}`}
 							>
 								<input
@@ -546,32 +588,21 @@ const Filter = ({
 									id={`salary${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.salary &&
-										filter.salary.includes(e)
-									}
+									checked={filter.salary && filter.salary.includes(e)}
 								/>
-								<label
-									htmlFor={`salary${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`salary${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
 						))}
 					</ul>
-				</li>
+				</li> */}
 				<li className="nav-item">
-					<Link
-						className="nav-link"
-						to="#"
-						name="ratingCat"
-						onClick={onShow}
-					>
-						English Proficiency{' '}
+					<Link className="nav-link" to="#" name="ratingCat" onClick={onShow}>
+						English Level{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.ratingCat ? 'minus' : 'plus'
+								show.ratingCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -584,9 +615,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.rating && filter.rating.includes(e)
-										? ' checked'
-										: ''
+									filter.rating && filter.rating.includes(e) ? ' checked' : ''
 								}`}
 							>
 								<input
@@ -596,15 +625,9 @@ const Filter = ({
 									id={`rating${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.rating &&
-										filter.rating.includes(e)
-									}
+									checked={filter.rating && filter.rating.includes(e)}
 								/>
-								<label
-									htmlFor={`rating${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`rating${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
@@ -612,16 +635,11 @@ const Filter = ({
 					</ul>
 				</li>
 				<li className="nav-item">
-					<Link
-						className="nav-link"
-						to="#"
-						name="countryCat"
-						onClick={onShow}
-					>
+					<Link className="nav-link" to="#" name="countryCat" onClick={onShow}>
 						Country Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.countryCat ? 'minus' : 'plus'
+								show.countryCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -634,9 +652,7 @@ const Filter = ({
 							<li
 								key={i}
 								className={`nav-item${
-									filter.country && filter.country.includes(e)
-										? ' checked'
-										: ''
+									filter.country && filter.country.includes(e) ? ' checked' : ''
 								}`}
 							>
 								<input
@@ -646,15 +662,9 @@ const Filter = ({
 									id={`country${i}`}
 									value={e}
 									onChange={onChange}
-									checked={
-										filter.country &&
-										filter.country.includes(e)
-									}
+									checked={filter.country && filter.country.includes(e)}
 								/>
-								<label
-									htmlFor={`country${i}`}
-									className="filter-label"
-								>
+								<label htmlFor={`country${i}`} className="filter-label">
 									{e}
 								</label>
 							</li>
@@ -671,7 +681,7 @@ const Filter = ({
 						Years of Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.experienceCat ? 'minus' : 'plus'
+								show.experienceCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -721,7 +731,7 @@ const Filter = ({
 						Country Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.countryCat ? 'minus' : 'plus'
+								show.countryCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -770,7 +780,7 @@ const Filter = ({
 						Expected Salaries{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.salaryCat ? 'minus' : 'plus'
+								show.salaryCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>
@@ -819,7 +829,7 @@ const Filter = ({
 						English Proficiency{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.ratingCat ? 'minus' : 'plus'
+								show.ratingCat ? 'arrow-up' : 'arrow-down'
 							}`}
 						></i>
 					</Link>

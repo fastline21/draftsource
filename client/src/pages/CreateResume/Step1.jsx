@@ -13,6 +13,7 @@ import {
 	clearError,
 	clearUser,
 } from './../../state/actions/userAction';
+import { setStep } from './../../state/actions/resumeAction';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
@@ -22,7 +23,9 @@ const Step1 = ({
 	addUser,
 	clearError,
 	clearUser,
+	setStep,
 	userState: { success, error },
+	resumeState: { step },
 }) => {
 	const [
 		Prompt,
@@ -89,12 +92,8 @@ const Step1 = ({
 	useEffect(() => {
 		if (load) {
 			localStorage.clear();
+			setStep(1);
 			setLoad(false);
-		}
-
-		if (JSON.stringify(info) !== JSON.stringify(initialInfo)) {
-			setDirty();
-			setMessage('Are you sure you want to leave this page?');
 		}
 
 		if (error) {
@@ -111,8 +110,15 @@ const Step1 = ({
 			clearUser();
 		}
 
+		if (step > 1) {
+			setAlert(
+				'/create-resume?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		// eslint-disable-next-line
-	}, [info, load, error, success]);
+	}, [load, error, success, step]);
 	return (
 		<div className="step-1">
 			{Prompt}
@@ -320,13 +326,16 @@ const Step1 = ({
 Step1.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addUser: PropTypes.func.isRequired,
-	userState: PropTypes.object.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
+	setStep: PropTypes.func.isRequired,
+	userState: PropTypes.object.isRequired,
+	resumeState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
+	resumeState: state.resumeState,
 });
 
 export default connect(mapStateToProps, {
@@ -334,4 +343,5 @@ export default connect(mapStateToProps, {
 	addUser,
 	clearError,
 	clearUser,
+	setStep,
 })(Step1);

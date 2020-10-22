@@ -54,7 +54,14 @@ router.post('/', auth, async (req, res) => {
 		// currency,
 		headline,
 	} = req.body;
-	let { specialty, software, education, workHistory, uploadWork } = req.body;
+	let {
+		specialty,
+		software,
+		marketType,
+		education,
+		workHistory,
+		uploadWork,
+	} = req.body;
 	let uploadFile = req.files;
 	education = JSON.parse(education);
 	workHistory = JSON.parse(workHistory);
@@ -110,6 +117,7 @@ router.post('/', auth, async (req, res) => {
 	// string to array
 	specialty = specialty.split(',');
 	software = software.split(',');
+	marketType = marketType.split(',');
 
 	// Generate file name for upload
 	const generateFileName = (file, fieldname) => {
@@ -308,6 +316,7 @@ router.post('/', auth, async (req, res) => {
 			countryExperience,
 			specialty,
 			software,
+			marketType,
 			uploadWork,
 			headline,
 			totalWorkYear: Math.floor(totalWorkHistory / 12),

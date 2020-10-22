@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Modal } from 'react-bootstrap';
+import React, { useState, useEffect, useRef } from 'react';
+import { Modal, Overlay, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getSymbolFromCurrency from 'currency-symbol-map';
@@ -29,6 +29,9 @@ const ViewResume = ({
 	const queryParams = new URLSearchParams(window.location.search);
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
+	const [showGenInfo, setShowGenInfo] = useState(false);
+	const targetGenInfo = useRef(null);
+
 	// Initial
 	const initialData = {
 		_id: '',
@@ -60,6 +63,7 @@ const ViewResume = ({
 		processort: '',
 		ram: '',
 		countryExperience: '',
+		marketType: [],
 	};
 	const initialViewImage = {
 		show: false,
@@ -109,6 +113,7 @@ const ViewResume = ({
 		ram,
 		internetResult,
 		countryExperience,
+		marketType,
 	} = data;
 
 	const removeShortlist = (id) => {
@@ -193,22 +198,24 @@ const ViewResume = ({
 								}}
 							>
 								<div>
-									<p className="data-title mb-3" style={{ fontWeight: '700' }}>
+									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
 										ID: {idCode.toString().padStart(6, '0')}
 									</p>
 								</div>
 								<div>
-									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
+									{/* <p className="data-title mb-0" style={{ fontWeight: '700' }}>
 										Headline
+									</p> */}
+									<p className="availability" style={{ color: '#000000' }}>
+										{headline}
 									</p>
-									<p className="availability">{headline}</p>
 								</div>
-								<div>
+								{/* <div>
 									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
 										English Level
 									</p>
 									<p className="availability">{rating}</p>
-									{/* <div className="rating d-inline">
+									<div className="rating d-inline">
 										<i
 											style={{ cursor: 'default' }}
 											className={`rating-color fas fa-star${
@@ -239,8 +246,8 @@ const ViewResume = ({
 												rating === 5 ? ' checked' : ''
 											}`}
 										></i>
-									</div> */}
-								</div>
+									</div>
+								</div> */}
 							</div>
 						</div>
 						<div className="col-lg-3">
@@ -279,21 +286,6 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-3">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">Skills & Specialties</p>
-						</div>
-						<div className="col-lg-8">
-							<p id="specialty" className="specialty-software mb-0">
-								{specialty.map((e, i) => (
-									<span className="specialty-software-item" key={i}>
-										{e}
-									</span>
-								))}
-							</p>
-							<hr className="line-break" />
-						</div>
-					</div>
-					<div className="row pb-3">
-						<div className="col-lg-3">
 							<p className="item-title color-1 mb-0">Personal Information</p>
 						</div>
 						<div className="col-lg-9">
@@ -301,6 +293,36 @@ const ViewResume = ({
 								<div className="col-lg-6">
 									<table className="table table-borderless personal-info">
 										<tbody>
+											<tr>
+												<th className="pt-0 pl-0 item-title">General Info</th>
+												<td className="pt-0 item-value">
+													Verified{' '}
+													<i
+														className="fas fa-question-circle"
+														style={{ color: '#298494' }}
+														ref={targetGenInfo}
+														onClick={() => setShowGenInfo(!showGenInfo)}
+													></i>
+													<Overlay
+														target={targetGenInfo.current}
+														show={showGenInfo}
+														placement="right"
+													>
+														{(props) => (
+															<Tooltip id="overlay-example" {...props}>
+																<p className="text-left mb-0">
+																	Government ID, Email, Cellphone, and Social
+																	Media Verified
+																</p>
+															</Tooltip>
+														)}
+													</Overlay>
+												</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">English Level</th>
+												<td className="pt-0 item-value">{rating}</td>
+											</tr>
 											<tr>
 												<th className="pt-0 pl-0 item-title">Age</th>
 												<td className="pt-0 item-value">{age}</td>
@@ -316,13 +338,43 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
-					<div className="row pb-5">
+					<div className="row pb-3">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">Skills & Specialties</p>
+						</div>
+						<div className="col-lg-8">
+							<p id="specialty" className="specialty-software mb-0">
+								{specialty.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
+							</p>
+							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row pb-3">
 						<div className="col-lg-3">
 							<p className="item-title color-1 mb-0">Software Use</p>
 						</div>
 						<div className="col-lg-8">
-							<p id="software" className="specialty-software mb-0">
+							<p id="specialty" className="specialty-software mb-0">
 								{software.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
+							</p>
+							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">Market type experience</p>
+						</div>
+						<div className="col-lg-8">
+							<p id="specialty" className="specialty-software mb-0">
+								{marketType.map((e, i) => (
 									<span className="specialty-software-item" key={i}>
 										{e}
 									</span>
@@ -416,21 +468,33 @@ const ViewResume = ({
 														</td>
 													</tr>
 												) : null}
-												{e.choices === 'License and Certification' ? (
-													<tr>
-														<td
-															className="item-title pb-0 pl-0"
-															style={{
-																color: '#298494',
-															}}
-														>
-															License and Certification
-														</td>
-														<td className="item-degree pb-0 item-value">
-															{e.license}
-														</td>
-													</tr>
-												) : null}
+												{e.choices === 'License and Certification'
+													? e.license.map((elm, ind) =>
+															ind === 0 ? (
+																<tr>
+																	<td
+																		className="item-title pb-0 pl-0"
+																		style={{
+																			color: '#298494',
+																			fontWeight: 600,
+																		}}
+																	>
+																		License and Certification
+																	</td>
+																	<td className="item-degree pb-0 item-value">
+																		{elm}
+																	</td>
+																</tr>
+															) : (
+																<tr>
+																	<td></td>
+																	<td className="item-degree pb-0 item-value">
+																		{elm}
+																	</td>
+																</tr>
+															)
+													  )
+													: null}
 												{e.choices !== 'High School' &&
 												e.choices !== 'License and Certification' ? (
 													<tr>
@@ -457,8 +521,7 @@ const ViewResume = ({
 														</td>
 													</tr>
 												) : null}
-												{e.choices !== 'High School' &&
-												e.choices !== 'License and Certification' ? (
+												{e.choices !== 'License and Certification' ? (
 													<tr>
 														<td className="item-title pb-0 pl-0">
 															Started - Graduated
@@ -485,7 +548,7 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
-					<div className="row pb-5">
+					{/* <div className="row pb-5">
 						<div className="col-lg-3">
 							<p className="item-title color-2">Work from Home Capabilites</p>
 						</div>
@@ -517,7 +580,7 @@ const ViewResume = ({
 								</tbody>
 							</table>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			</Modal.Body>
 		</Modal>

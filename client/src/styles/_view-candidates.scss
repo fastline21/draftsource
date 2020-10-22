@@ -485,10 +485,11 @@
 							img {
 								display: block;
 								height: 270px;
-								width: 300px;
+								width: 100%;
 
 								@include media('>=tablet') {
 									height: 180px;
+									width: 300px;
 								}
 							}
 						}

@@ -32,9 +32,9 @@ const CandidateItem = ({
 	const windowSize = useWindowSize();
 
 	const [showYear, setShowYear] = useState(false);
-	const [showSalary, setShowSalary] = useState(false);
+	const [showGenInfo, setShowGenInfo] = useState(false);
 	const targetYear = useRef(null);
-	const targetSalary = useRef(null);
+	const targetGenInfo = useRef(null);
 
 	const {
 		_id,
@@ -138,14 +138,17 @@ const CandidateItem = ({
 								>
 									{(props) => (
 										<Tooltip id="overlay-example" {...props}>
-											Expected salaries placed by the candidates are based on
-											Draftsource’s fair market standards
-											<br />
-											Salaries can be negotiated before or during the interview
-											by the client or by the Draftsource team if requested
-											<br />
-											Equipment rental, internet connection and service fee not
-											included in expected salary
+											<p className="text-left mb-0">
+												Experience is computed depending on years of experience
+												in the industry
+												<br />
+												Irrelevant work experiences is not included in the
+												resume such as marketing, sales, customer support and
+												other non-related industries
+												<br />
+												Employment gap means they either stopped working or
+												worked in a different sector irrelevant to the industry
+											</p>
 										</Tooltip>
 									)}
 								</Overlay>
@@ -160,27 +163,25 @@ const CandidateItem = ({
 					</div>
 					<div className="box-b">
 						<div className="box-3">
-							<p className="box-label">Expected Salary:</p>
+							<p className="box-label">General Info:</p>
 							<p className="expected-salary">
-								{expectedSalary}{' '}
+								Verified{' '}
 								<i
 									className="fas fa-question-circle"
-									ref={targetSalary}
-									onClick={() => setShowSalary(!showSalary)}
+									ref={targetGenInfo}
+									onClick={() => setShowGenInfo(!showGenInfo)}
 								></i>
 								<Overlay
-									target={targetSalary.current}
-									show={showSalary}
+									target={targetGenInfo.current}
+									show={showGenInfo}
 									placement="right"
 								>
 									{(props) => (
 										<Tooltip id="overlay-example" {...props}>
-											Experience is computed and counted depending on years of
-											experience in the industry
-											<br />
-											Irrelevant work experiences is not included in the
-											computation and resumes such as marketing, sales, customer
-											support and other non-related industries
+											<p className="text-left mb-0">
+												Government ID, Email, Cellphone, Social Media Account
+												Verified
+											</p>
 										</Tooltip>
 									)}
 								</Overlay>

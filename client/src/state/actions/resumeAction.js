@@ -1,5 +1,12 @@
 import axios from 'axios';
-import { ADD_RESUME, CLEAR_RESUME, RESUMES_ERROR, CLEAR_ERROR } from './types';
+import {
+	ADD_RESUME,
+	CLEAR_RESUME,
+	RESUMES_ERROR,
+	CLEAR_ERROR,
+	RESUME_STEP,
+	RESET_STEP,
+} from './types';
 
 // Add resume
 export const addResume = (resume) => (dispatch) => {
@@ -56,5 +63,20 @@ export const submitResume = (resume) => async (dispatch) => {
 export const clearError = () => {
 	return {
 		type: CLEAR_ERROR,
+	};
+};
+
+// Set step
+export const setStep = (step) => (dispatch) => {
+	dispatch({
+		type: RESUME_STEP,
+		payload: step,
+	});
+};
+
+// Reset step
+export const resetStep = () => {
+	return {
+		type: RESET_STEP,
 	};
 };

@@ -10,6 +10,8 @@ import SpecialtyItem from './SpecialtyItem';
 import SpecialtySelected from './SpecialtySelected';
 import SoftwareItem from './SoftwareItem';
 import SoftwareSelected from './SoftwareSelected';
+import MarketTypeItem from './MarketTypeItem';
+import MarketTypeSelected from './MarketTypeSelected';
 import UploadWorkImageModal from './UploadWorkImageModal';
 // import UploadWorkDocumentModal from './UploadWorkDocumentModal';
 import UploadWorkItem from './UploadWorkItem';
@@ -17,6 +19,7 @@ import UploadWorkItem from './UploadWorkItem';
 // List
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
+import { marketTypeList } from './../../list/MarketType';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
@@ -40,6 +43,7 @@ const Step6 = ({
 
 	const otherSpecialtyRef = useRef(null);
 	const otherSoftwareRef = useRef(null);
+	const otherMarketTypeRef = useRef(null);
 
 	const initialUploadModal = {
 		show: false,
@@ -51,6 +55,7 @@ const Step6 = ({
 
 	const [specialty, setSpecialty] = useState([]);
 	const [software, setSoftware] = useState([]);
+	const [marketType, setMarketType] = useState([]);
 	const [uploadWork, setUploadWork] = useState({
 		images: [],
 	});
@@ -97,6 +102,28 @@ const Step6 = ({
 			setSoftware((software) => [...software, softwareList()[e]]);
 			Array.from(document.querySelectorAll('.software .list .nav-item'))
 				.find((el) => el.textContent === softwareList()[e])
+				.classList.add('active');
+		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
+
+	// Select Market Type
+	const onSelectMarketType = (e) => {
+		if (marketType.includes(marketTypeList()[e])) {
+			setMarketType((marketType) => [
+				...marketType.filter(
+					(x) =>
+						marketType.indexOf(x) !== marketType.indexOf(marketTypeList()[e])
+				),
+			]);
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === marketTypeList()[e])
+				.classList.remove('active');
+		} else {
+			setMarketType((marketType) => [...marketType, marketTypeList()[e]]);
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === marketTypeList()[e])
 				.classList.add('active');
 		}
 		setDirty();
@@ -157,6 +184,33 @@ const Step6 = ({
 		return list;
 	};
 
+	// Market Type List
+	const marketTypeListGenerate = () => {
+		let key = 0;
+		let list = [];
+		const total = Math.ceil(marketTypeList().length / 4);
+		for (let x = 0; x < 4; x++) {
+			let item = [];
+			for (let y = 0; y < total; y++) {
+				item.push(
+					<MarketTypeItem
+						key={key}
+						index={key}
+						value={marketTypeList()[key]}
+						select={onSelectMarketType}
+					/>
+				);
+				key++;
+			}
+			list.push(
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
+					<ul className="nav flex-column">{item}</ul>
+				</div>
+			);
+		}
+		return list;
+	};
+
 	// Specialty Close
 	const onSpecialtyClose = (e) => {
 		const item = specialty[e];
@@ -180,6 +234,19 @@ const Step6 = ({
 		}
 		setSoftware((software) => [
 			...software.filter((x) => software.indexOf(x) !== e),
+		]);
+	};
+
+	// Market Type Close
+	const onMarketTypeClose = (e) => {
+		const item = marketType[e];
+		if (marketTypeList().includes(item)) {
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === item)
+				.classList.remove('active');
+		}
+		setMarketType((marketType) => [
+			...marketType.filter((x) => marketType.indexOf(x) !== e),
 		]);
 	};
 
@@ -226,6 +293,30 @@ const Step6 = ({
 				setSoftware((software) => [...software, lowerOther]);
 			}
 			otherSoftwareRef.current.value = '';
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+	};
+
+	// Add Other Market Type
+	const addOtherMarketType = (e) => {
+		e.preventDefault();
+
+		if (otherMarketTypeRef.current.value === '') {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else {
+			const lowerMarketType = marketTypeList().map((el) => el.toLowerCase());
+			const lowerOther = otherMarketTypeRef.current.value;
+			if (lowerMarketType.includes(lowerOther.toLowerCase())) {
+				const index = lowerMarketType.indexOf(lowerOther.toLowerCase());
+				setMarketType((marketType) => [...marketType, marketTypeList()[index]]);
+				Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+					.find((el) => el.textContent === marketTypeList()[index])
+					.classList.add('active');
+			} else {
+				setMarketType((marketType) => [...marketType, lowerOther]);
+			}
+			otherMarketTypeRef.current.value = '';
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
@@ -376,6 +467,7 @@ const Step6 = ({
 		if (
 			specialty.length === 0 ||
 			software.length === 0 ||
+			marketType.length === 0 ||
 			uploadWork.images.length === 0
 			// uploadWork.documents.length === 0
 		) {
@@ -399,10 +491,12 @@ const Step6 = ({
 			}
 			formData.append('specialty', specialty);
 			formData.append('software', software);
+			formData.append('marketType', marketType);
 			formData.append('uploadWork', JSON.stringify(uploadWork));
 			submitResume(formData);
 			setSpecialty([]);
 			setSoftware([]);
+			setMarketType([]);
 			setUploadWork({
 				images: [],
 			});
@@ -554,6 +648,51 @@ const Step6 = ({
 									<button
 										className="btn btn-primary button other-add"
 										onClick={addOtherSoftware}
+									>
+										Add
+									</button>
+								</div>
+							</div>
+						</div>
+						<div className="form-row market-type">
+							<div className="col-lg-4">
+								<h5 className="title">
+									Market type experience{' '}
+									<span>Atleast (3) three market type use</span>
+								</h5>
+								{marketType.length === 0 ? (
+									<p className="subtitle">
+										This section will view your selected market type you usually
+										or regularly used in order to perform on asuch of wuality
+										output and strill matched to the job position you are
+										applying for.
+									</p>
+								) : (
+									marketType.map((e, i) => (
+										<MarketTypeSelected
+											key={i}
+											value={e}
+											index={i}
+											onMarketTypeClose={onMarketTypeClose}
+										/>
+									))
+								)}
+							</div>
+							<div className="col-lg-8">
+								<div className="list">
+									<div className="form-row">{marketTypeListGenerate()}</div>
+								</div>
+								<div className="form-inline">
+									<input
+										type="text"
+										placeholder="Other Market type experience"
+										className="form-control input other-input"
+										ref={otherMarketTypeRef}
+										onKeyPress={onKeyPressOtherSpecify}
+									/>
+									<button
+										className="btn btn-primary button other-add"
+										onClick={addOtherMarketType}
 									>
 										Add
 									</button>

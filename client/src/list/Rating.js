@@ -1,3 +1,3 @@
 export const ratingList = () => {
-	return ['Basic', 'Fluent', 'Native'];
+	return ['Basic', 'Conversational', 'Fluent'];
 };

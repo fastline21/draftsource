@@ -91,6 +91,9 @@ const ViewResume = ({
 		internetResult: '',
 		computerSpecs: '',
 		email: '',
+		marketType: [],
+		processor: '',
+		ram: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -144,6 +147,9 @@ const ViewResume = ({
 		internetResult,
 		computerSpecs,
 		govID,
+		marketType,
+		processor,
+		ram,
 	} = data;
 
 	const approveResume = () => {
@@ -371,7 +377,6 @@ const ViewResume = ({
 										></i>
 									</p> */}
 									<p className="data-title mb-0">
-										Headline:{' '}
 										{isEdit.headline ? (
 											<input
 												type="text"
@@ -388,31 +393,6 @@ const ViewResume = ({
 												isEdit.headline ? 'fa-save' : 'fa-edit'
 											}`}
 											onClick={() => onClickEdit('headline')}
-										></i>
-									</p>
-									<p className="data-title mb-0">
-										English Level:{' '}
-										{isEdit.rating ? (
-											<select
-												name="rating"
-												className="input"
-												onChange={onChange}
-												value={rating}
-											>
-												{ratingList().map((e, i) => (
-													<option value={e} key={i}>
-														{e}
-													</option>
-												))}
-											</select>
-										) : rating === '' ? (
-											'Basic'
-										) : (
-											rating
-										)}
-										<i
-											className={`fas ${isEdit.rating ? 'fa-save' : 'fa-edit'}`}
-											onClick={() => onClickEdit('rating')}
 										></i>
 									</p>
 									<p className="data-title mb-0">
@@ -438,6 +418,31 @@ const ViewResume = ({
 												isEdit.expectedSalary ? 'fa-save' : 'fa-edit'
 											}`}
 											onClick={() => onClickEdit('expectedSalary')}
+										></i>
+									</p>
+									<p className="data-title mb-0">
+										English Level:{' '}
+										{isEdit.rating ? (
+											<select
+												name="rating"
+												className="input"
+												onChange={onChange}
+												value={rating}
+											>
+												{ratingList().map((e, i) => (
+													<option value={e} key={i}>
+														{e}
+													</option>
+												))}
+											</select>
+										) : rating === '' ? (
+											'Basic'
+										) : (
+											rating
+										)}
+										<i
+											className={`fas ${isEdit.rating ? 'fa-save' : 'fa-edit'}`}
+											onClick={() => onClickEdit('rating')}
 										></i>
 									</p>
 									{/* <p className="data-title mb-0">{email}</p> */}
@@ -546,13 +551,24 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
-					<div className="row pb-5">
+					<div className="row pb-3">
 						<div className="col-lg-3">
 							<p className="item-title color-1 mb-0">Software Use</p>
 						</div>
 						<div className="col-lg-9">
 							<p id="software" className="software mb-0">
 								{software.join(', ')}
+							</p>
+							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">Market type experience</p>
+						</div>
+						<div className="col-lg-9">
+							<p id="software" className="software mb-0">
+								{marketType.join(', ')}
 							</p>
 							<hr className="line-break" />
 						</div>
@@ -624,7 +640,7 @@ const ViewResume = ({
 											isEditArr.workHistory.index === i ? (
 												<input
 													type="text"
-													className="input"
+													className="input mb-2"
 													name="company"
 													value={e.company}
 													onChange={onChange}
@@ -709,10 +725,11 @@ const ViewResume = ({
 											{isEditArr.workHistory.show &&
 											isEditArr.workHistory.index === i ? (
 												<textarea
-													className="input"
+													className="form-control input"
 													name="description"
 													value={e.description}
 													onChange={onChange}
+													rows="12"
 												>
 													{e.description}
 												</textarea>
@@ -745,25 +762,44 @@ const ViewResume = ({
 									<div className="education-item" key={i}>
 										<table className="education-item table table-borderless">
 											<tbody>
-												<tr>
-													<td
-														className={`item-choices pl-0${
-															i === 0 ? ' pt-0' : ''
-														}`}
-													>
-														{e.choices}
-													</td>
-												</tr>
-												{e.choices === 'License and Certification' ? (
+												{e.choices !== 'License and Certification' ? (
 													<tr>
-														<td className="item-title pb-0 pl-0">
-															License and Certification
-														</td>
-														<td className="item-degree pb-0 item-value">
-															{e.license}
+														<td
+															className={`item-choices pl-0${
+																i === 0 ? ' pt-0' : ''
+															}`}
+														>
+															{e.choices}
 														</td>
 													</tr>
 												) : null}
+												{e.choices === 'License and Certification'
+													? e.license.map((elm, ind) =>
+															ind === 0 ? (
+																<tr>
+																	<td
+																		className="item-title pb-0 pl-0"
+																		style={{
+																			color: '#298494',
+																			fontWeight: 600,
+																		}}
+																	>
+																		License and Certification
+																	</td>
+																	<td className="item-degree pb-0 item-value">
+																		{elm}
+																	</td>
+																</tr>
+															) : (
+																<tr>
+																	<td></td>
+																	<td className="item-degree pb-0 item-value">
+																		{elm}
+																	</td>
+																</tr>
+															)
+													  )
+													: null}
 												{e.choices !== 'High School' &&
 												e.choices !== 'License and Certification' ? (
 													<tr>
@@ -790,14 +826,16 @@ const ViewResume = ({
 														</td>
 													</tr>
 												) : null}
-												<tr>
-													<td className="item-title pb-0 pl-0">
-														Started - Graduated
-													</td>
-													<td className="item-month-year pb-0 item-value">
-														{e.monthYearStarted} - {e.monthYearGraduated}
-													</td>
-												</tr>
+												{e.choices !== 'License and Certification' ? (
+													<tr>
+														<td className="item-title pb-0 pl-0">
+															Started - Graduated
+														</td>
+														<td className="item-month-year pb-0 item-value">
+															{e.monthYearStarted} - {e.monthYearGraduated}
+														</td>
+													</tr>
+												) : null}
 											</tbody>
 										</table>
 									</div>
@@ -811,7 +849,7 @@ const ViewResume = ({
 							<p className="item-title color-2">Recruiter's Comments</p>
 						</div>
 						<div className="col-lg-9">
-							<div id="recruitmentsComment" className="pb-5">
+							<div className="pb-5 recruitments-comment">
 								<textarea
 									name="recruitmentsComment"
 									className="form-control input"
@@ -839,14 +877,14 @@ const ViewResume = ({
 						<div className="col-lg-9">
 							<table className="table table-borderless workspace-item">
 								<tbody>
-									<tr>
+									{/* <tr>
 										<th scope="row" className="pt-0 item-title">
 											Workspace
 										</th>
 										<td id="workspace" className="pt-0 item-value">
 											{workspace}
 										</td>
-									</tr>
+									</tr> */}
 									<tr>
 										<th scope="row" className="pt-0 item-title">
 											Internet Type
@@ -857,26 +895,11 @@ const ViewResume = ({
 									</tr>
 									<tr>
 										<th scope="row" className="pt-0 item-title">
-											Hardware Type
-										</th>
-										<td id="hardwareType" className="pt-0 item-value">
-											{hardwareType}
-										</td>
-									</tr>
-									<tr>
-										<th scope="row" className="pt-0 item-title">
-											Brand Name
-										</th>
-										<td id="brandName" className="pt-0 item-value">
-											{brandName}
-										</td>
-									</tr>
-									<tr>
-										<th scope="row" className="pt-0 item-title">
 											Internet Speedtest Result
 										</th>
 										<td className="pt-0">
-											<button
+											<a href={internetResult}>{internetResult}</a>
+											{/* <button
 												className="btn btn-primary view"
 												onClick={() =>
 													setViewImage({
@@ -887,10 +910,45 @@ const ViewResume = ({
 												}
 											>
 												View
-											</button>
+											</button> */}
 										</td>
 									</tr>
-									<tr>
+									{hardwareType !== '' ||
+									brandName !== '' ||
+									processor !== '' ||
+									ram !== '' ? (
+										<Fragment>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Hardware Type
+												</th>
+												<td id="hardwareType" className="pt-0 item-value">
+													{hardwareType}
+												</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Brand Name
+												</th>
+												<td id="brandName" className="pt-0 item-value">
+													{brandName}
+												</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Processor
+												</th>
+												<td className="pt-0 item-value">{processor}</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													RAM
+												</th>
+												<td className="pt-0 item-value">{ram}</td>
+											</tr>
+										</Fragment>
+									) : null}
+									{/* <tr>
 										<th scope="row" className="pt-0 item-title">
 											Computer Specs
 										</th>
@@ -908,7 +966,7 @@ const ViewResume = ({
 												View
 											</button>
 										</td>
-									</tr>
+									</tr> */}
 								</tbody>
 							</table>
 						</div>
