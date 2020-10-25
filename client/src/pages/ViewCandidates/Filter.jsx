@@ -348,7 +348,7 @@ const Filter = ({
 						Availability{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.availabilityCat ? 'arrow-up' : 'arrow-down'
+								show.availabilityCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -399,7 +399,7 @@ const Filter = ({
 						Specialty{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.specialtyCat ? 'arrow-up' : 'arrow-down'
+								show.specialtyCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -438,7 +438,7 @@ const Filter = ({
 						Software Expertise{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.softwareCat ? 'arrow-up' : 'arrow-down'
+								show.softwareCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -482,7 +482,7 @@ const Filter = ({
 						Market Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.marketTypeCat ? 'arrow-up' : 'arrow-down'
+								show.marketTypeCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -526,7 +526,7 @@ const Filter = ({
 						Years of Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.experienceCat ? 'arrow-up' : 'arrow-down'
+								show.experienceCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -565,7 +565,7 @@ const Filter = ({
 						Expected Salaries{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.salaryCat ? 'arrow-up' : 'arrow-down'
+								show.salaryCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -602,7 +602,7 @@ const Filter = ({
 						English Level{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.ratingCat ? 'arrow-up' : 'arrow-down'
+								show.ratingCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -639,7 +639,7 @@ const Filter = ({
 						Country Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.countryCat ? 'arrow-up' : 'arrow-down'
+								show.countryCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -681,7 +681,7 @@ const Filter = ({
 						Years of Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.experienceCat ? 'arrow-up' : 'arrow-down'
+								show.experienceCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -731,7 +731,7 @@ const Filter = ({
 						Country Experience{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.countryCat ? 'arrow-up' : 'arrow-down'
+								show.countryCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -780,7 +780,7 @@ const Filter = ({
 						Expected Salaries{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.salaryCat ? 'arrow-up' : 'arrow-down'
+								show.salaryCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -829,7 +829,7 @@ const Filter = ({
 						English Proficiency{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.ratingCat ? 'arrow-up' : 'arrow-down'
+								show.ratingCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>

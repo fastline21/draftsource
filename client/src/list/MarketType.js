@@ -6,7 +6,6 @@ export const marketTypeList = () => {
 		'Malls',
 		'Residential',
 		'Retail',
-		'Institutional',
 		'Multi-Family Housing',
 		'Low-Rise Building',
 		'Mid-Rise Building',

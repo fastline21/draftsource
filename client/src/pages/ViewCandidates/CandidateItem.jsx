@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Carousel, Overlay, Tooltip } from 'react-bootstrap';
+import { Carousel, Overlay, Tooltip, OverlayTrigger } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import MultiCarousel from 'react-multi-carousel';
@@ -126,12 +126,38 @@ const CandidateItem = ({
 							<p className="box-label">Relevant Experience:</p>
 							<p className="total-work-history">
 								{totalWorkYear} {totalWorkYear > 1 ? 'Years' : 'Year'}{' '}
-								<i
+								{/* <i
 									className="fas fa-question-circle"
 									ref={targetYear}
 									onClick={() => setShowYear(!showYear)}
-								></i>
-								<Overlay
+								></i> */}
+								<OverlayTrigger
+									key="right"
+									placement="right"
+									overlay={
+										<Tooltip>
+											<p className="text-left mb-0">
+												Experience is computed depending on years of experience
+												in the industry
+												<br />
+												Irrelevant work experiences is not included in the
+												resume such as marketing, sales, customer support and
+												other non-related industries
+												<br />
+												Employment gap means they either stopped working or
+												worked in a different sector irrelevant to the industry
+											</p>
+										</Tooltip>
+									}
+								>
+									{/* <Button variant="secondary">Tooltip on {placement}</Button> */}
+									<i
+										className="fas fa-question-circle"
+										// ref={targetYear}
+										// onClick={() => setShowYear(!showYear)}
+									></i>
+								</OverlayTrigger>
+								{/* <Overlay
 									target={targetYear.current}
 									show={showYear}
 									placement="right"
@@ -151,7 +177,7 @@ const CandidateItem = ({
 											</p>
 										</Tooltip>
 									)}
-								</Overlay>
+								</Overlay> */}
 							</p>
 						</div>
 						<div className="box-2" onClick={onViewResume}>
@@ -166,7 +192,21 @@ const CandidateItem = ({
 							<p className="box-label">General Info:</p>
 							<p className="expected-salary">
 								Verified{' '}
-								<i
+								<OverlayTrigger
+									key="right"
+									placement="right"
+									overlay={
+										<Tooltip>
+											<p className="text-left mb-0">
+												Government ID, Email, Cellphone, Social Media Account
+												Verified
+											</p>
+										</Tooltip>
+									}
+								>
+									<i className="fas fa-question-circle"></i>
+								</OverlayTrigger>
+								{/* <i
 									className="fas fa-question-circle"
 									ref={targetGenInfo}
 									onClick={() => setShowGenInfo(!showGenInfo)}
@@ -184,7 +224,7 @@ const CandidateItem = ({
 											</p>
 										</Tooltip>
 									)}
-								</Overlay>
+								</Overlay> */}
 							</p>
 						</div>
 						<div className="box-4" onClick={onViewResume}>

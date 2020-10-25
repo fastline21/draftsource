@@ -46,8 +46,8 @@ const Step4 = ({
 		degree: '',
 		school: '',
 		course: '',
-		monthYearStarted: '',
-		monthYearGraduated: '',
+		monthYearStarted: 0,
+		monthYearGraduated: 0,
 		license: '',
 	};
 
@@ -332,6 +332,7 @@ const Step4 = ({
 											name="expectedSalary"
 											className="form-control input"
 											id="expectedSalaryInput"
+											onChange={onChange}
 										>
 											{salaryList().map((e, i) => (
 												<option value={e} key={i}>

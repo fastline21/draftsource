@@ -166,7 +166,7 @@ const Filter = ({
 						Availability{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.availabilityCat ? 'arrow-up' : 'arrow-down'
+								show.availabilityCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -210,7 +210,7 @@ const Filter = ({
 						Specialty{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.specialtyCat ? 'arrow-up' : 'arrow-down'
+								show.specialtyCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>
@@ -249,7 +249,7 @@ const Filter = ({
 						Software Use{' '}
 						<i
 							className={`fas float-right pt-1 fa-${
-								show.softwareCat ? 'arrow-up' : 'arrow-down'
+								show.softwareCat ? 'angle-up' : 'angle-down'
 							}`}
 						></i>
 					</Link>

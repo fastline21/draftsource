@@ -75,7 +75,7 @@ const ViewResume = ({
 		gender: '',
 		cellphone: '',
 		status: '',
-		rating: '',
+		rating: 'Basic',
 		availability: '',
 		expectedSalary: '',
 		currency: '',
@@ -378,13 +378,15 @@ const ViewResume = ({
 									</p> */}
 									<p className="data-title mb-0">
 										{isEdit.headline ? (
-											<input
-												type="text"
+											<textarea
 												className="input"
 												name="headline"
 												onChange={onChange}
-												value={headline}
-											/>
+												cols="50"
+												rows="5"
+											>
+												{headline}
+											</textarea>
 										) : (
 											headline
 										)}
@@ -528,8 +530,12 @@ const ViewResume = ({
 											<tr>
 												<th className="pt-0 pl-0 item-title">LinkedIn Link</th>
 												<td className="pt-0 item-value">
-													<a href={linkedIn} target="_blank">
-														{linkedIn}
+													<a
+														href={linkedIn}
+														target="_blank"
+														className="btn btn-primary view"
+													>
+														View
 													</a>
 												</td>
 											</tr>
@@ -545,8 +551,12 @@ const ViewResume = ({
 							<p className="item-title color-1 mb-0">Skills & Specialties</p>
 						</div>
 						<div className="col-lg-9">
-							<p id="specialty" className="specialty mb-0">
-								{specialty.join(', ')}
+							<p className="specialty-software mb-0">
+								{specialty.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
 							</p>
 							<hr className="line-break" />
 						</div>
@@ -556,8 +566,12 @@ const ViewResume = ({
 							<p className="item-title color-1 mb-0">Software Use</p>
 						</div>
 						<div className="col-lg-9">
-							<p id="software" className="software mb-0">
-								{software.join(', ')}
+							<p className="specialty-software mb-0">
+								{software.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
 							</p>
 							<hr className="line-break" />
 						</div>
@@ -567,8 +581,12 @@ const ViewResume = ({
 							<p className="item-title color-1 mb-0">Market type experience</p>
 						</div>
 						<div className="col-lg-9">
-							<p id="software" className="software mb-0">
-								{marketType.join(', ')}
+							<p className="specialty-software mb-0">
+								{marketType.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
 							</p>
 							<hr className="line-break" />
 						</div>
@@ -746,6 +764,8 @@ const ViewResume = ({
 										<br />
 										<p className="item-title">Country</p>
 										<p className="country">{e.country}</p>
+										<p className="item-title">Company Size</p>
+										<p className="company-size">{e.companySize}</p>
 									</div>
 								))}
 							</div>
@@ -898,7 +918,13 @@ const ViewResume = ({
 											Internet Speedtest Result
 										</th>
 										<td className="pt-0">
-											<a href={internetResult}>{internetResult}</a>
+											<a
+												href={internetResult}
+												className="btn btn-primary view"
+												target="_blank"
+											>
+												View
+											</a>
 											{/* <button
 												className="btn btn-primary view"
 												onClick={() =>

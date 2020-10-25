@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Modal, Overlay, Tooltip } from 'react-bootstrap';
+import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getSymbolFromCurrency from 'currency-symbol-map';
@@ -297,26 +297,23 @@ const ViewResume = ({
 												<th className="pt-0 pl-0 item-title">General Info</th>
 												<td className="pt-0 item-value">
 													Verified{' '}
-													<i
-														className="fas fa-question-circle"
-														style={{ color: '#298494' }}
-														ref={targetGenInfo}
-														onClick={() => setShowGenInfo(!showGenInfo)}
-													></i>
-													<Overlay
-														target={targetGenInfo.current}
-														show={showGenInfo}
+													<OverlayTrigger
+														key="right"
 														placement="right"
-													>
-														{(props) => (
-															<Tooltip id="overlay-example" {...props}>
+														overlay={
+															<Tooltip>
 																<p className="text-left mb-0">
 																	Government ID, Email, Cellphone, and Social
 																	Media Verified
 																</p>
 															</Tooltip>
-														)}
-													</Overlay>
+														}
+													>
+														<i
+															className="fas fa-question-circle"
+															style={{ color: '#298494' }}
+														></i>
+													</OverlayTrigger>
 												</td>
 											</tr>
 											<tr>
@@ -441,6 +438,8 @@ const ViewResume = ({
 										<br />
 										<p className="item-title">Country</p>
 										<p className="country">{e.country}</p>
+										<p className="item-title">Company Size</p>
+										<p className="company-size">{e.companySize}</p>
 									</div>
 								))}
 							</div>
@@ -546,6 +545,41 @@ const ViewResume = ({
 						<div className="col-lg-8">
 							<p className="recruitments-comment pb-5">{recruitmentsComment}</p>
 							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-lg-6 offset-lg-3 d-flex justify-content-between">
+							<button
+								className={`btn btn-primary button${
+									shortlist.includes(_id)
+										? ' remove-shortlist'
+										: ' add-shortlist'
+								}`}
+								onClick={() =>
+									shortlist.includes(_id)
+										? removeShortlist(_id)
+										: addCandidate(_id)
+								}
+							>
+								{shortlist.includes(_id)
+									? 'Remove from Shortlist'
+									: 'Add to Shortlist'}
+							</button>
+							<button
+								onClick={() => {
+									history.push(
+										`/view-candidates/shortlisted-candidates${
+											shortlist.length > 0
+												? `?candidates=${shortlist.join(',')}`
+												: ''
+										}`
+									);
+									handleClose();
+								}}
+								className="btn btn-primary button shortlist-candidates"
+							>
+								Shortlist Candidates
+							</button>
 						</div>
 					</div>
 					{/* <div className="row pb-5">

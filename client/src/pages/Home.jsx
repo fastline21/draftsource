@@ -10,19 +10,13 @@ const Home = () => {
 			<div style={{ height: '90vh' }}>
 				<div className="h-100  align-items-center d-flex">
 					<section className="sec-1">
-						<h1 className="title">
-							Hire Full-Time Vetted Filipino Drafters
-						</h1>
+						<h1 className="title">Hire Full-Time Vetted Filipino Drafters</h1>
 						<p className="subtitle">
-							Build an extension of your drafting team in the
-							Philippines and get a very unfair advantage over
-							your competitors
+							Build an extension of your drafting team in the Philippines and
+							get a very unfair advantage over your competitors
 						</p>
 						<div className="cta">
-							<Link
-								to="/view-candidates"
-								className="btn btn-primary button"
-							>
+							<Link to="/view-candidates" className="btn btn-primary button">
 								View Candidates
 							</Link>
 							<button
