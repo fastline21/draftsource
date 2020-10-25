@@ -89,11 +89,16 @@ const ViewResume = ({
 		hardwareType: '',
 		brandName: '',
 		internetResult: '',
-		computerSpecs: '',
+		// computerSpecs: '',
 		email: '',
 		marketType: [],
 		processor: '',
 		ram: '',
+		os: '',
+		storage: '',
+		graphicsCard: '',
+		videoCard: '',
+		recruiterName: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -145,11 +150,16 @@ const ViewResume = ({
 		hardwareType,
 		brandName,
 		internetResult,
-		computerSpecs,
+		// computerSpecs,
 		govID,
 		marketType,
 		processor,
 		ram,
+		os,
+		storage,
+		graphicsCard,
+		videoCard,
+		recruiterName,
 	} = data;
 
 	const approveResume = () => {
@@ -539,6 +549,10 @@ const ViewResume = ({
 													</a>
 												</td>
 											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">Recruiter Name</th>
+												<td className="pt-0 item-value">{recruiterName}</td>
+											</tr>
 										</tbody>
 									</table>
 								</div>
@@ -755,8 +769,7 @@ const ViewResume = ({
 												e.description
 											)}
 										</p>
-										<p className="item-title">About the company</p>
-										<br />
+										<p className="title">About the company</p>
 										<p className="item-title">Company Expertise</p>
 										<p className="company-expertise">
 											{e.companyExpertise.join(', ')}
@@ -942,7 +955,11 @@ const ViewResume = ({
 									{hardwareType !== '' ||
 									brandName !== '' ||
 									processor !== '' ||
-									ram !== '' ? (
+									ram !== '' ||
+									os !== '' ||
+									storage !== '' ||
+									graphicsCard !== '' ||
+									videoCard !== '' ? (
 										<Fragment>
 											<tr>
 												<th scope="row" className="pt-0 item-title">
@@ -962,6 +979,12 @@ const ViewResume = ({
 											</tr>
 											<tr>
 												<th scope="row" className="pt-0 item-title">
+													Operating System
+												</th>
+												<td className="pt-0 item-value">{os}</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
 													Processor
 												</th>
 												<td className="pt-0 item-value">{processor}</td>
@@ -971,6 +994,24 @@ const ViewResume = ({
 													RAM
 												</th>
 												<td className="pt-0 item-value">{ram}</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Storage
+												</th>
+												<td className="pt-0 item-value">{storage}</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Graphics Card
+												</th>
+												<td className="pt-0 item-value">{graphicsCard}</td>
+											</tr>
+											<tr>
+												<th scope="row" className="pt-0 item-title">
+													Video Card
+												</th>
+												<td className="pt-0 item-value">{videoCard}</td>
 											</tr>
 										</Fragment>
 									) : null}

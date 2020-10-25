@@ -120,13 +120,13 @@ const ResumeSchema = new mongoose.Schema({
 			type: String,
 		},
 		yearStarted: {
-			type: Number,
+			type: String,
 		},
 		monthEnded: {
 			type: String,
 		},
 		yearEnded: {
-			type: Number,
+			type: String,
 		},
 		description: {
 			type: String,

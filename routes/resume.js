@@ -23,10 +23,12 @@ router.post('/education', async (req, res) => {
 	);
 	const newEducation = [
 		...oldEducation,
-		{
-			choices: 'License and Certification',
-			license: licenseArr,
-		},
+		licenseArr.length > 0
+			? {
+					choices: 'License and Certification',
+					license: licenseArr,
+			  }
+			: null,
 	];
 	console.log(newEducation);
 	res.json(newEducation);
@@ -37,12 +39,12 @@ router.post('/exp', async (req, res) => {
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
 		let d2 = moment([
-			e.yearStarted,
+			parseInt(e.yearStarted),
 			moment().month(e.monthStarted).format('MM'),
 			01,
 		]);
 		let d1 = moment([
-			e.yearEnded,
+			parseInt(e.yearEnded),
 			moment().month(e.monthEnded).format('MM'),
 			01,
 		]);
@@ -124,12 +126,12 @@ router.post('/', auth, async (req, res) => {
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
 		let d2 = moment([
-			e.yearStarted,
+			parseInt(e.yearStarted),
 			moment().month(e.monthStarted).format('MM'),
 			01,
 		]);
 		let d1 = moment([
-			e.yearEnded,
+			parseInt(e.yearEnded),
 			moment().month(e.monthEnded).format('MM'),
 			01,
 		]);
@@ -329,6 +331,10 @@ router.post('/', auth, async (req, res) => {
 			brandName: havePC ? req.body.brandName : '',
 			processor: havePC ? req.body.processor : '',
 			ram: havePC ? req.body.ram : '',
+			os: havePC ? req.body.os : '',
+			storage: havePC ? req.body.storage : '',
+			graphicsCard: havePC ? req.body.graphicsCard : '',
+			videoCard: havePC ? req.body.videoCard : '',
 			// computerSpecs,
 			// availability,
 			expectedSalary,
@@ -342,7 +348,7 @@ router.post('/', auth, async (req, res) => {
 			marketType,
 			uploadWork,
 			headline,
-			totalWorkYear: Math.floor(totalWorkHistory / 12),
+			totalWorkYear: totalWorkHistory,
 		};
 		const resume = new Resume(resumeFields);
 		await resume.save();

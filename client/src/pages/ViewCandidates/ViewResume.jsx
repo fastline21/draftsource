@@ -546,7 +546,7 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
-					<div className="row">
+					<div className="row pb-5">
 						<div className="col-lg-6 offset-lg-3 d-flex justify-content-between">
 							<button
 								className={`btn btn-primary button${

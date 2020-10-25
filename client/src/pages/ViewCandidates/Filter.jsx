@@ -43,7 +43,14 @@ const Filter = ({
 	const onShow = (e) => {
 		e.preventDefault();
 		const { name } = e.target;
-		setShow({ ...show, [name]: !show[name] });
+		if (name !== undefined) {
+			setShow({ ...show, [name]: !show[name] });
+		} else {
+			setShow({
+				...show,
+				[e.target.parentElement.name]: !show[e.target.parentElement.name],
+			});
+		}
 	};
 	const onChange = (e) => {
 		const { name, value } = e.target;
@@ -440,6 +447,7 @@ const Filter = ({
 							className={`fas float-right pt-1 fa-${
 								show.softwareCat ? 'angle-up' : 'angle-down'
 							}`}
+							name="softwareCat"
 						></i>
 					</Link>
 					<ul
@@ -484,6 +492,7 @@ const Filter = ({
 							className={`fas float-right pt-1 fa-${
 								show.marketTypeCat ? 'angle-up' : 'angle-down'
 							}`}
+							name="marketTypeCat"
 						></i>
 					</Link>
 					<ul
@@ -528,6 +537,7 @@ const Filter = ({
 							className={`fas float-right pt-1 fa-${
 								show.experienceCat ? 'angle-up' : 'angle-down'
 							}`}
+							name="experienceCat"
 						></i>
 					</Link>
 					<ul
@@ -604,6 +614,7 @@ const Filter = ({
 							className={`fas float-right pt-1 fa-${
 								show.ratingCat ? 'angle-up' : 'angle-down'
 							}`}
+							name="ratingCat"
 						></i>
 					</Link>
 					<ul
@@ -641,6 +652,7 @@ const Filter = ({
 							className={`fas float-right pt-1 fa-${
 								show.countryCat ? 'angle-up' : 'angle-down'
 							}`}
+							name="countryCat"
 						></i>
 					</Link>
 					<ul

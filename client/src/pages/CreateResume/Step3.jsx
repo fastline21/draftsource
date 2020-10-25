@@ -106,9 +106,7 @@ const Step3 = ({
 				os === '' ||
 				processor === '' ||
 				ram === '' ||
-				storage === '' ||
-				graphicsCard === '' ||
-				videoCard === ''
+				storage === ''
 			) {
 				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}

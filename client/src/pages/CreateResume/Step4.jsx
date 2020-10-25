@@ -46,8 +46,8 @@ const Step4 = ({
 		degree: '',
 		school: '',
 		course: '',
-		monthYearStarted: 0,
-		monthYearGraduated: 0,
+		monthYearStarted: '',
+		monthYearGraduated: '',
 		license: '',
 	};
 
