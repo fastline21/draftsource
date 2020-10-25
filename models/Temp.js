@@ -32,6 +32,9 @@ const TempSchema = new mongoose.Schema({
 	linkedIn: {
 		type: String,
 	},
+	recruiterName: {
+		type: String,
+	},
 });
 
 module.exports = mongoose.model('Temp', TempSchema);

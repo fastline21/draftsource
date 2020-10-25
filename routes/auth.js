@@ -59,6 +59,7 @@ router.post('/signup', async (req, res) => {
 					city,
 					// country,
 					linkedIn,
+					recruiterName,
 				} = req.body;
 				let user = await User.findOne({ email });
 				if (user) {
@@ -84,6 +85,7 @@ router.post('/signup', async (req, res) => {
 					city,
 					// country,
 					linkedIn,
+					recruiterName,
 				});
 
 				await temp.save();
@@ -437,6 +439,7 @@ router.get('/temp/:id', async (req, res) => {
 		city,
 		// country,
 		linkedIn,
+		recruiterName,
 	} = temp;
 	res.json({
 		firstName,
@@ -448,6 +451,7 @@ router.get('/temp/:id', async (req, res) => {
 		city,
 		// country,
 		linkedIn,
+		recruiterName,
 	});
 	await Temp.findByIdAndDelete(_id);
 });

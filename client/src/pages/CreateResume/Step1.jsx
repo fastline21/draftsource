@@ -44,6 +44,7 @@ const Step1 = ({
 		gender: 'Male',
 		// country: 'Afghanistan',
 		linkedIn: '',
+		recruiterName: '',
 	};
 
 	const [info, setInfo] = useState(initialInfo);
@@ -59,6 +60,7 @@ const Step1 = ({
 		age,
 		gender,
 		linkedIn,
+		recruiterName,
 	} = info;
 
 	const onChange = (e) => {
@@ -79,7 +81,8 @@ const Step1 = ({
 			// country === '' ||
 			age === '' ||
 			gender === '' ||
-			linkedIn === ''
+			linkedIn === '' ||
+			recruiterName === ''
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
@@ -300,6 +303,25 @@ const Step1 = ({
 										id="linkedInInput"
 										value={linkedIn}
 										name="linkedIn"
+										onChange={onChange}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="form-group">
+							<div className="form-row">
+								<div className="col-lg-4">
+									<label htmlFor="recruiterNameInput" className="form-label">
+										Recruiter Name
+									</label>
+								</div>
+								<div className="col-lg-8">
+									<input
+										type="text"
+										className="form-control input"
+										id="recruiterNameInput"
+										value={recruiterName}
+										name="recruiterName"
 										onChange={onChange}
 									/>
 								</div>

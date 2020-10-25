@@ -36,6 +36,9 @@ const ResumeSchema = new mongoose.Schema({
 	linkedIn: {
 		type: String,
 	},
+	recruiterName: {
+		type: String,
+	},
 	govID: {
 		type: String,
 	},
