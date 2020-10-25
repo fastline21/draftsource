@@ -508,6 +508,78 @@ const Step6 = ({
 	const onKeyPressOtherSpecify = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
+
+			if (otherSpecialtyRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
+				const lowerOther = otherSpecialtyRef.current.value;
+				if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
+					const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
+					setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
+					Array.from(document.querySelectorAll('.specialty .list .nav-item'))
+						.find((el) => el.textContent === specialtyList()[index])
+						.classList.add('active');
+				} else {
+					setSpecialty((specialty) => [...specialty, lowerOther]);
+				}
+				otherSpecialtyRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
+		}
+	};
+
+	const onKeyPressOtherSoftware = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+
+			if (otherSoftwareRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerSoftware = softwareList().map((el) => el.toLowerCase());
+				const lowerOther = otherSoftwareRef.current.value;
+				if (lowerSoftware.includes(lowerOther.toLowerCase())) {
+					const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
+					setSoftware((software) => [...software, softwareList()[index]]);
+					Array.from(document.querySelectorAll('.software .list .nav-item'))
+						.find((el) => el.textContent === softwareList()[index])
+						.classList.add('active');
+				} else {
+					setSoftware((software) => [...software, lowerOther]);
+				}
+				otherSoftwareRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
+		}
+	};
+
+	const onKeyPressOtherMarketType = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+
+			if (otherMarketTypeRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerMarketType = marketTypeList().map((el) => el.toLowerCase());
+				const lowerOther = otherMarketTypeRef.current.value;
+				if (lowerMarketType.includes(lowerOther.toLowerCase())) {
+					const index = lowerMarketType.indexOf(lowerOther.toLowerCase());
+					setMarketType((marketType) => [
+						...marketType,
+						marketTypeList()[index],
+					]);
+					Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+						.find((el) => el.textContent === marketTypeList()[index])
+						.classList.add('active');
+				} else {
+					setMarketType((marketType) => [...marketType, lowerOther]);
+				}
+				otherMarketTypeRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
 		}
 	};
 
@@ -643,7 +715,7 @@ const Step6 = ({
 										placeholder="Other Software"
 										className="form-control input other-input"
 										ref={otherSoftwareRef}
-										onKeyPress={onKeyPressOtherSpecify}
+										onKeyPress={onKeyPressOtherSoftware}
 									/>
 									<button
 										className="btn btn-primary button other-add"
@@ -688,7 +760,7 @@ const Step6 = ({
 										placeholder="Other Market type experience"
 										className="form-control input other-input"
 										ref={otherMarketTypeRef}
-										onKeyPress={onKeyPressOtherSpecify}
+										onKeyPress={onKeyPressOtherMarketType}
 									/>
 									<button
 										className="btn btn-primary button other-add"

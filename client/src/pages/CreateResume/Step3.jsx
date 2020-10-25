@@ -38,10 +38,14 @@ const Step3 = ({
 	const initialInfo = {
 		internetType: 'DSL',
 		hardwareType: 'Desktop',
-		brandName: '',
 		internetResult: '',
+		brandName: '',
+		os: '',
 		processor: '',
 		ram: '',
+		storage: '',
+		graphicsCard: '',
+		videoCard: '',
 	};
 	// const initialModal = {
 	// 	internetResult: false,
@@ -56,10 +60,14 @@ const Step3 = ({
 	const {
 		internetType,
 		hardwareType,
-		brandName,
 		internetResult,
+		brandName,
+		os,
 		processor,
 		ram,
+		storage,
+		graphicsCard,
+		videoCard,
 		govID,
 	} = info;
 
@@ -95,8 +103,12 @@ const Step3 = ({
 			if (
 				hardwareType === '' ||
 				brandName === '' ||
+				os === '' ||
 				processor === '' ||
-				ram === ''
+				ram === '' ||
+				storage === '' ||
+				graphicsCard === '' ||
+				videoCard === ''
 			) {
 				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
@@ -106,8 +118,12 @@ const Step3 = ({
 				internetResult,
 				hardwareType,
 				brandName,
+				os,
 				processor,
 				ram,
+				storage,
+				graphicsCard,
+				videoCard,
 				havePC,
 			});
 		} else {
@@ -348,6 +364,20 @@ const Step3 = ({
 									/>
 								</div>
 								<div className="form-group">
+									<label htmlFor="osInput" className="form-label">
+										Operating System
+									</label>
+									<input
+										type="text"
+										className="form-control input"
+										id="osInput"
+										name="os"
+										value={os}
+										onChange={onChange}
+										disabled={!havePC}
+									/>
+								</div>
+								<div className="form-group">
 									<label htmlFor="processorInput" className="form-label">
 										Processor
 									</label>
@@ -371,6 +401,48 @@ const Step3 = ({
 										id="ramInput"
 										name="ram"
 										value={ram}
+										onChange={onChange}
+										disabled={!havePC}
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="storageInput" className="form-label">
+										Storage
+									</label>
+									<input
+										type="text"
+										className="form-control input"
+										id="storageInput"
+										name="storage"
+										value={storage}
+										onChange={onChange}
+										disabled={!havePC}
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="graphicsCardInput" className="form-label">
+										Graphics Card
+									</label>
+									<input
+										type="text"
+										className="form-control input"
+										id="graphicsCardInput"
+										name="graphicsCard"
+										value={graphicsCard}
+										onChange={onChange}
+										disabled={!havePC}
+									/>
+								</div>
+								<div className="form-group">
+									<label htmlFor="videoCardInput" className="form-label">
+										Video Card
+									</label>
+									<input
+										type="text"
+										className="form-control input"
+										id="videoCardInput"
+										name="videoCard"
+										value={videoCard}
 										onChange={onChange}
 										disabled={!havePC}
 									/>

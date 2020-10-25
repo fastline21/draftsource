@@ -51,10 +51,22 @@ const ResumeSchema = new mongoose.Schema({
 	brandName: {
 		type: String,
 	},
+	os: {
+		type: String,
+	},
 	processor: {
 		type: String,
 	},
 	ram: {
+		type: String,
+	},
+	storage: {
+		type: String,
+	},
+	graphicsCard: {
+		type: String,
+	},
+	videoCard: {
 		type: String,
 	},
 	internetResult: {

@@ -30,5 +30,6 @@ export const marketTypeList = () => {
 		'Oil and Gas',
 		'Power Plant',
 		'Substation',
+		'Millwork and Joinery',
 	];
 };

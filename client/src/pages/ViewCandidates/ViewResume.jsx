@@ -430,12 +430,11 @@ const ViewResume = ({
 										</p>
 										<p className="item-title">Job Description</p>
 										<p className="description">{e.description}</p>
-										<p className="item-title">About the company</p>
+										<p className="title">About the company</p>
 										<p className="item-title">Company Expertise</p>
 										<p className="company-expertise">
 											{e.companyExpertise.join(', ')}
 										</p>
-										<br />
 										<p className="item-title">Country</p>
 										<p className="country">{e.country}</p>
 										<p className="item-title">Company Size</p>

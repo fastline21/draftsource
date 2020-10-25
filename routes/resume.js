@@ -32,6 +32,25 @@ router.post('/education', async (req, res) => {
 	res.json(newEducation);
 });
 
+router.post('/exp', async (req, res) => {
+	const { workHistory } = req.body;
+	let totalWorkHistory = 0;
+	workHistory.map((e) => {
+		let d2 = moment([
+			e.yearStarted,
+			moment().month(e.monthStarted).format('MM'),
+			01,
+		]);
+		let d1 = moment([
+			e.yearEnded,
+			moment().month(e.monthEnded).format('MM'),
+			01,
+		]);
+		totalWorkHistory += d1.diff(d2, 'year');
+	});
+	res.json(totalWorkHistory);
+});
+
 // @route   POST /api/resume
 // @desc    Create resume
 // @access  Private
@@ -86,32 +105,34 @@ router.post('/', auth, async (req, res) => {
 	];
 
 	// Get duration of years
-	Date.monthsDiff = function (day1, day2) {
-		let d1 = day1,
-			d2 = day2;
-		if (day1 < day2) {
-			d1 = day2;
-			d2 = day1;
-		}
-		let m =
-			(d1.getFullYear() - d2.getFullYear()) * 12 +
-			(d1.getMonth() - d2.getMonth());
-		if (d1.getDate() < d2.getDate()) --m;
-		return m;
-	};
+	// Date.monthsDiff = function (day1, day2) {
+	// 	let d1 = day1,
+	// 		d2 = day2;
+	// 	if (day1 < day2) {
+	// 		d1 = day2;
+	// 		d2 = day1;
+	// 	}
+	// 	let m =
+	// 		(d1.getFullYear() - d2.getFullYear()) * 12 +
+	// 		(d1.getMonth() - d2.getMonth());
+	// 	if (d1.getDate() < d2.getDate()) --m;
+	// 	return m;
+	// };
 
 	// Get total work history
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d1 = new Date(
+		let d2 = moment([
 			e.yearStarted,
-			parseInt(moment().month(e.monthStarted).format('M'))
-		);
-		let d2 = new Date(
+			moment().month(e.monthStarted).format('MM'),
+			01,
+		]);
+		let d1 = moment([
 			e.yearEnded,
-			parseInt(moment().month(e.monthEnded).format('M'))
-		);
-		totalWorkHistory += Date.monthsDiff(d1, d2);
+			moment().month(e.monthEnded).format('MM'),
+			01,
+		]);
+		totalWorkHistory += d1.diff(d2, 'year');
 	});
 
 	// string to array
