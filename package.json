@@ -1,36 +1,37 @@
 {
-    "name": "draftsource",
-    "version": "3.0.0",
-    "description": "Draftsource",
-    "main": "server.js",
-    "scripts": {
-        "start": "node server.js",
-        "server": "nodemon server.js",
-        "client": "cd client && npm start",
-        "client-install": "cd client && npm install",
-        "dev": "concurrently \"npm run server\" \"npm run client\"",
-        "client-build": "NPM_CONFIG_PRODUCTION=false cd client && npm install && npm run build"
-    },
-    "keywords": [],
-    "author": "Joshwa Facistol",
-    "license": "ISC",
-    "dependencies": {
-        "bcryptjs": "^2.4.3",
-        "dotenv": "^8.2.0",
-        "express": "^4.17.1",
-        "express-fileupload": "^1.2.0",
-        "express-session": "^1.17.1",
-        "gm": "^1.23.1",
-        "jsonwebtoken": "^8.5.1",
-        "moment": "^2.29.1",
-        "mongoose": "^5.10.7",
-        "mongoose-sequence": "^5.2.2",
-        "nodemailer": "^6.4.14",
-        "pdf-thumbnail": "^1.0.6",
-        "randomstring": "^1.1.5"
-    },
-    "devDependencies": {
-        "concurrently": "^5.3.0",
-        "nodemon": "^2.0.4"
-    }
+	"name": "draftsource",
+	"version": "3.0.0",
+	"description": "Draftsource",
+	"main": "server.js",
+	"scripts": {
+		"start": "node server.js",
+		"server": "nodemon server.js",
+		"client": "cd client && npm start",
+		"client-install": "cd client && npm install",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"client-build": "NPM_CONFIG_PRODUCTION=false cd client && npm install && npm run build",
+		"upload-prod": " pm2 stop server && cd draftsource &&  cd client && rm -rf build && cd .. && git pull origin master && npm run client-build && pm2 start server"
+	},
+	"keywords": [],
+	"author": "Joshwa Facistol",
+	"license": "ISC",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"express-fileupload": "^1.2.0",
+		"express-session": "^1.17.1",
+		"gm": "^1.23.1",
+		"jsonwebtoken": "^8.5.1",
+		"moment": "^2.29.1",
+		"mongoose": "^5.10.7",
+		"mongoose-sequence": "^5.2.2",
+		"nodemailer": "^6.4.14",
+		"pdf-thumbnail": "^1.0.6",
+		"randomstring": "^1.1.5"
+	},
+	"devDependencies": {
+		"concurrently": "^5.3.0",
+		"nodemon": "^2.0.4"
+	}
 }
