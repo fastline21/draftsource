@@ -312,7 +312,7 @@ const Step1 = ({
 							<div className="form-row">
 								<div className="col-lg-4">
 									<label htmlFor="recruiterNameInput" className="form-label">
-										Agent's Name
+										Recruiter Name
 									</label>
 								</div>
 								<div className="col-lg-8">
@@ -323,7 +323,6 @@ const Step1 = ({
 										value={recruiterName}
 										name="recruiterName"
 										onChange={onChange}
-										placeholder="If applicable"
 									/>
 								</div>
 							</div>

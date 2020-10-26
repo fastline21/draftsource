@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { useHistory } from 'react-router-dom';
+import moment from 'moment';
 
 // Actions
 import {
@@ -64,6 +65,7 @@ const ViewResume = ({
 		ram: '',
 		countryExperience: '',
 		marketType: [],
+		totalWorkYear: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -114,6 +116,7 @@ const ViewResume = ({
 		internetResult,
 		countryExperience,
 		marketType,
+		totalWorkYear,
 	} = data;
 
 	const removeShortlist = (id) => {
@@ -136,6 +139,13 @@ const ViewResume = ({
 				search: newUrl.search,
 			});
 		}
+	};
+
+	const totalMonths = (m1, m2, y1, y2) => {
+		return moment([parseInt(y2), moment().month(m2).format('MM')]).diff(
+			moment([parseInt(y1), moment().month(m1).format('MM')]),
+			'month'
+		);
 	};
 
 	const handleClose = () => {
@@ -317,6 +327,41 @@ const ViewResume = ({
 												</td>
 											</tr>
 											<tr>
+												<th className="pt-0 pl-0 item-title">
+													Relevant Experience
+												</th>
+												<td className="pt-0 item-value">
+													{totalWorkYear} {totalWorkYear > 1 ? 'Years' : 'Year'}{' '}
+													<OverlayTrigger
+														key="right"
+														placement="right"
+														overlay={
+															<Tooltip>
+																<p className="text-left mb-0">
+																	Experience is computed depending on years of
+																	experience in the industry
+																	<br />
+																	<br />
+																	Irrelevant work experiences is not included in
+																	the resume such as marketing, sales, customer
+																	support and other non-related industries
+																	<br />
+																	<br />
+																	Employment gap means they either stopped
+																	working or worked in a different sector
+																	irrelevant to the industry
+																</p>
+															</Tooltip>
+														}
+													>
+														<i
+															className="fas fa-question-circle"
+															style={{ color: '#298494' }}
+														></i>
+													</OverlayTrigger>
+												</td>
+											</tr>
+											<tr>
 												<th className="pt-0 pl-0 item-title">English Level</th>
 												<td className="pt-0 item-value">{rating}</td>
 											</tr>
@@ -426,7 +471,22 @@ const ViewResume = ({
 										<p className="company">Employment Period</p>
 										<p className="month-year">
 											{e.monthStarted} {e.yearStarted} - {e.monthEnded}{' '}
-											{e.yearEnded}
+											{e.yearEnded}{' '}
+											{`(${totalMonths(
+												e.monthStarted,
+												e.monthEnded,
+												e.yearStarted,
+												e.yearEnded
+											)} ${
+												totalMonths(
+													e.monthStarted,
+													e.monthEnded,
+													e.yearStarted,
+													e.yearEnded
+												) > 1
+													? 'months'
+													: 'month'
+											})`}
 										</p>
 										<p className="item-title">Job Description</p>
 										<p className="description">{e.description}</p>

@@ -322,7 +322,7 @@
 						.box-a {
 							display: flex;
 							flex-direction: column;
-							flex: 1;
+							flex: 1.5;
 
 							.box-1 {
 								display: flex;
@@ -426,7 +426,7 @@
 						.recruiters-comment {
 							display: -webkit-box;
 							-webkit-box-orient: vertical;
-							-webkit-line-clamp: 3;
+							-webkit-line-clamp: 2;
 							overflow: hidden;
 							margin-bottom: 0;
 						}

@@ -46,6 +46,7 @@ const CandidateItem = ({
 		dateCreated,
 		specialty,
 		software,
+		marketType,
 		uploadWork,
 		aboutYourself,
 		rating,
@@ -140,9 +141,11 @@ const CandidateItem = ({
 												Experience is computed depending on years of experience
 												in the industry
 												<br />
+												<br />
 												Irrelevant work experiences is not included in the
 												resume such as marketing, sales, customer support and
 												other non-related industries
+												<br />
 												<br />
 												Employment gap means they either stopped working or
 												worked in a different sector irrelevant to the industry
@@ -285,6 +288,11 @@ const CandidateItem = ({
 								{e}
 							</span>
 						))}
+						{marketType.map((e, i) => (
+							<span className="specialty-software-item" key={i}>
+								{e}
+							</span>
+						))}
 					</div>
 					{visibleArrow && (
 						<button
@@ -296,8 +304,10 @@ const CandidateItem = ({
 					)}
 				</div>
 				<div className="recruitment-comments" onClick={onViewResume}>
-					<p className="box-label">Recruiter's Comments:</p>
-					<p className="recruiters-comment">{recruitmentsComment}</p>
+					<p className="recruiters-comment">
+						<span className="box-label">Recruiter's Comments:</span>
+						{recruitmentsComment}
+					</p>
 				</div>
 				<div onClick={onViewResume}>
 					<button className="btn btn-primary see-resume">

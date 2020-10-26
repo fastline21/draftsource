@@ -31,7 +31,7 @@ const CreateResume = () => {
 		} else if (parseStep === 2) {
 			return <Step2 uploadFile={onUploadFile} />;
 		} else if (parseStep === 3) {
-			return <Step3 uploadFile={onUploadFile} />;
+			return <Step3 />;
 		} else if (parseStep === 4) {
 			return <Step4 uploadFile={onUploadFile} />;
 		} else if (parseStep === 5) {

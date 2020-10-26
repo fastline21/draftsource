@@ -23,7 +23,7 @@ const Step3 = ({
 	setAlert,
 	addResume,
 	clearError,
-	uploadFile,
+	// uploadFile,
 	resumeState: { error },
 }) => {
 	const [
@@ -79,8 +79,8 @@ const Step3 = ({
 			} else {
 				setHavePC(false);
 			}
-		} else if (name === 'govID') {
-			setInfo({ ...info, [name]: e.target.files[0] });
+			// } else if (name === 'govID') {
+			// 	setInfo({ ...info, [name]: e.target.files[0] });
 		} else {
 			setInfo({ ...info, [name]: value });
 		}
@@ -95,7 +95,7 @@ const Step3 = ({
 	const onSubmit = (e) => {
 		e.preventDefault();
 
-		if (internetType === '' || internetResult === '' || govID === '') {
+		if (internetType === '' || internetResult === '') {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		}
 
@@ -132,7 +132,7 @@ const Step3 = ({
 			});
 		}
 
-		uploadFile({ govID });
+		// uploadFile({ govID });
 
 		setInfo(initialInfo);
 		setSubmit(true);
@@ -287,7 +287,7 @@ const Step3 = ({
 										<option value="No">No</option>
 									</select>
 								</div>
-								<div className="form-group">
+								{/* <div className="form-group">
 									<label className="form-label">Government ID</label>
 									{govID ? (
 										<p id="replaceGovID" className="upload d-block">
@@ -325,7 +325,7 @@ const Step3 = ({
 											/>
 										</div>
 									)}
-								</div>
+								</div> */}
 							</div>
 							<div className="right col-lg-6 col-md-6 col-sm-12">
 								<div className="form-group">

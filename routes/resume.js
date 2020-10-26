@@ -21,16 +21,13 @@ router.post('/education', async (req, res) => {
 	const oldEducation = education.filter(
 		(edu) => edu.choices !== 'License and Certification'
 	);
-	const newEducation = [
-		...oldEducation,
-		licenseArr.length > 0
-			? {
-					choices: 'License and Certification',
-					license: licenseArr,
-			  }
-			: null,
-	];
-	console.log(newEducation);
+	const newEducation = [...oldEducation];
+	licenseArr.length > 0
+		? newEducation.push({
+				choices: 'License and Certification',
+				license: licenseArr,
+		  })
+		: null;
 	res.json(newEducation);
 });
 
@@ -99,13 +96,13 @@ router.post('/', auth, async (req, res) => {
 	const oldEducation = education.filter(
 		(edu) => edu.choices !== 'License and Certification'
 	);
-	const newEducation = [
-		...oldEducation,
-		{
-			choices: 'License and Certification',
-			license: licenseArr,
-		},
-	];
+	const newEducation = [...oldEducation];
+	licenseArr.length > 0
+		? newEducation.push({
+				choices: 'License and Certification',
+				license: licenseArr,
+		  })
+		: null;
 
 	// Get duration of years
 	// Date.monthsDiff = function (day1, day2) {

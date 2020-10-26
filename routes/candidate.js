@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const moment = require('moment');
 
 // Models
 const Resume = require('./../models/Resume');
@@ -285,8 +286,24 @@ router.put('/recruiters-comment', auth, async (req, res) => {
 // @access	Private
 router.put('/update-resume/:id', async (req, res) => {
 	const { id } = req.params;
+	const { workHistory } = req.body;
+	let totalWorkHistory = 0;
+	workHistory.map((e) => {
+		let d2 = moment([
+			parseInt(e.yearStarted),
+			moment().month(e.monthStarted).format('MM'),
+			01,
+		]);
+		let d1 = moment([
+			parseInt(e.yearEnded),
+			moment().month(e.monthEnded).format('MM'),
+			01,
+		]);
+		totalWorkHistory += d1.diff(d2, 'year');
+	});
 	await Resume.findByIdAndUpdate(id, {
 		...req.body,
+		totalWorkYear: totalWorkHistory,
 	});
 	// console.log(id);
 	// res.json({ id });

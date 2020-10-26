@@ -21,6 +21,7 @@ const CandidateItem = ({ candidate, viewResume }) => {
 		dateCreated,
 		specialty,
 		software,
+		marketType,
 		uploadWork,
 		recruitmentsComment,
 		idCode,
@@ -109,6 +110,11 @@ const CandidateItem = ({ candidate, viewResume }) => {
 							</span>
 						))}
 						{software.map((e, i) => (
+							<span className="specialty-software-item" key={i}>
+								{e}
+							</span>
+						))}
+						{marketType.map((e, i) => (
 							<span className="specialty-software-item" key={i}>
 								{e}
 							</span>

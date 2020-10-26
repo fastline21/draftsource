@@ -40,6 +40,7 @@ const Step4 = ({
 		// availability: 'Full Time',
 		expectedSalary: '$400-$600',
 		headline: '',
+		govID: '',
 	};
 	const initialEducation = {
 		choices: 'High School',
@@ -62,7 +63,7 @@ const Step4 = ({
 	const [uploadAudio, setUploadAudio] = useState(null);
 	const [submit, setSubmit] = useState(false);
 
-	const { expectedSalary, headline } = info;
+	const { expectedSalary, headline, govID } = info;
 
 	const eduItem = (e) => {
 		const { name, value } = e.target;
@@ -236,7 +237,11 @@ const Step4 = ({
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
-		setInfo({ ...info, [name]: value });
+		if (name === 'govID') {
+			setInfo({ ...info, [name]: e.target.files[0] });
+		} else {
+			setInfo({ ...info, [name]: value });
+		}
 	};
 
 	const onSubmit = (e) => {
@@ -246,12 +251,14 @@ const Step4 = ({
 			expectedSalary === '' ||
 			headline === '' ||
 			uploadAudio === null ||
+			govID === '' ||
 			education.length === 0
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			uploadFile({
 				aboutYourself: uploadAudio,
+				govID,
 			});
 			addResume({
 				headline,
@@ -333,6 +340,7 @@ const Step4 = ({
 											className="form-control input"
 											id="expectedSalaryInput"
 											onChange={onChange}
+											value={expectedSalary}
 										>
 											{salaryList().map((e, i) => (
 												<option value={e} key={i}>
@@ -432,7 +440,7 @@ const Step4 = ({
 											onChange={onChange}
 											value={headline}
 										></textarea>
-										<p className="pt-3 mb-0">Sample headlines</p>
+										{/* <p className="pt-3 mb-0">Sample headlines</p>
 										<ul className="list">
 											<li className="item">Professional Civil Engineer (PE)</li>
 											<li className="item">
@@ -450,7 +458,46 @@ const Step4 = ({
 												MEP Design Engineer | MEP Estimator | Mechanical
 												Engineer
 											</li>
-										</ul>
+										</ul> */}
+									</div>
+									<div className="form-group">
+										<label className="form-label">Government ID</label>
+										{govID ? (
+											<p id="replaceGovID" className="upload d-block">
+												<label id="govIDFile" className="selected-file">
+													{govID.name}
+												</label>
+												<label
+													htmlFor="replacegovIDInput"
+													className="replace-button"
+												>
+													Replace
+												</label>
+												<input
+													type="file"
+													accept="image/*"
+													name="govID"
+													id="replacegovIDInput"
+													className="form-control-file"
+													onChange={onChange}
+												/>
+											</p>
+										) : (
+											<div className="form-group upload-file">
+												<label htmlFor="govIDInput" className="form-label">
+													Upload Image
+												</label>
+												<input
+													type="file"
+													name="govID"
+													id="govIDInput"
+													className="form-control-file input"
+													accept="image/*"
+													onChange={onChange}
+													value={govID}
+												/>
+											</div>
+										)}
 									</div>
 								</div>
 							</div>

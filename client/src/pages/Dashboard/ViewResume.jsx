@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import moment from 'moment';
 
 // Actions
 import {
@@ -282,6 +283,13 @@ const ViewResume = ({
 		if (isEdit[category]) {
 			updateResume(data);
 		}
+	};
+
+	const totalMonths = (m1, m2, y1, y2) => {
+		return moment([parseInt(y2), moment().month(m2).format('MM')]).diff(
+			moment([parseInt(y1), moment().month(m1).format('MM')]),
+			'month'
+		);
 	};
 
 	const handleClose = () => {
@@ -750,7 +758,22 @@ const ViewResume = ({
 												</select>
 											) : (
 												e.yearEnded
-											)}
+											)}{' '}
+											{`(${totalMonths(
+												e.monthStarted,
+												e.monthEnded,
+												e.yearStarted,
+												e.yearEnded
+											)} ${
+												totalMonths(
+													e.monthStarted,
+													e.monthEnded,
+													e.yearStarted,
+													e.yearEnded
+												) > 1
+													? 'months'
+													: 'month'
+											})`}
 										</p>
 										<p className="item-title">Job Description</p>
 										<p className="description">
