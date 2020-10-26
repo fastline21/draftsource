@@ -24,7 +24,11 @@ import { marketTypeList } from './../../list/MarketType';
 // Action
 import { setAlert } from './../../state/actions/alertAction';
 import { clearUser } from './../../state/actions/userAction';
-import { submitResume, clearError } from './../../state/actions/resumeAction';
+import {
+	submitResume,
+	clearError,
+	setSuccess,
+} from './../../state/actions/resumeAction';
 
 const Step6 = ({
 	setAlert,
@@ -32,7 +36,8 @@ const Step6 = ({
 	clearError,
 	clearUser,
 	check,
-	resumeState: { resume, error },
+	setSuccess,
+	resumeState: { resume, error, success },
 }) => {
 	const [
 		Prompt,
@@ -595,17 +600,18 @@ const Step6 = ({
 			clearError();
 		}
 
-		if (submit) {
-			setSubmit(false);
+		if (success) {
+			// setSubmit(false);
 			setAlert(
 				'/',
 				'<h2 class="title">Thank you for your resume</h2><p class="subtitle">We will call you within 72 hours to verify your profile.</p>'
 			);
+			setSuccess();
 			clearUser();
 		}
 
 		// eslint-disable-next-line
-	}, [error, submit, load]);
+	}, [error, success, load]);
 
 	return (
 		<div className="step-6">
@@ -884,6 +890,7 @@ Step6.propTypes = {
 	submitResume: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
+	setSuccess: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
 
@@ -896,4 +903,5 @@ export default connect(mapStateToProps, {
 	clearError,
 	submitResume,
 	clearUser,
+	setSuccess,
 })(Step6);

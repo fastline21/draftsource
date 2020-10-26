@@ -6,6 +6,7 @@ import {
 	CLEAR_ERROR,
 	RESUME_STEP,
 	RESET_STEP,
+	SET_SUCCESS,
 } from './types';
 
 // Add resume
@@ -57,6 +58,13 @@ export const submitResume = (resume) => async (dispatch) => {
 			payload: error.response.data,
 		});
 	}
+};
+
+// Set success
+export const setSuccess = () => {
+	return {
+		type: SET_SUCCESS,
+	};
 };
 
 // Clear error

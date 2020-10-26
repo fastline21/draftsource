@@ -5,12 +5,14 @@ import {
 	CLEAR_ERROR,
 	RESUME_STEP,
 	RESET_STEP,
+	SET_SUCCESS,
 } from '../actions/types';
 
 const initialState = {
 	resume: null,
 	error: null,
 	step: 0,
+	success: false,
 };
 
 export default (state = initialState, action) => {
@@ -24,11 +26,17 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				resume: null,
+				success: true,
 			};
 		case CLEAR_ERROR:
 			return {
 				...state,
 				error: null,
+			};
+		case SET_SUCCESS:
+			return {
+				...state,
+				success: false,
 			};
 		case RESUME_STEP:
 			return {
