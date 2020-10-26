@@ -7,6 +7,7 @@ import {
 	RESUME_STEP,
 	RESET_STEP,
 	SET_SUCCESS,
+	SET_LOADING,
 } from './types';
 
 // Add resume
@@ -43,6 +44,8 @@ export const tempUser = (id) => async (dispatch) => {
 // Submit resume
 export const submitResume = (resume) => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
+
 		const config = {
 			headers: {
 				'Content-Type': 'multipart/form-data',
@@ -65,6 +68,13 @@ export const setSuccess = () => {
 	return {
 		type: SET_SUCCESS,
 	};
+};
+
+// Set loading to true
+export const setLoading = () => (dispatch) => {
+	dispatch({
+		type: SET_LOADING,
+	});
 };
 
 // Clear error

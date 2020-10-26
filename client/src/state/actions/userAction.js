@@ -17,6 +17,8 @@ import {
 // Add user
 export const addUser = (user) => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
+
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',

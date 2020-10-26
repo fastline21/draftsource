@@ -12,11 +12,15 @@ import {
 	addUser,
 	clearError,
 	clearUser,
+	setLoading,
 } from './../../state/actions/userAction';
-import { setStep } from './../../state/actions/resumeAction';
+import { setStep, setSuccess } from './../../state/actions/resumeAction';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
+
+// Components
+import PreLoader from './../../layouts/PreLoader';
 
 const Step1 = ({
 	setAlert,
@@ -24,7 +28,8 @@ const Step1 = ({
 	clearError,
 	clearUser,
 	setStep,
-	userState: { success, error },
+	setLoading,
+	userState: { success, error, loading },
 	resumeState: { step },
 }) => {
 	const [
@@ -100,6 +105,7 @@ const Step1 = ({
 		}
 
 		if (error) {
+			// setLoading();
 			localStorage.clear();
 			setAlert('', error.msg);
 			clearError();
@@ -120,11 +126,37 @@ const Step1 = ({
 			);
 		}
 
+		console.log(loading);
+
 		// eslint-disable-next-line
-	}, [load, error, success, step]);
+	}, [load, error, success, step, loading]);
 	return (
 		<div className="step-1">
 			{Prompt}
+			{loading ? (
+				<div
+					style={{
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						right: 0,
+						height: '100vh',
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						zIndex: 1031,
+					}}
+				>
+					<div
+						style={{
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%, -50%)',
+						}}
+					>
+						<PreLoader />
+					</div>
+				</div>
+			) : null}
 			<div className="row">
 				<div className="col-lg-6 offset-lg-3">
 					<form className="form" onSubmit={onSubmit}>
@@ -351,6 +383,7 @@ Step1.propTypes = {
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
 	setStep: PropTypes.func.isRequired,
+	setLoading: PropTypes.func.isRequired,
 	userState: PropTypes.object.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
@@ -366,4 +399,5 @@ export default connect(mapStateToProps, {
 	clearError,
 	clearUser,
 	setStep,
+	setLoading,
 })(Step1);

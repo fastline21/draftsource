@@ -27,6 +27,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				success: true,
+				loading: false,
 			};
 		case LOAD_USER:
 			return {
@@ -54,6 +55,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: action.payload,
+				loading: false,
 			};
 		case GET_USER_INFO:
 			return {

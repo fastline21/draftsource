@@ -15,6 +15,7 @@ import MarketTypeSelected from './MarketTypeSelected';
 import UploadWorkImageModal from './UploadWorkImageModal';
 // import UploadWorkDocumentModal from './UploadWorkDocumentModal';
 import UploadWorkItem from './UploadWorkItem';
+import PreLoader from './../../layouts/PreLoader';
 
 // List
 import { specialtyList } from './../../list/Specialty';
@@ -37,7 +38,7 @@ const Step6 = ({
 	clearUser,
 	check,
 	setSuccess,
-	resumeState: { resume, error, success },
+	resumeState: { resume, error, success, loading },
 }) => {
 	const [
 		Prompt,
@@ -642,6 +643,30 @@ const Step6 = ({
                     updateData={updateWorkDocumentData}
                 />
             ) : null} */}
+			{loading ? (
+				<div
+					style={{
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						right: 0,
+						height: '100vh',
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						zIndex: 1031,
+					}}
+				>
+					<div
+						style={{
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%, -50%)',
+						}}
+					>
+						<PreLoader />
+					</div>
+				</div>
+			) : null}
 			<div className="row">
 				<div className="col-lg-12">
 					<form className="form" onSubmit={onSubmit}>
