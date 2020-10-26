@@ -69,6 +69,17 @@
 	.step-1 {
 		padding: 0 10px;
 
+		.title {
+			color: $darkBlue;
+			margin-bottom: 15px;
+
+			span {
+				color: $lightGray;
+				font-size: 12px;
+				margin-left: 15px;
+			}
+		}
+
 		.specialty {
 			padding-top: 20px;
 			padding-bottom: 40px;
@@ -82,12 +93,76 @@
 		}
 
 		.list {
-			.item {
+			margin-bottom: 30px;
+
+			@include media('<desktop') {
+				margin-top: 30px;
+			}
+
+			.nav-item {
 				width: 100%;
 				font-weight: 500;
 				color: #606060;
 				cursor: pointer;
 				margin-bottom: 5px;
+
+				&.active {
+					color: $darkBlue;
+				}
+			}
+		}
+
+		.other-input {
+			width: 540px;
+			background-image: url('./../images/plus.png');
+			background-position: 98%;
+			background-repeat: no-repeat;
+			background-size: 20px auto;
+			padding-right: 30px;
+
+			@include media('>=tablet', '<desktop') {
+				width: 480px;
+			}
+
+			@include media('>=desktop', '<1200px') {
+				width: 400px;
+			}
+		}
+
+		.other-add {
+			margin-top: 0;
+			margin-left: auto;
+			width: 180px;
+
+			@include media('<tablet') {
+				width: 100%;
+				margin-top: 10px;
+			}
+		}
+
+		.item {
+			position: relative;
+			border-radius: 30px;
+			background-color: #d5d5d5;
+			padding: 10px 15px;
+			font-size: 14px;
+			font-weight: 500;
+			color: #606060;
+			display: inline-block;
+			margin-bottom: 15px;
+			margin-right: 10px;
+
+			.close {
+				position: absolute;
+				top: -8px;
+				right: -4px;
+				background-color: $blue;
+				border-radius: 30px;
+				opacity: 1;
+				color: $white;
+				padding: 0 6px 6px;
+				cursor: pointer;
+				font-size: 14px;
 			}
 		}
 		// .subtitle {

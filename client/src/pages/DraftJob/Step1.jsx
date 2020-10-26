@@ -38,10 +38,10 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 	const generateSpecialty = () => {
 		let key = 0;
 		let list = [];
-		const perItem = Math.round(specialtyList().length / 2);
-		for (let x = 0; x < 2; x++) {
+		const total = Math.ceil(specialtyList().length / 4);
+		for (let x = 0; x < 4; x++) {
 			let item = [];
-			for (let y = 0; y < perItem; y++) {
+			for (let y = 0; y < total; y++) {
 				item.push(
 					<SpecialtyItem
 						key={key}
@@ -53,7 +53,7 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 				key++;
 			}
 			list.push(
-				<div className="col-lg-6 col-md-6 col-sm-6" key={x}>
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
 					<ul className="nav flex-column">{item}</ul>
 				</div>
 			);
@@ -63,10 +63,10 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 	const generateSoftware = () => {
 		let key = 0;
 		let list = [];
-		const perItem = Math.round(softwareList().length / 2);
-		for (let x = 0; x < 2; x++) {
+		const total = Math.ceil(softwareList().length / 4);
+		for (let x = 0; x < 4; x++) {
 			let item = [];
-			for (let y = 0; y < perItem; y++) {
+			for (let y = 0; y < total; y++) {
 				item.push(
 					<SoftwareItem
 						key={key}
@@ -78,7 +78,7 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 				key++;
 			}
 			list.push(
-				<div className="col-lg-6 col-md-6 col-sm-6" key={x}>
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
 					<ul className="nav flex-column">{item}</ul>
 				</div>
 			);
@@ -172,13 +172,34 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 	const onKeyPressOtherSpecify = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
+
+			if (otherSpecialtyRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
+				const lowerOther = otherSpecialtyRef.current.value;
+				if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
+					const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
+					setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
+					Array.from(document.querySelectorAll('.specialty .list .nav-item'))
+						.find((el) => el.textContent === specialtyList()[index])
+						.classList.add('active');
+				} else {
+					setSpecialty((specialty) => [...specialty, lowerOther]);
+				}
+				otherSpecialtyRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
 		}
 	};
 
-	const onkeyPressOtherSoftware = (e) => {
+	const onKeyPressOtherSoftware = (e) => {
 		if (e.key === 'Enter') {
+			e.preventDefault();
+
 			if (otherSoftwareRef.current.value === '') {
-				setAlert('', 'Please fill-in the required boxes to Proceed.');
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			} else {
 				const lowerSoftware = softwareList().map((el) => el.toLowerCase());
 				const lowerOther = otherSoftwareRef.current.value;
@@ -192,10 +213,9 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 					setSoftware((software) => [...software, lowerOther]);
 				}
 				otherSoftwareRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
 			}
-			setDirty();
-			setMessage('Are you sure you want to leave this page?');
-			e.preventDefault();
 		}
 	};
 
@@ -252,13 +272,10 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 		setDirty();
 		setMessage('Are you sure you want to leave this page?');
 	};
+
 	const onSubmit = (e) => {
 		e.preventDefault();
-		if (
-			JSON.stringify(info) === JSON.stringify(initialInfo) ||
-			specialty.length === 0 ||
-			software.length === 0
-		) {
+		if (specialty.length === 0 || software.length === 0) {
 			setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			const data = {
@@ -296,92 +313,99 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 		<div className="step-1">
 			{Prompt}
 			<form className="form" onSubmit={onSubmit}>
-				<div className="row">
-					<div className="form-row specialty">
-						<div className="col-lg-4">
-							<h5 className="title">
-								Specialty <span>Atleast (3) three skills</span>
-							</h5>
-							{specialty.length === 0 ? (
-								<p className="subtitle">
-									This section wil view your selected specialties. Choose
-									atleast (3) three or more skills and still relevant to the job
-									position you are applying for.
-								</p>
-							) : (
-								specialty.map((e, i) => (
-									<Specialty
-										key={i}
-										value={e}
-										index={i}
-										onSpecialtyClose={onSpecialtyClose}
-									/>
-								))
-							)}
-						</div>
-						<div className="col-lg-8">
-							<div className="list">
-								<div className="form-row">{generateSpecialty()}</div>
-							</div>
-							<div className="form-inline">
-								<input
-									type="text"
-									placeholder="Other Specialty"
-									className="form-control input other-input"
-									ref={otherSpecialtyRef}
-									onKeyPress={onKeyPressOtherSpecify}
+				<div className="form-row specialty">
+					<div className="col-lg-4">
+						<h5 className="title">
+							Specialty <span>Atleast (3) three skills</span>
+						</h5>
+						{specialty.length === 0 ? (
+							<p className="subtitle">
+								This section wil view your selected specialties. Choose atleast
+								(3) three or more skills and still relevant to the job position
+								you are applying for.
+							</p>
+						) : (
+							specialty.map((e, i) => (
+								<Specialty
+									key={i}
+									value={e}
+									index={i}
+									onSpecialtyClose={onSpecialtyClose}
 								/>
-								<button
-									className="btn btn-primary button other-add"
-									onClick={addOtherSpecialty}
-								>
-									Add
-								</button>
-							</div>
+							))
+						)}
+					</div>
+					<div className="col-lg-8">
+						<div className="list">
+							<div className="form-row">{generateSpecialty()}</div>
+						</div>
+						<div className="form-inline">
+							<input
+								type="text"
+								placeholder="Other Specialty"
+								className="form-control input other-input"
+								ref={otherSpecialtyRef}
+								onKeyPress={onkeyPressOtherSpecialty}
+							/>
+							<button
+								className="btn btn-primary button other-add"
+								onClick={addOtherSpecialty}
+							>
+								Add
+							</button>
 						</div>
 					</div>
-					<div className="form-row software">
-						<div className="col-lg-4">
-							<h5 className="title">
-								Software <span>Atleast (3) three software use</span>
-							</h5>
-							{software.length === 0 ? (
-								<p className="subtitle">
-									This section will view your selected software you usually or
-									regularly used in order to perform on asuch of wuality output
-									and strill matched to the job position you are applying for.
-								</p>
-							) : (
-								software.map((e, i) => (
-									<Software
-										key={i}
-										value={e}
-										index={i}
-										onSoftwareClose={onSoftwareClose}
-									/>
-								))
-							)}
-						</div>
-						<div className="col-lg-8">
-							<div className="list">
-								<div className="form-row">{generateSoftware()}</div>
-							</div>
-							<div className="form-inline">
-								<input
-									type="text"
-									placeholder="Other Software"
-									className="form-control input other-input"
-									ref={otherSoftwareRef}
-									onKeyPress={onKeyPressOtherSpecify}
+				</div>
+				<div className="form-row software">
+					<div className="col-lg-4">
+						<h5 className="title">
+							Software <span>Atleast (3) three software use</span>
+						</h5>
+						{software.length === 0 ? (
+							<p className="subtitle">
+								This section will view your selected software you usually or
+								regularly used in order to perform on asuch of wuality output
+								and strill matched to the job position you are applying for.
+							</p>
+						) : (
+							software.map((e, i) => (
+								<Software
+									key={i}
+									value={e}
+									index={i}
+									onSoftwareClose={onSoftwareClose}
 								/>
-								<button
-									className="btn btn-primary button other-add"
-									onClick={addOtherSoftware}
-								>
-									Add
-								</button>
-							</div>
+							))
+						)}
+					</div>
+					<div className="col-lg-8">
+						<div className="list">
+							<div className="form-row">{generateSoftware()}</div>
 						</div>
+						<div className="form-inline">
+							<input
+								type="text"
+								placeholder="Other Software"
+								className="form-control input other-input"
+								ref={otherSoftwareRef}
+								onKeyPress={onKeyPressOtherSoftware}
+							/>
+							<button
+								className="btn btn-primary button other-add"
+								onClick={addOtherSoftware}
+							>
+								Add
+							</button>
+						</div>
+					</div>
+				</div>
+				<div className="form-row mt-5">
+					<div className="col-sm-3 offset-sm-9">
+						<input
+							type="submit"
+							value="Proceed"
+							className="btn btn-primary btn-block button"
+						/>
 					</div>
 				</div>
 				{/* <div className="row">

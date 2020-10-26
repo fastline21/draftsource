@@ -68,7 +68,7 @@ const Step3 = ({
 		storage,
 		graphicsCard,
 		videoCard,
-		govID,
+		// govID,
 	} = info;
 
 	const onChange = (e) => {
@@ -106,7 +106,8 @@ const Step3 = ({
 				os === '' ||
 				processor === '' ||
 				ram === '' ||
-				storage === ''
+				storage === '' ||
+				graphicsCard === ''
 			) {
 				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			}
@@ -443,6 +444,7 @@ const Step3 = ({
 										value={videoCard}
 										onChange={onChange}
 										disabled={!havePC}
+										placeholder="If applicable"
 									/>
 								</div>
 								{/* <div className="form-group">
