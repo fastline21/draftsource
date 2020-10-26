@@ -18,7 +18,7 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 import { setAlert } from './../../state/actions/alertAction';
 import { addJob, setStep } from './../../state/actions/jobAction';
 
-const Step1 = ({ setAlert, addJob, setStep }) => {
+const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 	const history = useHistory();
 	const [
 		Prompt,
@@ -298,6 +298,18 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 		// 	setMessage('Are you sure you want to leave this page?');
 		// }
 
+		if (step === 0) {
+			setStep(1);
+		}
+
+		if (step > 1) {
+			setPristine();
+			setAlert(
+				'/draft-job?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (submit) {
 			setSubmit(false);
 			setStep(2);
@@ -308,7 +320,7 @@ const Step1 = ({ setAlert, addJob, setStep }) => {
 		}
 
 		// eslint-disable-next-line
-	}, [submit]);
+	}, [submit, step]);
 	return (
 		<div className="step-1">
 			{Prompt}
@@ -561,4 +573,8 @@ Step1.propTypes = {
 	setStep: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert, addJob, setStep })(Step1);
+const mapStateToProps = (state) => ({
+	jobState: state.jobState,
+});
+
+export default connect(mapStateToProps, { setAlert, addJob, setStep })(Step1);

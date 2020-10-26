@@ -130,9 +130,10 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 									</label>
 									<input
 										type="file"
-										name="replace"
+										name="resumeImage"
 										id="replaceUpload"
 										className="d-none"
+										accept="image/*"
 										onChange={onChange}
 									/>
 									<br />
