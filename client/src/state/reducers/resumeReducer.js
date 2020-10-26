@@ -6,7 +6,7 @@ import {
 	RESUME_STEP,
 	RESET_STEP,
 	SET_SUCCESS,
-	SET_LOADING,
+	RESUME_LOADING,
 } from '../actions/types';
 
 const initialState = {
@@ -41,7 +41,7 @@ export default (state = initialState, action) => {
 				...state,
 				success: false,
 			};
-		case SET_LOADING:
+		case RESUME_LOADING:
 			return {
 				...state,
 				loading: true,

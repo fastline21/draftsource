@@ -8,7 +8,7 @@ import {
 	REMOVE_CANDIDATE,
 	GET_SHORTLISTED,
 	SET_SHORTLISTED,
-	SET_LOADING,
+	CANDIDATE_LOADING,
 } from './types';
 
 // New applicants
@@ -237,7 +237,7 @@ export const getShortlisted = (shortlisted) => async (dispatch) => {
 // Set loading to true
 export const setLoading = () => (dispatch) => {
 	dispatch({
-		type: SET_LOADING,
+		type: CANDIDATE_LOADING,
 	});
 };
 

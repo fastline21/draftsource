@@ -16,9 +16,15 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Actions
 import { setAlert } from './../../state/actions/alertAction';
-import { addJob, setStep } from './../../state/actions/jobAction';
+import { addJob, setStep, setSuccess } from './../../state/actions/jobAction';
 
-const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
+const Step1 = ({
+	setAlert,
+	addJob,
+	setStep,
+	setSuccess,
+	jobState: { step, success },
+}) => {
 	const history = useHistory();
 	const [
 		Prompt,
@@ -30,6 +36,7 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 		title: '',
 	};
 	const [info, setInfo] = useState(initialInfo);
+	const { title } = info;
 	const [specialty, setSpecialty] = useState([]);
 	const [software, setSoftware] = useState([]);
 	const [submit, setSubmit] = useState(false);
@@ -169,30 +176,30 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 		}
 	};
 
-	const onKeyPressOtherSpecify = (e) => {
-		if (e.key === 'Enter') {
-			e.preventDefault();
+	// const onKeyPressOtherSpecify = (e) => {
+	// 	if (e.key === 'Enter') {
+	// 		e.preventDefault();
 
-			if (otherSpecialtyRef.current.value === '') {
-				return setAlert('', 'Please fill-in the required boxes to Proceed.');
-			} else {
-				const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
-				const lowerOther = otherSpecialtyRef.current.value;
-				if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
-					const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
-					setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
-					Array.from(document.querySelectorAll('.specialty .list .nav-item'))
-						.find((el) => el.textContent === specialtyList()[index])
-						.classList.add('active');
-				} else {
-					setSpecialty((specialty) => [...specialty, lowerOther]);
-				}
-				otherSpecialtyRef.current.value = '';
-				setDirty();
-				setMessage('Are you sure you want to leave this page?');
-			}
-		}
-	};
+	// 		if (otherSpecialtyRef.current.value === '') {
+	// 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+	// 		} else {
+	// 			const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
+	// 			const lowerOther = otherSpecialtyRef.current.value;
+	// 			if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
+	// 				const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
+	// 				setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
+	// 				Array.from(document.querySelectorAll('.specialty .list .nav-item'))
+	// 					.find((el) => el.textContent === specialtyList()[index])
+	// 					.classList.add('active');
+	// 			} else {
+	// 				setSpecialty((specialty) => [...specialty, lowerOther]);
+	// 			}
+	// 			otherSpecialtyRef.current.value = '';
+	// 			setDirty();
+	// 			setMessage('Are you sure you want to leave this page?');
+	// 		}
+	// 	}
+	// };
 
 	const onKeyPressOtherSoftware = (e) => {
 		if (e.key === 'Enter') {
@@ -275,20 +282,29 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		if (specialty.length === 0 || software.length === 0) {
-			setAlert('', 'Please fill-in the required boxes to Proceed.');
+		if (title === '' || specialty.length === 0 || software.length === 0) {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
-			const data = {
-				...info,
+			addJob({
+				title,
 				specialty,
 				software,
-			};
-			addJob(data);
+			});
 			setInfo(initialInfo);
 			setSpecialty([]);
 			setSoftware([]);
 			setPristine();
-			setSubmit(true);
+			// const data = {
+			// 	...info,
+			// 	specialty,
+			// 	software,
+			// };
+			// addJob(data);
+			// setInfo(initialInfo);
+			// setSpecialty([]);
+			// setSoftware([]);
+			// setPristine();
+			// setSubmit(true);
 		}
 	};
 
@@ -310,8 +326,8 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 			);
 		}
 
-		if (submit) {
-			setSubmit(false);
+		if (success) {
+			setSuccess();
 			setStep(2);
 			history.push({
 				pathname: '/draft-job',
@@ -320,12 +336,29 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 		}
 
 		// eslint-disable-next-line
-	}, [submit, step]);
+	}, [success, step]);
 	return (
 		<div className="step-1">
 			{Prompt}
 			<form className="form" onSubmit={onSubmit}>
-				<div className="form-row specialty">
+				<div className="form-row specialty-software">
+					<div className="col-lg-4">
+						<label htmlFor="titleInput" className="form-label">
+							Job Title
+						</label>
+					</div>
+					<div className="col-lg-8">
+						<input
+							type="text"
+							name="title"
+							id="titleInput"
+							className="form-control input"
+							onChange={onChange}
+							value={title}
+						/>
+					</div>
+				</div>
+				<div className="form-row specialty-software specialty">
 					<div className="col-lg-4">
 						<h5 className="title">
 							Specialty <span>Atleast (3) three skills</span>
@@ -368,7 +401,7 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 						</div>
 					</div>
 				</div>
-				<div className="form-row software">
+				<div className="form-row specialty-software software">
 					<div className="col-lg-4">
 						<h5 className="title">
 							Software <span>Atleast (3) three software use</span>
@@ -570,6 +603,7 @@ const Step1 = ({ setAlert, addJob, setStep, jobState: step }) => {
 Step1.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addJob: PropTypes.func.isRequired,
+	setSuccess: PropTypes.func.isRequired,
 	setStep: PropTypes.func.isRequired,
 };
 
@@ -577,4 +611,9 @@ const mapStateToProps = (state) => ({
 	jobState: state.jobState,
 });
 
-export default connect(mapStateToProps, { setAlert, addJob, setStep })(Step1);
+export default connect(mapStateToProps, {
+	setAlert,
+	addJob,
+	setStep,
+	setSuccess,
+})(Step1);

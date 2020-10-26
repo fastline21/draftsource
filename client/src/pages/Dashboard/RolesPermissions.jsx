@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
@@ -23,18 +23,18 @@ const RolesPermissions = ({
 	};
 
 	return (
-		<div id="admin">
-			<div className="header">
+		<Fragment>
+			<div className="top">
 				<p>
-					Roles allow you to set which users are allowed to perform
-					certain actions within Close A role defines a group of users
-					who have certain permissions within the app.
+					Roles allow you to set which users are allowed to perform certain
+					actions within Close A role defines a group of users who have certain
+					permissions within the app.
 				</p>
 			</div>
-			<div className="roles-permissions">
-				{loading ? (
-					<PreLoader />
-				) : (
+			{loading ? (
+				<PreLoader />
+			) : (
+				<div className="user">
 					<Table striped bordered hover>
 						<thead>
 							<tr>
@@ -54,14 +54,10 @@ const RolesPermissions = ({
 										<td>{i + 1}</td>
 										<td>{e.email}</td>
 										<td>{e.type}</td>
-										<td>
-											{e.active ? 'Acitve' : 'Not Active'}
-										</td>
+										<td>{e.active ? 'Acitve' : 'Not Active'}</td>
 										<td>{e.haveResume ? 'Yes' : 'No'}</td>
 										<td>
-											{moment(e.dateCreated).format(
-												'MMMM DD, YYYY, h:mm:ss a'
-											)}
+											{moment(e.dateCreated).format('MMMM DD, YYYY, h:mm:ss a')}
 										</td>
 										<td style={{ textAlign: 'center' }}>
 											<i
@@ -74,9 +70,9 @@ const RolesPermissions = ({
 								))}
 						</tbody>
 					</Table>
-				)}
-			</div>
-		</div>
+				</div>
+			)}
+		</Fragment>
 	);
 };
 

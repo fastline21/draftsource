@@ -7,7 +7,7 @@ import {
 	REMOVE_CANDIDATE,
 	GET_SHORTLISTED,
 	SET_SHORTLISTED,
-	SET_LOADING,
+	CANDIDATE_LOADING,
 } from './../actions/types';
 
 const initialState = {
@@ -57,9 +57,7 @@ export default (state = initialState, action) => {
 		case REMOVE_CANDIDATE:
 			return {
 				...state,
-				shortlist: state.shortlist.filter(
-					(id) => id !== action.payload
-				),
+				shortlist: state.shortlist.filter((id) => id !== action.payload),
 			};
 		case GET_SHORTLISTED:
 			return {
@@ -72,7 +70,7 @@ export default (state = initialState, action) => {
 				...state,
 				resume: null,
 			};
-		case SET_LOADING:
+		case CANDIDATE_LOADING:
 			return {
 				...state,
 				loading: true,

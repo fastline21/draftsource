@@ -11,7 +11,7 @@ import {
 	GET_USER_INFO,
 	LOGOUT_USER,
 	GET_USERS,
-	SET_LOADING,
+	USER_LOADING,
 } from './types';
 
 // Add user
@@ -155,7 +155,7 @@ export const getUsers = () => async (dispatch) => {
 // Set loading to true
 export const setLoading = () => (dispatch) => {
 	dispatch({
-		type: SET_LOADING,
+		type: USER_LOADING,
 	});
 };
 

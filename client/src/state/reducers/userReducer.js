@@ -9,7 +9,7 @@ import {
 	GET_USER_INFO,
 	LOGOUT_USER,
 	GET_USERS,
-	SET_LOADING,
+	USER_LOADING,
 } from './../actions/types';
 
 const initialState = {
@@ -33,6 +33,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload,
+				loading: false,
 			};
 		case CLEAR_USER:
 			return {
@@ -61,6 +62,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				info: action.payload,
+				loading: false,
 			};
 		case GET_USERS:
 			return {
@@ -73,7 +75,7 @@ export default (state = initialState, action) => {
 				...state,
 				error: null,
 			};
-		case SET_LOADING:
+		case USER_LOADING:
 			return {
 				...state,
 				loading: true,

@@ -9,6 +9,7 @@ import {
 	GET_JOBS,
 	CLEAR_DETAILS,
 	VIEW_DETAILS,
+	JOB_LOADING,
 } from './types';
 
 // Add job
@@ -22,6 +23,7 @@ export const addJob = (job) => (dispatch) => {
 // Submit job
 export const submitJob = (job) => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -37,6 +39,13 @@ export const submitJob = (job) => async (dispatch) => {
 			payload: error.response.data,
 		});
 	}
+};
+
+// Set loading to true
+export const setLoading = () => (dispatch) => {
+	dispatch({
+		type: JOB_LOADING,
+	});
 };
 
 // Set success

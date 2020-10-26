@@ -66,6 +66,11 @@
 		}
 	}
 
+	.button {
+		background-color: $blue;
+		border-color: $blue;
+	}
+
 	.step-1 {
 		padding: 0 10px;
 
@@ -80,13 +85,7 @@
 			}
 		}
 
-		.specialty {
-			padding-top: 20px;
-			padding-bottom: 40px;
-			border-bottom: 1px solid #d5d5d5;
-		}
-
-		.software {
+		.specialty-software {
 			padding-top: 40px;
 			padding-bottom: 40px;
 			border-bottom: 1px solid #d5d5d5;
@@ -257,17 +256,16 @@
 		}
 
 		.fas {
-			position: absolute;
-			top: 50%;
-			right: 2%;
-			transform: translate(-2%, -50%);
-			color: #0c3961;
+			color: $darkBlue;
 		}
 
 		.button {
-			background-color: #4adad8;
-			border-color: #4adad8;
+			background-color: $blue;
+			border-color: $blue;
 			color: #ffffff;
+			margin-top: 40px;
+			padding: 6px 40px;
+			margin-left: 20px;
 		}
 
 		.roles-list,
@@ -321,53 +319,91 @@
 	}
 
 	.step-3 {
+		// .form {
+		// 	width: 350px;
+		// 	margin: auto;
+
+		// 	.title {
+		// 		color: #298494;
+		// 		margin-bottom: 2rem;
+		// 	}
+
+		// 	.form-check {
+		// 		padding-left: 0;
+
+		// 		.input {
+		// 			&[name='availability'] {
+		// 				display: none;
+		// 			}
+
+		// 			&:checked + .form-check-label {
+		// 				background-color: $darkGray;
+		// 				color: $white;
+		// 			}
+		// 		}
+
+		// 		.form-check-label {
+		// 			background-color: $white;
+		// 			padding: 10px 0;
+		// 			width: 100%;
+		// 			text-align: center;
+		// 			margin-bottom: 10px;
+		// 			border: 2px solid $darkGray;
+		// 			font-weight: 500;
+		// 		}
+		// 	}
+
+		// 	.input {
+		// 		&[name='expectedSalary'] {
+		// 			margin-right: auto;
+		// 		}
+
+		// 		&[name='currency'] {
+		// 			margin-right: 0;
+		// 		}
+		// 	}
+
+		// 	.button {
+		// 		background-color: $blue;
+		// 		border-color: $blue;
+		// 	}
+		// }
+		padding-top: 20px;
+
 		.form {
-			width: 350px;
-			margin: auto;
-
-			.title {
-				color: #298494;
-				margin-bottom: 2rem;
+			@include media('>=tablet', '<=991px') {
+				padding: 0 150px;
 			}
 
-			.form-check {
-				padding-left: 0;
+			@include media('>=992px', '<1200px') {
+				padding: 0 30px;
+			}
 
-				.input {
-					&[name='availability'] {
-						display: none;
-					}
+			@include media('>=1200px') {
+				padding: 0 15px;
+			}
 
-					&:checked + .form-check-label {
-						background-color: $darkGray;
-						color: $white;
-					}
+			.form-label {
+				margin-left: 5px;
+
+				@include media('>=1200px') {
+					margin-left: 30px;
 				}
+			}
 
-				.form-check-label {
-					background-color: $white;
-					padding: 10px 0;
-					width: 100%;
-					text-align: center;
+			.form-group {
+				@include media('>=tablet') {
 					margin-bottom: 10px;
-					border: 2px solid $darkGray;
-					font-weight: 500;
-				}
-			}
-
-			.input {
-				&[name='expectedSalary'] {
-					margin-right: auto;
 				}
 
-				&[name='currency'] {
-					margin-right: 0;
-				}
-			}
+				.button {
+					background-color: $blue;
+					border-color: $blue;
 
-			.button {
-				background-color: $blue;
-				border-color: $blue;
+					@include media('>=992px') {
+						margin-top: 5px;
+					}
+				}
 			}
 		}
 	}

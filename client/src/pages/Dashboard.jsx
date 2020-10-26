@@ -86,7 +86,7 @@ const Dashboard = ({
 									New Applicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'new-applicants' ? 'arrow-up' : 'arrow-down'
+											menu === 'new-applicants' ? 'angle-up' : 'angle-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -103,7 +103,7 @@ const Dashboard = ({
 									Approved Applicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'approved-applicants' ? 'arrow-up' : 'arrow-down'
+											menu === 'approved-applicants' ? 'angle-up' : 'angle-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -120,7 +120,7 @@ const Dashboard = ({
 									Rejected Appplicants{' '}
 									<i
 										className={`fas fa-${
-											menu === 'rejected-applicants' ? 'arrow-up' : 'arrow-down'
+											menu === 'rejected-applicants' ? 'angle-up' : 'angle-down'
 										} float-right pt-1`}
 									></i>
 								</Link>
@@ -221,8 +221,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'new-applicants'
-		// 											? 'arrow-up'
-		// 											: 'arrow-down'
+		// 											? 'angle-up'
+		// 											: 'angle-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>
@@ -245,8 +245,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'approved-applicants'
-		// 											? 'arrow-up'
-		// 											: 'arrow-down'
+		// 											? 'angle-up'
+		// 											: 'angle-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>
@@ -269,8 +269,8 @@ const Dashboard = ({
 		// 								<i
 		// 									className={`fas fa-${
 		// 										menu === 'rejected-applicants'
-		// 											? 'arrow-up'
-		// 											: 'arrow-down'
+		// 											? 'angle-up'
+		// 											: 'angle-down'
 		// 									} float-right pt-1`}
 		// 								></i>
 		// 							</Link>

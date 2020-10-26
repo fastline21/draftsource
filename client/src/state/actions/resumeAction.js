@@ -7,7 +7,7 @@ import {
 	RESUME_STEP,
 	RESET_STEP,
 	SET_SUCCESS,
-	SET_LOADING,
+	RESUME_LOADING,
 } from './types';
 
 // Add resume
@@ -73,7 +73,7 @@ export const setSuccess = () => {
 // Set loading to true
 export const setLoading = () => (dispatch) => {
 	dispatch({
-		type: SET_LOADING,
+		type: RESUME_LOADING,
 	});
 };
 
