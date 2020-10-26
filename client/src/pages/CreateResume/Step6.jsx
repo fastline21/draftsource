@@ -69,7 +69,7 @@ const Step6 = ({
 	);
 	// const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
 	const [load, setLoad] = useState(true);
-	const [submit, setSubmit] = useState(false);
+	// const [submit, setSubmit] = useState(false);
 
 	// Select Specialty
 	const onSelectSpecialty = (e) => {
@@ -505,7 +505,7 @@ const Step6 = ({
 			setUploadWork({
 				images: [],
 			});
-			setSubmit(true);
+			// setSubmit(true);
 			setPristine();
 		}
 	};

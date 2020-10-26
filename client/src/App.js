@@ -26,6 +26,7 @@ import AdminSignup from './pages/AdminSignup';
 import Signup from './pages/Signup';
 import SignupRoute from './routing/SignupRoute';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsService from './pages/TermsService';
 
 const App = () => {
 	return (
@@ -45,33 +46,18 @@ const App = () => {
 							path="/view-candidates"
 							component={VerifyViewCandidates}
 						/>
-						<Route
-							path="/view-candidates/:menu"
-							component={ViewCandidates}
-						/>
+						<Route path="/view-candidates/:menu" component={ViewCandidates} />
 						<Route path="/pricing" component={Pricing} />
-						<CreateResumeRoute
-							path="/create-resume"
-							component={CreateResume}
-						/>
+						<CreateResumeRoute path="/create-resume" component={CreateResume} />
 						<DraftJobRoute path="/draft-job" component={DraftJob} />
 						<Route path="/verify/:token" component={Verify} />
-						<PrivateRoute
-							exact
-							path="/dashboard"
-							component={VerifyDashboard}
-						/>
-						<PrivateRoute
-							path="/dashboard/:menu"
-							component={Dashboard}
-						/>
+						<PrivateRoute exact path="/dashboard" component={VerifyDashboard} />
+						<PrivateRoute path="/dashboard/:menu" component={Dashboard} />
 						<Route path="/login" component={Login} />
 						<Route path="/admin-signup" component={AdminSignup} />
-						<Route
-							path="/privacy-policy"
-							component={PrivacyPolicy}
-						/>
+						<Route path="/privacy-policy" component={PrivacyPolicy} />
 						<Route path="/signup/:type" component={Signup} />
+						<Route path="/terms-service" component={TermsService} />
 						<Route path="*" component={NotFound} />
 					</Switch>
 					<Footer />
