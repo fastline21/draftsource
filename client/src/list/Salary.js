@@ -7,5 +7,5 @@ export const salaryList = () => {
 	// 	'$1200-$1500',
 	// 	'$1,500 and up',
 	// ];
-	return ['USD $3', 'USD $4', 'USD $5', 'USD $6', 'USD $7'];
+	return ['USD $3', 'USD $4', 'USD $5', 'USD $6', 'USD $7', 'USD $8', 'USD $9'];
 };

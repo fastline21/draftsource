@@ -52,6 +52,8 @@ const ViewResume = ({
 		currency: '',
 		specialty: [],
 		software: [],
+		marketType: [],
+		countryExperience: [],
 		uploadWork: { images: [] },
 		workHistory: [],
 		education: [],
@@ -63,8 +65,6 @@ const ViewResume = ({
 		internetResult: '',
 		processort: '',
 		ram: '',
-		countryExperience: '',
-		marketType: [],
 		totalWorkYear: '',
 	};
 	const initialViewImage = {
@@ -104,6 +104,8 @@ const ViewResume = ({
 		currency,
 		specialty,
 		software,
+		marketType,
+		countryExperience,
 		uploadWork,
 		workHistory,
 		education,
@@ -114,8 +116,6 @@ const ViewResume = ({
 		process,
 		ram,
 		internetResult,
-		countryExperience,
-		marketType,
 		totalWorkYear,
 	} = data;
 
@@ -410,13 +410,28 @@ const ViewResume = ({
 							<hr className="line-break" />
 						</div>
 					</div>
-					<div className="row pb-5">
+					<div className="row pb-3">
 						<div className="col-lg-3">
 							<p className="item-title color-1 mb-0">Market type experience</p>
 						</div>
 						<div className="col-lg-8">
 							<p id="specialty" className="specialty-software mb-0">
 								{marketType.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
+							</p>
+							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row pb-5">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">Country experience</p>
+						</div>
+						<div className="col-lg-8">
+							<p id="specialty" className="specialty-software mb-0">
+								{countryExperience.map((e, i) => (
 									<span className="specialty-software-item" key={i}>
 										{e}
 									</span>

@@ -289,16 +289,18 @@ router.put('/update-resume/:id', async (req, res) => {
 	const { workHistory } = req.body;
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d2 = moment([
-			parseInt(e.yearStarted),
-			moment().month(e.monthStarted).format('MM'),
-			01,
-		]);
-		let d1 = moment([
-			parseInt(e.yearEnded),
-			moment().month(e.monthEnded).format('MM'),
-			01,
-		]);
+		let d2 = moment(
+			`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
+				e.yearStarted
+			)}`,
+			'MM/DD/YYYY'
+		);
+		let d1 = moment(
+			`${moment().month(e.monthEnded).format('MM')}/01/${parseInt(
+				e.yearEnded
+			)}`,
+			'MM/DD/YYYY'
+		);
 		totalWorkHistory += d1.diff(d2, 'year');
 	});
 	await Resume.findByIdAndUpdate(id, {

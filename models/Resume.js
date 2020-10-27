@@ -138,9 +138,6 @@ const ResumeSchema = new mongoose.Schema({
 			type: String,
 		},
 	},
-	countryExperience: {
-		type: Array,
-	},
 	specialty: {
 		type: Array,
 	},
@@ -148,6 +145,9 @@ const ResumeSchema = new mongoose.Schema({
 		type: Array,
 	},
 	marketType: {
+		type: Array,
+	},
+	countryExperience: {
 		type: Array,
 	},
 	uploadWork: {

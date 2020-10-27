@@ -35,16 +35,29 @@ router.post('/exp', async (req, res) => {
 	const { workHistory } = req.body;
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d2 = moment([
-			parseInt(e.yearStarted),
-			moment().month(e.monthStarted).format('MM'),
-			01,
-		]);
-		let d1 = moment([
-			parseInt(e.yearEnded),
-			moment().month(e.monthEnded).format('MM'),
-			01,
-		]);
+		// let d2 = moment([
+		// 	parseInt(e.yearStarted),
+		// 	moment().month(e.monthStarted).format('MM'),
+		// 	01,
+		// ]);
+		// let d1 = moment([
+		// 	parseInt(e.yearEnded),
+		// 	moment().month(e.monthEnded).format('MM'),
+		// 	01,
+		// ]);
+		let d2 = moment(
+			`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
+				e.yearStarted
+			)}`,
+			'MM/DD/YYYY'
+		);
+		let d1 = moment(
+			`${moment().month(e.monthEnded).format('MM')}/01/${parseInt(
+				e.yearEnded
+			)}`,
+			'MM/DD/YYYY'
+		);
+		console.log(d2, d1);
 		totalWorkHistory += d1.diff(d2, 'year');
 	});
 	res.json(totalWorkHistory);
@@ -77,6 +90,7 @@ router.post('/', auth, async (req, res) => {
 		specialty,
 		software,
 		marketType,
+		countryExperience,
 		education,
 		workHistory,
 		uploadWork,
@@ -122,16 +136,18 @@ router.post('/', auth, async (req, res) => {
 	// Get total work history
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d2 = moment([
-			parseInt(e.yearStarted),
-			moment().month(e.monthStarted).format('MM'),
-			01,
-		]);
-		let d1 = moment([
-			parseInt(e.yearEnded),
-			moment().month(e.monthEnded).format('MM'),
-			01,
-		]);
+		let d2 = moment(
+			`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
+				e.yearStarted
+			)}`,
+			'MM/DD/YYYY'
+		);
+		let d1 = moment(
+			`${moment().month(e.monthEnded).format('MM')}/01/${parseInt(
+				e.yearEnded
+			)}`,
+			'MM/DD/YYYY'
+		);
 		totalWorkHistory += d1.diff(d2, 'year');
 	});
 
@@ -139,6 +155,7 @@ router.post('/', auth, async (req, res) => {
 	specialty = specialty.split(',');
 	software = software.split(',');
 	marketType = marketType.split(',');
+	countryExperience = countryExperience.split(',');
 
 	// Generate file name for upload
 	const generateFileName = (file, fieldname) => {
@@ -172,10 +189,10 @@ router.post('/', auth, async (req, res) => {
 	govID = govIDFile;
 
 	// Get all country in Work History and remove duplicate
-	let countryExperience = workHistory.map((e) => e.country);
-	countryExperience = countryExperience.filter(
-		(a, b) => countryExperience.indexOf(a) === b
-	);
+	// let countryExperience = workHistory.map((e) => e.country);
+	// countryExperience = countryExperience.filter(
+	// 	(a, b) => countryExperience.indexOf(a) === b
+	// );
 
 	// let internetResult = uploadFile.internetResult;
 	// const internetResultFile = generateFileName(

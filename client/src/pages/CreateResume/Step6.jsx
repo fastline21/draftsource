@@ -12,6 +12,8 @@ import SoftwareItem from './SoftwareItem';
 import SoftwareSelected from './SoftwareSelected';
 import MarketTypeItem from './MarketTypeItem';
 import MarketTypeSelected from './MarketTypeSelected';
+import CountryExperienceItem from './CountryExperienceItem';
+import CountryExperienceSelected from './CountryExperienceSelected';
 import UploadWorkImageModal from './UploadWorkImageModal';
 // import UploadWorkDocumentModal from './UploadWorkDocumentModal';
 import UploadWorkItem from './UploadWorkItem';
@@ -21,6 +23,7 @@ import PreLoader from './../../layouts/PreLoader';
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
 import { marketTypeList } from './../../list/MarketType';
+import { countryExperienceList } from './../../list/CountryExperience';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
@@ -50,6 +53,7 @@ const Step6 = ({
 	const otherSpecialtyRef = useRef(null);
 	const otherSoftwareRef = useRef(null);
 	const otherMarketTypeRef = useRef(null);
+	const otherCountryExperienceRef = useRef(null);
 
 	const initialUploadModal = {
 		show: false,
@@ -62,6 +66,7 @@ const Step6 = ({
 	const [specialty, setSpecialty] = useState([]);
 	const [software, setSoftware] = useState([]);
 	const [marketType, setMarketType] = useState([]);
+	const [countryExperience, setCountryExperience] = useState([]);
 	const [uploadWork, setUploadWork] = useState({
 		images: [],
 	});
@@ -130,6 +135,36 @@ const Step6 = ({
 			setMarketType((marketType) => [...marketType, marketTypeList()[e]]);
 			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
 				.find((el) => el.textContent === marketTypeList()[e])
+				.classList.add('active');
+		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
+
+	// Select Country Experience
+	const onSelectCountryExperience = (e) => {
+		if (countryExperience.includes(countryExperienceList()[e])) {
+			setCountryExperience((countryExperience) => [
+				...countryExperience.filter(
+					(x) =>
+						countryExperience.indexOf(x) !==
+						countryExperience.indexOf(countryExperienceList()[e])
+				),
+			]);
+			Array.from(
+				document.querySelectorAll('.country-experience .list .nav-item')
+			)
+				.find((el) => el.textContent === countryExperienceList()[e])
+				.classList.remove('active');
+		} else {
+			setCountryExperience((countryExperience) => [
+				...countryExperience,
+				countryExperienceList()[e],
+			]);
+			Array.from(
+				document.querySelectorAll('.country-experience .list .nav-item')
+			)
+				.find((el) => el.textContent === countryExperienceList()[e])
 				.classList.add('active');
 		}
 		setDirty();
@@ -217,6 +252,33 @@ const Step6 = ({
 		return list;
 	};
 
+	// Country Experience List
+	const countryExperienceListGenerate = () => {
+		let key = 0;
+		let list = [];
+		const total = Math.ceil(countryExperienceList().length / 4);
+		for (let x = 0; x < 4; x++) {
+			let item = [];
+			for (let y = 0; y < total; y++) {
+				item.push(
+					<CountryExperienceItem
+						key={key}
+						index={key}
+						value={countryExperienceList()[key]}
+						select={onSelectCountryExperience}
+					/>
+				);
+				key++;
+			}
+			list.push(
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
+					<ul className="nav flex-column">{item}</ul>
+				</div>
+			);
+		}
+		return list;
+	};
+
 	// Specialty Close
 	const onSpecialtyClose = (e) => {
 		const item = specialty[e];
@@ -253,6 +315,21 @@ const Step6 = ({
 		}
 		setMarketType((marketType) => [
 			...marketType.filter((x) => marketType.indexOf(x) !== e),
+		]);
+	};
+
+	// Country Experience Close
+	const onCountryExperienceClose = (e) => {
+		const item = countryExperience[e];
+		if (countryExperienceList().includes(item)) {
+			Array.from(
+				document.querySelectorAll('.country-experience .list .nav-item')
+			)
+				.find((el) => el.textContent === item)
+				.classList.remove('active');
+		}
+		setCountryExperience((countryExperience) => [
+			...countryExperience.filter((x) => countryExperience.indexOf(x) !== e),
 		]);
 	};
 
@@ -323,6 +400,40 @@ const Step6 = ({
 				setMarketType((marketType) => [...marketType, lowerOther]);
 			}
 			otherMarketTypeRef.current.value = '';
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+	};
+
+	// Add Other Country Experience
+	const addOtherCountryExperience = (e) => {
+		e.preventDefault();
+
+		if (otherCountryExperienceRef.current.value === '') {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else {
+			const lowerCountryExperience = countryExperienceList().map((el) =>
+				el.toLowerCase()
+			);
+			const lowerOther = otherCountryExperienceRef.current.value;
+			if (lowerCountryExperience.includes(lowerOther.toLowerCase())) {
+				const index = lowerCountryExperience.indexOf(lowerOther.toLowerCase());
+				setCountryExperience((countryExperience) => [
+					...countryExperience,
+					countryExperienceList()[index],
+				]);
+				Array.from(
+					document.querySelectorAll('.country-experience .list .nav-item')
+				)
+					.find((el) => el.textContent === countryExperienceList()[index])
+					.classList.add('active');
+			} else {
+				setCountryExperience((countryExperience) => [
+					...countryExperience,
+					lowerOther,
+				]);
+			}
+			otherCountryExperienceRef.current.value = '';
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
@@ -474,6 +585,7 @@ const Step6 = ({
 			specialty.length === 0 ||
 			software.length === 0 ||
 			marketType.length === 0 ||
+			countryExperience.length === 0 ||
 			uploadWork.images.length === 0
 			// uploadWork.documents.length === 0
 		) {
@@ -498,11 +610,13 @@ const Step6 = ({
 			formData.append('specialty', specialty);
 			formData.append('software', software);
 			formData.append('marketType', marketType);
+			formData.append('countryExperience', countryExperience);
 			formData.append('uploadWork', JSON.stringify(uploadWork));
 			submitResume(formData);
 			setSpecialty([]);
 			setSoftware([]);
 			setMarketType([]);
+			setCountryExperience([]);
 			setUploadWork({
 				images: [],
 			});
@@ -583,6 +697,43 @@ const Step6 = ({
 					setMarketType((marketType) => [...marketType, lowerOther]);
 				}
 				otherMarketTypeRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
+		}
+	};
+
+	const onKeyPressOtherCountryExperience = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+
+			if (otherCountryExperienceRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerCountryExperience = countryExperienceList().map((el) =>
+					el.toLowerCase()
+				);
+				const lowerOther = otherCountryExperienceRef.current.value;
+				if (lowerCountryExperience.includes(lowerOther.toLowerCase())) {
+					const index = lowerCountryExperience.indexOf(
+						lowerOther.toLowerCase()
+					);
+					setCountryExperience((countryExperience) => [
+						...countryExperience,
+						countryExperienceList()[index],
+					]);
+					Array.from(
+						document.querySelectorAll('.country-experience .list .nav-item')
+					)
+						.find((el) => el.textContent === countryExperienceList()[index])
+						.classList.add('active');
+				} else {
+					setCountryExperience((countryExperience) => [
+						...countryExperience,
+						lowerOther,
+					]);
+				}
+				otherCountryExperienceRef.current.value = '';
 				setDirty();
 				setMessage('Are you sure you want to leave this page?');
 			}
@@ -796,6 +947,53 @@ const Step6 = ({
 									<button
 										className="btn btn-primary button other-add"
 										onClick={addOtherMarketType}
+									>
+										Add
+									</button>
+								</div>
+							</div>
+						</div>
+						<div className="form-row country-experience">
+							<div className="col-lg-4">
+								<h5 className="title">
+									Country experience{' '}
+									<span>Atleast (3) three country experience use</span>
+								</h5>
+								{countryExperience.length === 0 ? (
+									<p className="subtitle">
+										This section will view your selected country experience you
+										usually or regularly used in order to perform on asuch of
+										wuality output and strill matched to the job position you
+										are applying for.
+									</p>
+								) : (
+									countryExperience.map((e, i) => (
+										<CountryExperienceSelected
+											key={i}
+											value={e}
+											index={i}
+											onCountryExperienceClose={onCountryExperienceClose}
+										/>
+									))
+								)}
+							</div>
+							<div className="col-lg-8">
+								<div className="list">
+									<div className="form-row">
+										{countryExperienceListGenerate()}
+									</div>
+								</div>
+								<div className="form-inline">
+									<input
+										type="text"
+										placeholder="Other Country experience"
+										className="form-control input other-input"
+										ref={otherCountryExperienceRef}
+										onKeyPress={onKeyPressOtherCountryExperience}
+									/>
+									<button
+										className="btn btn-primary button other-add"
+										onClick={addOtherCountryExperience}
 									>
 										Add
 									</button>
