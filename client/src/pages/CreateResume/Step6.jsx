@@ -957,7 +957,7 @@ const Step6 = ({
 							<div className="col-lg-4">
 								<h5 className="title">
 									Country experience{' '}
-									<span>Atleast (3) three country experience use</span>
+									<span>Atleast (1) one country experience use</span>
 								</h5>
 								{countryExperience.length === 0 ? (
 									<p className="subtitle">
