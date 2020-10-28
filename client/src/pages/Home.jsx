@@ -10,26 +10,35 @@ const Home = () => {
 			<div style={{ height: '90vh' }}>
 				<div className="h-100  align-items-center d-flex">
 					<section className="sec-1">
-						<h1 className="title">Hire Full-Time Vetted Filipino Drafters</h1>
+						<h1 className="title">
+							Supercharge your drafting projects with Draftsource
+						</h1>
 						<p className="subtitle">
-							Build an extension of your drafting team in the Philippines and
-							get a very unfair advantage over your competitors
+							Hire full-time vetted Filipino drafters and avoid screening
+							high-stacks of unqualified resumes.
+							<br />
+							Draftsource eliminates hiring headaches, recruitment risks and
+							remote worker dramas.
 						</p>
 						<div className="cta">
 							<Link to="/view-candidates" className="btn btn-primary button">
 								View Candidates
 							</Link>
-							<button
+							<span>or</span>
+							{/* <button
 								onClick={talkRecruiter}
 								className="btn btn-primary button"
 							>
 								Talk to a Recruiter
-							</button>
+							</button> */}
+							<Link to="/draft-job" className="link">
+								Request pre-screened candidates for free
+							</Link>
 						</div>
 						<ul className="list">
 							<li className="item">No recruitment fees</li>
-							<li className="item">No salary markups</li>
-							<li className="item">No underpaid staff</li>
+							<li className="item">No long term contracts</li>
+							<li className="item">No work no pay</li>
 						</ul>
 					</section>
 				</div>

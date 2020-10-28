@@ -341,17 +341,17 @@ const ViewResume = ({
 															<Tooltip>
 																<p className="text-left mb-0">
 																	Experience is computed depending on years of
-																	experience in the industry
+																	experience in drafting.
 																	<br />
 																	<br />
 																	Irrelevant work experiences is not included in
-																	the resume such as marketing, sales, customer
-																	support and other non-related industries
+																	the resume such as estimator, site supervisor,
+																	foreman, sales engineer etc.
 																	<br />
 																	<br />
 																	Employment gap means they either stopped
-																	working or worked in a different sector
-																	irrelevant to the industry
+																	working or worked in an industry irrelevant to
+																	the position
 																</p>
 															</Tooltip>
 														}

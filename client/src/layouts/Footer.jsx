@@ -45,8 +45,8 @@ const Footer = () => {
 					<Col lg="3" md="3" sm="6">
 						<img src={draftsourceLogo} alt="" className="img-fluid logo" />
 						<p className="address">
-							Draftsource Virtual is a full-service BPO company providing top
-							rated staff to AEC companies worldwide
+							Draftsource Virtual is a staffing company providing top rated
+							Filipino drafters to AEC companies worldwide
 						</p>
 						<p className="social-media">
 							Follow us
