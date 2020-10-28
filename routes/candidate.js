@@ -21,11 +21,26 @@ router.get('/view-candidates', async (req, res) => {
 	const query = req.query;
 	let queryData = {};
 	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
+		if (key === 'specialty') {
 			if (value.split(',').length > 1) {
 				queryData = { ...queryData, [key]: value.split(',') };
 			} else {
 				queryData = { ...queryData, [key]: value };
+			}
+		} else if (key === 'software') {
+			if (value.split(',').length > 1) {
+				queryData = {
+					...queryData,
+					$or: [
+						{ advancedSoftware: value.split(',') },
+						{ intermediateSoftware: value.split(',') },
+					],
+				};
+			} else {
+				queryData = {
+					...queryData,
+					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
+				};
 			}
 		} else if (key === 'search') {
 			queryData = {
@@ -117,11 +132,26 @@ router.get('/new-applicants', async (req, res) => {
 	const query = req.query;
 	let queryData = {};
 	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
+		if (key === 'specialty') {
 			if (value.split(',').length > 1) {
 				queryData = { ...queryData, [key]: value.split(',') };
 			} else {
 				queryData = { ...queryData, [key]: value };
+			}
+		} else if (key === 'software') {
+			if (value.split(',').length > 1) {
+				queryData = {
+					...queryData,
+					$or: [
+						{ advancedSoftware: value.split(',') },
+						{ intermediateSoftware: value.split(',') },
+					],
+				};
+			} else {
+				queryData = {
+					...queryData,
+					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
+				};
 			}
 		} else if (key === 'search') {
 			console.log(value);
@@ -171,18 +201,34 @@ router.get('/approved-applicants', auth, async (req, res) => {
 	const query = req.query;
 	let queryData = {};
 	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
+		if (key === 'specialty') {
 			if (value.split(',').length > 1) {
 				queryData = { ...queryData, [key]: value.split(',') };
 			} else {
 				queryData = { ...queryData, [key]: value };
+			}
+		} else if (key === 'software') {
+			if (value.split(',').length > 1) {
+				queryData = {
+					...queryData,
+					$or: [
+						{ advancedSoftware: value.split(',') },
+						{ intermediateSoftware: value.split(',') },
+					],
+				};
+			} else {
+				queryData = {
+					...queryData,
+					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
+				};
 			}
 		} else if (key === 'search') {
 			queryData = {
 				...queryData,
 				$or: [
 					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ software: new RegExp(`^${value}$`, 'i') },
+					{ advancedSoftware: new RegExp(`^${value}$`, 'i') },
+					{ intermediateSoftware: new RegExp(`^${value}$`, 'i') },
 				],
 			};
 		} else if (key === 'page' || key === 'limit') {
@@ -224,11 +270,26 @@ router.get('/rejected-applicants', auth, async (req, res) => {
 	const query = req.query;
 	let queryData = {};
 	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
+		if (key === 'specialty') {
 			if (value.split(',').length > 1) {
 				queryData = { ...queryData, [key]: value.split(',') };
 			} else {
 				queryData = { ...queryData, [key]: value };
+			}
+		} else if (key === 'software') {
+			if (value.split(',').length > 1) {
+				queryData = {
+					...queryData,
+					$or: [
+						{ advancedSoftware: value.split(',') },
+						{ intermediateSoftware: value.split(',') },
+					],
+				};
+			} else {
+				queryData = {
+					...queryData,
+					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
+				};
 			}
 		} else if (key === 'search') {
 			queryData = {

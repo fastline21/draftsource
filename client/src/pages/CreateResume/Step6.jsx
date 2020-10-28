@@ -8,8 +8,10 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 // Components
 import SpecialtyItem from './SpecialtyItem';
 import SpecialtySelected from './SpecialtySelected';
-import SoftwareItem from './SoftwareItem';
-import SoftwareSelected from './SoftwareSelected';
+import AdvancedSoftwareItem from './AdvancedSoftwareItem';
+import AdvancedSoftwareSelected from './AdvancedSoftwareSelected';
+import IntermediateSoftwareItem from './IntermediateSoftwareItem';
+import IntermediateSoftwareSelected from './IntermediateSoftwareSelected';
 import MarketTypeItem from './MarketTypeItem';
 import MarketTypeSelected from './MarketTypeSelected';
 import CountryExperienceItem from './CountryExperienceItem';
@@ -51,7 +53,8 @@ const Step6 = ({
 	] = useUnsavedChangesWarning();
 
 	const otherSpecialtyRef = useRef(null);
-	const otherSoftwareRef = useRef(null);
+	const otherAdvancedSoftwareRef = useRef(null);
+	const otherIntermediateSoftwareRef = useRef(null);
 	const otherMarketTypeRef = useRef(null);
 	const otherCountryExperienceRef = useRef(null);
 
@@ -64,7 +67,8 @@ const Step6 = ({
 	};
 
 	const [specialty, setSpecialty] = useState([]);
-	const [software, setSoftware] = useState([]);
+	const [advancedSoftware, setAdvancedSoftware] = useState([]);
+	const [intermediateSoftware, setIntermediateSoftware] = useState([]);
 	const [marketType, setMarketType] = useState([]);
 	const [countryExperience, setCountryExperience] = useState([]);
 	const [uploadWork, setUploadWork] = useState({
@@ -98,20 +102,59 @@ const Step6 = ({
 		setMessage('Are you sure you want to leave this page?');
 	};
 
-	// Select Software
-	const onSelectSoftware = (e) => {
-		if (software.includes(softwareList()[e])) {
-			setSoftware((software) => [
-				...software.filter(
-					(x) => software.indexOf(x) !== software.indexOf(softwareList()[e])
+	// Select Advanced Software
+	const onSelectAdvancedSoftware = (e) => {
+		if (advancedSoftware.includes(softwareList()[e])) {
+			setAdvancedSoftware((advancedSoftware) => [
+				...advancedSoftware.filter(
+					(x) =>
+						advancedSoftware.indexOf(x) !==
+						advancedSoftware.indexOf(softwareList()[e])
 				),
 			]);
-			Array.from(document.querySelectorAll('.software .list .nav-item'))
+			Array.from(
+				document.querySelectorAll('.advanced-software .list .nav-item')
+			)
 				.find((el) => el.textContent === softwareList()[e])
 				.classList.remove('active');
 		} else {
-			setSoftware((software) => [...software, softwareList()[e]]);
-			Array.from(document.querySelectorAll('.software .list .nav-item'))
+			setAdvancedSoftware((advancedSoftware) => [
+				...advancedSoftware,
+				softwareList()[e],
+			]);
+			Array.from(
+				document.querySelectorAll('.advanced-software .list .nav-item')
+			)
+				.find((el) => el.textContent === softwareList()[e])
+				.classList.add('active');
+		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
+
+	// Select Intermediate Software
+	const onSelectIntermediateSoftware = (e) => {
+		if (intermediateSoftware.includes(softwareList()[e])) {
+			setIntermediateSoftware((intermediateSoftware) => [
+				...intermediateSoftware.filter(
+					(x) =>
+						intermediateSoftware.indexOf(x) !==
+						intermediateSoftware.indexOf(softwareList()[e])
+				),
+			]);
+			Array.from(
+				document.querySelectorAll('.intermediate-software .list .nav-item')
+			)
+				.find((el) => el.textContent === softwareList()[e])
+				.classList.remove('active');
+		} else {
+			setIntermediateSoftware((intermediateSoftware) => [
+				...intermediateSoftware,
+				softwareList()[e],
+			]);
+			Array.from(
+				document.querySelectorAll('.intermediate-software .list .nav-item')
+			)
 				.find((el) => el.textContent === softwareList()[e])
 				.classList.add('active');
 		}
@@ -198,7 +241,7 @@ const Step6 = ({
 		return list;
 	};
 
-	// Software List
+	// Advanced Software List
 	const softwareListGenerate = () => {
 		let key = 0;
 		let list = [];
@@ -207,11 +250,38 @@ const Step6 = ({
 			let item = [];
 			for (let y = 0; y < total; y++) {
 				item.push(
-					<SoftwareItem
+					<AdvancedSoftwareItem
 						key={key}
 						index={key}
 						value={softwareList()[key]}
-						select={onSelectSoftware}
+						select={onSelectAdvancedSoftware}
+					/>
+				);
+				key++;
+			}
+			list.push(
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
+					<ul className="nav flex-column">{item}</ul>
+				</div>
+			);
+		}
+		return list;
+	};
+
+	// Intermediate Software List
+	const intermediateSoftwareListGenerate = () => {
+		let key = 0;
+		let list = [];
+		const total = Math.ceil(softwareList().length / 4);
+		for (let x = 0; x < 4; x++) {
+			let item = [];
+			for (let y = 0; y < total; y++) {
+				item.push(
+					<IntermediateSoftwareItem
+						key={key}
+						index={key}
+						value={softwareList()[key]}
+						select={onSelectIntermediateSoftware}
 					/>
 				);
 				key++;
@@ -292,16 +362,35 @@ const Step6 = ({
 		]);
 	};
 
-	// Software Close
-	const onSoftwareClose = (e) => {
-		const item = software[e];
+	// Advanced Software Close
+	const onAdvancedSoftwareClose = (e) => {
+		const item = advancedSoftware[e];
 		if (softwareList().includes(item)) {
-			Array.from(document.querySelectorAll('.software .list .nav-item'))
+			Array.from(
+				document.querySelectorAll('.advanced-software .list .nav-item')
+			)
 				.find((el) => el.textContent === item)
 				.classList.remove('active');
 		}
-		setSoftware((software) => [
-			...software.filter((x) => software.indexOf(x) !== e),
+		setAdvancedSoftware((advancedSoftware) => [
+			...advancedSoftware.filter((x) => advancedSoftware.indexOf(x) !== e),
+		]);
+	};
+
+	// Intermediate Software Close
+	const onIntermediateSoftwareClose = (e) => {
+		const item = intermediateSoftware[e];
+		if (softwareList().includes(item)) {
+			Array.from(
+				document.querySelectorAll('.intermediate-software .list .nav-item')
+			)
+				.find((el) => el.textContent === item)
+				.classList.remove('active');
+		}
+		setIntermediateSoftware((intermediateSoftware) => [
+			...intermediateSoftware.filter(
+				(x) => intermediateSoftware.indexOf(x) !== e
+			),
 		]);
 	};
 
@@ -357,25 +446,71 @@ const Step6 = ({
 		}
 	};
 
-	// Add Other Software
-	const addOtherSoftware = (e) => {
+	// Add Other Advanced Software
+	const addOtherAdvancedSoftware = (e) => {
 		e.preventDefault();
 
-		if (otherSoftwareRef.current.value === '') {
+		if (otherAdvancedSoftwareRef.current.value === '') {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
-			const lowerSoftware = softwareList().map((el) => el.toLowerCase());
-			const lowerOther = otherSoftwareRef.current.value;
-			if (lowerSoftware.includes(lowerOther.toLowerCase())) {
-				const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
-				setSoftware((software) => [...software, softwareList()[index]]);
-				Array.from(document.querySelectorAll('.software .list .nav-item'))
+			const lowerAdvancedSoftware = softwareList().map((el) =>
+				el.toLowerCase()
+			);
+			const lowerOther = otherAdvancedSoftwareRef.current.value;
+			if (lowerAdvancedSoftware.includes(lowerOther.toLowerCase())) {
+				const index = lowerAdvancedSoftware.indexOf(lowerOther.toLowerCase());
+				setAdvancedSoftware((advancedSoftware) => [
+					...advancedSoftware,
+					softwareList()[index],
+				]);
+				Array.from(
+					document.querySelectorAll('.advanced-software .list .nav-item')
+				)
 					.find((el) => el.textContent === softwareList()[index])
 					.classList.add('active');
 			} else {
-				setSoftware((software) => [...software, lowerOther]);
+				setAdvancedSoftware((advancedSoftware) => [
+					...advancedSoftware,
+					lowerOther,
+				]);
 			}
-			otherSoftwareRef.current.value = '';
+			otherAdvancedSoftwareRef.current.value = '';
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+	};
+
+	// Add Other Intermediate Software
+	const addOtherIntermediateSoftware = (e) => {
+		e.preventDefault();
+
+		if (otherIntermediateSoftwareRef.current.value === '') {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else {
+			const lowerIntermediateSoftware = softwareList().map((el) =>
+				el.toLowerCase()
+			);
+			const lowerOther = otherIntermediateSoftwareRef.current.value;
+			if (lowerIntermediateSoftware.includes(lowerOther.toLowerCase())) {
+				const index = lowerIntermediateSoftware.indexOf(
+					lowerOther.toLowerCase()
+				);
+				setIntermediateSoftware((intermediateSoftware) => [
+					...intermediateSoftware,
+					softwareList()[index],
+				]);
+				Array.from(
+					document.querySelectorAll('.intermediate-software .list .nav-item')
+				)
+					.find((el) => el.textContent === softwareList()[index])
+					.classList.add('active');
+			} else {
+				setIntermediateSoftware((intermediateSoftware) => [
+					...intermediateSoftware,
+					lowerOther,
+				]);
+			}
+			otherIntermediateSoftwareRef.current.value = '';
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
@@ -583,7 +718,8 @@ const Step6 = ({
 
 		if (
 			specialty.length === 0 ||
-			software.length === 0 ||
+			advancedSoftware.length === 0 ||
+			intermediateSoftware.length === 0 ||
 			marketType.length === 0 ||
 			countryExperience.length === 0 ||
 			uploadWork.images.length === 0
@@ -608,13 +744,15 @@ const Step6 = ({
 				});
 			}
 			formData.append('specialty', specialty);
-			formData.append('software', software);
+			formData.append('advancedSoftware', advancedSoftware);
+			formData.append('intermediateSoftware', intermediateSoftware);
 			formData.append('marketType', marketType);
 			formData.append('countryExperience', countryExperience);
 			formData.append('uploadWork', JSON.stringify(uploadWork));
 			submitResume(formData);
 			setSpecialty([]);
-			setSoftware([]);
+			setAdvancedSoftware([]);
+			setIntermediateSoftware([]);
 			setMarketType([]);
 			setCountryExperience([]);
 			setUploadWork({
@@ -650,25 +788,72 @@ const Step6 = ({
 		}
 	};
 
-	const onKeyPressOtherSoftware = (e) => {
+	const onKeyPressOtherAdvancedSoftware = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
 
-			if (otherSoftwareRef.current.value === '') {
+			if (otherAdvancedSoftwareRef.current.value === '') {
 				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			} else {
-				const lowerSoftware = softwareList().map((el) => el.toLowerCase());
-				const lowerOther = otherSoftwareRef.current.value;
-				if (lowerSoftware.includes(lowerOther.toLowerCase())) {
-					const index = lowerSoftware.indexOf(lowerOther.toLowerCase());
-					setSoftware((software) => [...software, softwareList()[index]]);
-					Array.from(document.querySelectorAll('.software .list .nav-item'))
+				const lowerAdvancedSoftware = softwareList().map((el) =>
+					el.toLowerCase()
+				);
+				const lowerOther = otherAdvancedSoftwareRef.current.value;
+				if (lowerAdvancedSoftware.includes(lowerOther.toLowerCase())) {
+					const index = lowerAdvancedSoftware.indexOf(lowerOther.toLowerCase());
+					setAdvancedSoftware((advancedSoftware) => [
+						...advancedSoftware,
+						softwareList()[index],
+					]);
+					Array.from(
+						document.querySelectorAll('.advanced-software .list .nav-item')
+					)
 						.find((el) => el.textContent === softwareList()[index])
 						.classList.add('active');
 				} else {
-					setSoftware((software) => [...software, lowerOther]);
+					setAdvancedSoftware((advancedSoftware) => [
+						...advancedSoftware,
+						lowerOther,
+					]);
 				}
-				otherSoftwareRef.current.value = '';
+				otherAdvancedSoftwareRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
+		}
+	};
+
+	const onKeyPressOtherIntermediateSoftware = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+
+			if (otherIntermediateSoftwareRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerIntermediateSoftware = softwareList().map((el) =>
+					el.toLowerCase()
+				);
+				const lowerOther = otherIntermediateSoftwareRef.current.value;
+				if (lowerIntermediateSoftware.includes(lowerOther.toLowerCase())) {
+					const index = lowerIntermediateSoftware.indexOf(
+						lowerOther.toLowerCase()
+					);
+					setIntermediateSoftware((intermediateSoftware) => [
+						...intermediateSoftware,
+						softwareList()[index],
+					]);
+					Array.from(
+						document.querySelectorAll('.intermediate-software .list .nav-item')
+					)
+						.find((el) => el.textContent === softwareList()[index])
+						.classList.add('active');
+				} else {
+					setIntermediateSoftware((intermediateSoftware) => [
+						...intermediateSoftware,
+						lowerOther,
+					]);
+				}
+				otherIntermediateSoftwareRef.current.value = '';
 				setDirty();
 				setMessage('Are you sure you want to leave this page?');
 			}
@@ -864,25 +1049,23 @@ const Step6 = ({
 								</div>
 							</div>
 						</div>
-						<div className="form-row software">
+						<div className="form-row advanced-software">
 							<div className="col-lg-4">
-								<h5 className="title">
-									Software <span>Atleast (3) three software use</span>
-								</h5>
-								{software.length === 0 ? (
+								<h5 className="title">Advanced Software</h5>
+								{advancedSoftware.length === 0 ? (
 									<p className="subtitle">
-										This section will view your selected software you usually or
-										regularly used in order to perform on asuch of wuality
-										output and strill matched to the job position you are
-										applying for.
+										This section will view your selected software you are
+										confident in using or regularly used in order to perform on
+										such of quality output and still matched to the job position
+										you are applying for.
 									</p>
 								) : (
-									software.map((e, i) => (
-										<SoftwareSelected
+									advancedSoftware.map((e, i) => (
+										<AdvancedSoftwareSelected
 											key={i}
 											value={e}
 											index={i}
-											onSoftwareClose={onSoftwareClose}
+											onAdvancedSoftwareClose={onAdvancedSoftwareClose}
 										/>
 									))
 								)}
@@ -894,14 +1077,58 @@ const Step6 = ({
 								<div className="form-inline">
 									<input
 										type="text"
-										placeholder="Other Software"
+										placeholder="Other Advanced Software"
 										className="form-control input other-input"
-										ref={otherSoftwareRef}
-										onKeyPress={onKeyPressOtherSoftware}
+										ref={otherAdvancedSoftwareRef}
+										onKeyPress={onKeyPressOtherAdvancedSoftware}
 									/>
 									<button
 										className="btn btn-primary button other-add"
-										onClick={addOtherSoftware}
+										onClick={addOtherAdvancedSoftware}
+									>
+										Add
+									</button>
+								</div>
+							</div>
+						</div>
+						<div className="form-row intermediate-software">
+							<div className="col-lg-4">
+								<h5 className="title">Intermediate Software</h5>
+								{intermediateSoftware.length === 0 ? (
+									<p className="subtitle">
+										This section will view your selected software you usually
+										use but you are not an expert in this software to perform on
+										such of quality output and still matched to the job position
+										you are applying for.
+									</p>
+								) : (
+									intermediateSoftware.map((e, i) => (
+										<IntermediateSoftwareSelected
+											key={i}
+											value={e}
+											index={i}
+											onIntermediateSoftwareClose={onIntermediateSoftwareClose}
+										/>
+									))
+								)}
+							</div>
+							<div className="col-lg-8">
+								<div className="list">
+									<div className="form-row">
+										{intermediateSoftwareListGenerate()}
+									</div>
+								</div>
+								<div className="form-inline">
+									<input
+										type="text"
+										placeholder="Other Intermediate Software"
+										className="form-control input other-input"
+										ref={otherIntermediateSoftwareRef}
+										onKeyPress={onKeyPressOtherIntermediateSoftware}
+									/>
+									<button
+										className="btn btn-primary button other-add"
+										onClick={addOtherIntermediateSoftware}
 									>
 										Add
 									</button>
@@ -916,10 +1143,9 @@ const Step6 = ({
 								</h5>
 								{marketType.length === 0 ? (
 									<p className="subtitle">
-										This section will view your selected market type you usually
-										or regularly used in order to perform on asuch of wuality
-										output and strill matched to the job position you are
-										applying for.
+										This section view is your project or market type experience.
+										This will determine how big or how small how experienced or
+										inexperienced you are in the position you are applying for.
 									</p>
 								) : (
 									marketType.map((e, i) => (
@@ -961,10 +1187,9 @@ const Step6 = ({
 								</h5>
 								{countryExperience.length === 0 ? (
 									<p className="subtitle">
-										This section will view your selected country experience you
-										usually or regularly used in order to perform on asuch of
-										wuality output and strill matched to the job position you
-										are applying for.
+										This section will view your your country experience or which
+										projects you have taken on different clients in different
+										countries.
 									</p>
 								) : (
 									countryExperience.map((e, i) => (

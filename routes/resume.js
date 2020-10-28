@@ -88,7 +88,8 @@ router.post('/', auth, async (req, res) => {
 	} = req.body;
 	let {
 		specialty,
-		software,
+		advancedSoftware,
+		intermediateSoftware,
 		marketType,
 		countryExperience,
 		education,
@@ -153,7 +154,8 @@ router.post('/', auth, async (req, res) => {
 
 	// string to array
 	specialty = specialty.split(',');
-	software = software.split(',');
+	advancedSoftware = advancedSoftware.split(',');
+	intermediateSoftware = intermediateSoftware.split(',');
 	marketType = marketType.split(',');
 	countryExperience = countryExperience.split(',');
 
@@ -358,7 +360,8 @@ router.post('/', auth, async (req, res) => {
 			workHistory,
 			countryExperience,
 			specialty,
-			software,
+			advancedSoftware,
+			intermediateSoftware,
 			marketType,
 			uploadWork,
 			headline,

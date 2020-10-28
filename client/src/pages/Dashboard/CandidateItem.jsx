@@ -20,7 +20,8 @@ const CandidateItem = ({ candidate, viewResume }) => {
 		availability,
 		dateCreated,
 		specialty,
-		software,
+		advancedSoftware,
+		intermediateSoftware,
 		marketType,
 		uploadWork,
 		recruitmentsComment,
@@ -109,7 +110,12 @@ const CandidateItem = ({ candidate, viewResume }) => {
 								{e}
 							</span>
 						))}
-						{software.map((e, i) => (
+						{advancedSoftware.map((e, i) => (
+							<span className="specialty-software-item" key={i}>
+								{e}
+							</span>
+						))}
+						{intermediateSoftware.map((e, i) => (
 							<span className="specialty-software-item" key={i}>
 								{e}
 							</span>

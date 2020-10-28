@@ -141,7 +141,10 @@ const ResumeSchema = new mongoose.Schema({
 	specialty: {
 		type: Array,
 	},
-	software: {
+	advancedSoftware: {
+		type: Array,
+	},
+	intermediateSoftware: {
 		type: Array,
 	},
 	marketType: {

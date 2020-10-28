@@ -51,7 +51,8 @@ const ViewResume = ({
 		expectedSalary: '',
 		currency: '',
 		specialty: [],
-		software: [],
+		advancedSoftware: [],
+		intermediateSoftware: [],
 		marketType: [],
 		countryExperience: [],
 		uploadWork: { images: [] },
@@ -103,7 +104,8 @@ const ViewResume = ({
 		expectedSalary,
 		currency,
 		specialty,
-		software,
+		advancedSoftware,
+		intermediateSoftware,
 		marketType,
 		countryExperience,
 		uploadWork,
@@ -397,11 +399,30 @@ const ViewResume = ({
 					</div>
 					<div className="row pb-3">
 						<div className="col-lg-3">
-							<p className="item-title color-1 mb-0">Software Use</p>
+							<p className="item-title color-1 mb-0">
+								Advanced Software Expertise
+							</p>
 						</div>
 						<div className="col-lg-8">
 							<p id="specialty" className="specialty-software mb-0">
-								{software.map((e, i) => (
+								{advancedSoftware.map((e, i) => (
+									<span className="specialty-software-item" key={i}>
+										{e}
+									</span>
+								))}
+							</p>
+							<hr className="line-break" />
+						</div>
+					</div>
+					<div className="row pb-3">
+						<div className="col-lg-3">
+							<p className="item-title color-1 mb-0">
+								Intermediate Software Expertise
+							</p>
+						</div>
+						<div className="col-lg-8">
+							<p id="specialty" className="specialty-software mb-0">
+								{intermediateSoftware.map((e, i) => (
 									<span className="specialty-software-item" key={i}>
 										{e}
 									</span>
