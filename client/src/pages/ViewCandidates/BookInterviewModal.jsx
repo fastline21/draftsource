@@ -12,7 +12,7 @@ const BookInterviewModal = ({ isShow, isHide, agree }) => {
 
 	useEffect(() => {
 		if (isShow) {
-			handleShow();
+			handleShow(); 
 		}
 	}, [isShow]);
 
