@@ -529,19 +529,38 @@
 		flex-direction: column;
 
 		.title {
-			margin-bottom: 20px;
+			margin-bottom: 5px;
 			text-align: center;
 		}
 
-		.button {
-			background-color: $white;
-			border-color: $darkBlue;
-			color: $darkBlue;
-			border-radius: 30px;
+		.subtitle {
+			margin-bottom: 0;
+			text-align: center;
 			font-weight: 700;
-			font-size: 16px;
-			padding: 12px 24px;
-			margin: 10px 0;
+		}
+
+		.cta {
+			display: flex;
+			flex-direction: row;
+
+			.button {
+				background-color: $lightCyan;
+				border-color: $lightCyan;
+				color: $white;
+				border-radius: 30px;
+				font-weight: 700;
+				// font-size: 16px;
+				font-size: 12px;
+				// padding: 12px 24px;
+				padding: 12px 15px;
+				margin: 10px 5px;
+
+				&:nth-child(1) {
+					padding: 12px 35px;
+					background-color: $white;
+					color: $lightCyan;
+				}
+			}
 		}
 
 		.list {

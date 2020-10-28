@@ -294,10 +294,25 @@ const ViewResume = ({
 	};
 
 	const totalMonths = (m1, m2, y1, y2) => {
-		return moment([parseInt(y2), moment().month(m2).format('MM')]).diff(
-			moment([parseInt(y1), moment().month(m1).format('MM')]),
-			'month'
+		// let d2 = moment(
+		// 	`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
+		// 		e.yearStarted
+		// 	)}`,
+		// 	'MM/DD/YYYY'
+		// );
+		// return moment([parseInt(y2), moment().month(m2).format('MM')]).diff(
+		// 	moment([parseInt(y1), moment().month(m1).format('MM')]),
+		// 	'month'
+		// );
+		const d2 = moment(
+			`${moment().month(m1).format('MM')}/01/${parseInt(y1)}`,
+			'MM/DD/YYYY'
 		);
+		const d1 = moment(
+			`${moment().month(m2).format('MM')}/01/${parseInt(y2)}`,
+			'MM/DD/YYYY'
+		);
+		return d1.diff(d2, 'month');
 	};
 
 	const handleClose = () => {

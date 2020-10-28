@@ -50,9 +50,7 @@ const ViewCandidates = ({
 						<Link
 							className="btn btn-primary button"
 							to={`/view-candidates/shortlisted-candidates${
-								shortlist.length > 0
-									? `?candidates=${shortlist.join(',')}`
-									: ''
+								shortlist.length > 0 ? `?candidates=${shortlist.join(',')}` : ''
 							}`}
 							onClick={onClick}
 						>
@@ -63,8 +61,7 @@ const ViewCandidates = ({
 				{menu === 'shortlisted-candidates' && (
 					<Fragment>
 						<h2 className="title">
-							Your Shortlisted Candidates{' '}
-							<sup>({shortlist.length})</sup>
+							Your Shortlisted Candidates <sup>({shortlist.length})</sup>
 						</h2>
 						<button
 							className="btn btn-primary button book-interview"
@@ -82,9 +79,7 @@ const ViewCandidates = ({
 						href="/"
 						onClick={(e) => {
 							e.preventDefault();
-							document
-								.getElementById('filterMobile')
-								.removeAttribute('style');
+							document.getElementById('filterMobile').removeAttribute('style');
 							document
 								.getElementById('mobileOverlay1')
 								.removeAttribute('style');
@@ -98,29 +93,28 @@ const ViewCandidates = ({
 					<Filter loadData={viewCandidates} />
 				</nav>
 				<main className="main">
-					{menu === 'top-verified-candidates' && (
-						<TopVerifedCandidates />
-					)}
-					{menu === 'shortlisted-candidates' && (
-						<ShortlistedCandidates />
-					)}
+					{menu === 'top-verified-candidates' && <TopVerifedCandidates />}
+					{menu === 'shortlisted-candidates' && <ShortlistedCandidates />}
 				</main>
 			</div>
 			{menu === 'top-verified-candidates' && (
 				<div className="talk-recruiter">
-					<h1 className="title">
-						Didn’t see the talent you’re looking for?
-					</h1>
-					<button
-						className="btn btn-primary button"
-						onClick={talkRecruiter}
-					>
-						Talk to a Recruiter
-					</button>
+					<h1 className="title">Didn’t see the talent you’re looking for?</h1>
+					<p className="subtitle">
+						Get pre-screened candidates straight to your inbox obligation free
+					</p>
+					<div className="cta">
+						<Link to="/draft-job" className="btn btn-primary button">
+							Draft a Job
+						</Link>
+						<button className="btn btn-primary button" onClick={talkRecruiter}>
+							Talk to a Recruiter
+						</button>
+					</div>
 					<ul className="list">
-						<li className="item">No hiring headcaches</li>
-						<li className="item">No interviews</li>
-						<li className="item">No dramas</li>
+						<li className="item">No recruitment fees</li>
+						<li className="item">No long term contracts</li>
+						<li className="item">No work no pay</li>
 					</ul>
 				</div>
 				// <div className="row">
