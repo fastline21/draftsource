@@ -83,6 +83,8 @@ const Footer = () => {
 					</Col>
 					<Col sm="12">
 						<p className="policy">
+							<Link to="/terms-service">Terms of Service</Link>
+							<span className="mx-1">|</span>
 							<Link to="/privacy-policy">Privacy Policy</Link>
 						</p>
 						<p className="copyright">
