@@ -38,9 +38,8 @@ const Step4 = ({
 
 	const initialInfo = {
 		// availability: 'Full Time',
-		expectedSalary: '$400-$600',
+		expectedSalary: salaryList()[0],
 		headline: '',
-		govID: '',
 	};
 	const initialEducation = {
 		choices: 'High School',
@@ -60,10 +59,12 @@ const Step4 = ({
 		license: true,
 	});
 	const [educationItem, setEducationItem] = useState(initialEducation);
-	const [uploadAudio, setUploadAudio] = useState(null);
+	const [uploadAboutYourself, setUploadAboutYourself] = useState(null);
+	const [uploadGovID, setUploadGovID] = useState(null);
+	const [uploadCV, setUploadCV] = useState(null);
 	const [submit, setSubmit] = useState(false);
 
-	const { expectedSalary, headline, govID } = info;
+	const { expectedSalary, headline } = info;
 
 	const eduItem = (e) => {
 		const { name, value } = e.target;
@@ -111,20 +112,26 @@ const Step4 = ({
 	};
 
 	const uploadButton = (e) => {
-		const { files } = e.target;
-		setUploadAudio(files[0]);
+		const { name, files } = e.target;
+		if (name === 'aboutYourself') {
+			setUploadAboutYourself(files[0]);
+		} else if (name === 'govID') {
+			setUploadGovID(files[0]);
+		} else {
+			setUploadCV(files[0]);
+		}
 	};
 
-	const uploadAudioClick = (e) => {
+	const uploadClick = (e) => {
 		if (e.target.classList.contains('disabled')) {
 			return e.preventDefault();
 		}
 	};
 
-	const replaceUploadButton = (e) => {
-		const { files } = e.target;
-		setUploadAudio(files[0]);
-	};
+	// const replaceUploadButton = (e) => {
+	// 	const { files } = e.target;
+	// 	setUploadAudio(files[0]);
+	// };
 
 	const addEducation = (e) => {
 		e.preventDefault();
@@ -237,11 +244,7 @@ const Step4 = ({
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
-		if (name === 'govID') {
-			setInfo({ ...info, [name]: e.target.files[0] });
-		} else {
-			setInfo({ ...info, [name]: value });
-		}
+		setInfo({ ...info, [name]: value });
 	};
 
 	const onSubmit = (e) => {
@@ -250,15 +253,17 @@ const Step4 = ({
 		if (
 			expectedSalary === '' ||
 			headline === '' ||
-			uploadAudio === null ||
-			govID === '' ||
+			uploadAboutYourself === null ||
+			uploadGovID === null ||
+			uploadCV === null ||
 			education.length === 0
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			uploadFile({
-				aboutYourself: uploadAudio,
-				govID,
+				aboutYourself: uploadAboutYourself,
+				govID: uploadGovID,
+				cv: uploadCV,
 			});
 			addResume({
 				headline,
@@ -266,7 +271,9 @@ const Step4 = ({
 				education,
 			});
 			setInfo(initialInfo);
-			setUploadAudio(null);
+			setUploadAboutYourself(null);
+			setUploadGovID(null);
+			setUploadCV(null);
 			setEducation([]);
 			setSubmit(true);
 			setPristine();
@@ -376,16 +383,16 @@ const Step4 = ({
 												<label
 													htmlFor="sampleAudioInput"
 													className={`form-label${
-														uploadAudio ? ' disabled' : ''
+														uploadAboutYourself ? ' disabled' : ''
 													}`}
-													onClick={uploadAudioClick}
+													onClick={uploadClick}
 												>
 													Upload Audio
 												</label>
 												<input
 													type="file"
 													accept="audio/*"
-													name="sampleAudio"
+													name="aboutYourself"
 													id="sampleAudioInput"
 													className="form-control-file"
 													onChange={uploadButton}
@@ -405,11 +412,11 @@ const Step4 = ({
 											id="sampleAudio"
 											className="upload"
 											style={{
-												display: uploadAudio ? 'block' : 'none',
+												display: uploadAboutYourself ? 'block' : 'none',
 											}}
 										>
 											<label id="sampleAudioFile" className="selected-file">
-												{uploadAudio ? uploadAudio.name : null}
+												{uploadAboutYourself ? uploadAboutYourself.name : null}
 											</label>
 											<label
 												htmlFor="replacesampleAudioInput"
@@ -423,7 +430,7 @@ const Step4 = ({
 												name="sampleAudio"
 												id="replacesampleAudioInput"
 												className="form-control-file"
-												onChange={replaceUploadButton}
+												onChange={uploadButton}
 											/>
 										</p>
 									</div>
@@ -440,13 +447,15 @@ const Step4 = ({
 											onChange={onChange}
 											value={headline}
 										></textarea>
-										{/* <p className="pt-3 mb-0">Sample headlines</p>
+										<p className="pt-3 mb-0">Sample</p>
 										<ul className="list">
-											<li className="item">Professional Civil Engineer (PE)</li>
 											<li className="item">
-												Architect Designer | Civil & Structural Engineer
+												Mechanical Engineer | MEP Drafter | Estimator
 											</li>
 											<li className="item">
+												Revit Expert | Architectural & Structural Specialist
+											</li>
+											{/* <li className="item">
 												Civil Engineer | Civil 3D & AutoCAD Specialist | CAD
 												Designer
 											</li>
@@ -457,10 +466,113 @@ const Step4 = ({
 											<li className="item">
 												MEP Design Engineer | MEP Estimator | Mechanical
 												Engineer
-											</li>
-										</ul> */}
+											</li> */}
+										</ul>
 									</div>
-									<div className="form-group">
+									<div className="form-group mb-0">
+										<div className="form-inline">
+											<label className="form-label upload-audio-label">
+												Government ID
+											</label>
+											<div className="form-group upload-file">
+												<label
+													htmlFor="govIDInput"
+													className={`form-label${
+														uploadGovID ? ' disabled' : ''
+													}`}
+													onClick={uploadClick}
+												>
+													Upload Image
+												</label>
+												<input
+													type="file"
+													accept="image/*"
+													name="govID"
+													id="govIDInput"
+													className="form-control-file"
+													onChange={uploadButton}
+												/>
+											</div>
+										</div>
+										<p>Attach Government, Passport, or Philhealth etc.</p>
+										<p
+											className="upload"
+											style={{
+												display: uploadGovID ? 'block' : 'none',
+											}}
+										>
+											<label id="govIDFile" className="selected-file">
+												{uploadGovID ? uploadGovID.name : null}
+											</label>
+											<label
+												htmlFor="replaceGovIDInput"
+												className="replace-button"
+											>
+												Replace
+											</label>
+											<input
+												type="file"
+												accept="image/*"
+												name="govID"
+												id="replaceGovIDInput"
+												className="form-control-file"
+												onChange={uploadButton}
+											/>
+										</p>
+									</div>
+									<div className="form-group mb-0">
+										<div className="form-inline">
+											<label className="form-label upload-audio-label">
+												CV
+											</label>
+											<div className="form-group upload-file">
+												<label
+													htmlFor="cvInput"
+													className={`form-label${uploadCV ? ' disabled' : ''}`}
+													onClick={uploadClick}
+												>
+													Upload PDF
+												</label>
+												<input
+													type="file"
+													accept="application/pdf"
+													name="cv"
+													id="cvInput"
+													className="form-control-file"
+													onChange={uploadButton}
+												/>
+											</div>
+										</div>
+										<p>
+											* make sure CV is accurate in creating work history in the
+											next step
+										</p>
+										<p
+											className="upload"
+											style={{
+												display: uploadCV ? 'block' : 'none',
+											}}
+										>
+											<label id="cvFile" className="selected-file">
+												{uploadCV ? uploadCV.name : null}
+											</label>
+											<label
+												htmlFor="replaceCVInput"
+												className="replace-button"
+											>
+												Replace
+											</label>
+											<input
+												type="file"
+												accept="application/pdf"
+												name="cv"
+												id="replaceCVInput"
+												className="form-control-file"
+												onChange={uploadButton}
+											/>
+										</p>
+									</div>
+									{/* <div className="form-group">
 										<label className="form-label">Government ID</label>
 										{govID ? (
 											<p id="replaceGovID" className="upload d-block">
@@ -483,7 +595,7 @@ const Step4 = ({
 												/>
 											</p>
 										) : (
-											<div className="form-group upload-file">
+											<div className="form-group upload-file mb-0">
 												<label htmlFor="govIDInput" className="form-label">
 													Upload Image
 												</label>
@@ -498,7 +610,51 @@ const Step4 = ({
 												/>
 											</div>
 										)}
+										<p>Attach Government, Passport, or Philhealth etc.</p>
 									</div>
+									<div className="form-group">
+										<label className="form-label">CV</label>
+										{cv ? (
+											<p id="replaceCV" className="upload d-block">
+												<label id="cvFile" className="selected-file">
+													{cv.name}
+												</label>
+												<label
+													htmlFor="replaceCVInput"
+													className="replace-button"
+												>
+													Replace
+												</label>
+												<input
+													type="file"
+													accept="application/pdf"
+													name="cv"
+													id="replaceCVInput"
+													className="form-control-file"
+													onChange={onChange}
+												/>
+											</p>
+										) : (
+											<div className="form-group upload-file mb-0">
+												<label htmlFor="cvInput" className="form-label">
+													Upload CV
+												</label>
+												<input
+													type="file"
+													name="cv"
+													id="cvInput"
+													className="form-control-file input"
+													accept="application/pdf"
+													onChange={onChange}
+													value={cv}
+												/>
+											</div>
+										)}
+										<p>
+											* make sure CV is accurate in creating work history in the
+											next step
+										</p>
+									</div> */}
 								</div>
 							</div>
 							<div className="col-lg-4 col-md-6 center-col">

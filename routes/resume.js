@@ -190,6 +190,17 @@ router.post('/', auth, async (req, res) => {
 	});
 	govID = govIDFile;
 
+	// Generate CV
+	let cv = uploadFile.cv;
+	const cvFile = generateFileName(cv, 'cv');
+	cv.mv(`${__dirname}/../public/uploads/${cvFile}`, (err) => {
+		if (err) {
+			console.error(err);
+			return res.status(500).send(err);
+		}
+	});
+	cv = cvFile;
+
 	// Get all country in Work History and remove duplicate
 	// let countryExperience = workHistory.map((e) => e.country);
 	// countryExperience = countryExperience.filter(
@@ -341,6 +352,7 @@ router.post('/', auth, async (req, res) => {
 			recruiterName,
 			resumeImage,
 			govID,
+			cv,
 			internetType,
 			internetResult,
 			hardwareType: havePC ? req.body.hardwareType : '',

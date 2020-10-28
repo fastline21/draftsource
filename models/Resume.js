@@ -42,6 +42,9 @@ const ResumeSchema = new mongoose.Schema({
 	govID: {
 		type: String,
 	},
+	cv: {
+		type: String,
+	},
 	resumeImage: {
 		type: String,
 	},

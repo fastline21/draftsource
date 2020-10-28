@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 
-const ViewImage = ({ viewImage, isHide }) => {
+const ViewDocument = ({ viewDocument, isHide }) => {
 	const [show, setShow] = useState(false);
 
 	const handleClose = () => {
@@ -11,10 +11,10 @@ const ViewImage = ({ viewImage, isHide }) => {
 	const handleShow = () => setShow(true);
 
 	useEffect(() => {
-		if (viewImage.show) {
+		if (viewDocument.show) {
 			handleShow();
 		}
-	}, [viewImage]);
+	}, [viewDocument]);
 
 	return (
 		<Modal
@@ -25,13 +25,18 @@ const ViewImage = ({ viewImage, isHide }) => {
 			size="xl"
 		>
 			<Modal.Header closeButton>
-				<Modal.Title>{viewImage.title}</Modal.Title>
+				<Modal.Title>{viewDocument.title}</Modal.Title>
 			</Modal.Header>
 			<Modal.Body className="text-center">
-				<img src={`/uploads/${viewImage.file}`} alt="" className="img-fluid" />
+				{/* <img
+					src={`/uploads/${viewDocument.file}`}
+					alt=''
+					className='img-fluid'
+				/> */}
+				<iframe src={`/uploads/${viewDocument.file}`} frameborder="0"></iframe>
 			</Modal.Body>
 		</Modal>
 	);
 };
 
-export default ViewImage;
+export default ViewDocument;

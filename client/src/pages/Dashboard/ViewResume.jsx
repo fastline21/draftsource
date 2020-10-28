@@ -81,6 +81,8 @@ const ViewResume = ({
 		availability: '',
 		expectedSalary: '',
 		currency: '',
+		govID: '',
+		cv: '',
 		specialty: [],
 		advancedSoftware: [],
 		intermediateSoftware: [],
@@ -143,6 +145,8 @@ const ViewResume = ({
 		availability,
 		expectedSalary,
 		currency,
+		govID,
+		cv,
 		specialty,
 		advancedSoftware,
 		intermediateSoftware,
@@ -158,7 +162,6 @@ const ViewResume = ({
 		brandName,
 		internetResult,
 		// computerSpecs,
-		govID,
 		processor,
 		ram,
 		os,
@@ -530,6 +533,18 @@ const ViewResume = ({
 													>
 														View
 													</button>
+												</td>
+											</tr>
+											<tr>
+												<th className="pt-0 pl-0 item-title">CV</th>
+												<td className="pt-0 pl-0 item-value">
+													<a
+														href={`/uploads/${cv}`}
+														className="btn btn-primary view"
+														download
+													>
+														View
+													</a>
 												</td>
 											</tr>
 										</tbody>

@@ -404,9 +404,11 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 	let resume = await Resume.findById(id);
 	const {
 		resumeImage,
-		internetResult,
-		computerSpecs,
+		// internetResult,
+		// computerSpecs,
 		aboutYourself,
+		govID,
+		cv,
 		uploadWork,
 		user,
 	} = resume;
@@ -429,6 +431,18 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 	// 	}
 	// });
 	fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+	});
+	fs.unlink(`${__dirname}/../public/uploads/${govID}`, (err) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+	});
+	fs.unlink(`${__dirname}/../public/uploads/${cv}`, (err) => {
 		if (err) {
 			console.error(err);
 			return;
