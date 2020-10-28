@@ -80,6 +80,7 @@ const Step6 = ({
 	// const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
 	const [load, setLoad] = useState(true);
 	// const [submit, setSubmit] = useState(false);
+	const newSoftwareList = softwareList().filter((soft) => soft !== 'MS Word');
 
 	// Select Specialty
 	const onSelectSpecialty = (e) => {
@@ -104,28 +105,28 @@ const Step6 = ({
 
 	// Select Advanced Software
 	const onSelectAdvancedSoftware = (e) => {
-		if (advancedSoftware.includes(softwareList()[e])) {
+		if (advancedSoftware.includes(newSoftwareList[e])) {
 			setAdvancedSoftware((advancedSoftware) => [
 				...advancedSoftware.filter(
 					(x) =>
 						advancedSoftware.indexOf(x) !==
-						advancedSoftware.indexOf(softwareList()[e])
+						advancedSoftware.indexOf(newSoftwareList[e])
 				),
 			]);
 			Array.from(
 				document.querySelectorAll('.advanced-software .list .nav-item')
 			)
-				.find((el) => el.textContent === softwareList()[e])
+				.find((el) => el.textContent === newSoftwareList[e])
 				.classList.remove('active');
 		} else {
 			setAdvancedSoftware((advancedSoftware) => [
 				...advancedSoftware,
-				softwareList()[e],
+				newSoftwareList[e],
 			]);
 			Array.from(
 				document.querySelectorAll('.advanced-software .list .nav-item')
 			)
-				.find((el) => el.textContent === softwareList()[e])
+				.find((el) => el.textContent === newSoftwareList[e])
 				.classList.add('active');
 		}
 		setDirty();
@@ -243,7 +244,6 @@ const Step6 = ({
 
 	// Advanced Software List
 	const advancedSoftwareGenerate = () => {
-		const newSoftwareList = softwareList().filter((soft) => soft !== 'MS Word');
 		let key = 0;
 		let list = [];
 		const total = Math.ceil(newSoftwareList.length / 4);
@@ -367,7 +367,7 @@ const Step6 = ({
 	// Advanced Software Close
 	const onAdvancedSoftwareClose = (e) => {
 		const item = advancedSoftware[e];
-		if (softwareList().includes(item)) {
+		if (newSoftwareList.includes(item)) {
 			Array.from(
 				document.querySelectorAll('.advanced-software .list .nav-item')
 			)
@@ -455,7 +455,7 @@ const Step6 = ({
 		if (otherAdvancedSoftwareRef.current.value === '') {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
-			const lowerAdvancedSoftware = softwareList().map((el) =>
+			const lowerAdvancedSoftware = newSoftwareList.map((el) =>
 				el.toLowerCase()
 			);
 			const lowerOther = otherAdvancedSoftwareRef.current.value;
@@ -463,12 +463,12 @@ const Step6 = ({
 				const index = lowerAdvancedSoftware.indexOf(lowerOther.toLowerCase());
 				setAdvancedSoftware((advancedSoftware) => [
 					...advancedSoftware,
-					softwareList()[index],
+					newSoftwareList[index],
 				]);
 				Array.from(
 					document.querySelectorAll('.advanced-software .list .nav-item')
 				)
-					.find((el) => el.textContent === softwareList()[index])
+					.find((el) => el.textContent === newSoftwareList[index])
 					.classList.add('active');
 			} else {
 				setAdvancedSoftware((advancedSoftware) => [
@@ -797,7 +797,7 @@ const Step6 = ({
 			if (otherAdvancedSoftwareRef.current.value === '') {
 				return setAlert('', 'Please fill-in the required boxes to Proceed.');
 			} else {
-				const lowerAdvancedSoftware = softwareList().map((el) =>
+				const lowerAdvancedSoftware = newSoftwareList.map((el) =>
 					el.toLowerCase()
 				);
 				const lowerOther = otherAdvancedSoftwareRef.current.value;
@@ -805,12 +805,12 @@ const Step6 = ({
 					const index = lowerAdvancedSoftware.indexOf(lowerOther.toLowerCase());
 					setAdvancedSoftware((advancedSoftware) => [
 						...advancedSoftware,
-						softwareList()[index],
+						newSoftwareList[index],
 					]);
 					Array.from(
 						document.querySelectorAll('.advanced-software .list .nav-item')
 					)
-						.find((el) => el.textContent === softwareList()[index])
+						.find((el) => el.textContent === newSoftwareList[index])
 						.classList.add('active');
 				} else {
 					setAdvancedSoftware((advancedSoftware) => [
