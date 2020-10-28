@@ -40,6 +40,8 @@ router.post('/', async (req, res) => {
 		// currency,
 	} = req.body;
 
+	console.log(specialty, software);
+
 	if (
 		title === '' ||
 		specialty.length === 0 ||
@@ -344,6 +346,15 @@ router.delete('/delete-job/:id', auth, async (req, res) => {
 // @access  Private
 router.post('/view-details', auth, async (req, res) => {
 	const { id } = req.body;
+	const job = await Job.findById(id);
+	res.json(job);
+});
+
+// @route	GET /api/job/view-job
+// @desc	View Job
+// @access	Private
+router.get('/view-job/:id', async (req, res) => {
+	const { id } = req.params;
 	const job = await Job.findById(id);
 	res.json(job);
 });

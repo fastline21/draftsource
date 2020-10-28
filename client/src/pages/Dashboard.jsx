@@ -22,7 +22,7 @@ import Filter from './Dashboard/Filter';
 import NewApplicants from './Dashboard/NewApplicants';
 import ApprovedApplicants from './Dashboard/ApprovedApplicants';
 import RejectedApplicants from './Dashboard/RejectedApplicants';
-import NewJobs from './Dashboard/NewJobs';
+import JobRequest from './Dashboard/JobRequest';
 import ApprovedJobs from './Dashboard/ApprovedJobs';
 import RejectedJobs from './Dashboard/RejectedJobs';
 import RolesPermissions from './Dashboard/RolesPermissions';
@@ -183,9 +183,13 @@ const Dashboard = ({
 					{menu === 'new-applicants' ? <NewApplicants /> : null}
 					{menu === 'approved-applicants' ? <ApprovedApplicants /> : null}
 					{menu === 'rejected-applicants' ? <RejectedApplicants /> : null}
-					{menu === 'new-jobs' ? <NewJobs /> : null}
-					{menu === 'approved-jobs' ? <ApprovedJobs /> : null}
-					{menu === 'rejected-jobs' ? <RejectedJobs /> : null}
+					{menu === 'new-jobs' ||
+					menu === 'approved-jobs' ||
+					menu === 'rejected-jobs' ? (
+						<JobRequest />
+					) : null}
+					{/* {menu === '' ? <ApprovedJobs /> : null} */}
+					{/* {menu === 'rejected-jobs' ? <RejectedJobs /> : null} */}
 					{menu === 'roles-permissions' ? <RolesPermissions /> : null}
 				</main>
 			</div>

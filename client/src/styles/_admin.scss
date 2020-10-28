@@ -811,7 +811,7 @@
 	}
 }
 
-#seeDetails {
+#seeJob {
 	.modal-header {
 		border-bottom: 0;
 	}
@@ -832,30 +832,73 @@
 			}
 
 			&.color-2 {
-				color: #0c3961;
-				font-weight: 600;
+				color: $black;
+				font-weight: 700;
 			}
 		}
 
-		.resume-image {
-			height: 200px;
-			border-radius: 50%;
-			object-fit: cover;
+		.personal-info {
+			.item-title {
+				font-weight: 500;
+				color: #ababac;
+			}
+
+			.item-value {
+				color: $flatBlack;
+				font-weight: 500;
+			}
 		}
 
 		.button {
 			background-color: #0c3961;
 			color: #ffffff;
 			border-color: #0c3961;
-			width: 250px;
 			border-radius: 20px;
 			margin-bottom: 10px;
+			// padding: 6px 80px;
+			width: 240px;
 
 			&.button1 {
 				background-color: #ffffff;
 				color: #606060;
 				border-color: #606060;
+				// padding: 6px 88px;
 			}
+
+			&.remove-shortlist {
+				// padding: 6px 23px;
+			}
+
+			&.add-shortlist {
+				// padding: 6px 50px;
+			}
+
+			&.shortlist-candidates {
+				// padding: 6px 31px;
+				background-color: $white;
+				color: $flatBlack;
+				border-color: $flatBlack;
+			}
+		}
+
+		.specialty-software {
+			.specialty-software-item {
+				color: #606060;
+				background-color: #d6d6d6;
+				margin-right: 5px;
+				margin-bottom: 5px;
+				padding: 5px 10px;
+				border-radius: 30px;
+				font-size: 14px;
+				font-weight: 500;
+				display: inline-block;
+			}
+		}
+
+		.fas {
+			cursor: pointer;
+			margin-top: 3px;
+			margin-left: 5px;
 		}
 
 		.edit-button {
@@ -867,124 +910,13 @@
 			margin-left: 10px;
 		}
 
-		.fullname {
-			color: #0c3961;
+		.fullname,
+		.country,
+		.budget,
+		.company,
+		.date {
+			color: $black;
 			font-weight: 700;
-		}
-
-		.city,
-		.eng-pro,
-		.availability,
-		.specialty,
-		.software {
-			color: #606060;
-			font-weight: 500;
-		}
-
-		.rating-color {
-			color: #ababac;
-
-			&.checked {
-				color: #4adad8;
-			}
-		}
-
-		.salary {
-			color: #0c3961;
-			font-weight: 600;
-
-			.input {
-				display: inline-block;
-				width: 100px;
-				font-size: 14px;
-			}
-		}
-
-		.upload-work-images,
-		.upload-work-documents {
-			.figure-img {
-				height: 160px;
-				width: 160px;
-				object-fit: cover;
-			}
-
-			.figure-caption {
-				text-align: center;
-				color: #606060;
-				font-weight: 500;
-			}
-		}
-
-		.work-history-item,
-		.education-item {
-			border-bottom: 2px solid #d5d5d5;
-			padding-bottom: 1rem;
-			margin-bottom: 0.7rem;
-
-			&:nth-last-child(1) {
-				border-bottom: none;
-			}
-		}
-
-		.education-item {
-			.item-choices {
-				color: #298494;
-				font-weight: 600;
-			}
-
-			.item-title {
-				width: 18rem;
-				color: #ababac;
-				font-weight: 500;
-			}
-
-			.item-value {
-				color: #606060;
-				font-weight: 500;
-			}
-		}
-
-		.work-history-item {
-			.title {
-				color: #298494;
-				font-weight: 600;
-				margin-bottom: 10px;
-			}
-
-			.company {
-				margin-bottom: 0;
-			}
-
-			.company,
-			.month-year {
-				color: #606060;
-				font-weight: 600;
-			}
-
-			.item-title {
-				color: #818181;
-				font-weight: 600;
-				margin-bottom: 0;
-			}
-
-			.description,
-			.about {
-				color: #606060;
-				font-weight: 500;
-			}
-		}
-
-		.workspace-item {
-			.item-title {
-				width: 18rem;
-				color: #ababac;
-				font-weight: 500;
-			}
-
-			.item-value {
-				color: #606060;
-				font-weight: 500;
-			}
 		}
 
 		.view {
@@ -994,6 +926,12 @@
 			padding: 0 25px;
 			border-radius: 0;
 			font-weight: 500;
+		}
+
+		.description,
+		.about {
+			color: $black;
+			white-space: pre-wrap;
 		}
 	}
 

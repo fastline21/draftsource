@@ -380,11 +380,13 @@
 			}
 
 			@include media('>=1200px') {
-				padding: 0 15px;
+				padding: 0 50px;
 			}
 
 			.form-label {
 				margin-left: 5px;
+				color: $lightGray;
+				font-size: 16px;
 
 				@include media('>=1200px') {
 					margin-left: 30px;

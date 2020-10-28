@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -10,6 +10,7 @@ import TopVerifedCandidates from './ViewCandidates/TopVerifiedCandidates';
 import ShortlistedCandidates from './ViewCandidates/ShortlistedCandidates';
 import { bookInterview } from './../components/BookInterview';
 import { talkRecruiter } from './../components/TalkRecruiter';
+import BookInterviewModal from './ViewCandidates/BookInterviewModal';
 
 // Actions
 import {
@@ -24,6 +25,7 @@ const ViewCandidates = ({
 	filterState: { filter },
 }) => {
 	const { menu } = useParams();
+	const [showBookInterview, setShowBookInterview] = useState(false);
 
 	const onClick = () => {
 		getShortlisted(shortlist);
@@ -65,13 +67,19 @@ const ViewCandidates = ({
 						</h2>
 						<button
 							className="btn btn-primary button book-interview"
-							onClick={() => bookInterview()}
+							// onClick={() => bookInterview()}
+							onClick={() => setShowBookInterview(true)}
 						>
 							Book an Interview
 						</button>
 					</Fragment>
 				)}
 			</div>
+			<BookInterviewModal
+				isShow={showBookInterview}
+				isHide={() => setShowBookInterview(!showBookInterview)}
+				agree={() => bookInterview()}
+			/>
 			<div className="content">
 				<div id="filterMobile" className="sidebar d-block px-3">
 					<a

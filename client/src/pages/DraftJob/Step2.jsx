@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import timezones from 'timezones-list';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
@@ -38,7 +39,7 @@ const Step2 = ({
 			max: '',
 		},
 		workDuration: workDurationList()[0],
-		timeZone: '',
+		timeZone: timezones[0].label,
 	};
 	const [info, setInfo] = useState(initialInfo);
 
@@ -89,6 +90,8 @@ const Step2 = ({
 			});
 		}
 	}, [success]);
+
+	console.log(timezones);
 
 	// const initialInfo = {
 	// 	about: '',
@@ -238,7 +241,7 @@ const Step2 = ({
 							</label>
 							<textarea
 								name="description"
-								rows="5"
+								rows="10"
 								className="form-control input"
 								onChange={onChange}
 								value={description}
@@ -259,7 +262,7 @@ const Step2 = ({
 							</label>
 							<textarea
 								name="about"
-								rows="5"
+								rows="10"
 								className="form-control input"
 								onChange={onChange}
 								value={about}
@@ -398,14 +401,25 @@ const Step2 = ({
 									>
 										Time Zone Preference
 									</label>
-									<input
+									{/* <input
 										type="text"
 										name="timeZone"
 										id="timeZoneInput"
 										className="form-control input"
 										onChange={onChange}
 										value={timeZone}
-									/>
+									/> */}
+									<select
+										name="timezone"
+										id="timezoneInput"
+										className="form-control input"
+									>
+										{timezones.map((e, i) => (
+											<option value={e.label} key={i}>
+												{e.label}
+											</option>
+										))}
+									</select>
 								</div>
 							</div>
 							<div className="col-lg-6">

@@ -270,7 +270,7 @@ const Step3 = ({
 							<div className="form-row">
 								<div className="col-lg-4">
 									<label htmlFor="companyInput" className="form-label">
-										Company Name
+										Company
 									</label>
 								</div>
 								<div className="col-lg-8">

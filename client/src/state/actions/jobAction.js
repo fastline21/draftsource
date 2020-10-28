@@ -10,6 +10,7 @@ import {
 	CLEAR_DETAILS,
 	VIEW_DETAILS,
 	JOB_LOADING,
+	VIEW_JOB,
 } from './types';
 
 // Add job
@@ -73,6 +74,8 @@ export const setStep = (step) => (dispatch) => {
 // New job
 export const newJobs = () => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
+
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/new-jobs${getSearch}`);
 		dispatch({
@@ -90,6 +93,8 @@ export const newJobs = () => async (dispatch) => {
 // Rejected job
 export const rejectedJobs = () => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
+
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/rejected-jobs${getSearch}`);
 		dispatch({
@@ -107,6 +112,8 @@ export const rejectedJobs = () => async (dispatch) => {
 // Approved applicants
 export const approvedJobs = () => async (dispatch) => {
 	try {
+		setLoading()(dispatch);
+
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/approved-jobs${getSearch}`);
 		dispatch({
@@ -185,6 +192,22 @@ export const viewDetails = (id) => async (dispatch) => {
 		const res = await axios.post('/api/job/view-details', { id }, config);
 		dispatch({
 			type: VIEW_DETAILS,
+			payload: res.data,
+		});
+	} catch (error) {
+		dispatch({
+			type: JOBS_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
+
+// View job
+export const viewJob = (id) => async (dispatch) => {
+	try {
+		const res = await axios.get('/api/job/view-job/' + id);
+		dispatch({
+			type: VIEW_JOB,
 			payload: res.data,
 		});
 	} catch (error) {

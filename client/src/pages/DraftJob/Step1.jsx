@@ -342,20 +342,18 @@ const Step1 = ({
 			{Prompt}
 			<form className="form" onSubmit={onSubmit}>
 				<div className="form-row specialty-software">
-					<div className="col-lg-4">
-						<label htmlFor="titleInput" className="form-label">
-							Job Title
-						</label>
-					</div>
-					<div className="col-lg-8">
-						<input
-							type="text"
-							name="title"
-							id="titleInput"
-							className="form-control input"
-							onChange={onChange}
-							value={title}
-						/>
+					<div className="col-lg-12">
+						<div className="form-inline">
+							<h5 className="title mb-0 mr-4">Job Title</h5>
+							<input
+								type="text"
+								name="title"
+								id="titleInput"
+								className="form-control input"
+								onChange={onChange}
+								value={title}
+							/>
+						</div>
 					</div>
 				</div>
 				<div className="form-row specialty-software specialty">

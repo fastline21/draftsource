@@ -9,6 +9,7 @@ import {
 	CLEAR_DETAILS,
 	VIEW_DETAILS,
 	JOB_LOADING,
+	VIEW_JOB,
 } from './../actions/types';
 
 const initialState = {
@@ -59,7 +60,7 @@ export default (state = initialState, action) => {
 				...state,
 				error: action.payload,
 			};
-		case VIEW_DETAILS:
+		case VIEW_JOB:
 			return {
 				...state,
 				details: action.payload,
@@ -72,6 +73,7 @@ export default (state = initialState, action) => {
 				next: action.payload.next,
 				previous: action.payload.previous,
 				total: action.payload.total,
+				loading: false,
 			};
 		case CLEAR_DETAILS:
 			return {
