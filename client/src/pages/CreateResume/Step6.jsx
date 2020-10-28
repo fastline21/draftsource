@@ -242,10 +242,11 @@ const Step6 = ({
 	};
 
 	// Advanced Software List
-	const softwareListGenerate = () => {
+	const advancedSoftwareGenerate = () => {
+		const newSoftwareList = softwareList().filter((soft) => soft !== 'MS Word');
 		let key = 0;
 		let list = [];
-		const total = Math.ceil(softwareList().length / 4);
+		const total = Math.ceil(newSoftwareList.length / 4);
 		for (let x = 0; x < 4; x++) {
 			let item = [];
 			for (let y = 0; y < total; y++) {
@@ -253,12 +254,13 @@ const Step6 = ({
 					<AdvancedSoftwareItem
 						key={key}
 						index={key}
-						value={softwareList()[key]}
+						value={newSoftwareList[key]}
 						select={onSelectAdvancedSoftware}
 					/>
 				);
 				key++;
 			}
+
 			list.push(
 				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
 					<ul className="nav flex-column">{item}</ul>
@@ -1072,7 +1074,7 @@ const Step6 = ({
 							</div>
 							<div className="col-lg-8">
 								<div className="list">
-									<div className="form-row">{softwareListGenerate()}</div>
+									<div className="form-row">{advancedSoftwareGenerate()}</div>
 								</div>
 								<div className="form-inline">
 									<input
