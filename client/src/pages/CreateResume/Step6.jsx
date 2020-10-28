@@ -1051,7 +1051,7 @@ const Step6 = ({
 						</div>
 						<div className="form-row advanced-software">
 							<div className="col-lg-4">
-								<h5 className="title">Advanced Software</h5>
+								<h5 className="title">Advanced Software Expertise</h5>
 								{advancedSoftware.length === 0 ? (
 									<p className="subtitle">
 										This section will view your selected software you are
@@ -1093,7 +1093,7 @@ const Step6 = ({
 						</div>
 						<div className="form-row intermediate-software">
 							<div className="col-lg-4">
-								<h5 className="title">Intermediate Software</h5>
+								<h5 className="title">Intermediate Software Expertise</h5>
 								{intermediateSoftware.length === 0 ? (
 									<p className="subtitle">
 										This section will view your selected software you usually
