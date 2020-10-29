@@ -61,47 +61,47 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 		status,
 		dateCreated,
 	} = data;
-	const approveResume = () => {
+	const approveJob = () => {
 		setAction('approve');
 		setShowModalAction(true);
 		setMsg(
-			'<h2 className="title">Approve Resume?</h2><p>This resume will add to your approved resume tab.</p>'
+			'<h2 className="title">Approve Job?</h2><p>This resume will add to your approved resume tab.</p>'
 		);
 	};
 
-	const rejectResume = () => {
+	const rejectJob = () => {
 		setAction('reject');
 		setShowModalAction(true);
 		setMsg(
-			'<h2 className="title">Reject Resume?</h2><p>This resume will go to your reject resume tab. You can go back and review it again and decide to reapprove or delete this application.</p>'
+			'<h2 className="title">Reject Job?</h2><p>This resume will go to your reject resume tab. You can go back and review it again and decide to reapprove or delete this application.</p>'
 		);
 	};
 
-	const deleteResume = () => {
+	const deleteJob = () => {
 		setAction('delete');
 		setShowModalAction(true);
 		setMsg(
-			'<h2 className="title">Delete Resume?</h2><p>This resume will remove from the system and data of draftsource.</p>'
+			'<h2 className="title">Delete Job?</h2><p>This resume will remove from the system and data of draftsource.</p>'
 		);
 	};
 
-	const reapproveResume = () => {
+	const reapproveJob = () => {
 		setAction('reapprove');
 		setShowModalAction(true);
 		setMsg(
-			'<h2 className="title">Reapprove Resume?</h2><p>This resume will go to your approve resume tab. You can reject this resume later on if you wanted.</p>'
+			'<h2 className="title">Reapprove Job?</h2><p>This resume will go to your approve resume tab. You can reject this resume later on if you wanted.</p>'
 		);
 	};
 	const actionButton = () => {
 		if (status === 'Pending') {
 			return (
 				<>
-					<button className="btn btn-primary button" onClick={approveResume}>
+					<button className="btn btn-primary button" onClick={approveJob}>
 						Approve
 					</button>
 					<button
 						className="btn btn-primary button button1"
-						onClick={rejectResume}
+						onClick={rejectJob}
 					>
 						Reject
 					</button>
@@ -109,22 +109,19 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 			);
 		} else if (status === 'Approve') {
 			return (
-				<button
-					className="btn btn-primary button button"
-					onClick={rejectResume}
-				>
+				<button className="btn btn-primary button button" onClick={rejectJob}>
 					Reject
 				</button>
 			);
 		} else if (status === 'Reject') {
 			return (
 				<>
-					<button className="btn btn-primary button" onClick={reapproveResume}>
+					<button className="btn btn-primary button" onClick={reapproveJob}>
 						Reapprove
 					</button>
 					<button
 						className="btn btn-primary button button1"
-						onClick={deleteResume}
+						onClick={deleteJob}
 					>
 						Delete
 					</button>

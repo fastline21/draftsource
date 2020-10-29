@@ -272,9 +272,9 @@ router.get('/rejected-applicants', auth, async (req, res) => {
 	for (const [key, value] of Object.entries(query)) {
 		if (key === 'specialty') {
 			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
+				queryData = { ...queryData, [key]: { $in: value.split(',') } };
 			} else {
-				queryData = { ...queryData, [key]: value };
+				queryData = { ...queryData, [key]: { $in: value } };
 			}
 		} else if (key === 'software') {
 			if (value.split(',').length > 1) {
@@ -348,28 +348,29 @@ router.put('/recruiters-comment', auth, async (req, res) => {
 router.put('/update-resume/:id', async (req, res) => {
 	const { id } = req.params;
 	const { workHistory } = req.body;
+	let error = false;
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d2 = moment(
-			`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
-				e.yearStarted
-			)}`,
-			'MM/DD/YYYY'
-		);
-		let d1 = moment(
-			`${moment().month(e.monthEnded).format('MM')}/01/${parseInt(
-				e.yearEnded
-			)}`,
-			'MM/DD/YYYY'
-		);
-		totalWorkHistory += d1.diff(d2, 'year');
+		const date1 = getTotalMonth(e.monthStarted, 1, e.yearStarted, 'MM/DD/YYYY');
+		const date2 = getTotalMonth(e.monthEnded, 1, e.yearEnded, 'MM/DD/YYYY');
+		const totalMonth = date2.diff(date1, 'month');
+		if (totalMonth <= 0) {
+			error = true;
+			return res.status(400).json({ msg: 'Invalid Date' });
+		}
+		totalWorkHistory += totalMonth;
 	});
-	await Resume.findByIdAndUpdate(id, {
-		...req.body,
-		totalWorkYear: totalWorkHistory,
-	});
-	// console.log(id);
-	// res.json({ id });
+
+	if (!error) {
+		totalWorkHistory /= 12;
+		// to convert decimal into whole number.
+		totalWorkHistory = Math.floor(totalWorkHistory);
+
+		await Resume.findByIdAndUpdate(id, {
+			...req.body,
+			totalWorkYear: totalWorkHistory,
+		});
+	}
 });
 
 // @route   PUT /api/candidate/approve-resume

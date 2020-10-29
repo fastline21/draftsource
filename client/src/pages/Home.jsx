@@ -15,10 +15,8 @@ const Home = () => {
 						</h1>
 						<p className="subtitle">
 							Hire full-time vetted Filipino drafters and avoid screening
-							high-stacks of unqualified resumes.
-							<br />
-							Draftsource eliminates hiring headaches, recruitment risks and
-							remote worker dramas.
+							high-stacks of unqualified resumes. Draftsource eliminates hiring
+							headaches, recruitment risks and remote worker dramas.
 						</p>
 						<div className="cta">
 							<Link to="/view-candidates" className="btn btn-primary button">
@@ -32,7 +30,7 @@ const Home = () => {
 								Talk to a Recruiter
 							</button> */}
 							<Link to="/draft-job" className="link">
-								Request pre-screened candidates for free
+								Request candidates for free
 							</Link>
 						</div>
 						<ul className="list">

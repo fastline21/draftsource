@@ -315,8 +315,8 @@ router.get('/rejected-jobs', auth, async (req, res) => {
 // @desc    Approve job
 // @access  Private
 router.put('/approve-job', auth, async (req, res) => {
-	const { id } = req.body;
-	const job = await Job.findByIdAndUpdate(id, {
+	const { _id } = req.body;
+	const job = await Job.findByIdAndUpdate(_id, {
 		status: 'Approve',
 	});
 	res.json(job);
@@ -326,8 +326,8 @@ router.put('/approve-job', auth, async (req, res) => {
 // @desc    Reject job
 // @access  Private
 router.put('/reject-job', auth, async (req, res) => {
-	const { id } = req.body;
-	const job = await Job.findByIdAndUpdate(id, {
+	const { _id } = req.body;
+	const job = await Job.findByIdAndUpdate(_id, {
 		status: 'Reject',
 	});
 	res.json(job);

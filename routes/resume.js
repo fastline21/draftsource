@@ -10,6 +10,9 @@ const Resume = require('./../models/Resume');
 // Middleware
 const auth = require('./../middleware/auth');
 
+// Utils
+const getTotalMonth = require('./../utils/getTotalMonth');
+
 router.post('/education', async (req, res) => {
 	let { education } = req.body;
 	const licenseArr = [];
@@ -61,6 +64,39 @@ router.post('/exp', async (req, res) => {
 		totalWorkHistory += d1.diff(d2, 'year');
 	});
 	res.json(totalWorkHistory);
+});
+
+router.post('/month', (req, res) => {
+	const { workHistory } = req.body;
+	let error = false;
+	let totalWorkHistory = 0;
+	workHistory.map((e) => {
+		const date1 = getTotalMonth(e.monthStarted, 1, e.yearStarted, 'MM/DD/YYYY');
+		const date2 = getTotalMonth(e.monthEnded, 1, e.yearEnded, 'MM/DD/YYYY');
+		const totalMonth = date2.diff(date1, 'month');
+		if (totalMonth <= 0) {
+			error = true;
+			return res.status(400).json({ msg: 'Invalid Date' });
+		}
+		totalWorkHistory += totalMonth;
+
+		// for dev only.
+		// to get the diff per work history.
+		// uncomment to get the result in console
+
+		// for month only
+		// console.log(date2.diff(date1, 'month'), 'Months');
+
+		// for month and year
+		// console.table([{ date: `${moment(date1).format('MM/DD/YYYY')} to ${moment(date2).format('MM/DD/YYYY')}`, month: date2.diff(date1, 'month'), year: date2.diff(date1, 'year') }])
+	});
+
+	if (!error) {
+		totalWorkHistory /= 12;
+		// to convert decimal into whole number.
+		totalWorkHistory = Math.floor(totalWorkHistory);
+		return res.json(totalWorkHistory);
+	}
 });
 
 // @route   POST /api/resume
@@ -135,22 +171,24 @@ router.post('/', auth, async (req, res) => {
 	// };
 
 	// Get total work history
+	let error = false;
 	let totalWorkHistory = 0;
 	workHistory.map((e) => {
-		let d2 = moment(
-			`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
-				e.yearStarted
-			)}`,
-			'MM/DD/YYYY'
-		);
-		let d1 = moment(
-			`${moment().month(e.monthEnded).format('MM')}/01/${parseInt(
-				e.yearEnded
-			)}`,
-			'MM/DD/YYYY'
-		);
-		totalWorkHistory += d1.diff(d2, 'year');
+		const date1 = getTotalMonth(e.monthStarted, 1, e.yearStarted, 'MM/DD/YYYY');
+		const date2 = getTotalMonth(e.monthEnded, 1, e.yearEnded, 'MM/DD/YYYY');
+		const totalMonth = date2.diff(date1, 'month');
+		if (totalMonth <= 0) {
+			error = true;
+			return res.status(400).json({ msg: 'Invalid Date' });
+		}
+		totalWorkHistory += totalMonth;
 	});
+
+	if (!error) {
+		totalWorkHistory /= 12;
+		// to convert decimal into whole number.
+		totalWorkHistory = Math.floor(totalWorkHistory);
+	}
 
 	// string to array
 	specialty = specialty.split(',');

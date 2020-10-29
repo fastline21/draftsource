@@ -381,7 +381,7 @@ const Step4 = ({
 											</label>
 											<div className="form-group upload-file">
 												<label
-													htmlFor="sampleAudioInput"
+													htmlFor="aboutYourselfInput"
 													className={`form-label${
 														uploadAboutYourself ? ' disabled' : ''
 													}`}
@@ -393,7 +393,7 @@ const Step4 = ({
 													type="file"
 													accept="audio/*"
 													name="aboutYourself"
-													id="sampleAudioInput"
+													id="aboutYourselfInput"
 													className="form-control-file"
 													onChange={uploadButton}
 												/>
@@ -409,17 +409,17 @@ const Step4 = ({
 											</span>
 										</p>
 										<p
-											id="sampleAudio"
+											id="aboutYourself"
 											className="upload"
 											style={{
 												display: uploadAboutYourself ? 'block' : 'none',
 											}}
 										>
-											<label id="sampleAudioFile" className="selected-file">
+											<label id="aboutYourselfFile" className="selected-file">
 												{uploadAboutYourself ? uploadAboutYourself.name : null}
 											</label>
 											<label
-												htmlFor="replacesampleAudioInput"
+												htmlFor="replaceAboutYourselfInput"
 												className="replace-button"
 											>
 												Replace
@@ -427,8 +427,8 @@ const Step4 = ({
 											<input
 												type="file"
 												accept="audio/*"
-												name="sampleAudio"
-												id="replacesampleAudioInput"
+												name="aboutYourself"
+												id="replaceAboutYourselfInput"
 												className="form-control-file"
 												onChange={uploadButton}
 											/>
