@@ -354,7 +354,7 @@ router.put('/update-resume/:id', async (req, res) => {
 		const date1 = getTotalMonth(e.monthStarted, 1, e.yearStarted, 'MM/DD/YYYY');
 		const date2 = getTotalMonth(e.monthEnded, 1, e.yearEnded, 'MM/DD/YYYY');
 		const totalMonth = date2.diff(date1, 'month');
-		if (totalMonth <= 0) {
+		if (totalMonth < 0) {
 			error = true;
 			return res.status(400).json({ msg: 'Invalid Date' });
 		}
