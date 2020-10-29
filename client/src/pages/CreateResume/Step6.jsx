@@ -1006,8 +1006,8 @@ const Step6 = ({
 						{/* <PreLoader /> */}
 						<div style={{ width: 100, height: 100 }}>
 							<CircularProgressbar
-								value={60}
-								text={`${60}%`}
+								value={percent}
+								text={`${percent}%`}
 								styles={buildStyles({
 									textColor: '#000',
 									pathColor: '#0c3961',
