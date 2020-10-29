@@ -7,6 +7,7 @@ import {
 	RESET_STEP,
 	SET_SUCCESS,
 	RESUME_LOADING,
+	SET_PERCENTAGE,
 } from '../actions/types';
 
 const initialState = {
@@ -15,6 +16,7 @@ const initialState = {
 	step: 0,
 	success: false,
 	loading: false,
+	percent: 0,
 };
 
 export default (state = initialState, action) => {
@@ -60,6 +62,11 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: action.payload,
+			};
+		case SET_PERCENTAGE:
+			return {
+				...state,
+				percent: action.payload,
 			};
 		default:
 			return state;

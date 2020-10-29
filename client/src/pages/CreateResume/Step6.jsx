@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
@@ -43,7 +45,7 @@ const Step6 = ({
 	clearUser,
 	check,
 	setSuccess,
-	resumeState: { resume, error, success, loading },
+	resumeState: { resume, error, success, loading, percent },
 }) => {
 	const [
 		Prompt,
@@ -989,7 +991,7 @@ const Step6 = ({
 						left: 0,
 						right: 0,
 						height: '100vh',
-						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						backgroundColor: 'rgba(255, 255, 255, 0.5)',
 						zIndex: 1031,
 					}}
 				>
@@ -1001,7 +1003,17 @@ const Step6 = ({
 							transform: 'translate(-50%, -50%)',
 						}}
 					>
-						<PreLoader />
+						{/* <PreLoader /> */}
+						<div style={{ width: 100, height: 100 }}>
+							<CircularProgressbar
+								value={60}
+								text={`${60}%`}
+								styles={buildStyles({
+									textColor: '#000',
+									pathColor: '#0c3961',
+								})}
+							/>
+						</div>
 					</div>
 				</div>
 			) : null}

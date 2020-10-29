@@ -8,6 +8,7 @@ import {
 	RESET_STEP,
 	SET_SUCCESS,
 	RESUME_LOADING,
+	SET_PERCENTAGE,
 } from './types';
 
 // Add resume
@@ -53,6 +54,10 @@ export const submitResume = (resume) => async (dispatch) => {
 			onUploadProgress: (progressEvent) => {
 				const { loaded, total } = progressEvent;
 				let percent = Math.floor((loaded * 100) / total);
+				dispatch({
+					type: SET_PERCENTAGE,
+					payload: percent,
+				});
 				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
 			},
 		};

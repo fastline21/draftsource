@@ -6,13 +6,15 @@ import candidateReducer from './candidateReducer';
 import filterReducer from './filterReducer';
 import employerReducer from './employerReducer';
 import jobReducer from './jobReducer';
+import loadingReducer from './loadingReducer';
 
 export default combineReducers({
-    alertState: alertReducer,
-    userState: userReducer,
-    resumeState: resumeReducer,
-    candidateState: candidateReducer,
-    filterState: filterReducer,
-    employerState: employerReducer,
-    jobState: jobReducer,
+	alertState: alertReducer,
+	userState: userReducer,
+	resumeState: resumeReducer,
+	candidateState: candidateReducer,
+	filterState: filterReducer,
+	employerState: employerReducer,
+	jobState: jobReducer,
+	loadingState: loadingReducer,
 });
