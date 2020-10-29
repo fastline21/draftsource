@@ -50,6 +50,11 @@ export const submitResume = (resume) => async (dispatch) => {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},
+			onUploadProgress: (progressEvent) => {
+				const { loaded, total } = progressEvent;
+				let percent = Math.floor((loaded * 100) / total);
+				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
+			},
 		};
 		await axios.post('/api/resume', resume, config);
 		dispatch({
