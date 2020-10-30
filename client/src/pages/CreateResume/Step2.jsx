@@ -101,7 +101,7 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 									className={`bottom-left${upload ? ' invisible' : ''}`}
 								></span>
 								<p className={`caption${upload ? ' invisible' : ''}`}>
-									Drag or Upload from your mobile or desktop
+									Upload from your mobile or desktop
 								</p>
 								<label
 									htmlFor="resumeImageInput"
