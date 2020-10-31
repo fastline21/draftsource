@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-import { talkRecruiter } from './../components/TalkRecruiter';
+// Components
+// import { talkRecruiter } from './../components/TalkRecruiter';
 
-const Home = () => {
+// Actions
+import { resumeStep, resumeSuccess } from './../state/actions/resumeAction';
+
+const Home = ({
+	resumeStep,
+	resumeSuccess,
+	resumeState: { step: resStep },
+}) => {
+	useEffect(() => {
+		if (resStep !== 0) {
+			resumeStep(0);
+			resumeSuccess(false);
+		}
+	}, [resStep]);
 	return (
 		<div id="home">
 			<div style={{ height: '90vh' }}>
@@ -80,4 +96,14 @@ const Home = () => {
 	);
 };
 
-export default Home;
+Home.propTypes = {
+	resumeStep: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
+	resumeState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+	resumeState: state.resumeState,
+});
+
+export default connect(mapStateToProps, { resumeStep, resumeSuccess })(Home);

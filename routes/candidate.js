@@ -19,86 +19,234 @@ function shuffle(array) {
 // @access  Private
 router.get('/view-candidates', async (req, res) => {
 	const query = req.query;
-	let queryData = {};
+	let totalWorkYear = {
+		min: -1,
+		max: -1,
+	};
+	const searchOR = [];
+	const searchAND = [];
+	const queryData = {};
 	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
+		const keyword = value.split(',');
+		if (key === 'specialty' || key === 'marketType') {
+			searchOR.push({
+				[key]: {
+					$in: keyword,
+				},
+			});
 		} else if (key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = {
-					...queryData,
-					$or: [
-						{ advancedSoftware: value.split(',') },
-						{ intermediateSoftware: value.split(',') },
-					],
-				};
-			} else {
-				queryData = {
-					...queryData,
-					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
-				};
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: { $regex: value, $options: 'i' } },
-					{ software: { $regex: value, $options: 'i' } },
-				],
-			};
+			searchOR.push(
+				{
+					advancedSoftware: {
+						$in: keyword,
+					},
+				},
+				{
+					intermediateSoftware: {
+						$in: keyword,
+					},
+				}
+			);
 		} else if (key === 'experience') {
-			if (value === '1-4 years') {
-				queryData = {
-					...queryData,
+			keyword.map((e) => {
+				if (e === '1-4 years') {
+					if (
+						totalWorkYear.max < 4 &&
+						totalWorkYear.min < 4 &&
+						totalWorkYear.max !== 0
+					) {
+						totalWorkYear.max = 4;
+					}
+
+					if (totalWorkYear.min > 1 || totalWorkYear.min === -1) {
+						totalWorkYear.min = 1;
+					}
+				} else if (e === '5-9 years') {
+					if (
+						totalWorkYear.max < 9 &&
+						totalWorkYear.min < 9 &&
+						totalWorkYear.max !== 0
+					) {
+						totalWorkYear.max = 9;
+					}
+
+					if (totalWorkYear.min > 5 || totalWorkYear.min === -1) {
+						totalWorkYear.min = 5;
+					}
+				} else if (e === '10-14 years') {
+					if (
+						totalWorkYear.max < 14 &&
+						totalWorkYear.min < 14 &&
+						totalWorkYear.max !== 0
+					) {
+						totalWorkYear.max = 14;
+					}
+
+					if (totalWorkYear.min > 10 || totalWorkYear.min === -1) {
+						totalWorkYear.min = 10;
+					}
+				} else if (e === '15-19 years') {
+					if (
+						totalWorkYear.max < 19 &&
+						totalWorkYear.min < 19 &&
+						totalWorkYear.max !== 0
+					) {
+						totalWorkYear.max = 19;
+					}
+
+					if (totalWorkYear.min > 15 || totalWorkYear.min === -1) {
+						totalWorkYear.min = 15;
+					}
+				} else {
+					if (totalWorkYear.max < 20) {
+						totalWorkYear.max = 0;
+					}
+					if (totalWorkYear.min > 20 || totalWorkYear.min === -1) {
+						totalWorkYear.min = 20;
+					}
+				}
+			});
+			if (totalWorkYear.max === 0) {
+				searchAND.push({
 					totalWorkYear: {
-						$lte: 4,
-						$gte: 1,
+						$gte: totalWorkYear.min,
 					},
-				};
-			} else if (value === '5-9 years') {
-				queryData = {
-					...queryData,
+				});
+			} else {
+				searchAND.push({
 					totalWorkYear: {
-						$lte: 9,
-						$gte: 5,
+						$lte: totalWorkYear.max,
+						$gte: totalWorkYear.min,
 					},
-				};
-			} else if (value === '10-14 years') {
-				queryData = {
-					...queryData,
-					totalWorkYear: {
-						$lte: 14,
-						$gte: 10,
-					},
-				};
-			} else if (value === '15+ years') {
-				queryData = {
-					...queryData,
-					totalWorkYear: {
-						$gte: 15,
-					},
-				};
+				});
 			}
-		} else if (key === 'country') {
-			queryData = {
-				...queryData,
-				countryExperience: { $regex: value, $options: 'i' },
-			};
 		} else if (key === 'page' || key === 'limit') {
 			continue;
+		} else if (key === 'country') {
+			searchAND.push({
+				countryExperience: {
+					$in: keyword,
+				},
+			});
 		} else {
-			queryData = { ...queryData, [key]: value };
+			searchAND.push({
+				[key]: {
+					$in: keyword,
+				},
+			});
 		}
 	}
+	if (searchOR.length > 0) {
+		Object.assign(queryData, { $or: [...searchOR] });
+	}
+	Object.assign(queryData, ...searchAND);
+	// for (const [key, value] of Object.entries(query)) {
+	// 	if (key === 'specialty') {
+	// 		if (value.split(',').length > 1) {
+	// 			queryData = {
+	// 				...queryData,
+	// 				[key]: {
+	// 					$in: value.split(','),
+	// 				},
+	// 			};
+	// 		} else {
+	// 			queryData = {
+	// 				...queryData,
+	// 				[key]: {
+	// 					$in: value,
+	// 				},
+	// 			};
+	// 		}
+	// 	} else if (key === 'software') {
+	// 		if (value.split(',').length > 1) {
+	// 			queryData = {
+	// 				...queryData,
+	// 				// advancedSoftware: {
+	// 				// 	$in: value.split(','),
+	// 				// },
+	// 				// intermediateSoftware: {
+	// 				// 	$in: value.split(','),
+	// 				// },
+	// 				$or: [
+	// 					{
+	// 						advancedSoftware: {
+	// 							$in: value.split(','),
+	// 						},
+	// 					},
+	// 					{
+	// 						intermediateSoftware: {
+	// 							$in: value.split(','),
+	// 						},
+	// 					},
+	// 				],
+	// 			};
+	// 		} else {
+	// 			queryData = {
+	// 				...queryData,
+	// 				$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
+	// 			};
+	// 		}
+	// 	} else if (key === 'search') {
+	// 		queryData = {
+	// 			...queryData,
+	// 			$or: [
+	// 				{ specialty: { $regex: value, $options: 'i' } },
+	// 				{ software: { $regex: value, $options: 'i' } },
+	// 			],
+	// 		};
+	// 	} else if (key === 'experience') {
+	// 		if (value === '1-4 years') {
+	// 			queryData = {
+	// 				...queryData,
+	// 				totalWorkYear: {
+	// 					$lte: 4,
+	// 					$gte: 1,
+	// 				},
+	// 			};
+	// 		} else if (value === '5-9 years') {
+	// 			queryData = {
+	// 				...queryData,
+	// 				totalWorkYear: {
+	// 					$lte: 9,
+	// 					$gte: 5,
+	// 				},
+	// 			};
+	// 		} else if (value === '10-14 years') {
+	// 			queryData = {
+	// 				...queryData,
+	// 				totalWorkYear: {
+	// 					$lte: 14,
+	// 					$gte: 10,
+	// 				},
+	// 			};
+	// 		} else if (value === '15+ years') {
+	// 			queryData = {
+	// 				...queryData,
+	// 				totalWorkYear: {
+	// 					$gte: 15,
+	// 				},
+	// 			};
+	// 		}
+	// 	} else if (key === 'country') {
+	// 		queryData = {
+	// 			...queryData,
+	// 			countryExperience: { $regex: value, $options: 'i' },
+	// 		};
+	// 	} else if (key === 'page' || key === 'limit') {
+	// 		continue;
+	// 	} else {
+	// 		queryData = { ...queryData, [key]: value };
+	// 	}
+	// }
+
 	// const candidates = await Resume.aggregate([
 	// 	{ $match: { ...queryData, status: 'Approve' } },
 	// 	{ $sample: { size: parseInt(query.limit) || 10 } },
 	// ]);
-	let candidates = await Resume.find({ ...queryData, status: 'Approve' });
+	let candidates = await Resume.find({
+		...queryData,
+		status: 'Approve',
+	});
 	shuffle(candidates);
 	const page = parseInt(query.page) || 1;
 	const limit = parseInt(query.limit) || 10;

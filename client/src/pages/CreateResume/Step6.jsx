@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
-import 'react-circular-progressbar/dist/styles.css';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
@@ -34,8 +32,9 @@ import { setAlert } from './../../state/actions/alertAction';
 import { clearUser } from './../../state/actions/userAction';
 import {
 	submitResume,
+	resumeStep,
 	clearError,
-	setSuccess,
+	resumeSuccess,
 } from './../../state/actions/resumeAction';
 
 const Step6 = ({
@@ -44,8 +43,9 @@ const Step6 = ({
 	clearError,
 	clearUser,
 	check,
-	setSuccess,
-	resumeState: { resume, error, success, loading, percent },
+	resumeSuccess,
+	resumeStep,
+	resumeState: { resume, error, success, loading, percent, step },
 }) => {
 	const [
 		Prompt,
@@ -717,56 +717,6 @@ const Step6 = ({
 	//     setMessage('Are you sure you want to leave this page?');
 	// };
 
-	const onSubmit = (e) => {
-		e.preventDefault();
-
-		if (
-			specialty.length === 0 ||
-			advancedSoftware.length === 0 ||
-			intermediateSoftware.length === 0 ||
-			marketType.length === 0 ||
-			countryExperience.length === 0 ||
-			uploadWork.images.length === 0
-			// uploadWork.documents.length === 0
-		) {
-			return setAlert('', 'Please fill-in the required boxes to Proceed.');
-		} else {
-			const formData = new FormData();
-			for (const [key, value] of Object.entries(resume)) {
-				if (key === 'education' || key === 'workHistory') {
-					formData.append(key, JSON.stringify(value));
-				} else {
-					formData.append(key, value);
-				}
-			}
-			for (const [key, value] of Object.entries(check())) {
-				formData.append(key, value);
-			}
-			for (const property in uploadWork) {
-				uploadWork[property].forEach((element) => {
-					formData.append([property], element.file);
-				});
-			}
-			formData.append('specialty', specialty);
-			formData.append('advancedSoftware', advancedSoftware);
-			formData.append('intermediateSoftware', intermediateSoftware);
-			formData.append('marketType', marketType);
-			formData.append('countryExperience', countryExperience);
-			formData.append('uploadWork', JSON.stringify(uploadWork));
-			submitResume(formData);
-			setSpecialty([]);
-			setAdvancedSoftware([]);
-			setIntermediateSoftware([]);
-			setMarketType([]);
-			setCountryExperience([]);
-			setUploadWork({
-				images: [],
-			});
-			// setSubmit(true);
-			setPristine();
-		}
-	};
-
 	const onKeyPressOtherSpecify = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -929,30 +879,92 @@ const Step6 = ({
 		}
 	};
 
+	const onSubmit = (e) => {
+		e.preventDefault();
+
+		if (
+			specialty.length === 0 ||
+			advancedSoftware.length === 0 ||
+			intermediateSoftware.length === 0 ||
+			marketType.length === 0 ||
+			countryExperience.length === 0 ||
+			uploadWork.images.length === 0
+			// uploadWork.documents.length === 0
+		) {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else if (specialty.length < 3) {
+			return setAlert('', 'Please choose atleast 3 skills');
+		} else if (marketType.length < 3) {
+			return setAlert('', 'Please choose atleast 3 market type');
+		} else {
+			const formData = new FormData();
+			for (const [key, value] of Object.entries(resume)) {
+				if (key === 'education' || key === 'workHistory') {
+					formData.append(key, JSON.stringify(value));
+				} else {
+					formData.append(key, value);
+				}
+			}
+			for (const [key, value] of Object.entries(check())) {
+				formData.append(key, value);
+			}
+			for (const property in uploadWork) {
+				uploadWork[property].forEach((element) => {
+					formData.append([property], element.file);
+				});
+			}
+			formData.append('specialty', specialty);
+			formData.append('advancedSoftware', advancedSoftware);
+			formData.append('intermediateSoftware', intermediateSoftware);
+			formData.append('marketType', marketType);
+			formData.append('countryExperience', countryExperience);
+			formData.append('uploadWork', JSON.stringify(uploadWork));
+			submitResume(formData);
+			setSpecialty([]);
+			setAdvancedSoftware([]);
+			setIntermediateSoftware([]);
+			setMarketType([]);
+			setCountryExperience([]);
+			setUploadWork({
+				images: [],
+			});
+			// setSubmit(true);
+			setPristine();
+		}
+	};
+
 	useEffect(() => {
-		if (load) {
+		if (step === 6) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
-			setLoad(false);
 		}
 
+		// if (step !== 6) {
+		// 	setPristine();
+		// 	setAlert(
+		// 		'/create-resume?step=1',
+		// 		'You are not authorize to go in this page. Please start at Step 1'
+		// 	);
+		// }
+
 		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
 			setAlert('', error.msg);
 			clearError();
 		}
 
 		if (success) {
-			// setSubmit(false);
+			clearUser();
 			setAlert(
 				'/',
 				'<h2 class="title">Thank you for your resume</h2><p class="subtitle">We will call you within 72 hours to verify your profile.</p>'
 			);
-			setSuccess();
-			clearUser();
+			setPristine();
 		}
 
 		// eslint-disable-next-line
-	}, [error, success, load]);
+	}, [error, success, step]);
 
 	return (
 		<div className="step-6">
@@ -983,40 +995,7 @@ const Step6 = ({
                     updateData={updateWorkDocumentData}
                 />
             ) : null} */}
-			{loading ? (
-				<div
-					style={{
-						position: 'fixed',
-						top: 0,
-						left: 0,
-						right: 0,
-						height: '100vh',
-						backgroundColor: 'rgba(255, 255, 255, 0.5)',
-						zIndex: 1031,
-					}}
-				>
-					<div
-						style={{
-							position: 'absolute',
-							top: '50%',
-							left: '50%',
-							transform: 'translate(-50%, -50%)',
-						}}
-					>
-						{/* <PreLoader /> */}
-						<div style={{ width: 100, height: 100 }}>
-							<CircularProgressbar
-								value={percent}
-								text={`${percent}%`}
-								styles={buildStyles({
-									textColor: '#000',
-									pathColor: '#0c3961',
-								})}
-							/>
-						</div>
-					</div>
-				</div>
-			) : null}
+			{loading ? <PreLoader percent={percent} /> : null}
 			<div className="row">
 				<div className="col-lg-12">
 					<form className="form" onSubmit={onSubmit}>
@@ -1352,7 +1331,8 @@ Step6.propTypes = {
 	submitResume: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
-	setSuccess: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
 
@@ -1365,5 +1345,6 @@ export default connect(mapStateToProps, {
 	clearError,
 	submitResume,
 	clearUser,
-	setSuccess,
+	resumeSuccess,
+	resumeStep,
 })(Step6);

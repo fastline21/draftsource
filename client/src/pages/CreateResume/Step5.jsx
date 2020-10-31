@@ -9,19 +9,31 @@ import useWindowSize from './../../utils/useWindowSize';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
-import { addResume, clearError } from './../../state/actions/resumeAction';
+import {
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+} from './../../state/actions/resumeAction';
 
 // List
 import { monthList } from './../../list/Month';
 import { yearList } from './../../list/Year';
 import { companyExpertiseList } from './../../list/CompanyExpertise';
 import { companySizeList } from './../../list/CompanySize';
+import { countryList } from '../../list/Country';
 
 // Components
 import WorkHistoryItem from './WorkHistoryItem';
-import { countryList } from '../../list/Country';
 
-const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
+const Step5 = ({
+	setAlert,
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+	resumeState: { error, success, step },
+}) => {
 	const [
 		Prompt,
 		setDirty,
@@ -38,20 +50,19 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 	const initialWorkHistory = {
 		title: '',
 		company: '',
-		monthStarted: 'January',
+		monthStarted: monthList()[0],
 		yearStarted: defaultYear,
-		monthEnded: 'January',
+		monthEnded: monthList()[0],
 		yearEnded: defaultYear,
 		description: '',
 		companyExpertise: [],
-		country: 'Afghanistan',
-		companySize: '1-10',
+		country: countryList()[0],
+		companySize: companySizeList()[0],
 	};
 
 	const [workHistory, setWorkHistory] = useState([]);
 	const [workHistoryItem, setWorkHistoryItem] = useState(initialWorkHistory);
 	const [current, setCurrent] = useState(null);
-	const [submit, setSubmit] = useState(false);
 
 	const {
 		title,
@@ -86,10 +97,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 			country === '' ||
 			companySize === ''
 		) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		}
 		setWorkHistory((workHistory) => [...workHistory, workHistoryItem]);
 		clearWorkHistoryItem();
@@ -104,9 +112,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 
 	const onUpdate = (e) => {
 		e.preventDefault();
-		setWorkHistoryItem([
-			...workHistory.splice(current, 1, workHistoryItem),
-		]);
+		setWorkHistoryItem([...workHistory.splice(current, 1, workHistoryItem)]);
 		clearWorkHistoryItem();
 		setDirty();
 		setMessage('Are you sure you want to leave this page?');
@@ -133,9 +139,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 				setWorkHistoryItem({
 					...workHistoryItem,
 					[name]: [
-						...companyExpertise.filter(
-							(expertise) => expertise !== value
-						),
+						...companyExpertise.filter((expertise) => expertise !== value),
 					],
 				});
 			} else {
@@ -152,33 +156,40 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 	const onSubmit = (e) => {
 		e.preventDefault();
 		if (workHistory.length === 0) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			addResume({
 				workHistory,
 			});
 			setWorkHistory([]);
-			setSubmit(true);
 			setPristine();
 		}
 	};
 
 	useEffect(() => {
-		if (workHistory.length === 0) {
+		if (step === 5) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
 
+		if (step !== 5) {
+			setPristine();
+			setAlert(
+				'/create-resume?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
 			setAlert('', error.msg);
 			clearError();
 		}
 
-		if (submit) {
-			setSubmit(false);
+		if (success) {
+			resumeSuccess(false);
+			resumeStep(6);
 			history.push({
 				pathname: '/create-resume',
 				search: 'step=6',
@@ -186,7 +197,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 		}
 
 		// eslint-disable-next-line
-	}, [workHistory, submit, error]);
+	}, [success, step, error]);
 
 	return (
 		<div className="step-5">
@@ -199,9 +210,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 								<div className="content">
 									<h5 className="title">Work History</h5>
 									<div className="form-group">
-										<label className="form-label">
-											Job Title / Position
-										</label>
+										<label className="form-label">Job Title / Position</label>
 										<input
 											type="text"
 											name="title"
@@ -211,9 +220,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 										/>
 									</div>
 									<div className="form-group">
-										<label className="form-label">
-											Company
-										</label>
+										<label className="form-label">Company</label>
 										<input
 											type="text"
 											name="company"
@@ -223,9 +230,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 										/>
 									</div>
 									<div className="form-group">
-										<label className="form-label">
-											Month / Year Started
-										</label>
+										<label className="form-label">Month / Year Started</label>
 										<div className="form-row">
 											<div className="col">
 												<select
@@ -235,10 +240,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													value={monthStarted}
 												>
 													{monthList().map((e, i) => (
-														<option
-															key={i}
-															value={e}
-														>
+														<option key={i} value={e}>
 															{e}
 														</option>
 													))}
@@ -252,10 +254,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													value={yearStarted}
 												>
 													{yearList().map((e, i) => (
-														<option
-															key={i}
-															value={e}
-														>
+														<option key={i} value={e}>
 															{e}
 														</option>
 													))}
@@ -264,9 +263,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 										</div>
 									</div>
 									<div className="form-group">
-										<label className="form-label">
-											Month / Year Ended
-										</label>
+										<label className="form-label">Month / Year Ended</label>
 										<div className="form-row">
 											<div className="col">
 												<select
@@ -276,10 +273,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													value={monthEnded}
 												>
 													{monthList().map((e, i) => (
-														<option
-															key={i}
-															value={e}
-														>
+														<option key={i} value={e}>
 															{e}
 														</option>
 													))}
@@ -293,10 +287,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													value={yearEnded}
 												>
 													{yearList().map((e, i) => (
-														<option
-															key={i}
-															value={e}
-														>
+														<option key={i} value={e}>
 															{e}
 														</option>
 													))}
@@ -309,9 +300,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 							<div className="col-lg-4 col-md-6 center-col">
 								<div className="content center">
 									<div className="form-group">
-										<label className="form-label">
-											Job Description
-										</label>
+										<label className="form-label">Job Description</label>
 										<textarea
 											name="description"
 											value={description}
@@ -325,16 +314,12 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 							</div>
 							<div
 								className={`col-lg-4 col-md-6${
-									windowSize.width < 1024
-										? ' offset-md-3'
-										: ''
+									windowSize.width < 1024 ? ' offset-md-3' : ''
 								}`}
 							>
 								<div className="content right">
 									<div className="form-group">
-										<label className="form-label">
-											About the company
-										</label>
+										<label className="form-label">About the company</label>
 										{/* <textarea
                                             name="about"
                                             value={about}
@@ -360,9 +345,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													name="companyExpertise"
 													onChange={onChange}
 													value={e}
-													checked={companyExpertise.includes(
-														e
-													)}
+													checked={companyExpertise.includes(e)}
 												/>
 												<label
 													className="form-check-label"
@@ -374,10 +357,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 										))}
 										<div className="form-group row">
 											<div className="form-group col">
-												<label
-													htmlFor="countryInput"
-													className="form-label"
-												>
+												<label htmlFor="countryInput" className="form-label">
 													Country
 												</label>
 												<select
@@ -387,23 +367,15 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													onChange={onChange}
 													value={country}
 												>
-													{countryList().map(
-														(e, i) => (
-															<option
-																key={i}
-																value={e}
-															>
-																{e}
-															</option>
-														)
-													)}
+													{countryList().map((e, i) => (
+														<option key={i} value={e}>
+															{e}
+														</option>
+													))}
 												</select>
 											</div>
 											<div className="form-group col">
-												<label
-													htmlFor="countryInput"
-													className="form-label"
-												>
+												<label htmlFor="countryInput" className="form-label">
 													Company Size
 												</label>
 												<select
@@ -413,16 +385,11 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 													onChange={onChange}
 													value={companySize}
 												>
-													{companySizeList().map(
-														(e, i) => (
-															<option
-																key={i}
-																value={e}
-															>
-																{e}
-															</option>
-														)
-													)}
+													{companySizeList().map((e, i) => (
+														<option key={i} value={e}>
+															{e}
+														</option>
+													))}
 												</select>
 											</div>
 										</div>
@@ -475,8 +442,7 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 									<div className="col-lg-8 border-top">
 										{workHistory.length === 0 ? (
 											<p className="text">
-												This section will display on
-												what you added to your work
+												This section will display on what you added to your work
 												history from the top section.
 											</p>
 										) : null}
@@ -507,7 +473,9 @@ const Step5 = ({ setAlert, addResume, clearError, resumeState: { error } }) => {
 Step5.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addResume: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
 
@@ -515,6 +483,10 @@ const mapStateToProps = (state) => ({
 	resumeState: state.resumeState,
 });
 
-export default connect(mapStateToProps, { setAlert, clearError, addResume })(
-	Step5
-);
+export default connect(mapStateToProps, {
+	setAlert,
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+})(Step5);

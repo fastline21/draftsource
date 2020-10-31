@@ -6,6 +6,7 @@ const moment = require('moment');
 
 // Models
 const Resume = require('./../models/Resume');
+const Temp = require('./../models/Temp');
 
 // Middleware
 const auth = require('./../middleware/auth');
@@ -103,17 +104,19 @@ router.post('/month', (req, res) => {
 // @desc    Create resume
 // @access  Private
 router.post('/', auth, async (req, res) => {
+	const temp = await Temp.findOne({ user: req.user.id });
 	const {
 		firstName,
 		lastName,
 		email,
+		cellphone,
 		age,
 		gender,
-		cellphone,
 		city,
-		// country,
 		linkedIn,
 		recruiterName,
+	} = temp;
+	const {
 		internetType,
 		internetResult,
 		havePC,

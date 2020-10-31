@@ -9,7 +9,12 @@ import useWindowSize from './../../utils/useWindowSize';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
-import { addResume, clearError } from './../../state/actions/resumeAction';
+import {
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+} from './../../state/actions/resumeAction';
 
 // List
 // import { availabilityList } from './../../list/Availability';
@@ -19,11 +24,13 @@ import { salaryList } from './../../list/Salary';
 import EducationItem from './EducationItem';
 
 const Step4 = ({
+	uploadFile,
 	setAlert,
 	addResume,
+	resumeStep,
 	clearError,
-	uploadFile,
-	resumeState: { error },
+	resumeSuccess,
+	resumeState: { error, success, step },
 }) => {
 	const [
 		Prompt,
@@ -33,7 +40,6 @@ const Step4 = ({
 	] = useUnsavedChangesWarning();
 
 	const windowSize = useWindowSize();
-
 	const history = useHistory();
 
 	const initialInfo = {
@@ -275,27 +281,34 @@ const Step4 = ({
 			setUploadGovID(null);
 			setUploadCV(null);
 			setEducation([]);
-			setSubmit(true);
 			setPristine();
 		}
 	};
 
 	useEffect(() => {
-		if (
-			JSON.stringify(info) === JSON.stringify(initialInfo) ||
-			education.length === 0
-		) {
+		if (step === 4) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
 
+		if (step !== 4) {
+			setPristine();
+			setAlert(
+				'/create-resume?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
 			setAlert('', error.msg);
 			clearError();
 		}
 
-		if (submit) {
-			setSubmit(false);
+		if (success) {
+			resumeSuccess(false);
+			resumeStep(5);
 			history.push({
 				pathname: '/create-resume',
 				search: 'step=5',
@@ -303,7 +316,7 @@ const Step4 = ({
 		}
 
 		// eslint-disable-next-line
-	}, [info, education, error, submit]);
+	}, [step, error, success]);
 
 	return (
 		<div className="step-4">
@@ -856,7 +869,9 @@ const Step4 = ({
 Step4.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addResume: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
 
@@ -864,6 +879,10 @@ const mapStateToProps = (state) => ({
 	resumeState: state.resumeState,
 });
 
-export default connect(mapStateToProps, { setAlert, clearError, addResume })(
-	Step4
-);
+export default connect(mapStateToProps, {
+	setAlert,
+	clearError,
+	resumeSuccess,
+	resumeStep,
+	addResume,
+})(Step4);

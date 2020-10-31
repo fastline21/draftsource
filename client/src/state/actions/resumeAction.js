@@ -6,9 +6,9 @@ import {
 	CLEAR_ERROR,
 	RESUME_STEP,
 	RESET_STEP,
-	SET_SUCCESS,
+	RESUME_SUCCESS,
 	RESUME_LOADING,
-	SET_PERCENTAGE,
+	RESUME_PERCENT,
 } from './types';
 
 // Add resume
@@ -45,7 +45,7 @@ export const tempUser = (id) => async (dispatch) => {
 // Submit resume
 export const submitResume = (resume) => async (dispatch) => {
 	try {
-		setLoading()(dispatch);
+		resumeLoading()(dispatch);
 
 		const config = {
 			headers: {
@@ -55,10 +55,10 @@ export const submitResume = (resume) => async (dispatch) => {
 				const { loaded, total } = progressEvent;
 				let percent = Math.floor((loaded * 100) / total);
 				dispatch({
-					type: SET_PERCENTAGE,
+					type: RESUME_PERCENT,
 					payload: percent,
 				});
-				console.log(`${loaded}kb of ${total}kb | ${percent}%`);
+				// console.log(`${loaded}kb of ${total}kb | ${percent}%`);
 			},
 		};
 		await axios.post('/api/resume', resume, config);
@@ -74,14 +74,15 @@ export const submitResume = (resume) => async (dispatch) => {
 };
 
 // Set success
-export const setSuccess = () => {
-	return {
-		type: SET_SUCCESS,
-	};
+export const resumeSuccess = (success) => (dispatch) => {
+	dispatch({
+		type: RESUME_SUCCESS,
+		payload: success,
+	});
 };
 
 // Set loading to true
-export const setLoading = () => (dispatch) => {
+export const resumeLoading = () => (dispatch) => {
 	dispatch({
 		type: RESUME_LOADING,
 	});
@@ -95,7 +96,7 @@ export const clearError = () => {
 };
 
 // Set step
-export const setStep = (step) => (dispatch) => {
+export const resumeStep = (step) => (dispatch) => {
 	dispatch({
 		type: RESUME_STEP,
 		payload: step,

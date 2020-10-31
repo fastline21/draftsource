@@ -5,9 +5,9 @@ import {
 	CLEAR_ERROR,
 	RESUME_STEP,
 	RESET_STEP,
-	SET_SUCCESS,
+	RESUME_SUCCESS,
 	RESUME_LOADING,
-	SET_PERCENTAGE,
+	RESUME_PERCENT,
 } from '../actions/types';
 
 const initialState = {
@@ -25,6 +25,7 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				resume: { ...state.resume, ...action.payload },
+				success: true,
 			};
 		case CLEAR_RESUME:
 			return {
@@ -32,16 +33,17 @@ export default (state = initialState, action) => {
 				resume: null,
 				success: true,
 				loading: false,
+				percent: 0,
 			};
 		case CLEAR_ERROR:
 			return {
 				...state,
 				error: null,
 			};
-		case SET_SUCCESS:
+		case RESUME_SUCCESS:
 			return {
 				...state,
-				success: false,
+				success: action.payload,
 			};
 		case RESUME_LOADING:
 			return {
@@ -63,7 +65,7 @@ export default (state = initialState, action) => {
 				...state,
 				error: action.payload,
 			};
-		case SET_PERCENTAGE:
+		case RESUME_PERCENT:
 			return {
 				...state,
 				percent: action.payload,

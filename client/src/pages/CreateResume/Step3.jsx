@@ -8,7 +8,12 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
-import { addResume, clearError } from './../../state/actions/resumeAction';
+import {
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+} from './../../state/actions/resumeAction';
 
 // List
 // import { workspaceList } from './../../list/Workspace';
@@ -22,9 +27,11 @@ import { hardwareTypeList } from './../../list/HardwareType';
 const Step3 = ({
 	setAlert,
 	addResume,
+	resumeStep,
 	clearError,
+	resumeSuccess,
 	// uploadFile,
-	resumeState: { error },
+	resumeState: { step, success, error },
 }) => {
 	const [
 		Prompt,
@@ -36,8 +43,8 @@ const Step3 = ({
 	const history = useHistory();
 
 	const initialInfo = {
-		internetType: 'DSL',
-		hardwareType: 'Desktop',
+		internetType: internetTypeList()[0],
+		hardwareType: hardwareTypeList()[0],
 		internetResult: '',
 		brandName: '',
 		os: '',
@@ -54,7 +61,6 @@ const Step3 = ({
 
 	const [info, setInfo] = useState(initialInfo);
 	// const [modal, setModal] = useState(initialModal);
-	const [submit, setSubmit] = useState(false);
 	const [havePC, setHavePC] = useState(true);
 
 	const {
@@ -136,23 +142,33 @@ const Step3 = ({
 		// uploadFile({ govID });
 
 		setInfo(initialInfo);
-		setSubmit(true);
 		setPristine();
 	};
 
 	useEffect(() => {
-		if (JSON.stringify(info) !== JSON.stringify(initialInfo)) {
+		if (step === 3) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
 
+		if (step !== 3) {
+			setPristine();
+			setAlert(
+				'/create-resume?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
 			setAlert('', error.msg);
 			clearError();
 		}
 
-		if (submit) {
-			setSubmit(false);
+		if (success) {
+			resumeSuccess(false);
+			resumeStep(4);
 			history.push({
 				pathname: '/create-resume',
 				search: 'step=4',
@@ -160,10 +176,11 @@ const Step3 = ({
 		}
 
 		// eslint-disable-next-line
-	}, [info, submit, error]);
+	}, [step, error, success]);
 
 	return (
 		<div className="step-3">
+			{Prompt}
 			<div className="row">
 				<div className="col-lg-8 offset-lg-2">
 					<form className="form" onSubmit={onSubmit}>
@@ -591,7 +608,6 @@ const Step3 = ({
 					</form>
 				</div>
 			</div>
-			{Prompt}
 			{/* {modal.internetResult ? (
 				<InternetResultModal
 					isShow={modal.internetResult}
@@ -611,16 +627,22 @@ const Step3 = ({
 };
 
 Step3.propTypes = {
+	resumeState: PropTypes.object.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	addResume: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
-	uploadfile: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	resumeState: state.resumeState,
 });
 
-export default connect(mapStateToProps, { setAlert, clearError, addResume })(
-	Step3
-);
+export default connect(mapStateToProps, {
+	setAlert,
+	addResume,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+})(Step3);

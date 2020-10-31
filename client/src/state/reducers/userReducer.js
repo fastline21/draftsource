@@ -10,6 +10,7 @@ import {
 	LOGOUT_USER,
 	GET_USERS,
 	USER_LOADING,
+	USER_PERCENT,
 } from './../actions/types';
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
 	info: null,
 	loading: false,
 	success: false,
+	percent: 0,
 };
 
 export default (state = initialState, action) => {
@@ -74,6 +76,11 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				error: null,
+			};
+		case USER_PERCENT:
+			return {
+				...state,
+				percent: action.payload,
 			};
 		case USER_LOADING:
 			return {

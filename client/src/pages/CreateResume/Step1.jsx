@@ -12,9 +12,8 @@ import {
 	addUser,
 	clearError,
 	clearUser,
-	setLoading,
 } from './../../state/actions/userAction';
-import { setStep, setSuccess } from './../../state/actions/resumeAction';
+import { resumeStep } from './../../state/actions/resumeAction';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
@@ -27,9 +26,9 @@ const Step1 = ({
 	addUser,
 	clearError,
 	clearUser,
-	setStep,
-	setLoading,
-	userState: { success, error, loading },
+	resumeStep,
+
+	userState: { success, error, loading, user },
 	resumeState: { step },
 }) => {
 	const [
@@ -46,14 +45,13 @@ const Step1 = ({
 		cellphone: '',
 		city: '',
 		age: '',
-		gender: 'Male',
+		gender: genderList()[0],
 		// country: 'Afghanistan',
 		linkedIn: '',
 		recruiterName: '',
 	};
 
 	const [info, setInfo] = useState(initialInfo);
-	const [load, setLoad] = useState(true);
 
 	const {
 		firstName,
@@ -98,14 +96,16 @@ const Step1 = ({
 	};
 
 	useEffect(() => {
-		if (load) {
+		if (step === 0) {
+			resumeStep(1);
+		}
+
+		if (user) {
 			localStorage.clear();
-			setStep(1);
-			setLoad(false);
+			clearUser();
 		}
 
 		if (error) {
-			// setLoading();
 			localStorage.clear();
 			setAlert('', error.msg);
 			clearError();
@@ -126,10 +126,8 @@ const Step1 = ({
 			);
 		}
 
-		console.log(loading);
-
 		// eslint-disable-next-line
-	}, [load, error, success, step, loading]);
+	}, [error, success, step, loading, user]);
 	return (
 		<div className="step-1">
 			{Prompt}
@@ -382,8 +380,7 @@ Step1.propTypes = {
 	addUser: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
-	setStep: PropTypes.func.isRequired,
-	setLoading: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
 	userState: PropTypes.object.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
@@ -398,6 +395,5 @@ export default connect(mapStateToProps, {
 	addUser,
 	clearError,
 	clearUser,
-	setStep,
-	setLoading,
+	resumeStep,
 })(Step1);

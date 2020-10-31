@@ -9,7 +9,7 @@ import { setAlert } from './../state/actions/alertAction';
 import {
 	addResume,
 	tempUser,
-	setStep as resumeStep,
+	resumeStep,
 } from './../state/actions/resumeAction';
 import { setStep } from './../state/actions/employerAction';
 
@@ -38,7 +38,7 @@ const Verify = ({
 
 		if (user) {
 			if (user.type === 'Remote Worker') {
-				tempUser(user._id);
+				// tempUser(user._id);
 				resumeStep(2);
 				setLink('/create-resume?step=2');
 			} else if (user.type === 'Employer') {

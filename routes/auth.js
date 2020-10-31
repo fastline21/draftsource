@@ -515,8 +515,7 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @desc    Get all users
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
-	const users = await User.find();
-	// console.log(users);
+	const users = await User.find().sort({ dateCreated: 'asc' });
 	const resultUsers = [];
 	await Promise.all(
 		users.map(async (e) => {

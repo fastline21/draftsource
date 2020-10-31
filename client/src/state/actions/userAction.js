@@ -12,6 +12,7 @@ import {
 	LOGOUT_USER,
 	GET_USERS,
 	USER_LOADING,
+	USER_PERCENT,
 } from './types';
 
 // Add user
@@ -95,6 +96,14 @@ export const loginUser = (user) => async (dispatch) => {
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
+			},
+			onUploadProgress: (progressEvent) => {
+				const { loaded, total } = progressEvent;
+				let percent = Math.floor((loaded * 100) / total);
+				dispatch({
+					type: USER_PERCENT,
+					payload: percent,
+				});
 			},
 		};
 		const res = await axios.post('/api/auth/login', user, config);

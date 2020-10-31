@@ -8,8 +8,20 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
+import {
+	resumeStep,
+	clearError,
+	resumeSuccess,
+} from './../../state/actions/resumeAction';
 
-const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
+const Step2 = ({
+	uploadFile,
+	setAlert,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+	resumeState: { step, success, error },
+}) => {
 	const [
 		Prompt,
 		setDirty,
@@ -23,9 +35,7 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 	};
 
 	const [info, setInfo] = useState(initialInfo);
-	const [load, setLoad] = useState(true);
 	const [upload, setUpload] = useState(null);
-	const [submit, setSubmit] = useState(false);
 
 	const onChange = (e) => {
 		const { name, files } = e.target;
@@ -44,28 +54,18 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 			uploadFile(info);
 			setInfo(initialInfo);
 			setUpload(null);
-			setSubmit(true);
+			resumeSuccess(true);
 			setPristine();
 		}
 	};
 
 	useEffect(() => {
-		if (load) {
-			// localStorage.clear();
+		if (step === 2) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
-			setLoad(false);
 		}
 
-		if (submit) {
-			setSubmit(false);
-			history.push({
-				pathname: '/create-resume',
-				search: 'step=3',
-			});
-		}
-
-		if (step > 2 || step < 1) {
+		if (step !== 2) {
 			setPristine();
 			setAlert(
 				'/create-resume?step=1',
@@ -73,8 +73,24 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 			);
 		}
 
+		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+			setAlert('', error.msg);
+			clearError();
+		}
+
+		if (success) {
+			resumeSuccess(false);
+			resumeStep(3);
+			history.push({
+				pathname: '/create-resume',
+				search: 'step=3',
+			});
+		}
+
 		// eslint-disable-next-line
-	}, [load, submit, step]);
+	}, [step, error, success]);
 
 	return (
 		<div className="step-2">
@@ -154,6 +170,10 @@ const Step2 = ({ uploadFile, setAlert, resumeState: { step } }) => {
 
 Step2.propTypes = {
 	setAlert: PropTypes.func.isRequired,
+	resumeStep: PropTypes.func.isRequired,
+	uploadFile: PropTypes.func.isRequired,
+	clearError: PropTypes.func.isRequired,
+	resumeSuccess: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
 };
 
@@ -161,4 +181,9 @@ const mapStateToProps = (state) => ({
 	resumeState: state.resumeState,
 });
 
-export default connect(mapStateToProps, { setAlert })(Step2);
+export default connect(mapStateToProps, {
+	setAlert,
+	resumeStep,
+	clearError,
+	resumeSuccess,
+})(Step2);

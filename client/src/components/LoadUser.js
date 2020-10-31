@@ -7,21 +7,21 @@ import PropTypes from 'prop-types';
 import { loadUser } from './../state/actions/userAction';
 
 const LoadUser = ({ loadUser }) => {
-    const { pathname, search } = useLocation();
+	const { pathname, search } = useLocation();
 
-    useEffect(() => {
-        if (localStorage.token) {
-            loadUser();
-        }
+	useEffect(() => {
+		if (localStorage.token) {
+			loadUser();
+		}
 
-        // eslint-disable-next-line
-    }, [pathname, search]);
+		// eslint-disable-next-line
+	}, [pathname, search]);
 
-    return null;
+	return null;
 };
 
 LoadUser.propTypes = {
-    loadUser: PropTypes.func.isRequired,
+	loadUser: PropTypes.func.isRequired,
 };
 
 export default connect(null, { loadUser })(LoadUser);
