@@ -115,30 +115,29 @@ const Header = ({ logoutUser, userState: { user } }) => {
 						</NavLink>
 					</li>
 					<li>
-						<Nav.Link onClick={talkRecruiter}>Talk to a Recruiter</Nav.Link>
+						<Nav.Link
+							onClick={talkRecruiter}
+							style={{
+								padding: 15,
+								display: 'block',
+								textDecoration: 'none',
+								textAlign: 'center',
+								margin: '0 15px',
+								fontWeight: 500,
+								borderBottom: '1px solid #acacac',
+								color: '#606060',
+							}}
+						>
+							Talk to a Recruiter
+						</Nav.Link>
 					</li>
 					{(user && user.type === 'Admin') ||
 					(user && user.type === 'Recruiter') ? (
 						<Fragment>
 							<li>
-								<Nav.Link as={NavLink} to="/dashboard">
+								<NavLink to="/dashboard" onClick={mobileLink}>
 									Dashboard
-								</Nav.Link>
-							</li>
-							<li>
-								<Nav.Link as={NavLink} to="/dashboard/new-applicants">
-									New Applicants
-								</Nav.Link>
-							</li>
-							<li>
-								<Nav.Link as={NavLink} to="/dashboard/approved-applicants">
-									Approved Applicants
-								</Nav.Link>
-							</li>
-							<li>
-								<Nav.Link as={NavLink} to="/dashboard/rejected-applicant">
-									Rejected Applicants
-								</Nav.Link>
+								</NavLink>
 							</li>
 							<li>
 								<Nav.Link onClick={onLogout}>Logout</Nav.Link>

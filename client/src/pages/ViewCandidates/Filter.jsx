@@ -10,7 +10,7 @@ import { softwareList } from './../../list/Software';
 import { marketTypeList } from './../../list/MarketType';
 import { experienceList } from '../../list/Experience';
 import { countryList } from '../../list/Country';
-import { salaryList } from '../../list/Salary';
+// import { salaryList } from '../../list/Salary';
 import { ratingList } from '../../list/Rating';
 
 // Actions

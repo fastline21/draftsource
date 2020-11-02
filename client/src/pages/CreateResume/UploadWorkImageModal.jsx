@@ -29,7 +29,7 @@ const UploadWorkImageModal = ({
 	const [crop, setCrop] = useState({ x: 0, y: 0 });
 	const [zoom, setZoom] = useState(1);
 
-	const { file, title, description } = upload;
+	const { file, title } = upload;
 
 	// Close Modal
 	const handleClose = useCallback(() => {
@@ -65,10 +65,7 @@ const UploadWorkImageModal = ({
 		e.preventDefault();
 
 		if (file === '' || title === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		}
 
 		if (data) {
@@ -109,13 +106,7 @@ const UploadWorkImageModal = ({
 								onClick={uploadImageFile}
 							>
 								{!fileBg ? (
-									<p
-										style={
-											fileBg
-												? { visibility: 'hidden' }
-												: null
-										}
-									>
+									<p style={fileBg ? { visibility: 'hidden' } : null}>
 										{caption}{' '}
 										<span>
 											or click add
@@ -147,9 +138,7 @@ const UploadWorkImageModal = ({
 						</div>
 						<div className="col-lg-5">
 							<div className="form-group">
-								<label className="form-label">
-									Project Title
-								</label>
+								<label className="form-label">Project Title</label>
 								<input
 									type="text"
 									name="title"
@@ -196,9 +185,7 @@ const UploadWorkImageModal = ({
 								) : null}
 								<button
 									className="btn btn-primary button"
-									style={
-										!fileBg ? { marginLeft: 'auto' } : null
-									}
+									style={!fileBg ? { marginLeft: 'auto' } : null}
 									onClick={onUpload}
 								>
 									Upload

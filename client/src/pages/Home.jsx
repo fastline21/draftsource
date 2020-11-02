@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Container, Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -20,6 +19,8 @@ const Home = ({
 			resumeStep(0);
 			resumeSuccess(false);
 		}
+
+		// eslint-disable-next-line
 	}, [resStep]);
 	return (
 		<div id="home">

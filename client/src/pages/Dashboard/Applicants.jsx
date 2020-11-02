@@ -1,36 +1,59 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 // Actions
-import {
-	getShortlisted,
-	setShortlisted,
-} from './../../state/actions/candidateAction';
 import { addFilter, removeFilter } from './../../state/actions/filterAction';
+import {
+	newApplicants,
+	approvedApplicants,
+	rejectedApplicants,
+	hiredApplicants,
+	viewResume,
+} from './../../state/actions/candidateAction';
 
 // Components
 import ViewResume from './ViewResume';
 import PaginationLink from './PaginationLink';
 import Candidates from './Candidates';
 
-const ShortlistedCandidates = ({
+// Utils
+import useWindowSize from './../../utils/useWindowSize';
+
+const Applicants = ({
+	filterState: { filter },
+	candidateState: { candidates },
 	addFilter,
 	removeFilter,
-	getShortlisted,
-	setShortlisted,
-	candidateState: { candidates, shortlist, shortlistedInfo, resume },
-	filterState: { filter },
+	newApplicants,
+	approvedApplicants,
+	rejectedApplicants,
+	hiredApplicants,
+	viewResume,
 }) => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
+	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState({
 		search: '',
 		viewBy: '10',
 	});
-
+	const windowSize = useWindowSize();
+	const { menu } = useParams();
+	const loadCandidate = () => {
+		if (menu === 'new-applicants') {
+			newApplicants();
+		} else if (menu === 'approved-applicants') {
+			approvedApplicants();
+		} else if (menu === 'rejected-applicants') {
+			rejectedApplicants();
+		} else {
+			hiredApplicants();
+		}
+	};
 	const onChange = (e) => {
 		const { name, value } = e.target;
 
@@ -56,8 +79,9 @@ const ShortlistedCandidates = ({
 			pathname: newUrl.pathname,
 			search: newUrl.search,
 		});
-	};
 
+		loadCandidate();
+	};
 	useEffect(() => {
 		if (queryParams.get('search') !== null) {
 			if (params.search === '') {
@@ -71,28 +95,20 @@ const ShortlistedCandidates = ({
 			}
 		}
 
-		if (queryParams.get('candidates') !== null) {
-			if (shortlist.length === 0) {
-				getShortlisted(queryParams.get('candidates').split(','));
-			}
+		if (windowSize.width > 1023) {
+			document.getElementById('filterMobile').removeAttribute('style');
+			document.getElementById('mobileOverlay1').removeAttribute('style');
 		}
 
-		if (shortlistedInfo.length !== shortlist.length) {
-			getShortlisted(
-				queryParams.get('candidates') !== null
-					? queryParams.get('candidates').split(',')
-					: []
-			);
-		}
-
-		if (shortlist.length === 0) {
-			if (queryParams.get('candidates')) {
-				setShortlisted(queryParams.get('candidates').split(','));
-			}
+		if (showFilter) {
+			document.getElementById('filterMobile').style.left = 0;
+			document.getElementById('mobileOverlay1').style.cssText =
+				'visibility: visible; opacity: 1';
+			setShowFilter(false);
 		}
 
 		// eslint-disable-next-line
-	}, [queryParams, params, filter, shortlist, shortlistedInfo]);
+	}, [queryParams, params, filter, showFilter, windowSize]);
 
 	return (
 		<Fragment>
@@ -119,12 +135,18 @@ const ShortlistedCandidates = ({
 						<option value="20">20</option>
 						<option value="50">50</option>
 					</select>
+					<button
+						className="btn btn-primary button filter"
+						onClick={() => setShowFilter(true)}
+					>
+						<i className="fas fa-filter"></i> Filter
+					</button>
 				</div>
 			</div>
-			<ViewResume isShow={resume !== null ? true : false} />
-			<Candidates isShortlisted={true} />
+			<ViewResume loadCandidate={loadCandidate} />
+			<Candidates />
 			<div className="foot">
-				<PaginationLink />
+				<PaginationLink loadCandidate={loadCandidate} />
 				<div className="view-by">
 					<label htmlFor="viewByInput" className="form-label">
 						View By
@@ -145,12 +167,16 @@ const ShortlistedCandidates = ({
 	);
 };
 
-ShortlistedCandidates.propTypes = {
+Applicants.propTypes = {
 	candidateState: PropTypes.object.isRequired,
 	filterState: PropTypes.object.isRequired,
 	addFilter: PropTypes.func.isRequired,
-	getShortlisted: PropTypes.func.isRequired,
-	setShortlisted: PropTypes.func.isRequired,
+	removeFilter: PropTypes.func.isRequired,
+	newApplicants: PropTypes.func.isRequired,
+	approvedApplicants: PropTypes.func.isRequired,
+	rejectedApplicants: PropTypes.func.isRequired,
+	hiredApplicants: PropTypes.func.isRequired,
+	viewResume: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -161,6 +187,9 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
 	addFilter,
 	removeFilter,
-	getShortlisted,
-	setShortlisted,
-})(ShortlistedCandidates);
+	newApplicants,
+	approvedApplicants,
+	rejectedApplicants,
+	hiredApplicants,
+	viewResume,
+})(Applicants);

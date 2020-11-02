@@ -39,7 +39,6 @@ const Step1 = ({
 	const { title } = info;
 	const [specialty, setSpecialty] = useState([]);
 	const [software, setSoftware] = useState([]);
-	const [submit, setSubmit] = useState(false);
 	const otherSpecialtyRef = useRef(null);
 	const otherSoftwareRef = useRef(null);
 	const generateSpecialty = () => {
@@ -176,31 +175,6 @@ const Step1 = ({
 		}
 	};
 
-	// const onKeyPressOtherSpecify = (e) => {
-	// 	if (e.key === 'Enter') {
-	// 		e.preventDefault();
-
-	// 		if (otherSpecialtyRef.current.value === '') {
-	// 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
-	// 		} else {
-	// 			const lowerSpecialty = specialtyList().map((el) => el.toLowerCase());
-	// 			const lowerOther = otherSpecialtyRef.current.value;
-	// 			if (lowerSpecialty.includes(lowerOther.toLowerCase())) {
-	// 				const index = lowerSpecialty.indexOf(lowerOther.toLowerCase());
-	// 				setSpecialty((specialty) => [...specialty, specialtyList()[index]]);
-	// 				Array.from(document.querySelectorAll('.specialty .list .nav-item'))
-	// 					.find((el) => el.textContent === specialtyList()[index])
-	// 					.classList.add('active');
-	// 			} else {
-	// 				setSpecialty((specialty) => [...specialty, lowerOther]);
-	// 			}
-	// 			otherSpecialtyRef.current.value = '';
-	// 			setDirty();
-	// 			setMessage('Are you sure you want to leave this page?');
-	// 		}
-	// 	}
-	// };
-
 	const onKeyPressOtherSoftware = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -294,26 +268,10 @@ const Step1 = ({
 			setSpecialty([]);
 			setSoftware([]);
 			setPristine();
-			// const data = {
-			// 	...info,
-			// 	specialty,
-			// 	software,
-			// };
-			// addJob(data);
-			// setInfo(initialInfo);
-			// setSpecialty([]);
-			// setSoftware([]);
-			// setPristine();
-			// setSubmit(true);
 		}
 	};
 
 	useEffect(() => {
-		// if (JSON.stringify(info) === JSON.stringify(initialInfo)) {
-		// 	setDirty();
-		// 	setMessage('Are you sure you want to leave this page?');
-		// }
-
 		if (step === 0) {
 			setStep(1);
 		}
@@ -451,148 +409,6 @@ const Step1 = ({
 						/>
 					</div>
 				</div>
-				{/* <div className="row">
-                    <div className="col-lg-12">
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <div className="form-row">
-                                    <div className="col-lg-3">
-                                        <label
-                                            htmlFor="titleInput"
-                                            className="form-label"
-                                        >
-                                            Job Title
-                                        </label>
-                                    </div>
-                                    <div className="col-lg-9">
-                                        <input
-                                            type="text"
-                                            name="title"
-                                            id="titleInput"
-                                            className="form-control input"
-                                            onChange={onChange}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-6">
-                                <div className="form-row mt-4 specialty">
-                                    <div className="col-lg-3">
-                                        <label
-                                            htmlFor="specialtyInput"
-                                            className="form-label"
-                                        >
-                                            Specialty
-                                        </label>
-                                        <p className="subtitle">
-                                            Atleast (3) three skills
-                                        </p>
-                                    </div>
-                                    <div className="col-lg-9">
-                                        <div className="form-row list">
-                                            {generateSpecialty()}
-                                        </div>
-                                        <div className="form-group specialty-line-break">
-                                            <input
-                                                type="text"
-                                                name="otherSpecialty"
-                                                className="form-control input mt-3"
-                                                placeholder="Other specify and press enter"
-                                                onKeyPress={
-                                                    onkeyPressOtherSpecialty
-                                                }
-                                                ref={otherSpecialtyRef}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="form-row">
-                                    {specialty.length === 0 ? (
-                                        <p className="subtitle desc">
-                                            This section will display on what
-                                            you added from Specialty section
-                                        </p>
-                                    ) : (
-                                        specialty.map((e, i) => (
-                                            <Specialty
-                                                key={i}
-                                                value={e}
-                                                index={i}
-                                                onSpecialtyClose={
-                                                    onSpecialtyClose
-                                                }
-                                            />
-                                        ))
-                                    )}
-                                </div>
-                            </div>
-                            <div className="col-sm-6">
-                                <div className="form-row mt-4 software">
-                                    <div className="col-lg-3">
-                                        <label
-                                            htmlFor="softwareInput"
-                                            className="form-label"
-                                        >
-                                            Software Use
-                                        </label>
-                                        <p className="subtitle">
-                                            Atleast (3) three skills
-                                        </p>
-                                    </div>
-                                    <div className="col-lg-9">
-                                        <div className="form-row list">
-                                            {generateSoftware()}
-                                        </div>
-                                        <div className="form-group">
-                                            <input
-                                                type="text"
-                                                name="otherSoftware"
-                                                className="form-control input mt-3"
-                                                placeholder="Other specify and press enter"
-                                                onKeyPress={
-                                                    onkeyPressOtherSoftware
-                                                }
-                                                ref={otherSoftwareRef}
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-                                <hr />
-                                <div className="form-row">
-                                    {software.length === 0 ? (
-                                        <p className="subtitle desc">
-                                            This section will display on what
-                                            you added from Software Use section
-                                        </p>
-                                    ) : (
-                                        software.map((e, i) => (
-                                            <Software
-                                                key={i}
-                                                value={e}
-                                                index={i}
-                                                onSoftwareClose={
-                                                    onSoftwareClose
-                                                }
-                                            />
-                                        ))
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col-sm-3 offset-sm-9">
-                                <input
-                                    type="submit"
-                                    value="Proceed"
-                                    className="btn btn-primary btn-block button"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </div> */}
 			</form>
 		</div>
 	);

@@ -80,7 +80,6 @@ const Step6 = ({
 		initialUploadModal
 	);
 	// const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
-	const [load, setLoad] = useState(true);
 	// const [submit, setSubmit] = useState(false);
 	const newSoftwareList = softwareList().filter((soft) => soft !== 'MS Word');
 
@@ -939,13 +938,13 @@ const Step6 = ({
 			setMessage('Are you sure you want to leave this page?');
 		}
 
-		// if (step !== 6) {
-		// 	setPristine();
-		// 	setAlert(
-		// 		'/create-resume?step=1',
-		// 		'You are not authorize to go in this page. Please start at Step 1'
-		// 	);
-		// }
+		if (step !== 6) {
+			setPristine();
+			setAlert(
+				'/create-resume?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
 
 		if (error) {
 			setDirty();

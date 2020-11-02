@@ -56,10 +56,7 @@ const Step1 = ({
 			password === '' ||
 			password !== password2
 		) {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			addUser({ ...info, type: type.capitalize() });
 			setInfo(initialInfo);
@@ -80,10 +77,13 @@ const Step1 = ({
 			);
 			clearUser();
 		}
+
+		// eslint-disable-next-line
 	}, [user, error]);
 
 	return (
 		<div>
+			{Prompt}
 			<form className="form" onSubmit={onSubmit}>
 				<div className="form-group">
 					<div className="form-row">
@@ -152,9 +152,7 @@ const Step1 = ({
 				<div className="form-group">
 					<div className="form-row">
 						<div className="col-lg-3">
-							<label className="form-label">
-								Confirm Password
-							</label>
+							<label className="form-label">Confirm Password</label>
 						</div>
 						<div className="col-lg-9">
 							<input

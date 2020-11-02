@@ -1,44 +1,39 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Modal } from 'react-bootstrap';
-import Cropper from 'react-easy-crop';
-
-// Actions
-import { setAlert } from './../../state/actions/alertAction';
 
 const ViewSampleWork = ({ isShow, isHide, viewSampleWork }) => {
-	// State
 	const [show, setShow] = useState(false);
 
-	// Close Modal
 	const handleClose = useCallback(() => {
 		isHide();
 		setShow(false);
 	}, [isHide]);
-
-	// Show Modal
 	const handleShow = () => setShow(true);
 
 	useEffect(() => {
 		if (isShow) {
 			handleShow();
 		}
+
+		// eslint-disable-next-line
 	}, [isShow]);
 
 	return (
 		<Modal
 			show={show}
 			onHide={handleClose}
-			backdrop='static'
+			backdrop="static"
 			keyboard={false}
-			size='xl'
+			size="xl"
 		>
 			<Modal.Header closeButton />
-			<Modal.Body className='text-center'>
+			<Modal.Body className="text-center">
 				<img
 					src={`/uploads/${viewSampleWork.file}`}
-					className='img-fluid'
+					className="img-fluid"
+					alt=""
 				/>
-				<h4 className='title text-center'>{viewSampleWork.title}</h4>
+				<h4 className="title text-center">{viewSampleWork.title}</h4>
 			</Modal.Body>
 		</Modal>
 	);

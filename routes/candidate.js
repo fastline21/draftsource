@@ -14,11 +14,7 @@ function shuffle(array) {
 	array.sort(() => Math.random() - 0.5);
 }
 
-// @route   GET /api/candidate/view-candidates
-// @desc    Get approve candidates
-// @access  Private
-router.get('/view-candidates', async (req, res) => {
-	const query = req.query;
+const getCandidates = async (query, status) => {
 	let totalWorkYear = {
 		min: -1,
 		max: -1,
@@ -128,6 +124,14 @@ router.get('/view-candidates', async (req, res) => {
 					$in: keyword,
 				},
 			});
+		} else if (key === 'salary') {
+			searchAND.push({
+				expectedSalary: {
+					$in: keyword,
+				},
+			});
+		} else if (key === 'search') {
+			Object.assign(queryData, { $text: { $search: value } });
 		} else {
 			searchAND.push({
 				[key]: {
@@ -136,123 +140,23 @@ router.get('/view-candidates', async (req, res) => {
 			});
 		}
 	}
+
 	if (searchOR.length > 0) {
 		Object.assign(queryData, { $or: [...searchOR] });
 	}
-	Object.assign(queryData, ...searchAND);
-	// for (const [key, value] of Object.entries(query)) {
-	// 	if (key === 'specialty') {
-	// 		if (value.split(',').length > 1) {
-	// 			queryData = {
-	// 				...queryData,
-	// 				[key]: {
-	// 					$in: value.split(','),
-	// 				},
-	// 			};
-	// 		} else {
-	// 			queryData = {
-	// 				...queryData,
-	// 				[key]: {
-	// 					$in: value,
-	// 				},
-	// 			};
-	// 		}
-	// 	} else if (key === 'software') {
-	// 		if (value.split(',').length > 1) {
-	// 			queryData = {
-	// 				...queryData,
-	// 				// advancedSoftware: {
-	// 				// 	$in: value.split(','),
-	// 				// },
-	// 				// intermediateSoftware: {
-	// 				// 	$in: value.split(','),
-	// 				// },
-	// 				$or: [
-	// 					{
-	// 						advancedSoftware: {
-	// 							$in: value.split(','),
-	// 						},
-	// 					},
-	// 					{
-	// 						intermediateSoftware: {
-	// 							$in: value.split(','),
-	// 						},
-	// 					},
-	// 				],
-	// 			};
-	// 		} else {
-	// 			queryData = {
-	// 				...queryData,
-	// 				$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
-	// 			};
-	// 		}
-	// 	} else if (key === 'search') {
-	// 		queryData = {
-	// 			...queryData,
-	// 			$or: [
-	// 				{ specialty: { $regex: value, $options: 'i' } },
-	// 				{ software: { $regex: value, $options: 'i' } },
-	// 			],
-	// 		};
-	// 	} else if (key === 'experience') {
-	// 		if (value === '1-4 years') {
-	// 			queryData = {
-	// 				...queryData,
-	// 				totalWorkYear: {
-	// 					$lte: 4,
-	// 					$gte: 1,
-	// 				},
-	// 			};
-	// 		} else if (value === '5-9 years') {
-	// 			queryData = {
-	// 				...queryData,
-	// 				totalWorkYear: {
-	// 					$lte: 9,
-	// 					$gte: 5,
-	// 				},
-	// 			};
-	// 		} else if (value === '10-14 years') {
-	// 			queryData = {
-	// 				...queryData,
-	// 				totalWorkYear: {
-	// 					$lte: 14,
-	// 					$gte: 10,
-	// 				},
-	// 			};
-	// 		} else if (value === '15+ years') {
-	// 			queryData = {
-	// 				...queryData,
-	// 				totalWorkYear: {
-	// 					$gte: 15,
-	// 				},
-	// 			};
-	// 		}
-	// 	} else if (key === 'country') {
-	// 		queryData = {
-	// 			...queryData,
-	// 			countryExperience: { $regex: value, $options: 'i' },
-	// 		};
-	// 	} else if (key === 'page' || key === 'limit') {
-	// 		continue;
-	// 	} else {
-	// 		queryData = { ...queryData, [key]: value };
-	// 	}
-	// }
 
-	// const candidates = await Resume.aggregate([
-	// 	{ $match: { ...queryData, status: 'Approve' } },
-	// 	{ $sample: { size: parseInt(query.limit) || 10 } },
-	// ]);
+	Object.assign(queryData, ...searchAND);
 	let candidates = await Resume.find({
 		...queryData,
-		status: 'Approve',
+		status,
 	});
-	shuffle(candidates);
+	// shuffle(candidates);
 	const page = parseInt(query.page) || 1;
 	const limit = parseInt(query.limit) || 10;
 	const startIndex = (page - 1) * limit;
 	const endIndex = page * limit;
 	const results = {};
+
 	if (startIndex > 0) {
 		results.previous = {
 			page: page - 1,
@@ -270,6 +174,15 @@ router.get('/view-candidates', async (req, res) => {
 	results.total = candidates.length;
 
 	results.candidates = candidates.slice(startIndex, endIndex);
+	// res.json(results);
+	return results;
+};
+
+// @route   GET /api/candidate/view-candidates
+// @desc    Get approve candidates
+// @access  Private
+router.get('/view-candidates', async (req, res) => {
+	const results = await getCandidates(req.query, 'Approve');
 	res.json(results);
 });
 
@@ -277,68 +190,7 @@ router.get('/view-candidates', async (req, res) => {
 // @desc    Get pending candidates
 // @access  Private
 router.get('/new-applicants', async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
-		} else if (key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = {
-					...queryData,
-					$or: [
-						{ advancedSoftware: value.split(',') },
-						{ intermediateSoftware: value.split(',') },
-					],
-				};
-			} else {
-				queryData = {
-					...queryData,
-					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
-				};
-			}
-		} else if (key === 'search') {
-			console.log(value);
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: { $regex: value, $options: 'i' } },
-					{ software: { $regex: value, $options: 'i' } },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const candidates = await Resume.find({ ...queryData, status: 'Pending' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
-
-	if (endIndex < candidates.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = candidates.length;
-
-	results.candidates = candidates.slice(startIndex, endIndex);
+	const results = await getCandidates(req.query, 'Pending');
 	res.json(results);
 });
 
@@ -346,68 +198,15 @@ router.get('/new-applicants', async (req, res) => {
 // @desc    Get approve candidates
 // @access  Private
 router.get('/approved-applicants', auth, async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
-		} else if (key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = {
-					...queryData,
-					$or: [
-						{ advancedSoftware: value.split(',') },
-						{ intermediateSoftware: value.split(',') },
-					],
-				};
-			} else {
-				queryData = {
-					...queryData,
-					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
-				};
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ advancedSoftware: new RegExp(`^${value}$`, 'i') },
-					{ intermediateSoftware: new RegExp(`^${value}$`, 'i') },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const candidates = await Resume.find({ ...queryData, status: 'Approve' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
+	const results = await getCandidates(req.query, 'Approve');
+	res.json(results);
+});
 
-	if (endIndex < candidates.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = candidates.length;
-
-	results.candidates = candidates.slice(startIndex, endIndex);
+// @route   GET /api/candidate/hired-applicants
+// @desc    Get hire candidates
+// @access  Private
+router.get('/hired-applicants', auth, async (req, res) => {
+	const results = await getCandidates(req.query, 'Hire');
 	res.json(results);
 });
 
@@ -415,67 +214,7 @@ router.get('/approved-applicants', auth, async (req, res) => {
 // @desc    Get reject candidates
 // @access  Private
 router.get('/rejected-applicants', auth, async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: { $in: value.split(',') } };
-			} else {
-				queryData = { ...queryData, [key]: { $in: value } };
-			}
-		} else if (key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = {
-					...queryData,
-					$or: [
-						{ advancedSoftware: value.split(',') },
-						{ intermediateSoftware: value.split(',') },
-					],
-				};
-			} else {
-				queryData = {
-					...queryData,
-					$or: [{ advancedSoftware: value }, { intermediateSoftware: value }],
-				};
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ software: new RegExp(`^${value}$`, 'i') },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const candidates = await Resume.find({ ...queryData, status: 'Reject' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
-
-	if (endIndex < candidates.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = candidates.length;
-
-	results.candidates = candidates.slice(startIndex, endIndex);
+	const results = await getCandidates(req.query, 'Reject');
 	res.json(results);
 });
 
@@ -529,6 +268,18 @@ router.put('/approve-resume', auth, async (req, res) => {
 	const resume = await Resume.findByIdAndUpdate(_id, {
 		...req.body,
 		status: 'Approve',
+	});
+	res.json(resume);
+});
+
+// @route   PUT /api/candidate/hire-resume
+// @desc    Hire resume
+// @access  Private
+router.put('/hire-resume', auth, async (req, res) => {
+	const { _id } = req.body;
+	const resume = await Resume.findByIdAndUpdate(_id, {
+		...req.body,
+		status: 'Hire',
 	});
 	res.json(resume);
 });

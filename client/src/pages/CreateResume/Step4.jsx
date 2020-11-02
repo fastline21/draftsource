@@ -68,7 +68,6 @@ const Step4 = ({
 	const [uploadAboutYourself, setUploadAboutYourself] = useState(null);
 	const [uploadGovID, setUploadGovID] = useState(null);
 	const [uploadCV, setUploadCV] = useState(null);
-	const [submit, setSubmit] = useState(false);
 
 	const { expectedSalary, headline } = info;
 

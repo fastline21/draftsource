@@ -246,6 +246,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 															href={website}
 															target="_blank"
 															className="btn btn-primary view"
+															rel="noopener noreferrer"
 														>
 															View
 														</a>
@@ -260,6 +261,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 															href={linkedIn}
 															target="_blank"
 															className="btn btn-primary view"
+															rel="noopener noreferrer"
 														>
 															View
 														</a>

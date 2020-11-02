@@ -1,17 +1,10 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Carousel } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 
 // Actions
-import {
-	viewCandidates,
-	viewResume,
-	clearResume,
-	addCandidate,
-	removeCandidate,
-} from './../../state/actions/candidateAction';
+import { viewCandidates } from './../../state/actions/candidateAction';
 import { addFilter, removeFilter } from './../../state/actions/filterAction';
 
 // Components
@@ -26,71 +19,77 @@ const TopVerifiedCandidates = ({
 	viewCandidates,
 	addFilter,
 	removeFilter,
-	viewResume,
-	clearResume,
-	addCandidate,
-	removeCandidate,
-	candidateState: { candidates, shortlist, resume },
+	candidateState: { candidates, resume },
 	filterState: { filter },
 }) => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
-	const [activeMiniSlide, setActiveMiniSlide] = useState(0);
-	const [seeResume, setSeeResume] = useState(false);
 	const [showFilter, setShowFilter] = useState(false);
 	const [params, setParams] = useState({
 		search: '',
 		viewBy: '10',
 	});
 	const windowSize = useWindowSize();
-
-	const miniSlideSelect = (selectedIndex) => {
-		setActiveMiniSlide(selectedIndex);
-	};
+	const [load, setLoad] = useState(true);
 
 	const onChange = (e) => {
 		const { name, value } = e.target;
 
-		if (value === '') {
-			newUrl.searchParams.delete(name);
+		if (name === 'search') {
+			setParams({ ...params, search: value });
 		} else {
-			newUrl.searchParams.set(name, value);
+			if (value === '') {
+				newUrl.searchParams.delete(name);
+			} else {
+				newUrl.searchParams.set(name, value);
+			}
+
+			setParams({ ...params, [name]: value });
+
+			if (name === 'limit') {
+				addFilter({ [name]: parseInt(value) });
+			} else {
+				addFilter({ [name]: value });
+			}
+
+			if (queryParams.get('page')) {
+				newUrl.searchParams.set('page', 1);
+			}
+
+			history.push({
+				pathname: newUrl.pathname,
+				search: newUrl.search,
+			});
+
+			viewCandidates();
 		}
-
-		setParams({ ...params, [name]: value });
-
-		if (name === 'limit') {
-			addFilter({ [name]: parseInt(value) });
-		} else {
-			addFilter({ [name]: value });
-		}
-
-		if (queryParams.get('page')) {
-			newUrl.searchParams.set('page', 1);
-		}
-
-		history.push({
-			pathname: newUrl.pathname,
-			search: newUrl.search,
-		});
-
-		viewCandidates();
 	};
 
-	const addShortlist = (id) => {
-		addCandidate(id);
-	};
-
-	const removeShortlist = (id) => {
-		removeCandidate(id);
+	const onKeyPress = (e) => {
+		if (e.key === 'Enter') {
+			const { name, value } = e.target;
+			if (value === '') {
+				newUrl.searchParams.delete(name);
+			} else {
+				newUrl.searchParams.set(name, value);
+			}
+			history.push({
+				pathname: newUrl.pathname,
+				search: newUrl.search,
+			});
+			viewCandidates();
+		}
 	};
 
 	useEffect(() => {
 		if (queryParams.get('search') !== null) {
 			if (params.search === '') {
-				addFilter({ search: queryParams.get('search') });
-				setParams({ ...params, search: queryParams.get('search') });
+				if (load) {
+					addFilter({ search: queryParams.get('search') });
+					setParams({ ...params, search: queryParams.get('search') });
+					setLoad(false);
+				}
 			}
 		} else {
 			if (filter.search) {
@@ -112,7 +111,7 @@ const TopVerifiedCandidates = ({
 		}
 
 		// eslint-disable-next-line
-	}, [queryParams, params, filter, candidates, windowSize]);
+	}, [queryParams, params, filter, candidates, windowSize, load]);
 
 	return (
 		<Fragment>
@@ -124,6 +123,7 @@ const TopVerifiedCandidates = ({
 					placeholder="Search for software, specialty or keyword"
 					onChange={onChange}
 					value={params.search}
+					onKeyPress={onKeyPress}
 				/>
 				<div className="view-by">
 					<label htmlFor="viewByInput" className="form-label">
@@ -133,9 +133,7 @@ const TopVerifiedCandidates = ({
 						className="form-control input"
 						name="limit"
 						onChange={onChange}
-						value={parseInt(
-							queryParams.get('limit') || params.viewBy
-						)}
+						value={parseInt(queryParams.get('limit') || params.viewBy)}
 					>
 						<option value="10">10</option>
 						<option value="20">20</option>
@@ -161,9 +159,7 @@ const TopVerifiedCandidates = ({
 						className="form-control input"
 						name="limit"
 						onChange={onChange}
-						value={parseInt(
-							queryParams.get('limit') || params.viewBy
-						)}
+						value={parseInt(queryParams.get('limit') || params.viewBy)}
 					>
 						<option value="10">10</option>
 						<option value="20">20</option>
@@ -180,10 +176,6 @@ TopVerifiedCandidates.propTypes = {
 	filterState: PropTypes.object.isRequired,
 	viewCandidates: PropTypes.func.isRequired,
 	addFilter: PropTypes.func.isRequired,
-	viewResume: PropTypes.func.isRequired,
-	clearResume: PropTypes.func.isRequired,
-	addCandidate: PropTypes.func.isRequired,
-	removeCandidate: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -195,8 +187,4 @@ export default connect(mapStateToProps, {
 	viewCandidates,
 	addFilter,
 	removeFilter,
-	viewResume,
-	addCandidate,
-	removeCandidate,
-	clearResume,
 })(TopVerifiedCandidates);

@@ -54,7 +54,7 @@ const RolesPermissions = ({
 										<td>{i + 1}</td>
 										<td>{e.email}</td>
 										<td>{e.type}</td>
-										<td>{e.active ? 'Acitve' : 'Not Active'}</td>
+										<td>{e.active ? 'Active' : 'Not Active'}</td>
 										<td>{e.haveResume ? 'Yes' : 'No'}</td>
 										<td>
 											{moment(e.dateCreated).format('MMMM DD, YYYY, h:mm:ss a')}

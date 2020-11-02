@@ -187,5 +187,12 @@ const ResumeSchema = new mongoose.Schema({
 	},
 });
 
+ResumeSchema.index({
+	specialty: 'text',
+	advancedSoftware: 'text',
+	intermediateSoftware: 'text',
+	marketType: 'text',
+	countryExperience: 'text',
+});
 ResumeSchema.plugin(AutoIncrement, { inc_field: 'idCode' });
 module.exports = mongoose.model('Resume', ResumeSchema);

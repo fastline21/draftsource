@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import getSymbolFromCurrency from 'currency-symbol-map';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 
@@ -20,18 +19,14 @@ import ViewSampleWork from './ViewSampleWork';
 
 const ViewResume = ({
 	isShow,
-	loadCandidate,
 	candidateState: { resume, shortlist },
 	clearResume,
-	setAlert,
 	removeCandidate,
 	addCandidate,
 }) => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
-	const [showGenInfo, setShowGenInfo] = useState(false);
-	const targetGenInfo = useRef(null);
 
 	// Initial
 	const initialData = {
@@ -82,8 +77,6 @@ const ViewResume = ({
 	// State
 	const [show, setShow] = useState(false);
 	const [data, setData] = useState(initialData);
-	const [action, setAction] = useState(null);
-	const [msg, setMsg] = useState('');
 	const [viewImage, setViewImage] = useState(initialViewImage);
 	const [viewSampleWork, setViewSampleWork] = useState(initialViewSampleWork);
 
@@ -92,17 +85,10 @@ const ViewResume = ({
 		idCode,
 		resumeImage,
 		aboutYourself,
-		firstName,
-		lastName,
-		city,
 		gender,
 		headline,
 		age,
-		status,
 		rating,
-		availability,
-		expectedSalary,
-		currency,
 		specialty,
 		advancedSoftware,
 		intermediateSoftware,
@@ -112,12 +98,6 @@ const ViewResume = ({
 		workHistory,
 		education,
 		recruitmentsComment,
-		internetType,
-		hardwareType,
-		brandName,
-		process,
-		ram,
-		internetResult,
 		totalWorkYear,
 	} = data;
 
@@ -162,6 +142,8 @@ const ViewResume = ({
 			handleShow();
 			setData(resume);
 		}
+
+		// eslint-disable-next-line
 	}, [isShow]);
 
 	return (
@@ -215,51 +197,10 @@ const ViewResume = ({
 									</p>
 								</div>
 								<div>
-									{/* <p className="data-title mb-0" style={{ fontWeight: '700' }}>
-										Headline
-									</p> */}
 									<p className="availability" style={{ color: '#000000' }}>
 										{headline}
 									</p>
 								</div>
-								{/* <div>
-									<p className="data-title mb-0" style={{ fontWeight: '700' }}>
-										English Level
-									</p>
-									<p className="availability">{rating}</p>
-									<div className="rating d-inline">
-										<i
-											style={{ cursor: 'default' }}
-											className={`rating-color fas fa-star${
-												rating >= 1 ? ' checked' : ''
-											}`}
-										></i>
-										<i
-											style={{ cursor: 'default' }}
-											className={`rating-color fas fa-star${
-												rating >= 2 ? ' checked' : ''
-											}`}
-										></i>
-										<i
-											style={{ cursor: 'default' }}
-											className={`rating-color fas fa-star${
-												rating >= 3 ? ' checked' : ''
-											}`}
-										></i>
-										<i
-											style={{ cursor: 'default' }}
-											className={`rating-color fas fa-star${
-												rating >= 4 ? ' checked' : ''
-											}`}
-										></i>
-										<i
-											style={{ cursor: 'default' }}
-											className={`rating-color fas fa-star${
-												rating === 5 ? ' checked' : ''
-											}`}
-										></i>
-									</div>
-								</div> */}
 							</div>
 						</div>
 						<div className="col-lg-3">
@@ -677,39 +618,6 @@ const ViewResume = ({
 							</button>
 						</div>
 					</div>
-					{/* <div className="row pb-5">
-						<div className="col-lg-3">
-							<p className="item-title color-2">Work from Home Capabilites</p>
-						</div>
-						<div className="col-lg-8">
-							<table className="table table-borderless workspace-item">
-								<tbody>
-									<tr>
-										<th scope="row" className="pt-0 item-title">
-											Internet Type
-										</th>
-										<td id="internetType" className="pt-0 item-value">
-											{internetType}
-										</td>
-									</tr>
-									<tr>
-										<th scope="row" className="pt-0 item-title">
-											Internet Result
-										</th>
-										<td id="internetType" className="pt-0 item-value">
-											<a
-												href={internetResult}
-												target="_blank"
-												className="btn btn-primary view"
-											>
-												View
-											</a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div> */}
 				</div>
 			</Modal.Body>
 		</Modal>

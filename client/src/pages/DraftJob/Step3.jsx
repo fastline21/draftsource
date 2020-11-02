@@ -75,6 +75,8 @@ const Step3 = ({
 		} else {
 			setInfo({ ...info, [name]: value });
 		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
 	};
 
 	const onSubmit = (e) => {
@@ -116,6 +118,8 @@ const Step3 = ({
 				'<h2 class="title">Thank you for drafting a job</h2><p class="subtitle">We will call you within 72 hours to verify your profile</p>'
 			);
 		}
+
+		// eslint-disable-next-line
 	}, [success]);
 
 	// const initialInfo = {

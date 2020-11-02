@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import getSymbolFromCurrency from 'currency-symbol-map';
 import moment from 'moment';
 
 // Actions
@@ -18,6 +17,7 @@ import { ratingList } from './../../list/Rating';
 import { salaryList } from './../../list/Salary';
 import { monthList } from './../../list/Month';
 import { yearList } from './../../list/Year';
+import { countryList } from './../../list/Country';
 
 // Components
 import ViewImage from './ViewImage';
@@ -25,7 +25,6 @@ import ViewSampleWork from './ViewSampleWork';
 import ModalActionResume from './ModalActionResume';
 
 const ViewResume = ({
-	isShow,
 	loadCandidate,
 	candidateState: { resume },
 	clearResume,
@@ -96,7 +95,6 @@ const ViewResume = ({
 		hardwareType: '',
 		brandName: '',
 		internetResult: '',
-		// computerSpecs: '',
 		email: '',
 		processor: '',
 		ram: '',
@@ -142,9 +140,7 @@ const ViewResume = ({
 		city,
 		status,
 		rating,
-		availability,
 		expectedSalary,
-		currency,
 		govID,
 		cv,
 		specialty,
@@ -156,12 +152,10 @@ const ViewResume = ({
 		workHistory,
 		education,
 		recruitmentsComment,
-		workspace,
 		internetType,
 		hardwareType,
 		brandName,
 		internetResult,
-		// computerSpecs,
 		processor,
 		ram,
 		os,
@@ -211,6 +205,14 @@ const ViewResume = ({
 		);
 	};
 
+	const hireResume = () => {
+		setAction('hire');
+		setShowModalAction(true);
+		setMsg(
+			'<h2 className="title">Hire Resume?</h2><p>This resume will go to your hire resume tab. You can reject this resume later on if you wanted.</p>'
+		);
+	};
+
 	const actionButton = () => {
 		if (status === 'Pending') {
 			return (
@@ -228,12 +230,20 @@ const ViewResume = ({
 			);
 		} else if (status === 'Approve') {
 			return (
-				<button
-					className="btn btn-primary button button"
-					onClick={rejectResume}
-				>
-					Reject
-				</button>
+				<>
+					<button
+						className="btn btn-primary button button"
+						onClick={hireResume}
+					>
+						Hire
+					</button>
+					<button
+						className="btn btn-primary button button1"
+						onClick={rejectResume}
+					>
+						Reject
+					</button>
+				</>
 			);
 		} else if (status === 'Reject') {
 			return (
@@ -264,12 +274,8 @@ const ViewResume = ({
 	const onChange = (e) => {
 		const { name, value } = e.target;
 		if (isEditArr.workHistory.show) {
-			// console.log(workHistory[isEditArr.workHistory.index]);
-			// console.log(name, value);
 			workHistory[isEditArr.workHistory.index][name] = value;
 			setData({ ...data, workHistory: [...workHistory] });
-			// console.log({ ...data, workHistory: [...workHistory, newWorkHistory] });
-			// setData(data => ({ data.workHistory: {...data.workHistory, [data.workHistory[isEditArr.workHistory.index][name]: value ]}))
 		} else {
 			setData({ ...data, [name]: value });
 		}
@@ -294,16 +300,6 @@ const ViewResume = ({
 	};
 
 	const totalMonths = (m1, m2, y1, y2) => {
-		// let d2 = moment(
-		// 	`${moment().month(e.monthStarted).format('MM')}/01/${parseInt(
-		// 		e.yearStarted
-		// 	)}`,
-		// 	'MM/DD/YYYY'
-		// );
-		// return moment([parseInt(y2), moment().month(m2).format('MM')]).diff(
-		// 	moment([parseInt(y1), moment().month(m1).format('MM')]),
-		// 	'month'
-		// );
 		const d2 = moment(
 			`${moment().month(m1).format('MM')}/01/${parseInt(y1)}`,
 			'MM/DD/YYYY'
@@ -323,11 +319,13 @@ const ViewResume = ({
 	const handleShow = () => setShow(true);
 
 	useEffect(() => {
-		if (isShow) {
+		if (resume) {
 			handleShow();
 			setData({ ...data, ...resume });
 		}
-	}, [isShow]);
+
+		// eslint-disable-next-line
+	}, [resume]);
 
 	return (
 		<Modal
@@ -587,6 +585,7 @@ const ViewResume = ({
 														href={linkedIn}
 														target="_blank"
 														className="btn btn-primary view"
+														rel="noopener noreferrer"
 													>
 														View
 													</a>
@@ -868,7 +867,25 @@ const ViewResume = ({
 										</p>
 										<br />
 										<p className="item-title">Country</p>
-										<p className="country">{e.country}</p>
+										<p className="country">
+											{isEditArr.workHistory.show &&
+											isEditArr.workHistory.index === i ? (
+												<select
+													className="input"
+													name="country"
+													value={e.country}
+													onChange={onChange}
+												>
+													{countryList().map((elm, index) => (
+														<option value={elm} key={index}>
+															{elm}
+														</option>
+													))}
+												</select>
+											) : (
+												e.country
+											)}
+										</p>
 										<p className="item-title">Company Size</p>
 										<p className="company-size">{e.companySize}</p>
 									</div>
@@ -1002,14 +1019,6 @@ const ViewResume = ({
 						<div className="col-lg-9">
 							<table className="table table-borderless workspace-item">
 								<tbody>
-									{/* <tr>
-										<th scope="row" className="pt-0 item-title">
-											Workspace
-										</th>
-										<td id="workspace" className="pt-0 item-value">
-											{workspace}
-										</td>
-									</tr> */}
 									<tr>
 										<th scope="row" className="pt-0 item-title">
 											Internet Type
@@ -1027,21 +1036,10 @@ const ViewResume = ({
 												href={internetResult}
 												className="btn btn-primary view"
 												target="_blank"
+												rel="noopener noreferrer"
 											>
 												View
 											</a>
-											{/* <button
-												className="btn btn-primary view"
-												onClick={() =>
-													setViewImage({
-														show: true,
-														title: 'Internet Speedtest Result',
-														file: internetResult,
-													})
-												}
-											>
-												View
-											</button> */}
 										</td>
 									</tr>
 									{hardwareType !== '' ||
@@ -1107,25 +1105,6 @@ const ViewResume = ({
 											</tr>
 										</Fragment>
 									) : null}
-									{/* <tr>
-										<th scope="row" className="pt-0 item-title">
-											Computer Specs
-										</th>
-										<td className="pt-0">
-											<button
-												className="btn btn-primary view"
-												onClick={() =>
-													setViewImage({
-														show: true,
-														title: 'Computer Specs',
-														file: computerSpecs,
-													})
-												}
-											>
-												View
-											</button>
-										</td>
-									</tr> */}
 								</tbody>
 							</table>
 						</div>
@@ -1139,7 +1118,6 @@ const ViewResume = ({
 ViewResume.propTypes = {
 	candidateState: PropTypes.object.isRequired,
 	clearResume: PropTypes.func.isRequired,
-	isShow: PropTypes.bool.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	addRecruitersComment: PropTypes.func.isRequired,
 	updateResume: PropTypes.func.isRequired,

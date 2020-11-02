@@ -11,7 +11,7 @@ const Pricing = () => {
 			<section className="sec-1">
 				<Container>
 					<div className="head">
-						<h1 className="title">14-Day Risk Free Guarantee</h1>
+						<h1 className="title">14 Day Risk Free Guarantee</h1>
 						<ul className="list">
 							<li className="item">No recruitment fees.</li>
 							<li className="item">No long term contracts.</li>
@@ -37,7 +37,7 @@ const Pricing = () => {
 										</button>
 										<p className="card-subtitle font-italic">
 											Price includes staff salary, equipment rental
-											fast-internet and service fee 160 hours per staff per
+											fast-internet and service fee 80-160 hours per staff per
 											month; No freelancing
 										</p>
 										<hr className="line-break" />
@@ -46,7 +46,6 @@ const Pricing = () => {
 												Recruitment Assistance
 											</h6>
 											<ul className="list">
-												<li className="item">Mid-Senior Level Expertise</li>
 												<li className="item">Vetted Professionals</li>
 												<li className="item">English Proficient Only</li>
 												<li className="item">Sourcing and Screening</li>
@@ -77,8 +76,6 @@ const Pricing = () => {
 												<li className="item">25 MBPS Internet Connection</li>
 												<li className="item">Noise Cancelling Headphones</li>
 												<li className="item">Software Requirements</li>
-												<li className="item">Office Workstation</li>
-												<li className="item">Ergonomic Swivel Chair</li>
 											</ul>
 										</div>
 									</div>

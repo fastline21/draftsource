@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -54,6 +54,8 @@ const Step2 = ({
 		} else {
 			setInfo({ ...info, [name]: value });
 		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
 	};
 
 	const onSubmit = (e) => {
@@ -89,137 +91,9 @@ const Step2 = ({
 				search: 'step=3',
 			});
 		}
+
+		// eslint-disable-next-line
 	}, [success]);
-
-	console.log(timezones);
-
-	// const initialInfo = {
-	// 	about: '',
-	// 	remoteStaffExpectation: '',
-	// };
-
-	// const [roles, setRoles] = useState([]);
-	// const [keyResponsibilities, setKeyResponsibilities] = useState([]);
-	// const [responsibilities, setResponsibilities] = useState([]);
-
-	// const [submit, setSubmit] = useState(false);
-	// const [load, setLoad] = useState(true);
-
-	// const { about, remoteStaffExpectation } = info;
-
-	// const rolesRef = useRef(null);
-	// const keyResponsibilitiesRef = useRef(null);
-	// const responsibilitiesRef = useRef(null);
-
-	// const onKeyPress = (e) => {
-	// 	if (e.key === 'Enter') {
-	// 		const { name } = e.target;
-	// 		if (name === 'roles') {
-	// 			const rolesVal = rolesRef.current.value;
-	// 			if (rolesVal === '') {
-	// 				setAlert('', 'Please fill-in the required boxes to Proceed.');
-	// 			} else {
-	// 				setRoles((roles) => [...roles, rolesVal]);
-	// 				rolesRef.current.value = '';
-	// 			}
-	// 		} else if (name === 'keyResponsibilities') {
-	// 			const keyResponsibilitiesVal = keyResponsibilitiesRef.current.value;
-	// 			if (keyResponsibilitiesVal === '') {
-	// 				setAlert('', 'Please fill-in the required boxes to Proceed.');
-	// 			} else {
-	// 				setKeyResponsibilities((keyResponsibilities) => [
-	// 					...keyResponsibilities,
-	// 					keyResponsibilitiesVal,
-	// 				]);
-	// 				keyResponsibilitiesRef.current.value = '';
-	// 			}
-	// 		} else if (name === 'responsibilities') {
-	// 			const responsibilitiesVal = responsibilitiesRef.current.value;
-	// 			if (responsibilitiesVal === '') {
-	// 				setAlert('', 'Please fill-in the required boxes to Proceed.');
-	// 			} else {
-	// 				setResponsibilities((responsibilities) => [
-	// 					...responsibilities,
-	// 					responsibilitiesVal,
-	// 				]);
-	// 				responsibilitiesRef.current.value = '';
-	// 			}
-	// 		}
-	// 		setDirty();
-	// 		setMessage('Are you sure you want to leave this page?');
-	// 		e.preventDefault();
-	// 	}
-	// };
-
-	// const itemClose = (field, index) => {
-	// 	if (field === 'roles') {
-	// 		setRoles((roles) => [...roles.filter((x) => roles.indexOf(x) !== index)]);
-	// 	} else if (field === 'keyResponsibilities') {
-	// 		setKeyResponsibilities((keyResponsibilities) => [
-	// 			...keyResponsibilities.filter(
-	// 				(x) => keyResponsibilities.indexOf(x) !== index
-	// 			),
-	// 		]);
-	// 	} else if (field === 'responsibilities') {
-	// 		setResponsibilities((responsibilities) => [
-	// 			...responsibilities.filter(
-	// 				(x) => responsibilities.indexOf(x) !== index
-	// 			),
-	// 		]);
-	// 	}
-	// };
-
-	// const onSubmit = (e) => {
-	// 	e.preventDefault();
-	// 	if (
-	// 		roles.length === 0 ||
-	// 		keyResponsibilities.length === 0 ||
-	// 		responsibilities.length === 0 ||
-	// 		about === '' ||
-	// 		remoteStaffExpectation === ''
-	// 	) {
-	// 		setAlert('', 'Please fill-in the required boxes to Proceed.');
-	// 	} else {
-	// 		addJob({
-	// 			about,
-	// 			roles,
-	// 			keyResponsibilities,
-	// 			responsibilities,
-	// 			remoteStaffExpectation,
-	// 		});
-	// 		setInfo(initialInfo);
-	// 		setRoles([]);
-	// 		setKeyResponsibilities([]);
-	// 		setResponsibilities([]);
-	// 		setSubmit(true);
-	// 		setPristine();
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	if (load) {
-	// 		if (step !== 2) {
-	// 		    setAlert(
-	// 		        '/',
-	// 		        'You are not authorize to go in this page. Please start at Step 1'
-	// 		    );
-	// 		}
-	// 		setLoad(false);
-	// 	}
-	// 	if (JSON.stringify(info) === JSON.stringify(initialInfo)) {
-	// 		setDirty();
-	// 		setMessage('Are you sure you want to leave this page?');
-	// 	}
-
-	// 	if (submit) {
-	// 		setSubmit(false);
-	// 		setStep(3);
-	// 		history.push({
-	// 			pathname: '/draft-job',
-	// 			search: 'step=3',
-	// 		});
-	// 	}
-	// }, [submit, info, load]);
 
 	return (
 		<div className="step-2">
@@ -281,7 +155,7 @@ const Step2 = ({
 											margin: '10px 0',
 										}}
 									>
-										Budget per hour (160 hours){' '}
+										Budget per hour (80-160 hours){' '}
 										<OverlayTrigger
 											key="right"
 											placement="right"
@@ -294,10 +168,6 @@ const Step2 = ({
 														<br />
 														Draftsource is using a fair market standard rate to
 														attract quality talents.
-														<br />
-														<br />
-														No part-time, no freelancing no side-gigs. Full-time
-														only
 													</p>
 												</Tooltip>
 											}

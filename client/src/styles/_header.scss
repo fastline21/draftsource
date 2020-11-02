@@ -21,10 +21,11 @@
 
 		&.talk-recruiter {
 			color: $darkBlue;
-			border: 1px solid $darkBlue;
+			border: 2px solid $darkBlue;
 			border-radius: 20px;
-			width: 180px;
+			width: 150px;
 			text-align: center;
+			font-weight: 600;
 			padding: 5px 0;
 		}
 	}

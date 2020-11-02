@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './store';
 
+// Components
 import ScrollToTop from './components/ScrollToTop';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
@@ -24,7 +25,6 @@ import DraftJobRoute from './routing/DraftJobRoute';
 import DraftJob from './pages/DraftJob';
 import AdminSignup from './pages/AdminSignup';
 import Signup from './pages/Signup';
-import SignupRoute from './routing/SignupRoute';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsService from './pages/TermsService';
 

@@ -72,6 +72,25 @@ export const approvedApplicants = () => async (dispatch) => {
 	}
 };
 
+// Hired applicants
+export const hiredApplicants = () => async (dispatch) => {
+	try {
+		setLoading()(dispatch);
+
+		const getSearch = window.location.search;
+		const res = await axios.get(`/api/candidate/hired-applicants${getSearch}`);
+		dispatch({
+			type: GET_CANDIDATES,
+			payload: res.data,
+		});
+	} catch (error) {
+		dispatch({
+			type: CANDIDATES_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
+
 // Approve resume
 export const approveResume = (data) => async (dispatch) => {
 	try {
@@ -98,6 +117,24 @@ export const rejectResume = (data) => async (dispatch) => {
 			},
 		};
 		await axios.put('/api/candidate/reject-resume', data, config);
+	} catch (error) {
+		dispatch({
+			type: CANDIDATES_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
+
+// Hire resume
+export const hireResume = (data) => async (dispatch) => {
+	try {
+		console.log('hire resume');
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		await axios.put('/api/candidate/hire-resume', data, config);
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,

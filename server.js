@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+const cors = require('cors');
 
 // Load env file
 require('dotenv').config();
@@ -12,6 +13,9 @@ const app = express();
 // Database
 const db = require('./config/db');
 db();
+
+// Enable CORS
+app.use(cors());
 
 // Init middleware
 app.use(express.json({ extended: true }));

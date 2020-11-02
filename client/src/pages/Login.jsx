@@ -43,17 +43,10 @@ const Login = ({
 		e.preventDefault();
 
 		if (email === '' || password === '') {
-			return setAlert(
-				'',
-				'Please fill-in the required boxes to Proceed.'
-			);
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			loginUser({ email, password });
 		}
-	};
-
-	const onSignup = () => {
-		setSignupModal(true);
 	};
 
 	useEffect(() => {
@@ -75,10 +68,7 @@ const Login = ({
 
 	return (
 		<div id="login">
-			<SignupModal
-				isShow={signupModal}
-				isHide={() => setSignupModal(false)}
-			/>
+			<SignupModal isShow={signupModal} isHide={() => setSignupModal(false)} />
 			<div className="container">
 				<div className="header">
 					<h2 className="title">Login</h2>
@@ -90,9 +80,7 @@ const Login = ({
 							<div className="form-group">
 								<div className="form-row">
 									<div className="col-lg-3">
-										<label className="form-label">
-											Email
-										</label>
+										<label className="form-label">Email</label>
 									</div>
 									<div className="col-lg-9">
 										<input
@@ -108,9 +96,7 @@ const Login = ({
 							<div className="form-group">
 								<div className="form-row">
 									<div className="col-lg-3">
-										<label className="form-label">
-											Password
-										</label>
+										<label className="form-label">Password</label>
 									</div>
 									<div className="col-lg-9">
 										<input
@@ -152,10 +138,7 @@ const Login = ({
 													Stay logged in
 												</label>
 											</div>
-											<Link
-												to="/forget-password"
-												className="ml-auto link"
-											>
+											<Link to="/forget-password" className="ml-auto link">
 												Forget password?
 											</Link>
 										</div>

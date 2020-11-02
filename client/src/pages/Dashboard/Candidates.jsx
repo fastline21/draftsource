@@ -7,28 +7,28 @@ import PreLoader from './../../layouts/PreLoader';
 import CandidateItem from './CandidateItem';
 
 const Candidates = ({ candidateState: { candidates, loading } }) => {
-    if (loading || candidates === null) {
-        return <PreLoader />;
-    }
+	if (loading || candidates === null) {
+		return <PreLoader />;
+	}
 
-    return (
-        <Fragment>
-            {!loading && candidates.length === 0 ? (
-                <p>No candidates to show...</p>
-            ) : (
-                candidates.map((candidate, key) => (
-                    <CandidateItem candidate={candidate} key={key} />
-                ))
-            )}
-        </Fragment>
-    );
+	return (
+		<Fragment>
+			{!loading && candidates.length === 0 ? (
+				<p className="m-3">No candidates to show...</p>
+			) : (
+				candidates.map((candidate, key) => (
+					<CandidateItem candidate={candidate} key={key} />
+				))
+			)}
+		</Fragment>
+	);
 };
 
 Candidates.propTypes = {
-    candidateState: PropTypes.object.isRequired,
+	candidateState: PropTypes.object.isRequired,
 };
 const mapStateToProps = (state) => ({
-    candidateState: state.candidateState,
+	candidateState: state.candidateState,
 });
 
 export default connect(mapStateToProps)(Candidates);

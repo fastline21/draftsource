@@ -7,7 +7,6 @@ import {
 	SET_SUCCESS,
 	GET_JOBS,
 	CLEAR_DETAILS,
-	VIEW_DETAILS,
 	JOB_LOADING,
 	VIEW_JOB,
 } from './../actions/types';
