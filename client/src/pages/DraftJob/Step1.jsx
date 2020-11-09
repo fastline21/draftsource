@@ -6,23 +6,26 @@ import PropTypes from 'prop-types';
 // Components
 import { specialtyList } from './../../list/Specialty';
 import { softwareList } from './../../list/Software';
+import { marketTypeList } from './../../list/MarketType';
 import SpecialtyItem from './SpecialtyItem';
-import SoftwareItem from './SpecialtyItem';
+import SoftwareItem from './SoftwareItem';
+import MarketTypeItem from './MarketTypeItem';
 import Specialty from './Specialty';
 import Software from './Software';
+import MarketType from './MarketType';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Actions
 import { setAlert } from './../../state/actions/alertAction';
-import { addJob, setStep, setSuccess } from './../../state/actions/jobAction';
+import { addJob, jobStep, jobSuccess } from './../../state/actions/jobAction';
 
 const Step1 = ({
 	setAlert,
 	addJob,
-	setStep,
-	setSuccess,
+	jobStep,
+	jobSuccess,
 	jobState: { step, success },
 }) => {
 	const history = useHistory();
@@ -39,8 +42,10 @@ const Step1 = ({
 	const { title } = info;
 	const [specialty, setSpecialty] = useState([]);
 	const [software, setSoftware] = useState([]);
+	const [marketType, setMarketType] = useState([]);
 	const otherSpecialtyRef = useRef(null);
 	const otherSoftwareRef = useRef(null);
+	const otherMarketTypeRef = useRef(null);
 	const generateSpecialty = () => {
 		let key = 0;
 		let list = [];
@@ -91,6 +96,31 @@ const Step1 = ({
 		}
 		return list;
 	};
+	const generateMarketType = () => {
+		let key = 0;
+		let list = [];
+		const total = Math.ceil(marketTypeList().length / 4);
+		for (let x = 0; x < 4; x++) {
+			let item = [];
+			for (let y = 0; y < total; y++) {
+				item.push(
+					<MarketTypeItem
+						key={key}
+						index={key}
+						value={marketTypeList()[key]}
+						select={onSelectMarketType}
+					/>
+				);
+				key++;
+			}
+			list.push(
+				<div className="col-lg-3 col-md-6 col-sm-6" key={x}>
+					<ul className="nav flex-column">{item}</ul>
+				</div>
+			);
+		}
+		return list;
+	};
 	const onSelectSpecialty = (e) => {
 		if (specialty.includes(specialtyList()[e])) {
 			setSpecialty((specialty) => [
@@ -129,6 +159,26 @@ const Step1 = ({
 		setDirty();
 		setMessage('Are you sure you want to leave this page?');
 	};
+	const onSelectMarketType = (e) => {
+		if (marketType.includes(marketTypeList()[e])) {
+			setMarketType((marketType) => [
+				...marketType.filter(
+					(x) =>
+						marketType.indexOf(x) !== marketType.indexOf(marketTypeList()[e])
+				),
+			]);
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === marketTypeList()[e])
+				.classList.remove('active');
+		} else {
+			setMarketType((marketType) => [...marketType, marketTypeList()[e]]);
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === marketTypeList()[e])
+				.classList.add('active');
+		}
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
 	const onSpecialtyClose = (e) => {
 		const item = specialty[e];
 		if (specialtyList().includes(item)) {
@@ -149,6 +199,17 @@ const Step1 = ({
 		}
 		setSoftware((software) => [
 			...software.filter((x) => software.indexOf(x) !== e),
+		]);
+	};
+	const onMarketTypeClose = (e) => {
+		const item = marketType[e];
+		if (marketTypeList().includes(item)) {
+			Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+				.find((el) => el.textContent === item)
+				.classList.remove('active');
+		}
+		setMarketType((marketType) => [
+			...marketType.filter((x) => marketType.indexOf(x) !== e),
 		]);
 	};
 	const onkeyPressOtherSpecialty = (e) => {
@@ -194,6 +255,34 @@ const Step1 = ({
 					setSoftware((software) => [...software, lowerOther]);
 				}
 				otherSoftwareRef.current.value = '';
+				setDirty();
+				setMessage('Are you sure you want to leave this page?');
+			}
+		}
+	};
+
+	const onKeyPressOtherMarketType = (e) => {
+		if (e.key === 'Enter') {
+			e.preventDefault();
+
+			if (otherMarketTypeRef.current.value === '') {
+				return setAlert('', 'Please fill-in the required boxes to Proceed.');
+			} else {
+				const lowerMarketType = marketTypeList().map((el) => el.toLowerCase());
+				const lowerOther = otherMarketTypeRef.current.value;
+				if (lowerMarketType.includes(lowerOther.toLowerCase())) {
+					const index = lowerMarketType.indexOf(lowerOther.toLowerCase());
+					setMarketType((marketType) => [
+						...marketType,
+						marketTypeList()[index],
+					]);
+					Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+						.find((el) => el.textContent === marketTypeList()[index])
+						.classList.add('active');
+				} else {
+					setMarketType((marketType) => [...marketType, lowerOther]);
+				}
+				otherMarketTypeRef.current.value = '';
 				setDirty();
 				setMessage('Are you sure you want to leave this page?');
 			}
@@ -247,6 +336,29 @@ const Step1 = ({
 		}
 	};
 
+	const addOtherMarketType = (e) => {
+		e.preventDefault();
+
+		if (otherMarketTypeRef.current.value === '') {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else {
+			const lowerMarketType = marketTypeList().map((el) => el.toLowerCase());
+			const lowerOther = otherMarketTypeRef.current.value;
+			if (lowerMarketType.includes(lowerOther.toLowerCase())) {
+				const index = lowerMarketType.indexOf(lowerOther.toLowerCase());
+				setMarketType((marketType) => [...marketType, marketTypeList()[index]]);
+				Array.from(document.querySelectorAll('.market-type .list .nav-item'))
+					.find((el) => el.textContent === marketTypeList()[index])
+					.classList.add('active');
+			} else {
+				setMarketType((marketType) => [...marketType, lowerOther]);
+			}
+			otherMarketTypeRef.current.value = '';
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+	};
+
 	const onChange = (e) => {
 		const { name, value } = e.target;
 		setInfo({ ...info, [name]: value });
@@ -256,24 +368,31 @@ const Step1 = ({
 
 	const onSubmit = (e) => {
 		e.preventDefault();
-		if (title === '' || specialty.length === 0 || software.length === 0) {
+		if (
+			title === '' ||
+			specialty.length === 0 ||
+			software.length === 0 ||
+			marketType.length === 0
+		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
 			addJob({
 				title,
 				specialty,
 				software,
+				marketType,
 			});
 			setInfo(initialInfo);
 			setSpecialty([]);
 			setSoftware([]);
+			setMarketType([]);
 			setPristine();
 		}
 	};
 
 	useEffect(() => {
 		if (step === 0) {
-			setStep(1);
+			jobStep(1);
 		}
 
 		if (step > 1) {
@@ -285,8 +404,8 @@ const Step1 = ({
 		}
 
 		if (success) {
-			setSuccess();
-			setStep(2);
+			jobSuccess();
+			jobStep(2);
 			history.push({
 				pathname: '/draft-job',
 				search: 'step=2',
@@ -400,6 +519,49 @@ const Step1 = ({
 						</div>
 					</div>
 				</div>
+				<div className="form-row specialty-software market-type">
+					<div className="col-lg-4">
+						<h5 className="title">
+							Market type <span>Atleast (3) three market type</span>
+						</h5>
+						{marketType.length === 0 ? (
+							<p className="subtitle">
+								This section view is your project or market type experience.
+								This will determine how big or how small how experienced or
+								inexperienced you are in the position you are applying for.
+							</p>
+						) : (
+							marketType.map((e, i) => (
+								<MarketType
+									key={i}
+									value={e}
+									index={i}
+									onMarketTypeClose={onMarketTypeClose}
+								/>
+							))
+						)}
+					</div>
+					<div className="col-lg-8">
+						<div className="list">
+							<div className="form-row">{generateMarketType()}</div>
+						</div>
+						<div className="form-inline">
+							<input
+								type="text"
+								placeholder="Other Market type"
+								className="form-control input other-input"
+								ref={otherMarketTypeRef}
+								onKeyPress={onKeyPressOtherMarketType}
+							/>
+							<button
+								className="btn btn-primary button other-add"
+								onClick={addOtherMarketType}
+							>
+								Add
+							</button>
+						</div>
+					</div>
+				</div>
 				<div className="form-row mt-5">
 					<div className="col-sm-3 offset-sm-9">
 						<input
@@ -417,8 +579,8 @@ const Step1 = ({
 Step1.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addJob: PropTypes.func.isRequired,
-	setSuccess: PropTypes.func.isRequired,
-	setStep: PropTypes.func.isRequired,
+	jobSuccess: PropTypes.func.isRequired,
+	jobStep: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -428,6 +590,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
 	setAlert,
 	addJob,
-	setStep,
-	setSuccess,
+	jobStep,
+	jobSuccess,
 })(Step1);

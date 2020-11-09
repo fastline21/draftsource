@@ -7,18 +7,25 @@ import ReactPaginate from 'react-paginate';
 
 // Actions
 import { addFilter } from './../../state/actions/filterAction';
+import { loadUser } from '../../state/actions/userAction';
 
 const PaginationLink = ({
+	type,
 	loadCandidate,
+	loadJob,
+	loadUser,
 	addFilter,
 	filterState: { filter },
-	candidateState: { total },
+	candidateState: { total: candidateTotal },
+	jobState: { total: jobTotal },
+	userState: { total: userTotal },
 }) => {
 	const queryParams = new URLSearchParams(window.location.search);
 	const newUrl = new URL(window.location.href);
 	const history = useHistory();
 	const [page, setPage] = useState(1);
 	const [limit, setLimit] = useState(10);
+	const [total, setTotal] = useState(0);
 	let pageNumbers = [];
 
 	for (let i = 1; i <= Math.ceil(total / filter.limit); i++) {
@@ -36,7 +43,17 @@ const PaginationLink = ({
 				search: newUrl.search,
 			});
 
-			loadCandidate();
+			if (type === 'Candidate') {
+				loadCandidate();
+			}
+
+			if (type === 'Job') {
+				loadJob();
+			}
+
+			if (type === 'User') {
+				loadUser();
+			}
 		}
 	};
 
@@ -63,8 +80,28 @@ const PaginationLink = ({
 			}
 		}
 
+		if (type === 'Candidate') {
+			setTotal(candidateTotal);
+		}
+
+		if (type === 'Job') {
+			setTotal(jobTotal);
+		}
+
+		if (type === 'User') {
+			setTotal(userTotal);
+		}
+
 		// eslint-disable-next-line
-	}, [filter, queryParams, total, pageNumbers]);
+	}, [
+		filter,
+		queryParams,
+		candidateTotal,
+		jobTotal,
+		pageNumbers,
+		type,
+		userTotal,
+	]);
 
 	const onPageChange = (data) => {
 		paginate(data.selected + 1);
@@ -111,11 +148,16 @@ const PaginationLink = ({
 PaginationLink.propTypes = {
 	addFilter: PropTypes.func.isRequired,
 	filterState: PropTypes.object.isRequired,
+	candidateState: PropTypes.object.isRequired,
+	jobState: PropTypes.object.isRequired,
+	userState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	filterState: state.filterState,
 	candidateState: state.candidateState,
+	jobState: state.jobState,
+	userState: state.userState,
 });
 
 export default connect(mapStateToProps, {

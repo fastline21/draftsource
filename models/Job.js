@@ -14,6 +14,9 @@ const JobSchema = new mongoose.Schema({
 	software: {
 		type: Array,
 	},
+	marketType: {
+		type: Array,
+	},
 	description: {
 		type: String,
 	},
@@ -72,4 +75,9 @@ const JobSchema = new mongoose.Schema({
 	},
 });
 
+JobSchema.index({
+	specialty: 'text',
+	software: 'text',
+	marketType: 'text',
+});
 module.exports = mongoose.model('Job', JobSchema);

@@ -8,11 +8,15 @@ import PropTypes from 'prop-types';
 
 // Actions
 import { resumeStep, resumeSuccess } from './../state/actions/resumeAction';
+import { jobStep, jobSuccess } from './../state/actions/jobAction';
 
 const Home = ({
 	resumeStep,
 	resumeSuccess,
+	jobStep,
+	jobSuccess,
 	resumeState: { step: resStep },
+	jobState: { step: jStep },
 }) => {
 	useEffect(() => {
 		if (resStep !== 0) {
@@ -20,15 +24,20 @@ const Home = ({
 			resumeSuccess(false);
 		}
 
+		if (jStep !== 0) {
+			jobStep(0);
+			jobSuccess(false);
+		}
+
 		// eslint-disable-next-line
-	}, [resStep]);
+	}, [resStep, jStep]);
 	return (
 		<div id="home">
 			<div style={{ height: '90vh' }}>
 				<div className="h-100  align-items-center d-flex">
 					<section className="sec-1">
 						<h1 className="title">
-							Supercharge your drafting projects with Draftsource
+							Supercharge your drafting team with Draftsource
 						</h1>
 						<p className="subtitle">
 							Hire full-time vetted Filipino drafters and avoid screening
@@ -99,12 +108,21 @@ const Home = ({
 
 Home.propTypes = {
 	resumeStep: PropTypes.func.isRequired,
+	jobStep: PropTypes.func.isRequired,
 	resumeSuccess: PropTypes.func.isRequired,
+	jobSuccess: PropTypes.func.isRequired,
 	resumeState: PropTypes.object.isRequired,
+	jobState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	resumeState: state.resumeState,
+	jobState: state.jobState,
 });
 
-export default connect(mapStateToProps, { resumeStep, resumeSuccess })(Home);
+export default connect(mapStateToProps, {
+	resumeStep,
+	resumeSuccess,
+	jobStep,
+	jobSuccess,
+})(Home);

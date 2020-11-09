@@ -62,7 +62,7 @@
 
 			.input {
 				&[name='limit'] {
-					width: 80px;
+					width: 82px;
 					margin-left: 10px;
 				}
 			}
@@ -213,7 +213,7 @@
 
 					.input {
 						&[name='limit'] {
-							width: 80px;
+							width: 82px;
 							margin-left: 10px;
 						}
 					}
@@ -447,6 +447,7 @@
 
 				.profile-right {
 					min-width: 300px;
+					min-height: 280px;
 					flex: 0.2;
 
 					.button {
@@ -530,40 +531,49 @@
 		flex-direction: column;
 
 		.title {
-			margin-bottom: 10px;
+			margin-bottom: 8px;
 			text-align: center;
 		}
 
 		.subtitle {
 			margin-bottom: 0;
 			text-align: center;
+			font-size: 18px;
+			color: $black;
 		}
 
 		.cta {
 			display: flex;
 			flex-direction: row;
+			padding: 20px 0;
 
 			.button {
-				background-color: $lightCyan;
+				background-color: $white;
 				border-color: $lightCyan;
-				color: $white;
+				color: $lightCyan;
 				border-radius: 30px;
 				font-weight: 700;
-				border-width: 2px;
-				// font-size: 16px;
 				font-size: 12px;
-				// padding: 12px 24px;
-				padding: 12px 20px;
-				margin: 10px 5px;
+				padding: 12px 18px;
+				border-width: 2px;
 
-				&:nth-child(1) {
-					padding: 12px 30px;
-					background-color: $white;
-					color: $lightCyan;
+				@include media('>phone') {
+					padding: 12px 24px;
+					font-size: 14px;
 				}
 
-				@include media('>=tablet') {
+				@include media('>=desktop') {
 					font-size: 16px;
+				}
+
+				&:nth-child(1) {
+					padding: 12px 50px;
+				}
+
+				&:nth-child(2) {
+					margin-left: 15px;
+					background-color: $lightCyan;
+					color: $white;
 				}
 			}
 		}
@@ -580,9 +590,10 @@
 
 			.item {
 				margin-right: 10px;
+				color: $lightGray;
 
 				&::before {
-					color: $darkGray;
+					color: $lightGray;
 					font-family: 'Font Awesome 5 Free';
 					font-weight: 900;
 					content: '\f00c';

@@ -11,11 +11,11 @@ const Pricing = () => {
 			<section className="sec-1">
 				<Container>
 					<div className="head">
-						<h1 className="title">14 Day Risk Free Guarantee</h1>
+						<h1 className="title">Experience based pricing</h1>
 						<ul className="list">
 							<li className="item">No recruitment fees.</li>
 							<li className="item">No long term contracts.</li>
-							<li className="item">No work no pay.</li>
+							<li className="item">14-day risk free.</li>
 						</ul>
 					</div>
 					<Row>
@@ -259,12 +259,12 @@ const Pricing = () => {
 					</Row>
 					<Row className="task mb-5">
 						<Col sm="12">
-							<h1 className="title">14-Day Risk Free Guarantee</h1>
+							<h1 className="title">14 Day Risk Free Guarantee</h1>
 							<p className="subtitle">
-								Get pre-screened candidates straight to your inbox obligation
+								Get pre-screened candidates straight to your inbox - obligation
 								free
 							</p>
-							<div className="cta mt-4">
+							<div className="cta">
 								<Link to="/draft-job" className="btn btn-primary button">
 									Draft a Job
 								</Link>
@@ -275,7 +275,7 @@ const Pricing = () => {
 									Talk to a Recruiter
 								</button>
 							</div>
-							<ul className="list mt-3">
+							<ul className="list">
 								<li className="item">No recruitment fees</li>
 								<li className="item">No long term contracts</li>
 								<li className="item">No work no pay</li>

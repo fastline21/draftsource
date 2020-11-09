@@ -14,6 +14,9 @@ import {
 // Utils
 import useWindowSize from './../../utils/useWindowSize';
 
+// Images
+import defaultImage from './../../images/default_image.svg';
+
 const CandidateItem = ({
 	candidate,
 	viewResume,
@@ -262,7 +265,14 @@ const CandidateItem = ({
 					>
 						{uploadWork.images.map((e, i) => (
 							<Carousel.Item key={i} onClick={onViewResume}>
-								<img src={`/uploads/${e.file}`} alt="..." />
+								<img
+									src={`/uploads/${e.file}`}
+									alt="..."
+									onError={(e) => {
+										e.target.onerror = null;
+										e.target.src = defaultImage;
+									}}
+								/>
 							</Carousel.Item>
 						))}
 					</Carousel>

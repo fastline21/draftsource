@@ -367,7 +367,7 @@ const Step3 = ({
 								</div>
 								<div className="form-group">
 									<label htmlFor="brandNameInput" className="form-label">
-										Brand Name
+										Model Name
 									</label>
 									<input
 										type="text"

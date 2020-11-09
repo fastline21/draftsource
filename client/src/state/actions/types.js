@@ -14,6 +14,7 @@ export const USERS_ERROR = 'USERS_ERROR';
 export const GET_USER_INFO = 'GET_USER_INFO';
 export const USER_PERCENT = 'USER_PERCENT';
 export const USER_LOADING = 'USER_LOADING';
+export const STATUS_USER = 'STATUS_USER';
 
 // Resume
 export const ADD_RESUME = 'ADD_RESUME';
@@ -38,6 +39,7 @@ export const REMOVE_CANDIDATE = 'REMOVE_CANDIDATE';
 export const GET_SHORTLISTED = 'GET_SHORTLISTED';
 export const SET_SHORTLISTED = 'SET_SHORTLISTED';
 export const CANDIDATE_LOADING = 'CANDIDATE_LOADING';
+export const STATUS_CANDIDATE = 'STATUS_CANDIDATE';
 
 // Job
 export const ADD_JOB = 'ADD_JOB';
@@ -50,8 +52,11 @@ export const JOB_STEP = 'JOB_STEP';
 export const EMPLOYER_STEP = 'EMPLOYER_STEP';
 export const SUBMIT_EMPLOYER = 'SUBMIT_EMPLOYER';
 export const CLEAR_EMPLOYER = 'CLEAR_EMPLOYER';
-export const SET_SUCCESS = 'SET_SUCCESS';
+export const JOB_SUCCESS = 'JOB_SUCCESS';
 export const CLEAR_DETAILS = 'CLEAR_DETAILS';
 export const VIEW_DETAILS = 'VIEW_DETAILS';
 export const VIEW_JOB = 'VIEW_JOB';
 export const JOB_LOADING = 'JOB_LOADING';
+export const STATUS_JOB = 'STATUS_JOB';
+
+export const SET_SUCCESS = 'SET_SUCCESS';

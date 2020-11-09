@@ -2,6 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Form } from 'react-bootstrap';
 
 // Lists
 import { specialtyList } from './../../list/Specialty';
@@ -38,6 +39,10 @@ const Filter = ({
 		countryCat: false,
 		salaryCat: false,
 		ratingCat: false,
+	});
+	const [suggest, setSuggest] = useState({
+		text: '',
+		suggestions: [],
 	});
 	const onShow = (e) => {
 		e.preventDefault();
@@ -202,6 +207,48 @@ const Filter = ({
 
 		loadData();
 	};
+	const onChangeCountry = (e) => {
+		const { value } = e.target;
+		let suggestions = [];
+		if (value.length > 0) {
+			const regex = new RegExp(`^${value}`, 'i');
+			suggestions = countryList()
+				.sort()
+				.filter((v) => regex.test(v));
+		}
+		setSuggest({ ...suggest, suggestions, text: value });
+	};
+	const renderSuggestionsCountry = () => {
+		const { suggestions } = suggest;
+		if (suggestions.length === 0) {
+			return null;
+		}
+		return (
+			<ul className="list-group pt-3" style={{ marginRight: '15px' }}>
+				{suggestions.map((e, i) => (
+					<li
+						key={i}
+						onClick={() => suggestionsSelected(e)}
+						className="list-group-item list-group-item-action"
+						style={{ cursor: 'pointer' }}
+					>
+						{e}
+					</li>
+				))}
+			</ul>
+		);
+	};
+	const suggestionsSelected = (value) => {
+		addFilter({ country: [value] });
+		setSuggest({ ...suggest, text: value, suggestions: [] });
+		newUrl.searchParams.set('country', value);
+		history.push({
+			pathname: newUrl.pathname,
+			search: newUrl.search,
+		});
+
+		loadData();
+	};
 
 	useEffect(() => {
 		const specialty =
@@ -276,6 +323,7 @@ const Filter = ({
 		if (country.length > 0) {
 			if (filter.country === undefined) {
 				addFilter({ country });
+				setSuggest({ ...suggest, text: country });
 			}
 		} else {
 			if (filter.country) {
@@ -613,7 +661,7 @@ const Filter = ({
 									show.countryCat ? ' d-block' : ' d-none'
 								}`}
 							>
-								{countryList().map((e, i) => (
+								{/* {countryList().map((e, i) => (
 									<li
 										key={i}
 										className={`nav-item${
@@ -635,7 +683,16 @@ const Filter = ({
 											{e}
 										</label>
 									</li>
-								))}
+								))} */}
+								<input
+									type="text"
+									name="country"
+									className="form-control input"
+									style={{ width: '190px' }}
+									onChange={onChangeCountry}
+									value={suggest.text}
+								/>
+								{renderSuggestionsCountry()}
 							</ul>
 						</li>
 					</Fragment>

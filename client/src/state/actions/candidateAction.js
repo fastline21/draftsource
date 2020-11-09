@@ -9,6 +9,7 @@ import {
 	GET_SHORTLISTED,
 	SET_SHORTLISTED,
 	CANDIDATE_LOADING,
+	STATUS_CANDIDATE,
 } from './types';
 
 // New applicants
@@ -100,6 +101,10 @@ export const approveResume = (data) => async (dispatch) => {
 			},
 		};
 		await axios.put('/api/candidate/approve-resume', data, config);
+		dispatch({
+			type: STATUS_CANDIDATE,
+			payload: data._id,
+		});
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,
@@ -117,6 +122,10 @@ export const rejectResume = (data) => async (dispatch) => {
 			},
 		};
 		await axios.put('/api/candidate/reject-resume', data, config);
+		dispatch({
+			type: STATUS_CANDIDATE,
+			payload: data._id,
+		});
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,
@@ -128,13 +137,16 @@ export const rejectResume = (data) => async (dispatch) => {
 // Hire resume
 export const hireResume = (data) => async (dispatch) => {
 	try {
-		console.log('hire resume');
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
 		await axios.put('/api/candidate/hire-resume', data, config);
+		dispatch({
+			type: STATUS_CANDIDATE,
+			payload: data._id,
+		});
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,
@@ -147,6 +159,10 @@ export const hireResume = (data) => async (dispatch) => {
 export const deleteResume = (id) => async (dispatch) => {
 	try {
 		await axios.delete(`/api/candidate/delete-resume/${id}`);
+		dispatch({
+			type: STATUS_CANDIDATE,
+			payload: id,
+		});
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,

@@ -1,0 +1,34 @@
+@import 'include-media/dist/_include-media.scss';
+@import 'base.scss';
+
+#signup {
+	padding: 70px 0 50px;
+
+	.title {
+		color: $blue;
+		font-weight: bold;
+		margin-bottom: 5px;
+	}
+
+	.admin {
+		padding-top: 60px;
+
+		.form {
+			@include media('>=tablet', '<=991px') {
+				padding: 0 150px;
+			}
+
+			@include media('>=992px', '<1200px') {
+				padding: 0 30px;
+			}
+
+			@include media('>=1200px') {
+				padding: 0 50px;
+			}
+
+			.form-label {
+				margin-left: 5px;
+			}
+		}
+	}
+}

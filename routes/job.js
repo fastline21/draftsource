@@ -9,6 +9,58 @@ const Job = require('./../models/Job');
 // Middleware
 const auth = require('./../middleware/auth');
 
+const getJobs = async (query, status) => {
+	const searchOR = [];
+	const queryData = {};
+	for (const [key, value] of Object.entries(query)) {
+		const keyword = value.split(',');
+		if (key === 'search') {
+			Object.assign(queryData, { $text: { $search: value } });
+		} else if (key === 'page' || key === 'limit') {
+			continue;
+		} else {
+			searchOR.push({
+				[key]: {
+					$in: keyword,
+				},
+			});
+		}
+	}
+
+	if (searchOR.length > 0) {
+		Object.assign(queryData, { $or: [...searchOR] });
+	}
+
+	let jobs = await Job.find({
+		...queryData,
+		status,
+	});
+	const page = parseInt(query.page) || 1;
+	const limit = parseInt(query.limit) || 10;
+	const startIndex = (page - 1) * limit;
+	const endIndex = page * limit;
+	const results = {};
+
+	if (startIndex > 0) {
+		results.previous = {
+			page: page - 1,
+			limit,
+		};
+	}
+
+	if (endIndex < jobs.length) {
+		results.next = {
+			page: page + 1,
+			limit,
+		};
+	}
+
+	results.total = jobs.length;
+
+	results.jobs = jobs.slice(startIndex, endIndex);
+	return results;
+};
+
 // @route   POST /api/job
 // @desc    Draft a job
 // @access  Public
@@ -17,6 +69,7 @@ router.post('/', async (req, res) => {
 		title,
 		specialty,
 		software,
+		marketType,
 		description,
 		about,
 		budget,
@@ -40,12 +93,11 @@ router.post('/', async (req, res) => {
 		// currency,
 	} = req.body;
 
-	console.log(specialty, software);
-
 	if (
 		title === '' ||
 		specialty.length === 0 ||
 		software.length === 0 ||
+		marketType.length === 0 ||
 		description === '' ||
 		about === '' ||
 		budget.min === '' ||
@@ -82,6 +134,7 @@ router.post('/', async (req, res) => {
 				title,
 				specialty,
 				software,
+				marketType,
 				description,
 				about,
 				budget,
@@ -104,104 +157,13 @@ router.post('/', async (req, res) => {
 			res.status(500).send('Server Error');
 		}
 	}
-
-	// if (
-	// 	title === '' ||
-	// 	specialty.length === 0 ||
-	// 	software.length === 0 ||
-	// 	about === '' ||
-	// 	roles.length === 0 ||
-	// 	keyResponsibilities.length === 0 ||
-	// 	responsibilities.length === 0 ||
-	// 	remoteStaffExpectation === '' ||
-	// 	availability === '' ||
-	// 	expectedSalary === '' ||
-	// 	currency === ''
-	// ) {
-	// 	res.status(400).json({
-	// 		msg: 'Please fill-in the required boxes to Proceed.',
-	// 	});
-	// } else {
-	// 	try {
-	// 		const employer = await Employer.findOne({ user: req.user.id });
-	// 		const { country, company } = employer;
-	// 		const jobFields = {
-	// 			user: req.user.id,
-	// 			title,
-	// 			about,
-	// 			remoteStaffExpectation,
-	// 			availability,
-	// 			expectedSalary,
-	// 			currency,
-	// 			specialty,
-	// 			software,
-	// 			roles,
-	// 			keyResponsibilities,
-	// 			responsibilities,
-	// 			country,
-	// 			industry: company.industry,
-	// 			company: company.name,
-	// 		};
-	// 		const job = new Job(jobFields);
-	// 		await job.save();
-	// 		res.json(job);
-	// 	} catch (error) {
-	// 		console.error(error.message);
-	// 		res.status(500).send('Server Error');
-	// 	}
-	// }
 });
 
 // @route   GET /api/job/new-jobs
 // @desc    Get pending jobs
 // @access  Private
 router.get('/new-jobs', auth, async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ software: new RegExp(`^${value}$`, 'i') },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const job = await Job.find({ ...queryData, status: 'Pending' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
-
-	if (endIndex < job.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = job.length;
-
-	results.job = job.slice(startIndex, endIndex);
+	const results = await getJobs(req.query, 'Pending');
 	res.json(results);
 });
 
@@ -209,52 +171,7 @@ router.get('/new-jobs', auth, async (req, res) => {
 // @desc    Get pending jobs
 // @access  Private
 router.get('/approved-jobs', auth, async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ software: new RegExp(`^${value}$`, 'i') },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const job = await Job.find({ ...queryData, status: 'Approve' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
-
-	if (endIndex < job.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = job.length;
-
-	results.job = job.slice(startIndex, endIndex);
+	const results = await getJobs(req.query, 'Approve');
 	res.json(results);
 });
 
@@ -262,52 +179,7 @@ router.get('/approved-jobs', auth, async (req, res) => {
 // @desc    Get rejected jobs
 // @access  Private
 router.get('/rejected-jobs', auth, async (req, res) => {
-	const query = req.query;
-	let queryData = {};
-	for (const [key, value] of Object.entries(query)) {
-		if (key === 'specialty' || key === 'software') {
-			if (value.split(',').length > 1) {
-				queryData = { ...queryData, [key]: value.split(',') };
-			} else {
-				queryData = { ...queryData, [key]: value };
-			}
-		} else if (key === 'search') {
-			queryData = {
-				...queryData,
-				$or: [
-					{ specialty: new RegExp(`^${value}$`, 'i') },
-					{ software: new RegExp(`^${value}$`, 'i') },
-				],
-			};
-		} else if (key === 'page' || key === 'limit') {
-			continue;
-		} else {
-			queryData = { ...queryData, [key]: value };
-		}
-	}
-	const job = await Job.find({ ...queryData, status: 'Reject' });
-	const page = parseInt(query.page) || 1;
-	const limit = parseInt(query.limit) || 10;
-	const startIndex = (page - 1) * limit;
-	const endIndex = page * limit;
-	const results = {};
-	if (startIndex > 0) {
-		results.previous = {
-			page: page - 1,
-			limit,
-		};
-	}
-
-	if (endIndex < job.length) {
-		results.next = {
-			page: page + 1,
-			limit,
-		};
-	}
-
-	results.total = job.length;
-
-	results.job = job.slice(startIndex, endIndex);
+	const results = await getJobs(req.query, 'Reject');
 	res.json(results);
 });
 

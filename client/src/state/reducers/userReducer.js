@@ -11,6 +11,7 @@ import {
 	GET_USERS,
 	USER_LOADING,
 	USER_PERCENT,
+	STATUS_USER,
 } from './../actions/types';
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
 	loading: false,
 	success: false,
 	percent: 0,
+	total: null,
 };
 
 export default (state = initialState, action) => {
@@ -69,8 +71,9 @@ export default (state = initialState, action) => {
 		case GET_USERS:
 			return {
 				...state,
-				users: action.payload,
+				users: action.payload.users,
 				loading: false,
+				total: action.payload.total,
 			};
 		case CLEAR_ERROR:
 			return {
@@ -81,6 +84,12 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				percent: action.payload,
+			};
+		case STATUS_USER:
+			return {
+				...state,
+				users: state.users.filter((u) => u._id !== action.payload),
+				total: state.users.filter((u) => u._id !== action.payload).length,
 			};
 		case USER_LOADING:
 			return {

@@ -7,13 +7,7 @@ import PropTypes from 'prop-types';
 import { countryList } from './../../list/Country';
 
 // Actions
-import {
-	addJob,
-	submitJob,
-	setStep,
-	setSuccess,
-	clearError,
-} from '../../state/actions/jobAction';
+import { addJob, submitJob, clearError } from '../../state/actions/jobAction';
 import { setAlert } from '../../state/actions/alertAction';
 import { clearUser } from './../../state/actions/userAction';
 
@@ -111,16 +105,36 @@ const Step3 = ({
 	};
 
 	useEffect(() => {
+		if (step === 3) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+
+		if (step !== 3) {
+			setPristine();
+			setAlert(
+				'/draft-job?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (success) {
-			setSuccess();
 			setAlert(
 				'/',
 				'<h2 class="title">Thank you for drafting a job</h2><p class="subtitle">We will call you within 72 hours to verify your profile</p>'
 			);
+			setPristine();
+		}
+
+		if (error) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+			setAlert('', error.msg);
+			clearError();
 		}
 
 		// eslint-disable-next-line
-	}, [success]);
+	}, [success, step, error]);
 
 	// const initialInfo = {
 	// 	availability: 'Full Time',
@@ -497,8 +511,6 @@ Step3.propTypes = {
 	addJob: PropTypes.func.isRequired,
 	submitJob: PropTypes.func.isRequired,
 	jobState: PropTypes.object.isRequired,
-	setStep: PropTypes.func.isRequired,
-	setSuccess: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
 };
@@ -511,8 +523,6 @@ export default connect(mapStateToProps, {
 	setAlert,
 	addJob,
 	submitJob,
-	setStep,
-	setSuccess,
 	clearError,
 	clearUser,
 })(Step3);

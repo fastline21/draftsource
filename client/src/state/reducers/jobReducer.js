@@ -4,11 +4,12 @@ import {
 	JOBS_ERROR,
 	CLEAR_ERROR,
 	JOB_STEP,
-	SET_SUCCESS,
+	JOB_SUCCESS,
 	GET_JOBS,
 	CLEAR_DETAILS,
 	JOB_LOADING,
 	VIEW_JOB,
+	STATUS_JOB,
 } from './../actions/types';
 
 const initialState = {
@@ -49,7 +50,7 @@ export default (state = initialState, action) => {
 				...state,
 				step: action.payload,
 			};
-		case SET_SUCCESS:
+		case JOB_SUCCESS:
 			return {
 				...state,
 				success: false,
@@ -59,6 +60,12 @@ export default (state = initialState, action) => {
 				...state,
 				error: action.payload,
 			};
+		case STATUS_JOB:
+			return {
+				...state,
+				jobs: state.jobs.filter((job) => job._id !== action.payload),
+				total: state.jobs.filter((job) => job._id !== action.payload).length,
+			};
 		case VIEW_JOB:
 			return {
 				...state,
@@ -67,8 +74,7 @@ export default (state = initialState, action) => {
 		case GET_JOBS:
 			return {
 				...state,
-				jobs: action.payload.job,
-				candidates: action.payload.candidates,
+				jobs: action.payload.jobs,
 				next: action.payload.next,
 				previous: action.payload.previous,
 				total: action.payload.total,

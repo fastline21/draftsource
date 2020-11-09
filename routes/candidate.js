@@ -10,6 +10,9 @@ const User = require('./../models/User');
 // Middleware
 const auth = require('./../middleware/auth');
 
+// Utils
+const getTotalMonth = require('./../utils/getTotalMonth');
+
 function shuffle(array) {
 	array.sort(() => Math.random() - 0.5);
 }

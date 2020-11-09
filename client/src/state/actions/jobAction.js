@@ -4,7 +4,7 @@ import {
 	CLEAR_JOB,
 	JOBS_ERROR,
 	CLEAR_ERROR,
-	SET_SUCCESS,
+	JOB_SUCCESS,
 	JOB_STEP,
 	GET_JOBS,
 	CLEAR_DETAILS,
@@ -24,7 +24,7 @@ export const addJob = (job) => (dispatch) => {
 // Submit job
 export const submitJob = (job) => async (dispatch) => {
 	try {
-		setLoading()(dispatch);
+		jobLoading()(dispatch);
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
@@ -43,16 +43,16 @@ export const submitJob = (job) => async (dispatch) => {
 };
 
 // Set loading to true
-export const setLoading = () => (dispatch) => {
+export const jobLoading = () => (dispatch) => {
 	dispatch({
 		type: JOB_LOADING,
 	});
 };
 
 // Set success
-export const setSuccess = () => {
+export const jobSuccess = () => {
 	return {
-		type: SET_SUCCESS,
+		type: JOB_SUCCESS,
 	};
 };
 
@@ -64,7 +64,7 @@ export const clearError = () => {
 };
 
 // Set step
-export const setStep = (step) => (dispatch) => {
+export const jobStep = (step) => (dispatch) => {
 	dispatch({
 		type: JOB_STEP,
 		payload: step,
@@ -74,7 +74,7 @@ export const setStep = (step) => (dispatch) => {
 // New job
 export const newJobs = () => async (dispatch) => {
 	try {
-		setLoading()(dispatch);
+		jobLoading()(dispatch);
 
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/new-jobs${getSearch}`);
@@ -93,7 +93,7 @@ export const newJobs = () => async (dispatch) => {
 // Rejected job
 export const rejectedJobs = () => async (dispatch) => {
 	try {
-		setLoading()(dispatch);
+		jobLoading()(dispatch);
 
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/rejected-jobs${getSearch}`);
@@ -112,7 +112,7 @@ export const rejectedJobs = () => async (dispatch) => {
 // Approved applicants
 export const approvedJobs = () => async (dispatch) => {
 	try {
-		setLoading()(dispatch);
+		jobLoading()(dispatch);
 
 		const getSearch = window.location.search;
 		const res = await axios.get(`/api/job/approved-jobs${getSearch}`);

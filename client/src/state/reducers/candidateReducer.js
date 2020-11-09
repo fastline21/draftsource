@@ -8,6 +8,7 @@ import {
 	GET_SHORTLISTED,
 	SET_SHORTLISTED,
 	CANDIDATE_LOADING,
+	STATUS_CANDIDATE,
 } from './../actions/types';
 
 const initialState = {
@@ -32,6 +33,16 @@ export default (state = initialState, action) => {
 				previous: action.payload.previous,
 				total: action.payload.total,
 				loading: false,
+			};
+		case STATUS_CANDIDATE:
+			return {
+				...state,
+				candidates: state.candidates.filter(
+					(candidate) => candidate._id !== action.payload
+				),
+				total: state.candidates.filter(
+					(candidate) => candidate._id !== action.payload
+				).length,
 			};
 		case CANDIDATES_ERROR:
 			return {

@@ -14,7 +14,7 @@ const Jobs = ({ jobState: { jobs, loading } }) => {
 	return (
 		<Fragment>
 			{!loading && jobs.length === 0 ? (
-				<p>No jobs to show...</p>
+				<p className="m-3">No jobs to show...</p>
 			) : (
 				jobs.map((job, key) => <JobItem job={job} key={key} />)
 			)}

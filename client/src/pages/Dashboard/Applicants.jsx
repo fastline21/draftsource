@@ -146,7 +146,7 @@ const Applicants = ({
 			<ViewResume loadCandidate={loadCandidate} />
 			<Candidates />
 			<div className="foot">
-				<PaginationLink loadCandidate={loadCandidate} />
+				<PaginationLink loadCandidate={loadCandidate} type="Candidate" />
 				<div className="view-by">
 					<label htmlFor="viewByInput" className="form-label">
 						View By

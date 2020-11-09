@@ -10,6 +10,9 @@ import { viewResume } from './../../state/actions/candidateAction';
 // Utils
 import useWindowSize from './../../utils/useWindowSize';
 
+// Images
+import defaultImage from './../../images/default_image.svg';
+
 const CandidateItem = ({ candidate, viewResume }) => {
 	const {
 		_id,
@@ -132,8 +135,10 @@ const CandidateItem = ({ candidate, viewResume }) => {
 				</div>
 				{recruitmentsComment && (
 					<div className="recruitment-comments">
-						<p className="box-title">Recruiter's Comments:</p>
-						<p className="recruiters-comment">{recruitmentsComment}</p>
+						<p className="recruiters-comment">
+							<span className="box-title">Recruiter's Comments: </span>
+							{recruitmentsComment}
+						</p>
 					</div>
 				)}
 				<div>
@@ -155,7 +160,14 @@ const CandidateItem = ({ candidate, viewResume }) => {
 					>
 						{uploadWork.images.map((e, i) => (
 							<Carousel.Item key={i}>
-								<img src={`/uploads/${e.file}`} alt="..." />
+								<img
+									src={`/uploads/${e.file}`}
+									alt="..."
+									onError={(e) => {
+										e.target.onerror = null;
+										e.target.src = defaultImage;
+									}}
+								/>
 							</Carousel.Item>
 						))}
 					</Carousel>

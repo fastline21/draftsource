@@ -75,6 +75,8 @@ const JobRequest = ({
 			pathname: newUrl.pathname,
 			search: newUrl.search,
 		});
+
+		loadJob();
 	};
 	useEffect(() => {
 		if (queryParams.get('search') !== null) {
@@ -139,7 +141,7 @@ const JobRequest = ({
 			<ViewJob loadJob={loadJob} />
 			<Jobs />
 			<div className="foot">
-				<PaginationLink />
+				<PaginationLink loadJob={loadJob} type="Job" />
 				<div className="view-by">
 					<label htmlFor="viewByInput" className="form-label">
 						View By

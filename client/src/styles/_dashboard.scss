@@ -42,7 +42,7 @@
 
 			.input {
 				&[name='limit'] {
-					width: 80px;
+					width: 82px;
 					margin-left: 10px;
 				}
 			}
@@ -99,6 +99,7 @@
 				.title {
 					padding-left: 0;
 					margin-bottom: 1rem;
+					font-size: 18px;
 				}
 
 				.nav-item {
@@ -213,7 +214,7 @@
 
 					.input {
 						&[name='limit'] {
-							width: 80px;
+							width: 82px;
 							margin-left: 10px;
 						}
 					}
@@ -431,7 +432,7 @@
 						.recruiters-comment {
 							display: -webkit-box;
 							-webkit-box-orient: vertical;
-							-webkit-line-clamp: 3;
+							-webkit-line-clamp: 2;
 							overflow: hidden;
 							margin-bottom: 0;
 						}
@@ -452,6 +453,7 @@
 
 				.profile-right {
 					min-width: 300px;
+					min-height: 220px;
 					flex: 0.2;
 
 					.button {
@@ -492,7 +494,7 @@
 								display: block;
 								height: 270px;
 								// width: 300px;
-								margin: auto;
+								width: 100%;
 
 								@include media('>=tablet') {
 									width: 300px;

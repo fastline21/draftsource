@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import draftsourceLogo from './../images/draftsource_logo.svg';
+import draftsourceLogo from './../images/draftsource_logo.png';
 import { companiesWeServeList } from '../list/CompaniesWeServe';
 import { popularJobsList } from '../list/PopularJobs';
 import { countriesWeServeList } from '../list/CountriesWeServe';
@@ -66,7 +66,7 @@ const Footer = () => {
 								<i className="fab fa-instagram"></i>
 							</a>
 							<a
-								href="https://www.linkedin.com/company/43262336/admin/"
+								href="https://www.linkedin.com/company/draftsourcevirtual/"
 								target="_blank"
 								rel="noopener noreferrer"
 							>

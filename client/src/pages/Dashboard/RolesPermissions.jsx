@@ -1,24 +1,63 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import moment from 'moment';
 
 // Actions
 import { getUsers, deleteUser } from './../../state/actions/userAction';
+import { addFilter } from './../../state/actions/filterAction';
 
 // Components
 import PreLoader from './../../layouts/PreLoader';
+import PaginationLink from './PaginationLink';
 
 const RolesPermissions = ({
 	getUsers,
 	deleteUser,
+	addFilter,
 	userState: { users, loading },
 }) => {
+	const queryParams = new URLSearchParams(window.location.search);
+	const newUrl = new URL(window.location.href);
+	const history = useHistory();
+	const [showFilter, setShowFilter] = useState(false);
+	const [params, setParams] = useState({
+		search: '',
+		viewBy: '10',
+	});
+	const onChange = (e) => {
+		const { name, value } = e.target;
+
+		if (value === '') {
+			newUrl.searchParams.delete(name);
+		} else {
+			newUrl.searchParams.set(name, value);
+		}
+
+		setParams({ ...params, [name]: value });
+
+		if (name === 'limit') {
+			addFilter({ [name]: parseInt(value) });
+		} else {
+			addFilter({ [name]: value });
+		}
+
+		if (queryParams.get('page')) {
+			newUrl.searchParams.set('page', 1);
+		}
+
+		history.push({
+			pathname: newUrl.pathname,
+			search: newUrl.search,
+		});
+
+		getUsers();
+	};
 	const onDelete = (id) => {
 		if (window.confirm('Are you sure to delete this user?')) {
 			deleteUser(id);
-			getUsers();
 		}
 	};
 
@@ -35,7 +74,7 @@ const RolesPermissions = ({
 				<PreLoader />
 			) : (
 				<div className="user">
-					<Table striped bordered hover>
+					<Table responsive striped bordered hover>
 						<thead>
 							<tr>
 								<th>#</th>
@@ -72,6 +111,24 @@ const RolesPermissions = ({
 					</Table>
 				</div>
 			)}
+			<div className="foot">
+				<PaginationLink loadUser={getUsers} type="User" />
+				<div className="view-by">
+					<label htmlFor="viewByInput" className="form-label">
+						View By
+					</label>
+					<select
+						className="form-control input"
+						name="limit"
+						onChange={onChange}
+						value={parseInt(queryParams.get('limit') || params.viewBy)}
+					>
+						<option value="10">10</option>
+						<option value="20">20</option>
+						<option value="50">50</option>
+					</select>
+				</div>
+			</div>
 		</Fragment>
 	);
 };
@@ -80,12 +137,13 @@ RolesPermissions.propTypes = {
 	userState: PropTypes.object.isRequired,
 	getUsers: PropTypes.func.isRequired,
 	deleteUser: PropTypes.func.isRequired,
+	addFilter: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
 	userState: state.userState,
 });
 
-export default connect(mapStateToProps, { getUsers, deleteUser })(
+export default connect(mapStateToProps, { getUsers, deleteUser, addFilter })(
 	RolesPermissions
 );

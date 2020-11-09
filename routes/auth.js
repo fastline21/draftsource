@@ -10,12 +10,14 @@ const User = require('./../models/User');
 const Admin = require('./../models/Admin');
 const Resume = require('./../models/Resume');
 const Temp = require('./../models/Temp');
+const Job = require('../models/Job');
 
 // Config
 const { sendEmail } = require('./../config/mailer');
 
 // Middleware
 const auth = require('./../middleware/auth');
+const e = require('express');
 
 // @route   GET /api/auth
 // @desc    Load user
@@ -393,7 +395,27 @@ router.post('/signup', async (req, res) => {
 						lastName,
 					});
 					await admin.save();
-					res.json(user);
+					const compose = `
+						Hi ${firstName} ${lastName}<br />
+						<br />
+						Someone has used your email to engage in Employment Activities, if this is your email click the link below to get started<br />
+						<br />
+						<a href="https://draftsourcevirtual.com/verify/${verificationToken}">https://draftsourcevirtual.com/verify/${verificationToken}</a><br />
+						Draftsource Team
+					`;
+
+					try {
+						await sendEmail(
+							`Draftsource Virtual <${process.env.MAILER_USER}>`,
+							email,
+							'Verify Email',
+							compose
+						);
+						res.json(user);
+					} catch (err) {
+						console.error('error:', err);
+						res.status(err.responseCode).json({ msg: err.response });
+					}
 				}
 			} catch (error) {
 				console.error(error.message);
@@ -516,33 +538,44 @@ router.get('/get-user-info', auth, async (req, res) => {
 // @access  Private
 router.get('/get-users', auth, async (req, res) => {
 	const users = await User.find().sort({ dateCreated: 1 });
+	const query = req.query;
+	const page = parseInt(query.page) || 1;
+	const limit = parseInt(query.limit) || 10;
+	const startIndex = (page - 1) * limit;
+	const endIndex = page * limit;
+	const results = {};
+
+	if (startIndex > 0) {
+		results.previous = {
+			page: page - 1,
+			limit,
+		};
+	}
+
+	if (endIndex < users.length) {
+		results.next = {
+			page: page + 1,
+			limit,
+		};
+	}
+
 	const resultUsers = [];
-	await Promise.all(
-		users.map(async (e) => {
-			const { active, _id, email, type, dateCreated } = e;
-			if (type === 'Remote Worker') {
-				const resume = await Resume.findOne({ user: _id });
-				resultUsers.push({
-					active,
-					_id,
-					email,
-					type,
-					dateCreated,
-					haveResume: resume ? true : false,
-				});
-			} else {
-				resultUsers.push({
-					active,
-					_id,
-					email,
-					type,
-					dateCreated,
-					haveResume: false,
-				});
-			}
-		})
-	);
-	res.json(resultUsers);
+	for (const user of users) {
+		const { active, _id, email, type, dateCreated } = user;
+		const resume = await Resume.findOne({ user: _id });
+		resultUsers.push({
+			active,
+			_id,
+			email,
+			type,
+			dateCreated,
+			haveResume: resume ? true : false,
+		});
+	}
+	console.log(resultUsers.slice(startIndex, endIndex));
+	results.total = resultUsers.length;
+	results.users = resultUsers.slice(startIndex, endIndex);
+	res.json(results);
 });
 
 // @route	DELETE /api/auth/delete-user
@@ -556,34 +589,60 @@ router.delete('/delete-user/:id', auth, async (req, res) => {
 		const resume = await Resume.findOne({ user: id });
 
 		if (resume) {
-			const { _id, resumeImage, aboutYourself, uploadWork } = resume;
-			fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-			});
-			fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-			});
-			uploadWork.images.map((e) => {
-				fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+			const { resumeImage, aboutYourself, uploadWork, govID, cv } = resume;
+			if (fs.existsSync(`${__dirname}/../public/uploads/${resumeImage}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
 					if (err) {
 						console.error(err);
 						return;
 					}
 				});
+			}
+			if (fs.existsSync(`${__dirname}/../public/uploads/${aboutYourself}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+				});
+			}
+			if (fs.existsSync(`${__dirname}/../public/uploads/${cv}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${cv}`, (err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+				});
+			}
+			if (fs.existsSync(`${__dirname}/../public/uploads/${govID}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${govID}`, (err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+				});
+			}
+
+			uploadWork.images.map((e) => {
+				if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+					fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+						if (err) {
+							console.error(err);
+							return;
+						}
+					});
+				}
 			});
 			// await Resume.findByIdAndDelete(_id);
-			resume.delete();
+			await resume.delete();
 		}
+	} else if (user.type === 'Employer') {
+		await Job.findOneAndDelete({ user: id });
 	}
 
 	// await User.findByIdAndDelete(id);
-	user.delete();
+	await user.delete();
+	return res.json(user);
 });
 
 module.exports = router;

@@ -15,6 +15,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 		title: '',
 		specialty: [],
 		software: [],
+		marketType: [],
 		description: '',
 		about: '',
 		budget: {
@@ -44,6 +45,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 		title,
 		specialty,
 		software,
+		marketType,
 		description,
 		about,
 		budget,
@@ -288,6 +290,17 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 								<p className="item-title color-1 mb-1">Software Use</p>
 								<p className="specialty-software mb-0">
 									{software.map((e, i) => (
+										<span className="specialty-software-item" key={i}>
+											{e}
+										</span>
+									))}
+								</p>
+							</div>
+							<div className="line-break" />
+							<div className="my-3">
+								<p className="item-title color-1 mb-1">Market type</p>
+								<p className="specialty-software mb-0">
+									{marketType.map((e, i) => (
 										<span className="specialty-software-item" key={i}>
 											{e}
 										</span>

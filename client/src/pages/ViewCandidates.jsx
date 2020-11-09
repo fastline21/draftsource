@@ -109,7 +109,7 @@ const ViewCandidates = ({
 				<div className="talk-recruiter">
 					<h1 className="title">Didn’t see the talent you’re looking for?</h1>
 					<p className="subtitle">
-						Get pre-screened candidates straight to your inbox obligation free
+						Get pre-screened candidates straight to your inbox - obligation free
 					</p>
 					<div className="cta">
 						<Link to="/draft-job" className="btn btn-primary button">

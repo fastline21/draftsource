@@ -14,7 +14,7 @@ const Signup = () => {
 		return this.charAt(0).toUpperCase() + this.slice(1);
 	};
 
-	if (type !== 'employer' && type !== 'recruiter') {
+	if (type !== 'employer' && type !== 'recruiter' && type !== 'admin') {
 		history.push('/signup');
 	}
 
@@ -34,7 +34,7 @@ const Signup = () => {
 					<div className="line-break" />
 				</div>
 				<div className="row">
-					<div className="col-sm-6 offset-sm-3">{renderSignup()}</div>
+					<div className="col-lg-6 offset-lg-3">{renderSignup()}</div>
 				</div>
 			</div>
 		</div>

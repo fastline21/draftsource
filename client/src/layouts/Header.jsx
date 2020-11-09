@@ -131,6 +131,11 @@ const Header = ({ logoutUser, userState: { user } }) => {
 							Talk to a Recruiter
 						</Nav.Link>
 					</li>
+					<li>
+						<NavLink to="/draft-job" onClick={mobileLink}>
+							Draft a Job
+						</NavLink>
+					</li>
 					{(user && user.type === 'Admin') ||
 					(user && user.type === 'Recruiter') ? (
 						<Fragment>

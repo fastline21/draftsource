@@ -245,7 +245,7 @@ const ViewResume = ({
 					</button>
 				</>
 			);
-		} else if (status === 'Reject') {
+		} else {
 			return (
 				<>
 					<button className="btn btn-primary button" onClick={reapproveResume}>
@@ -354,7 +354,7 @@ const ViewResume = ({
 					isHide={() => {
 						setShowModalAction(false);
 						handleClose();
-						loadCandidate();
+						// loadCandidate();
 					}}
 				/>
 				<button className="close" onClick={handleClose}>

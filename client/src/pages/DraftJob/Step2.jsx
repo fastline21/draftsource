@@ -10,7 +10,7 @@ import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 
 // Actions
 import { setAlert } from './../../state/actions/alertAction';
-import { addJob, setStep, setSuccess } from './../../state/actions/jobAction';
+import { addJob, jobStep, jobSuccess } from './../../state/actions/jobAction';
 
 // Lists
 import { workDurationList } from './../../list/WorkDuration';
@@ -19,8 +19,8 @@ import { budgetList } from './../../list/Budget';
 const Step2 = ({
 	setAlert,
 	addJob,
-	setStep,
-	setSuccess,
+	jobStep,
+	jobSuccess,
 	jobState: { step, success },
 }) => {
 	const [
@@ -83,9 +83,22 @@ const Step2 = ({
 	};
 
 	useEffect(() => {
+		if (step === 2) {
+			setDirty();
+			setMessage('Are you sure you want to leave this page?');
+		}
+
+		if (step !== 2) {
+			setPristine();
+			setAlert(
+				'/draft-job?step=1',
+				'You are not authorize to go in this page. Please start at Step 1'
+			);
+		}
+
 		if (success) {
-			setSuccess();
-			setStep(3);
+			jobSuccess();
+			jobStep(3);
 			history.push({
 				pathname: '/draft-job',
 				search: 'step=3',
@@ -93,7 +106,7 @@ const Step2 = ({
 		}
 
 		// eslint-disable-next-line
-	}, [success]);
+	}, [success, step]);
 
 	return (
 		<div className="step-2">
@@ -145,7 +158,7 @@ const Step2 = ({
 					</div>
 					<div className="col-lg-6">
 						<div className="form-row">
-							<div className="col-lg-6">
+							<div className="col-lg-7">
 								<div className="form-group">
 									<label
 										htmlFor="budgetInput"
@@ -210,7 +223,7 @@ const Step2 = ({
 									</div>
 								</div>
 							</div>
-							<div className="col-lg-6">
+							<div className="col-lg-5">
 								<div className="form-group">
 									<label
 										htmlFor="workDurationInput"
@@ -227,12 +240,8 @@ const Step2 = ({
 											overlay={
 												<Tooltip>
 													<p className="text-left mb-0">
-														You can replace your staff after one month until you
-														find the right fit.
-														<br />
-														<br />
-														The quality of hire will depend on your budget and
-														how long the contract will be.
+														You can replace a staff after serving for a minimum
+														of 7 days
 													</p>
 												</Tooltip>
 											}
@@ -467,8 +476,8 @@ const Step2 = ({
 Step2.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addJob: PropTypes.func.isRequired,
-	setStep: PropTypes.func.isRequired,
-	setSuccess: PropTypes.func.isRequired,
+	jobStep: PropTypes.func.isRequired,
+	jobSuccess: PropTypes.func.isRequired,
 	jobState: PropTypes.object.isRequired,
 };
 
@@ -479,6 +488,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
 	setAlert,
 	addJob,
-	setStep,
-	setSuccess,
+	jobStep,
+	jobSuccess,
 })(Step2);

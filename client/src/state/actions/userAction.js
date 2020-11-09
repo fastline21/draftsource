@@ -13,6 +13,7 @@ import {
 	GET_USERS,
 	USER_LOADING,
 	USER_PERCENT,
+	STATUS_USER,
 } from './types';
 
 // Add user
@@ -147,8 +148,8 @@ export const logoutUser = () => {
 export const getUsers = () => async (dispatch) => {
 	try {
 		setLoading()(dispatch);
-
-		const res = await axios.get('/api/auth/get-users');
+		const getSearch = window.location.search;
+		const res = await axios.get(`/api/auth/get-users${getSearch}`);
 		dispatch({
 			type: GET_USERS,
 			payload: res.data,
@@ -172,6 +173,7 @@ export const setLoading = () => (dispatch) => {
 export const deleteUser = (id) => async (dispatch) => {
 	try {
 		await axios.delete(`/api/auth/delete-user/${id}`);
+		getUsers()(dispatch);
 	} catch (error) {
 		dispatch({
 			type: USERS_ERROR,

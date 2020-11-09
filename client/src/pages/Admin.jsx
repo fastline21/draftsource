@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Modal, Button } from 'react-bootstrap';
 
 // Actions
 import { setAlert } from './../state/actions/alertAction';
@@ -10,12 +11,15 @@ import { addUser, clearError, clearUser } from './../state/actions/userAction';
 // Utils
 import useUnsavedChangesWarning from './../utils/useUnsavedChangesWarning';
 
+// Components
+import PreLoader from './../layouts/PreLoader';
+
 const Step1 = ({
+	userState: { success, error, loading },
 	setAlert,
 	addUser,
 	clearError,
 	clearUser,
-	userState: { user, error },
 }) => {
 	const [
 		Prompt,
@@ -25,8 +29,10 @@ const Step1 = ({
 	] = useUnsavedChangesWarning();
 
 	const { type } = useParams();
+	const [show, setShow] = useState(false);
 
-	localStorage.clear();
+	const handleClose = () => setShow(false);
+	const handleShow = () => setShow(true);
 
 	const initialInfo = {
 		firstName: '',
@@ -58,9 +64,12 @@ const Step1 = ({
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else {
-			addUser({ ...info, type: type.capitalize() });
-			setInfo(initialInfo);
-			setPristine();
+			const adminPassword = prompt('Enter password', '');
+			if (adminPassword === '12345') {
+				addUser({ ...info, type: type.capitalize() });
+				setInfo(initialInfo);
+				setPristine();
+			}
 		}
 	};
 
@@ -70,7 +79,7 @@ const Step1 = ({
 			clearError();
 		}
 
-		if (user) {
+		if (success) {
 			setAlert(
 				'/',
 				'Kindly check <span>email</span> for confirmation to proceed.'
@@ -79,18 +88,42 @@ const Step1 = ({
 		}
 
 		// eslint-disable-next-line
-	}, [user, error]);
+	}, [success, error]);
 
 	return (
-		<div>
+		<div className="admin">
 			{Prompt}
+			{loading ? (
+				<div
+					style={{
+						position: 'fixed',
+						top: 0,
+						left: 0,
+						right: 0,
+						height: '100vh',
+						backgroundColor: 'rgba(0, 0, 0, 0.5)',
+						zIndex: 1031,
+					}}
+				>
+					<div
+						style={{
+							position: 'absolute',
+							top: '50%',
+							left: '50%',
+							transform: 'translate(-50%, -50%)',
+						}}
+					>
+						<PreLoader />
+					</div>
+				</div>
+			) : null}
 			<form className="form" onSubmit={onSubmit}>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-3">
+						<div className="col-lg-4">
 							<label className="form-label">First Name</label>
 						</div>
-						<div className="col-lg-9">
+						<div className="col-lg-8">
 							<input
 								type="text"
 								name="firstName"
@@ -103,10 +136,10 @@ const Step1 = ({
 				</div>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-3">
+						<div className="col-lg-4">
 							<label className="form-label">Last Name</label>
 						</div>
-						<div className="col-lg-9">
+						<div className="col-lg-8">
 							<input
 								type="text"
 								name="lastName"
@@ -119,10 +152,10 @@ const Step1 = ({
 				</div>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-3">
+						<div className="col-lg-4">
 							<label className="form-label">Email</label>
 						</div>
-						<div className="col-lg-9">
+						<div className="col-lg-8">
 							<input
 								type="email"
 								name="email"
@@ -135,10 +168,10 @@ const Step1 = ({
 				</div>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-3">
+						<div className="col-lg-4">
 							<label className="form-label">Password</label>
 						</div>
-						<div className="col-lg-9">
+						<div className="col-lg-8">
 							<input
 								type="password"
 								name="password"
@@ -151,10 +184,10 @@ const Step1 = ({
 				</div>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-3">
+						<div className="col-lg-4">
 							<label className="form-label">Confirm Password</label>
 						</div>
-						<div className="col-lg-9">
+						<div className="col-lg-8">
 							<input
 								type="password"
 								name="password2"
@@ -167,10 +200,10 @@ const Step1 = ({
 				</div>
 				<div className="form-group">
 					<div className="form-row">
-						<div className="col-lg-9 offset-lg-3">
+						<div className="col-lg-8 offset-lg-4">
 							<input
 								type="submit"
-								value="Log In"
+								value="Signup"
 								className="btn btn-primary btn-block button"
 							/>
 						</div>
@@ -182,11 +215,11 @@ const Step1 = ({
 };
 
 Step1.propTypes = {
+	userState: PropTypes.object.isRequired,
 	setAlert: PropTypes.func.isRequired,
 	addUser: PropTypes.func.isRequired,
 	clearError: PropTypes.func.isRequired,
 	clearUser: PropTypes.func.isRequired,
-	userState: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
