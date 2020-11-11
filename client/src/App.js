@@ -27,12 +27,14 @@ import AdminSignup from './pages/AdminSignup';
 import Signup from './pages/Signup';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsService from './pages/TermsService';
+import Country from './components/Country';
 
 const App = () => {
 	return (
 		<Provider store={store}>
 			<BrowserRouter>
 				<Fragment>
+					{/* <Country /> */}
 					<ScrollToTop />
 					<LoadUser />
 					<Alert />

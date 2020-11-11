@@ -57,7 +57,7 @@ const ModalActionJob = ({
 					className="btn btn-primary button delete"
 					onClick={() => {
 						handleClose();
-						deleteJob(load._id);
+						deleteJob(load);
 						isHide();
 					}}
 				>

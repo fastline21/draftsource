@@ -59,7 +59,7 @@ const ModalActionResume = ({
 					className="btn btn-primary button delete"
 					onClick={() => {
 						handleClose();
-						deleteResume(load._id);
+						deleteResume(load);
 						isHide();
 					}}
 				>

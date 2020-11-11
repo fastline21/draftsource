@@ -138,7 +138,7 @@ const JobRequest = ({
 					</button>
 				</div>
 			</div>
-			<ViewJob loadJob={loadJob} />
+			<ViewJob loadJob={loadJob} menu={menu} />
 			<Jobs />
 			<div className="foot">
 				<PaginationLink loadJob={loadJob} type="Job" />

@@ -12,6 +12,18 @@ import {
 	STATUS_CANDIDATE,
 } from './types';
 
+const reloadData = (menu, dispatch) => {
+	if (menu === 'new-applicants') {
+		newApplicants()(dispatch);
+	} else if (menu === 'approved-applicants') {
+		approvedApplicants()(dispatch);
+	} else if (menu === 'rejected-applicants') {
+		rejectedApplicants()(dispatch);
+	} else {
+		hiredApplicants()(dispatch);
+	}
+};
+
 // New applicants
 export const newApplicants = () => async (dispatch) => {
 	try {
@@ -95,12 +107,14 @@ export const hiredApplicants = () => async (dispatch) => {
 // Approve resume
 export const approveResume = (data) => async (dispatch) => {
 	try {
+		const { menu, ...rest } = data;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.put('/api/candidate/approve-resume', data, config);
+		await axios.put('/api/candidate/approve-resume', rest, config);
+		reloadData(menu, dispatch);
 		dispatch({
 			type: STATUS_CANDIDATE,
 			payload: data._id,
@@ -116,12 +130,14 @@ export const approveResume = (data) => async (dispatch) => {
 // Reject resume
 export const rejectResume = (data) => async (dispatch) => {
 	try {
+		const { menu, ...rest } = data;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.put('/api/candidate/reject-resume', data, config);
+		await axios.put('/api/candidate/reject-resume', rest, config);
+		reloadData(menu, dispatch);
 		dispatch({
 			type: STATUS_CANDIDATE,
 			payload: data._id,
@@ -137,12 +153,14 @@ export const rejectResume = (data) => async (dispatch) => {
 // Hire resume
 export const hireResume = (data) => async (dispatch) => {
 	try {
+		const { menu, ...rest } = data;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.put('/api/candidate/hire-resume', data, config);
+		await axios.put('/api/candidate/hire-resume', rest, config);
+		reloadData(menu, dispatch);
 		dispatch({
 			type: STATUS_CANDIDATE,
 			payload: data._id,
@@ -156,12 +174,14 @@ export const hireResume = (data) => async (dispatch) => {
 };
 
 // Delete resume
-export const deleteResume = (id) => async (dispatch) => {
+export const deleteResume = (data) => async (dispatch) => {
 	try {
-		await axios.delete(`/api/candidate/delete-resume/${id}`);
+		const { menu, _id } = data;
+		await axios.delete(`/api/candidate/delete-resume/${_id}`);
+		reloadData(menu, dispatch);
 		dispatch({
 			type: STATUS_CANDIDATE,
-			payload: id,
+			payload: _id,
 		});
 	} catch (error) {
 		dispatch({

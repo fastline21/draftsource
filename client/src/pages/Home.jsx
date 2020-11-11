@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Button } from 'react-bootstrap';
 
 // Components
 // import { talkRecruiter } from './../components/TalkRecruiter';
+import RequestSample from '../components/RequestSample';
+import ScheduleDemo from './../components/ScheduleDemo';
 
 // Actions
 import { resumeStep, resumeSuccess } from './../state/actions/resumeAction';
@@ -18,6 +21,7 @@ const Home = ({
 	resumeState: { step: resStep },
 	jobState: { step: jStep },
 }) => {
+	const [showRequestSample, setShowRequestSample] = useState(false);
 	useEffect(() => {
 		if (resStep !== 0) {
 			resumeStep(0);
@@ -33,36 +37,52 @@ const Home = ({
 	}, [resStep, jStep]);
 	return (
 		<div id="home">
+			<RequestSample
+				isShow={showRequestSample}
+				isHide={() => setShowRequestSample(false)}
+			/>
 			<div style={{ height: '90vh' }}>
 				<div className="h-100  align-items-center d-flex">
 					<section className="sec-1">
-						<h1 className="title">
-							Supercharge your drafting team with Draftsource
-						</h1>
+						<h1 className="title">Don’t spend major time on minor tasks</h1>
 						<p className="subtitle">
-							Hire full-time vetted Filipino drafters and avoid screening
-							high-stacks of unqualified resumes. Draftsource eliminates hiring
-							headaches, recruitment risks and remote worker dramas.
+							Hire a dedicated Filipino cabinet vision drafter and estimator and
+							avoid paying overpriced contractors. Delegate your shop drawing
+							tasks and focus on managing your projects and closing more deals.
 						</p>
 						<div className="cta">
-							<Link to="/view-candidates" className="btn btn-primary button">
-								View Candidates
-							</Link>
+							<Button
+								variant="primary"
+								className="button"
+								onClick={() => ScheduleDemo()}
+							>
+								Schedule a Demo
+							</Button>
 							<span>or</span>
+							<Button
+								variant="primary"
+								className="link"
+								onClick={() => setShowRequestSample(true)}
+							>
+								Request sample projects and price
+							</Button>
+							{/* <Link to="/view-candidates" className="btn btn-primary button">
+								View Candidates
+							</Link> */}
 							{/* <button
 								onClick={talkRecruiter}
 								className="btn btn-primary button"
 							>
 								Talk to a Recruiter
 							</button> */}
-							<Link to="/draft-job" className="link">
+							{/* <Link to="/draft-job" className="link">
 								Request candidates for free
-							</Link>
+							</Link> */}
 						</div>
 						<ul className="list">
-							<li className="item">No recruitment fees</li>
-							<li className="item">No long term contracts</li>
-							<li className="item">No work no pay</li>
+							<li className="item">No hiring headahces</li>
+							<li className="item">No interviews</li>
+							<li className="item">No dramas</li>
 						</ul>
 					</section>
 				</div>

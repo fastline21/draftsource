@@ -13,6 +13,16 @@ import {
 	VIEW_JOB,
 } from './types';
 
+const reloadData = (menu, dispatch) => {
+	if (menu === 'new-jobs') {
+		newJobs()(dispatch);
+	} else if (menu === 'approved-jobs') {
+		approvedJobs()(dispatch);
+	} else {
+		rejectedJobs()(dispatch);
+	}
+};
+
 // Add job
 export const addJob = (job) => (dispatch) => {
 	dispatch({
@@ -131,12 +141,14 @@ export const approvedJobs = () => async (dispatch) => {
 // Approve resume
 export const approveJob = (data) => async (dispatch) => {
 	try {
+		const { menu, ...rest } = data;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.put('/api/job/approve-job', data, config);
+		await axios.put('/api/job/approve-job', rest, config);
+		reloadData(menu, dispatch);
 	} catch (error) {
 		dispatch({
 			type: JOBS_ERROR,
@@ -148,12 +160,14 @@ export const approveJob = (data) => async (dispatch) => {
 // Reject resume
 export const rejectJob = (data) => async (dispatch) => {
 	try {
+		const { menu, ...rest } = data;
 		const config = {
 			headers: {
 				'Content-Type': 'application/json',
 			},
 		};
-		await axios.put('/api/job/reject-job', data, config);
+		await axios.put('/api/job/reject-job', rest, config);
+		reloadData(menu, dispatch);
 	} catch (error) {
 		dispatch({
 			type: JOBS_ERROR,
@@ -163,9 +177,11 @@ export const rejectJob = (data) => async (dispatch) => {
 };
 
 // Delete resume
-export const deleteJob = (id) => async (dispatch) => {
+export const deleteJob = (data) => async (dispatch) => {
 	try {
-		await axios.delete(`/api/job/delete-job/${id}`);
+		const { menu, _id } = data;
+		await axios.delete(`/api/job/delete-job/${_id}`);
+		reloadData(menu, dispatch);
 	} catch (error) {
 		dispatch({
 			type: JOBS_ERROR,

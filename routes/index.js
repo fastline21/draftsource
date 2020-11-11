@@ -16,4 +16,9 @@ router.use('/job', require('./job'));
 // Employer API
 router.use('/employer', require('./employer'));
 
+// Request Sample API
+router.use('/request-sample', require('./request-sample'));
+
+router.use('/country', require('./country'));
+
 module.exports = router;

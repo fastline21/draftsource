@@ -25,6 +25,7 @@ import ViewSampleWork from './ViewSampleWork';
 import ModalActionResume from './ModalActionResume';
 
 const ViewResume = ({
+	menu,
 	loadCandidate,
 	candidateState: { resume },
 	clearResume,
@@ -103,6 +104,7 @@ const ViewResume = ({
 		graphicsCard: '',
 		videoCard: '',
 		recruiterName: '',
+		menu: '',
 	};
 	const initialViewImage = {
 		show: false,
@@ -321,7 +323,7 @@ const ViewResume = ({
 	useEffect(() => {
 		if (resume) {
 			handleShow();
-			setData({ ...data, ...resume });
+			setData({ ...data, ...resume, menu });
 		}
 
 		// eslint-disable-next-line

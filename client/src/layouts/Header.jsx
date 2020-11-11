@@ -8,7 +8,8 @@ import PropTypes from 'prop-types';
 import draftsourceLogo from './../images/draftsource_logo.png';
 
 // Components
-import { talkRecruiter } from './../components/TalkRecruiter';
+// import { talkRecruiter } from './../components/TalkRecruiter';
+import ScheduleDemo from './../components/ScheduleDemo';
 
 // Actions
 import { logoutUser } from './../state/actions/userAction';
@@ -73,7 +74,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 				<i className="fas fa-bars"></i>
 			</button>
 			<Navbar.Collapse className="mt-2">
-				<Nav className="mr-auto">
+				{/* <Nav className="mr-auto">
 					<Nav.Link as={NavLink} to="/view-candidates">
 						View Ready to Hire Candidates
 					</Nav.Link>
@@ -85,6 +86,11 @@ const Header = ({ logoutUser, userState: { user } }) => {
 				<Nav className="ml-auto">
 					<Nav.Link as={NavLink} to="/draft-job" className="talk-recruiter">
 						Draft a Job
+					</Nav.Link>
+				</Nav> */}
+				<Nav className="ml-auto">
+					<Nav.Link onClick={ScheduleDemo} className="schedule-demo">
+						Schedule a Demo
 					</Nav.Link>
 				</Nav>
 				<Nav>
@@ -104,7 +110,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 					CLOSE X
 				</a>
 				<ul className="mobile-main-menu">
-					<li>
+					{/* <li>
 						<NavLink to="/view-candidates" onClick={mobileLink}>
 							View Ready to Hire Candidates
 						</NavLink>
@@ -135,7 +141,7 @@ const Header = ({ logoutUser, userState: { user } }) => {
 						<NavLink to="/draft-job" onClick={mobileLink}>
 							Draft a Job
 						</NavLink>
-					</li>
+					</li> */}
 					{(user && user.type === 'Admin') ||
 					(user && user.type === 'Recruiter') ? (
 						<Fragment>

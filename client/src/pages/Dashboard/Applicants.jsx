@@ -143,7 +143,7 @@ const Applicants = ({
 					</button>
 				</div>
 			</div>
-			<ViewResume loadCandidate={loadCandidate} />
+			<ViewResume loadCandidate={loadCandidate} menu={menu} />
 			<Candidates />
 			<div className="foot">
 				<PaginationLink loadCandidate={loadCandidate} type="Candidate" />

@@ -211,6 +211,7 @@ router.put('/reject-job', auth, async (req, res) => {
 router.delete('/delete-job/:id', auth, async (req, res) => {
 	const { id } = req.params;
 	await Job.findByIdAndDelete(id);
+	return res.json({ success: true });
 });
 
 // @route   POST /api/job/view-details

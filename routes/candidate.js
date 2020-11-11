@@ -315,12 +315,14 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 		uploadWork,
 		user,
 	} = resume;
-	fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
+	if (fs.existsSync(`${__dirname}/../public/uploads/${resumeImage}`)) {
+		fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+	}
 	// fs.unlink(`${__dirname}/../public/uploads/${internetResult}`, (err) => {
 	// 	if (err) {
 	// 		console.error(err);
@@ -333,32 +335,40 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 	// 		return;
 	// 	}
 	// });
-	fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
-	fs.unlink(`${__dirname}/../public/uploads/${govID}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
-	fs.unlink(`${__dirname}/../public/uploads/${cv}`, (err) => {
-		if (err) {
-			console.error(err);
-			return;
-		}
-	});
-
-	uploadWork.images.map((e) => {
-		fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+	if (fs.existsSync(`${__dirname}/../public/uploads/${aboutYourself}`)) {
+		fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
 			if (err) {
 				console.error(err);
 				return;
 			}
 		});
+	}
+	if (fs.existsSync(`${__dirname}/../public/uploads/${govID}`)) {
+		fs.unlink(`${__dirname}/../public/uploads/${govID}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+	}
+	if (fs.existsSync(`${__dirname}/../public/uploads/${cv}`)) {
+		fs.unlink(`${__dirname}/../public/uploads/${cv}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+	}
+
+	uploadWork.images.map((e) => {
+		if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+			});
+		}
 	});
 
 	// uploadWork.documents.map((e) => {
@@ -371,6 +381,7 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 	// });
 	await User.findByIdAndDelete(user);
 	await Resume.findByIdAndDelete(id);
+	return res.json({ success: true });
 });
 
 // @route   POST /api/candidate/view-resume

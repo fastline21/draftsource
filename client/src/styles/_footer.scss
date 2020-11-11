@@ -31,6 +31,12 @@
 		font-weight: 400;
 	}
 
+	.email-address {
+		color: $lightBlue;
+		text-decoration: underline;
+		font-weight: normal;
+	}
+
 	.social-media {
 		color: $black;
 		margin-top: 15px;
@@ -50,14 +56,15 @@
 
 	.policy {
 		margin-top: 20px;
-		margin-bottom: 10px;
+		// margin-bottom: 10px;
+		margin-bottom: 0;
 
 		@include media('>=tablet') {
 			text-align: center;
 		}
 
 		a {
-			color: $black;
+			color: $lightGray;
 
 			&:hover {
 				text-decoration: none;
@@ -66,7 +73,6 @@
 	}
 
 	.copyright {
-		margin-bottom: 0;
 		color: $lightGray;
 
 		@include media('>=tablet') {

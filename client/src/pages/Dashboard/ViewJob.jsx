@@ -10,7 +10,7 @@ import { clearDetails } from './../../state/actions/jobAction';
 // Components
 import ModalActionJob from './ModalActionJob';
 
-const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
+const ViewJob = ({ menu, jobState: { details }, clearDetails, loadJob }) => {
 	const initialData = {
 		title: '',
 		specialty: [],
@@ -35,6 +35,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 		agentName: '',
 		status: '',
 		dateCreated: '',
+		menu: '',
 	};
 	const [data, setData] = useState(initialData);
 	const [show, setShow] = useState(false);
@@ -138,7 +139,7 @@ const ViewJob = ({ jobState: { details }, clearDetails, loadJob }) => {
 	const handleShow = () => setShow(true);
 	useEffect(() => {
 		if (details) {
-			setData(details);
+			setData({ ...data, ...details, menu });
 			handleShow();
 		}
 	}, [details]);
