@@ -3,6 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 // Actions
 import {
@@ -33,36 +34,7 @@ const ViewResume = ({
 	updateResume,
 	setAlert,
 }) => {
-	const [isEdit, setIsEdit] = useState({
-		fullname: false,
-		headline: false,
-		email: false,
-		contactNo: false,
-		city: false,
-		rating: false,
-		expectedSalary: false,
-		skill: false,
-		advancedSoftware: false,
-		intermediateSoftware: false,
-		workHistory: false,
-		education: false,
-		recruitmentsComment: false,
-		internetResult: false,
-		internetType: false,
-		hardwareType: false,
-		brandName: false,
-		processor: false,
-		ram: false,
-	});
-
-	const [isEditArr, setIsEditArr] = useState({
-		workHistory: {
-			index: null,
-			show: false,
-		},
-	});
-
-	// Initial
+	// Initial data
 	const initialData = {
 		_id: '',
 		idCode: '',
@@ -88,7 +60,7 @@ const ViewResume = ({
 		intermediateSoftware: [],
 		marketType: [],
 		countryExperience: [],
-		uploadWork: { images: [] },
+		uploadWork: { images: [], documents: [] },
 		workHistory: [],
 		education: [],
 		recruitmentsComment: '',
@@ -113,11 +85,11 @@ const ViewResume = ({
 	};
 	const initialViewSampleWork = {
 		show: false,
-		title: '',
-		file: '',
+		data: '',
+		current: '',
 	};
 
-	// State
+	// State in View Resume
 	const [show, setShow] = useState(false);
 	const [data, setData] = useState(initialData);
 	const [action, setAction] = useState(null);
@@ -125,6 +97,33 @@ const ViewResume = ({
 	const [msg, setMsg] = useState('');
 	const [viewImage, setViewImage] = useState(initialViewImage);
 	const [viewSampleWork, setViewSampleWork] = useState(initialViewSampleWork);
+	const [isEdit, setIsEdit] = useState({
+		fullname: false,
+		headline: false,
+		email: false,
+		contactNo: false,
+		city: false,
+		rating: false,
+		expectedSalary: false,
+		skill: false,
+		advancedSoftware: false,
+		intermediateSoftware: false,
+		workHistory: false,
+		education: false,
+		recruitmentsComment: false,
+		internetResult: false,
+		internetType: false,
+		hardwareType: false,
+		brandName: false,
+		processor: false,
+		ram: false,
+	});
+	const [isEditArr, setIsEditArr] = useState({
+		workHistory: {
+			index: null,
+			show: false,
+		},
+	});
 
 	const {
 		_id,
@@ -167,6 +166,7 @@ const ViewResume = ({
 		recruiterName,
 	} = data;
 
+	// Approve resume
 	const approveResume = () => {
 		if (recruitmentsComment === undefined || recruitmentsComment.length === 0) {
 			setAlert('', 'Please fill-in the required boxes to Proceed.');
@@ -179,6 +179,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Reject resume
 	const rejectResume = () => {
 		if (recruitmentsComment === undefined || recruitmentsComment.length === 0) {
 			setAlert('', 'Please fill-in the required boxes to Proceed.');
@@ -191,6 +192,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Delete resume
 	const deleteResume = () => {
 		setAction('delete');
 		setShowModalAction(true);
@@ -199,6 +201,7 @@ const ViewResume = ({
 		);
 	};
 
+	// Reapprove resume
 	const reapproveResume = () => {
 		setAction('reapprove');
 		setShowModalAction(true);
@@ -207,6 +210,7 @@ const ViewResume = ({
 		);
 	};
 
+	// Hire resume
 	const hireResume = () => {
 		setAction('hire');
 		setShowModalAction(true);
@@ -215,6 +219,7 @@ const ViewResume = ({
 		);
 	};
 
+	// Action button
 	const actionButton = () => {
 		if (status === 'Pending') {
 			return (
@@ -264,6 +269,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Recruiters comment add
 	const onAddRecruitersComment = () => {
 		if (recruitmentsComment === '') {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
@@ -273,6 +279,7 @@ const ViewResume = ({
 		}
 	};
 
+	// On change input field
 	const onChange = (e) => {
 		const { name, value } = e.target;
 		if (isEditArr.workHistory.show) {
@@ -283,6 +290,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Edit button
 	const onClickEdit = (category) => {
 		setIsEdit({ ...isEdit, [category]: !isEdit[category] });
 		if (isEdit[category]) {
@@ -290,6 +298,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Update resume
 	const onClickEditArray = (category, index) => {
 		setIsEdit({ ...isEdit, [category]: !isEdit[category] });
 		setIsEditArr({
@@ -301,6 +310,7 @@ const ViewResume = ({
 		}
 	};
 
+	// Get total months in two dates
 	const totalMonths = (m1, m2, y1, y2) => {
 		const d2 = moment(
 			`${moment().month(m1).format('MM')}/01/${parseInt(y1)}`,
@@ -313,21 +323,46 @@ const ViewResume = ({
 		return d1.diff(d2, 'month');
 	};
 
+	// Close modal
 	const handleClose = () => {
 		setShow(false);
 		clearResume();
 	};
 
+	// Show modal
 	const handleShow = () => setShow(true);
+
+	// Sample work
+	const sampleWork = () => {
+		if (uploadWork.images.length > 0 || uploadWork.documents.length > 0) {
+			const { images, documents } = uploadWork;
+			const newImages = images
+				? images.map((el) => {
+						const d = Object.assign({}, el);
+						d.type = 'image';
+						return d;
+				  })
+				: [];
+			const newDocuments = documents
+				? documents.map((el) => {
+						const d = Object.assign({}, el);
+						d.type = 'document';
+						return d;
+				  })
+				: [];
+			return [...newImages, ...newDocuments];
+		}
+	};
 
 	useEffect(() => {
 		if (resume) {
 			handleShow();
 			setData({ ...data, ...resume, menu });
 		}
-
 		// eslint-disable-next-line
 	}, [resume]);
+
+	pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 	return (
 		<Modal
@@ -688,31 +723,62 @@ const ViewResume = ({
 							<p className="item-title color-2">Sample Works</p>
 						</div>
 						<div className="col-lg-9">
-							<div className="row pb-3 upload-work-images">
-								{uploadWork.images.map((e, i) => (
-									<div className="col-lg-3" key={i}>
-										<figure
-											className="figure"
-											style={{ cursor: 'pointer' }}
-											onClick={() =>
-												setViewSampleWork({
-													show: true,
-													title: e.title,
-													file: e.file,
-												})
-											}
-										>
-											<img
-												src={`/uploads/${e.file}`}
-												alt={e.title}
-												className="figure-img img-fluid"
-											/>
-											<figcaption className="figure-caption">
-												{e.title}
-											</figcaption>
-										</figure>
-									</div>
-								))}
+							<div className="row pb-3 upload-work">
+								{sampleWork() !== undefined
+									? sampleWork().map((e, i) =>
+											e.type === 'image' ? (
+												<div className="col-lg-3" key={i}>
+													<figure
+														className="figure"
+														style={{ cursor: 'pointer' }}
+														onClick={() =>
+															setViewSampleWork({
+																show: true,
+																data: sampleWork(),
+																current: i,
+															})
+														}
+													>
+														<img
+															src={`/uploads/${e.file}`}
+															alt={e.title}
+															className="figure-img img-fluid"
+														/>
+														<figcaption className="figure-caption">
+															{e.title}
+														</figcaption>
+													</figure>
+												</div>
+											) : (
+												<div className="col-lg-3" key={i}>
+													<figure
+														className="figure w-100"
+														style={{ cursor: 'pointer' }}
+														onClick={() =>
+															setViewSampleWork({
+																show: true,
+																data: sampleWork(),
+																current: i,
+															})
+														}
+													>
+														<div style={{ marginBottom: '.5rem' }}>
+															<Document file={`/uploads/${e.file}`}>
+																<Page
+																	pageNumber={1}
+																	height={140}
+																	renderAnnotationLayer={false}
+																/>
+															</Document>
+														</div>
+														<figcaption className="figure-caption">
+															{e.title}
+														</figcaption>
+													</figure>
+												</div>
+											)
+									  )
+									: null}
 							</div>
 							<hr className="line-break" />
 						</div>

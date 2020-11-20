@@ -863,6 +863,8 @@
 				transform: translate(-50%, -50%);
 				color: $black;
 				font-weight: 500;
+				width: 100px;
+				text-align: center;
 
 				.button {
 					background-color: transparent;
@@ -1298,6 +1300,10 @@
 
 		.replace-file {
 			display: none;
+		}
+
+		.footer {
+			margin-top: 12rem;
 		}
 	}
 }

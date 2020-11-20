@@ -1,0 +1,16 @@
+@import 'base.scss';
+
+#viewSampleWork {
+	.carousel-inner {
+		width: 94%;
+		margin: auto;
+	}
+
+	.carousel-control-prev,
+	.carousel-control-next {
+		color: #606060;
+		font-size: 2rem;
+		width: 1rem;
+		font-size: 24px;
+	}
+}

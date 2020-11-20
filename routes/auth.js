@@ -572,7 +572,6 @@ router.get('/get-users', auth, async (req, res) => {
 			haveResume: resume ? true : false,
 		});
 	}
-	console.log(resultUsers.slice(startIndex, endIndex));
 	results.total = resultUsers.length;
 	results.users = resultUsers.slice(startIndex, endIndex);
 	res.json(results);
@@ -624,6 +623,16 @@ router.delete('/delete-user/:id', auth, async (req, res) => {
 			}
 
 			uploadWork.images.map((e) => {
+				if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+					fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+						if (err) {
+							console.error(err);
+							return;
+						}
+					});
+				}
+			});
+			uploadWork.documents.map((e) => {
 				if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
 					fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
 						if (err) {

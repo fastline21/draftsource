@@ -690,8 +690,7 @@
 			}
 		}
 
-		.upload-work-images,
-		.upload-work-documents {
+		.upload-work {
 			.figure-img {
 				height: 140px;
 				width: 230px;
@@ -701,6 +700,10 @@
 				text-align: center;
 				color: #606060;
 				font-weight: 500;
+			}
+
+			.react-pdf__Page__canvas {
+				margin: auto;
 			}
 		}
 

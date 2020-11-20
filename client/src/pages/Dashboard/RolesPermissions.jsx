@@ -90,7 +90,16 @@ const RolesPermissions = ({
 							{users &&
 								users.map((e, i) => (
 									<tr key={i}>
-										<td>{i + 1}</td>
+										<td>
+											{(queryParams.get('limit')
+												? parseInt(queryParams.get('limit'))
+												: 10) *
+												((queryParams.get('page')
+													? parseInt(queryParams.get('page'))
+													: 1) -
+													1) +
+												(i + 1)}
+										</td>
 										<td>{e.email}</td>
 										<td>{e.type}</td>
 										<td>{e.active ? 'Active' : 'Not Active'}</td>

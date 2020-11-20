@@ -371,14 +371,16 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 		}
 	});
 
-	// uploadWork.documents.map((e) => {
-	// 	fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
-	// 		if (err) {
-	// 			console.error(err);
-	// 			return;
-	// 		}
-	// 	});
-	// });
+	uploadWork.documents.map((e) => {
+		if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+				if (err) {
+					console.error(err);
+					return;
+				}
+			});
+		}
+	});
 	await User.findByIdAndDelete(user);
 	await Resume.findByIdAndDelete(id);
 	return res.json({ success: true });

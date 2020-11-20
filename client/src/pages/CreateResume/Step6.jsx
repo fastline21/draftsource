@@ -17,7 +17,7 @@ import MarketTypeSelected from './MarketTypeSelected';
 import CountryExperienceItem from './CountryExperienceItem';
 import CountryExperienceSelected from './CountryExperienceSelected';
 import UploadWorkImageModal from './UploadWorkImageModal';
-// import UploadWorkDocumentModal from './UploadWorkDocumentModal';
+import UploadWorkDocumentModal from './UploadWorkDocumentModal';
 import UploadWorkItem from './UploadWorkItem';
 import PreLoader from './../../layouts/PreLoader';
 
@@ -47,6 +47,7 @@ const Step6 = ({
 	resumeStep,
 	resumeState: { resume, error, success, loading, percent, step },
 }) => {
+	// Unsaved data
 	const [
 		Prompt,
 		setDirty,
@@ -54,12 +55,14 @@ const Step6 = ({
 		setMessage,
 	] = useUnsavedChangesWarning();
 
+	// Other specific input ref
 	const otherSpecialtyRef = useRef(null);
 	const otherAdvancedSoftwareRef = useRef(null);
 	const otherIntermediateSoftwareRef = useRef(null);
 	const otherMarketTypeRef = useRef(null);
 	const otherCountryExperienceRef = useRef(null);
 
+	// Initial value for upload modal
 	const initialUploadModal = {
 		show: false,
 		title: '',
@@ -68,6 +71,7 @@ const Step6 = ({
 		index: '',
 	};
 
+	// State for step 6
 	const [specialty, setSpecialty] = useState([]);
 	const [advancedSoftware, setAdvancedSoftware] = useState([]);
 	const [intermediateSoftware, setIntermediateSoftware] = useState([]);
@@ -75,12 +79,16 @@ const Step6 = ({
 	const [countryExperience, setCountryExperience] = useState([]);
 	const [uploadWork, setUploadWork] = useState({
 		images: [],
+		documents: [],
 	});
 	const [uploadWorkImageModal, setUploadWorkImageModal] = useState(
 		initialUploadModal
 	);
-	// const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState('');
-	// const [submit, setSubmit] = useState(false);
+	const [uploadWorkDocumentModal, setUploadWorkDocumentModal] = useState(
+		initialUploadModal
+	);
+
+	// Exclude MS Word in Intermediate Software List
 	const newSoftwareList = softwareList().filter((soft) => soft !== 'MS Word');
 
 	// Select Specialty
@@ -595,22 +603,22 @@ const Step6 = ({
 	};
 
 	// Upload Work Document Modal Click
-	// const onUploadWorkDocumentModal = (e) => {
-	//     e.preventDefault();
-	//     setUploadWorkDocumentModal({
-	//         show: true,
-	//         title: 'Upload your PDF',
-	//         note: [
-	//             'Upload your pdf not exceeding to 5mb',
-	//             'Concise and professionaly done is a must',
-	//             'Avoid unnecessary elements to make it more direct',
-	//             'A clean and modern look attracts client',
-	//         ],
-	//         caption: 'Draft PDF',
-	//         data: '',
-	//         index: '',
-	//     });
-	// };
+	const onUploadWorkDocumentModal = (e) => {
+		e.preventDefault();
+		setUploadWorkDocumentModal({
+			show: true,
+			title: 'Upload your PDF',
+			note: [
+				'Upload your pdf not exceeding to 5mb',
+				'Concise and professionaly done is a must',
+				'Avoid unnecessary elements to make it more direct',
+				'A clean and modern look attracts client',
+			],
+			caption: 'Draft PDF',
+			data: '',
+			index: '',
+		});
+	};
 
 	// Hide Upload Work Image Modal
 	const isHideImage = () => {
@@ -618,9 +626,9 @@ const Step6 = ({
 	};
 
 	// Hide Upload Work Document Modal
-	// const isHideDocument = () => {
-	//     setUploadWorkDocumentModal(initialUploadModal);
-	// };
+	const isHideDocument = () => {
+		setUploadWorkDocumentModal(initialUploadModal);
+	};
 
 	// Upload Work Image Data
 	const uploadWorkImageData = (data) => {
@@ -631,15 +639,15 @@ const Step6 = ({
 	};
 
 	// Upload Work Document Data
-	// const uploadWorkDocumentData = (data) => {
-	//     setUploadWork({
-	//         ...uploadWork,
-	//         documents: [...uploadWork.documents, data],
-	//     });
-	//     setUploadWorkImageModal(initialUploadModal);
-	//     setDirty();
-	//     setMessage('Are you sure you want to leave this page?');
-	// };
+	const uploadWorkDocumentData = (data) => {
+		setUploadWork({
+			...uploadWork,
+			documents: [...uploadWork.documents, data],
+		});
+		setUploadWorkImageModal(initialUploadModal);
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
 
 	// Edit Upload Work Image Modal
 	const onEditWorkImage = (index) => {
@@ -658,21 +666,21 @@ const Step6 = ({
 	};
 
 	// Edit Upload Work Document Modal
-	// const onEditWorkDocument = (index) => {
-	//     setUploadWorkDocumentModal({
-	//         show: true,
-	//         title: 'Upload your PDF',
-	//         note: [
-	//             'Upload your pdf not exceeding to 5mb',
-	//             'Concise and professionaly done is a must',
-	//             'Avoid unnecessary elements to make it more direct',
-	//             'A clean and modern look attracts client',
-	//         ],
-	//         caption: 'Draft a PDF',
-	//         data: uploadWork.documents[index],
-	//         index,
-	//     });
-	// };
+	const onEditWorkDocument = (index) => {
+		setUploadWorkDocumentModal({
+			show: true,
+			title: 'Upload your PDF',
+			note: [
+				'Upload your pdf not exceeding to 5mb',
+				'Concise and professionaly done is a must',
+				'Avoid unnecessary elements to make it more direct',
+				'A clean and modern look attracts client',
+			],
+			caption: 'Draft a PDF',
+			data: uploadWork.documents[index],
+			index,
+		});
+	};
 
 	// Delete Upload Work Image
 	const onDeleteWorkImage = (current) => {
@@ -683,14 +691,12 @@ const Step6 = ({
 	};
 
 	// Delete Upload Work Document
-	// const onDeleteWorkDocument = (current) => {
-	//     const { documents } = uploadWork;
-	//     const removeItem = documents.filter(
-	//         (document, index) => index !== current
-	//     );
-	//     setUploadWork({ ...uploadWork, documents: [...removeItem] });
-	//     setUploadWorkDocumentModal(initialUploadModal);
-	// };
+	const onDeleteWorkDocument = (current) => {
+		const { documents } = uploadWork;
+		const removeItem = documents.filter((document, index) => index !== current);
+		setUploadWork({ ...uploadWork, documents: [...removeItem] });
+		setUploadWorkDocumentModal(initialUploadModal);
+	};
 
 	// Update Upload Work Image
 	const updateWorkImageData = (current, data) => {
@@ -705,17 +711,18 @@ const Step6 = ({
 	};
 
 	// Update Upload Work Document
-	// const updateWorkDocumentData = (current, data) => {
-	//     const { documents } = uploadWork;
-	//     const newUpdate = documents.map((document, index) =>
-	//         index === current ? data : document
-	//     );
-	//     setUploadWork({ ...uploadWork, documents: [...newUpdate] });
-	//     setUploadWorkDocumentModal(initialUploadModal);
-	//     setDirty();
-	//     setMessage('Are you sure you want to leave this page?');
-	// };
+	const updateWorkDocumentData = (current, data) => {
+		const { documents } = uploadWork;
+		const newUpdate = documents.map((document, index) =>
+			index === current ? data : document
+		);
+		setUploadWork({ ...uploadWork, documents: [...newUpdate] });
+		setUploadWorkDocumentModal(initialUploadModal);
+		setDirty();
+		setMessage('Are you sure you want to leave this page?');
+	};
 
+	// On key press in other specialty
 	const onKeyPressOtherSpecify = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -741,6 +748,7 @@ const Step6 = ({
 		}
 	};
 
+	// On key press other advanced software
 	const onKeyPressOtherAdvancedSoftware = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -776,6 +784,7 @@ const Step6 = ({
 		}
 	};
 
+	// On key press other intermediate software
 	const onKeyPressOtherIntermediateSoftware = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -813,6 +822,7 @@ const Step6 = ({
 		}
 	};
 
+	// On key press other martket type
 	const onKeyPressOtherMarketType = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -841,6 +851,7 @@ const Step6 = ({
 		}
 	};
 
+	// On key press other country experience
 	const onKeyPressOtherCountryExperience = (e) => {
 		if (e.key === 'Enter') {
 			e.preventDefault();
@@ -878,17 +889,16 @@ const Step6 = ({
 		}
 	};
 
+	// Submit form
 	const onSubmit = (e) => {
 		e.preventDefault();
-
 		if (
 			specialty.length === 0 ||
 			advancedSoftware.length === 0 ||
 			intermediateSoftware.length === 0 ||
 			marketType.length === 0 ||
 			countryExperience.length === 0 ||
-			uploadWork.images.length === 0
-			// uploadWork.documents.length === 0
+			(uploadWork.images.length === 0 && uploadWork.documents.length === 0)
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
 		} else if (specialty.length < 3) {
@@ -896,7 +906,10 @@ const Step6 = ({
 		} else if (marketType.length < 3) {
 			return setAlert('', 'Please choose atleast 3 market type');
 		} else {
+			// Generate new formdata
 			const formData = new FormData();
+
+			// Get all resume data and append in formdata
 			for (const [key, value] of Object.entries(resume)) {
 				if (key === 'education' || key === 'workHistory') {
 					formData.append(key, JSON.stringify(value));
@@ -904,21 +917,31 @@ const Step6 = ({
 					formData.append(key, value);
 				}
 			}
+
+			// Get all file upload and append in formdata
 			for (const [key, value] of Object.entries(check())) {
 				formData.append(key, value);
 			}
+
+			// Append all upload work in formdata
 			for (const property in uploadWork) {
 				uploadWork[property].forEach((element) => {
 					formData.append([property], element.file);
 				});
 			}
+
+			// Append all data in step 6 in formdata
 			formData.append('specialty', specialty);
 			formData.append('advancedSoftware', advancedSoftware);
 			formData.append('intermediateSoftware', intermediateSoftware);
 			formData.append('marketType', marketType);
 			formData.append('countryExperience', countryExperience);
 			formData.append('uploadWork', JSON.stringify(uploadWork));
+
+			// Submit resume
 			submitResume(formData);
+
+			// Reset all data in step 6
 			setSpecialty([]);
 			setAdvancedSoftware([]);
 			setIntermediateSoftware([]);
@@ -926,8 +949,8 @@ const Step6 = ({
 			setCountryExperience([]);
 			setUploadWork({
 				images: [],
+				documents: [],
 			});
-			// setSubmit(true);
 			setPristine();
 		}
 	};
@@ -937,7 +960,6 @@ const Step6 = ({
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 		}
-
 		if (step !== 6) {
 			setPristine();
 			setAlert(
@@ -945,14 +967,12 @@ const Step6 = ({
 				'You are not authorize to go in this page. Please start at Step 1'
 			);
 		}
-
 		if (error) {
 			setDirty();
 			setMessage('Are you sure you want to leave this page?');
 			setAlert('', error.msg);
 			clearError();
 		}
-
 		if (success) {
 			clearUser();
 			setAlert(
@@ -961,7 +981,6 @@ const Step6 = ({
 			);
 			setPristine();
 		}
-
 		// eslint-disable-next-line
 	}, [error, success, step]);
 
@@ -981,19 +1000,19 @@ const Step6 = ({
 					updateData={updateWorkImageData}
 				/>
 			) : null}
-			{/* {uploadWorkDocumentModal.show ? (
-                <UploadWorkDocumentModal
-                    titleModal={uploadWorkDocumentModal.title}
-                    note={uploadWorkDocumentModal.note}
-                    isHide={isHideDocument}
-                    isShow={uploadWorkDocumentModal.show}
-                    caption={uploadWorkDocumentModal.caption}
-                    uploadData={uploadWorkDocumentData}
-                    data={uploadWorkDocumentModal.data}
-                    index={uploadWorkDocumentModal.index}
-                    updateData={updateWorkDocumentData}
-                />
-            ) : null} */}
+			{uploadWorkDocumentModal.show ? (
+				<UploadWorkDocumentModal
+					titleModal={uploadWorkDocumentModal.title}
+					note={uploadWorkDocumentModal.note}
+					isHide={isHideDocument}
+					isShow={uploadWorkDocumentModal.show}
+					caption={uploadWorkDocumentModal.caption}
+					uploadData={uploadWorkDocumentData}
+					data={uploadWorkDocumentModal.data}
+					index={uploadWorkDocumentModal.index}
+					updateData={updateWorkDocumentData}
+				/>
+			) : null}
 			{loading ? <PreLoader percent={percent} /> : null}
 			<div className="row">
 				<div className="col-lg-12">
@@ -1262,51 +1281,39 @@ const Step6 = ({
 										</div>
 									)}
 								</div>
-								{/* <div className="upload-document">
-                                    <label className="form-label">PDF</label>
-                                    {uploadWork.documents.length === 0 ? (
-                                        <button
-                                            className="btn btn-primary button"
-                                            onClick={onUploadWorkDocumentModal}
-                                        >
-                                            Add your first sample project as PDF
-                                            format
-                                            <i className="fas fa-plus"></i>
-                                        </button>
-                                    ) : (
-                                        <div className="row">
-                                            {uploadWork.documents.map(
-                                                (e, i) => (
-                                                    <div
-                                                        className="col-lg-3 col-md-3 col-sm-3"
-                                                        key={i}
-                                                    >
-                                                        <UploadWorkItem
-                                                            index={i}
-                                                            data={e}
-                                                            isEdit={
-                                                                onEditWorkDocument
-                                                            }
-                                                            isDelete={
-                                                                onDeleteWorkDocument
-                                                            }
-                                                        />
-                                                    </div>
-                                                )
-                                            )}
-                                            <div className="col-lg-3 col-md-3 col-sm-3">
-                                                <div
-                                                    className="add-entry"
-                                                    onClick={
-                                                        onUploadWorkDocumentModal
-                                                    }
-                                                >
-                                                    <i className="fas fa-plus"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div> */}
+								<div className="upload-document">
+									<label className="form-label">PDF</label>
+									{uploadWork.documents.length === 0 ? (
+										<button
+											className="btn btn-primary button"
+											onClick={onUploadWorkDocumentModal}
+										>
+											Add your first sample project as PDF format
+											<i className="fas fa-plus"></i>
+										</button>
+									) : (
+										<div className="row">
+											{uploadWork.documents.map((e, i) => (
+												<div className="col-lg-3 col-md-3 col-sm-3" key={i}>
+													<UploadWorkItem
+														index={i}
+														data={e}
+														isEdit={onEditWorkDocument}
+														isDelete={onDeleteWorkDocument}
+													/>
+												</div>
+											))}
+											<div className="col-lg-3 col-md-3 col-sm-3">
+												<div
+													className="add-entry"
+													onClick={onUploadWorkDocumentModal}
+												>
+													<i className="fas fa-plus"></i>
+												</div>
+											</div>
+										</div>
+									)}
+								</div>
 							</div>
 						</div>
 						<div className="form-row">

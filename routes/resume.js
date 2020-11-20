@@ -104,6 +104,7 @@ router.post('/month', (req, res) => {
 // @desc    Create resume
 // @access  Private
 router.post('/', auth, async (req, res) => {
+	// Get temp data
 	const temp = await Temp.findOne({ user: req.user.id });
 	const {
 		firstName,
@@ -321,43 +322,41 @@ router.post('/', auth, async (req, res) => {
 		uploadWorkImage = uploadWorkImageFile;
 	}
 
-	// let uploadWorkDocument = '';
-	// if (uploadWork.documents.length > 1) {
-	//     uploadFile.documents.forEach((element) => {
-	//         const uploadWorkDocumentFile = generateFileName(
-	//             element,
-	//             'uploadWorkDocument'
-	//         );
-	//         element.mv(
-	//             `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-	//             (err) => {
-	//                 if (err) {
-	//                     console.error(err);
-	//                     return res.status(500).send(err);
-	//                 }
-	//             }
-	//         );
-	//         uploadWorkDocument = [
-	//             ...uploadWorkDocument,
-	//             uploadWorkDocumentFile,
-	//         ];
-	//     });
-	// } else {
-	//     const uploadWorkDocumentFile = generateFileName(
-	//         uploadFile.documents,
-	//         'documents'
-	//     );
-	//     uploadFile.documents.mv(
-	//         `${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-	//         (err) => {
-	//             if (err) {
-	//                 console.error(err);
-	//                 return res.status(500).send(err);
-	//             }
-	//         }
-	//     );
-	//     uploadWorkDocument = uploadWorkDocumentFile;
-	// }
+	// Generate Upload Work Documents
+	let uploadWorkDocument = '';
+	if (uploadWork.documents.length > 1) {
+		uploadFile.documents.forEach((element) => {
+			const uploadWorkDocumentFile = generateFileName(
+				element,
+				'uploadWorkDocument'
+			);
+			element.mv(
+				`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
+				(err) => {
+					if (err) {
+						console.error(err);
+						return res.status(500).send(err);
+					}
+				}
+			);
+			uploadWorkDocument = [...uploadWorkDocument, uploadWorkDocumentFile];
+		});
+	} else {
+		const uploadWorkDocumentFile = generateFileName(
+			uploadFile.documents,
+			'documents'
+		);
+		uploadFile.documents.mv(
+			`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
+			(err) => {
+				if (err) {
+					console.error(err);
+					return res.status(500).send(err);
+				}
+			}
+		);
+		uploadWorkDocument = uploadWorkDocumentFile;
+	}
 
 	try {
 		// Combine Upload Work Images file to array
@@ -369,15 +368,16 @@ router.post('/', auth, async (req, res) => {
 			};
 		});
 
-		// uploadWork.documents = uploadWork.documents.map((x, i) => {
-		//     return {
-		//         ...x,
-		//         file:
-		//             uploadWork.documents.length > 1
-		//                 ? uploadWorkDocument[i]
-		//                 : uploadWorkDocument,
-		//     };
-		// });
+		// Combine Upload Work Documents file to array
+		uploadWork.documents = uploadWork.documents.map((x, i) => {
+			return {
+				...x,
+				file:
+					uploadWork.documents.length > 1
+						? uploadWorkDocument[i]
+						: uploadWorkDocument,
+			};
+		});
 
 		const resumeFields = {
 			user: req.user.id,
