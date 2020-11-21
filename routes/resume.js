@@ -7,6 +7,7 @@ const moment = require('moment');
 // Models
 const Resume = require('./../models/Resume');
 const Temp = require('./../models/Temp');
+const Log = require('./../models/Log');
 
 // Middleware
 const auth = require('./../middleware/auth');
@@ -177,12 +178,17 @@ router.post('/', auth, async (req, res) => {
 	// Get total work history
 	let error = false;
 	let totalWorkHistory = 0;
-	workHistory.map((e) => {
+	workHistory.map((e) => async () => {
 		const date1 = getTotalMonth(e.monthStarted, 1, e.yearStarted, 'MM/DD/YYYY');
 		const date2 = getTotalMonth(e.monthEnded, 1, e.yearEnded, 'MM/DD/YYYY');
 		const totalMonth = date2.diff(date1, 'month');
 		if (totalMonth < 0) {
 			error = true;
+			const log = new Log({
+				message: 'Invalid Date',
+				type: 'Create Resume',
+			});
+			await log.save();
 			return res.status(400).json({ msg: 'Invalid Date' });
 		}
 		totalWorkHistory += totalMonth;
@@ -213,19 +219,32 @@ router.post('/', auth, async (req, res) => {
 	// Generate Resume Image
 	let resumeImage = uploadFile.resumeImage;
 	const resumeImageFile = generateFileName(resumeImage, 'resumeImage');
-	resumeImage.mv(`${__dirname}/../public/uploads/${resumeImageFile}`, (err) => {
-		if (err) {
-			console.error(err);
-			return res.status(500).send(err);
+	resumeImage.mv(
+		`${__dirname}/../public/uploads/${resumeImageFile}`,
+		(err) => async () => {
+			if (err) {
+				const log = new Log({
+					message: err,
+					type: 'Create Resume',
+				});
+				await log.save();
+				console.error(err);
+				return res.status(500).send(err);
+			}
 		}
-	});
+	);
 	resumeImage = resumeImageFile;
 
 	// Generate Gov ID
 	let govID = uploadFile.govID;
 	const govIDFile = generateFileName(govID, 'govID');
-	govID.mv(`${__dirname}/../public/uploads/${govIDFile}`, (err) => {
+	govID.mv(`${__dirname}/../public/uploads/${govIDFile}`, (err) => async () => {
 		if (err) {
+			const log = new Log({
+				message: err,
+				type: 'Create Resume',
+			});
+			await log.save();
 			console.error(err);
 			return res.status(500).send(err);
 		}
@@ -235,8 +254,13 @@ router.post('/', auth, async (req, res) => {
 	// Generate CV
 	let cv = uploadFile.cv;
 	const cvFile = generateFileName(cv, 'cv');
-	cv.mv(`${__dirname}/../public/uploads/${cvFile}`, (err) => {
+	cv.mv(`${__dirname}/../public/uploads/${cvFile}`, (err) => async () => {
 		if (err) {
+			const log = new Log({
+				message: err,
+				type: 'Create Resume',
+			});
+			await log.save();
 			console.error(err);
 			return res.status(500).send(err);
 		}
@@ -283,8 +307,13 @@ router.post('/', auth, async (req, res) => {
 	const aboutYourselfFile = generateFileName(aboutYourself, 'aboutYourself');
 	aboutYourself.mv(
 		`${__dirname}/../public/uploads/${aboutYourselfFile}`,
-		(err) => {
+		(err) => async () => {
 			if (err) {
+				const log = new Log({
+					message: err,
+					type: 'Create Resume',
+				});
+				await log.save();
 				console.error(err);
 				return res.status(500).send(err);
 			}
@@ -299,8 +328,13 @@ router.post('/', auth, async (req, res) => {
 			const uploadWorkImageFile = generateFileName(element, 'uploadWorkImage');
 			element.mv(
 				`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
-				(err) => {
+				(err) => async () => {
 					if (err) {
+						const log = new Log({
+							message: err,
+							type: 'Create Resume',
+						});
+						await log.save();
 						console.error(err);
 						return res.status(500).send(err);
 					}
@@ -312,8 +346,13 @@ router.post('/', auth, async (req, res) => {
 		const uploadWorkImageFile = generateFileName(uploadFile.images, 'images');
 		uploadFile.images.mv(
 			`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
-			(err) => {
+			(err) => async () => {
 				if (err) {
+					const log = new Log({
+						message: err,
+						type: 'Create Resume',
+					});
+					await log.save();
 					console.error(err);
 					return res.status(500).send(err);
 				}
@@ -332,8 +371,13 @@ router.post('/', auth, async (req, res) => {
 			);
 			element.mv(
 				`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-				(err) => {
+				(err) => async () => {
 					if (err) {
+						const log = new Log({
+							message: err,
+							type: 'Create Resume',
+						});
+						await log.save();
 						console.error(err);
 						return res.status(500).send(err);
 					}
@@ -348,8 +392,13 @@ router.post('/', auth, async (req, res) => {
 		);
 		uploadFile.documents.mv(
 			`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-			(err) => {
+			(err) => async () => {
 				if (err) {
+					const log = new Log({
+						message: err,
+						type: 'Create Resume',
+					});
+					await log.save();
 					console.error(err);
 					return res.status(500).send(err);
 				}
@@ -424,6 +473,11 @@ router.post('/', auth, async (req, res) => {
 		await resume.save();
 		res.json(resume);
 	} catch (error) {
+		const log = new Log({
+			message: error.message,
+			type: 'Create Resume',
+		});
+		await log.save();
 		console.error(error.message);
 		res.status(500).send('Server Error');
 	}
