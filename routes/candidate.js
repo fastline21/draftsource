@@ -263,6 +263,30 @@ router.put('/update-resume/:id', async (req, res) => {
 	}
 });
 
+// @route	DELETE /api/candidate/remove-sample-work
+// @desc	Remove sample work
+// @access	Private
+router.delete('/remove-sample-work/:id/:file/:type', auth, async (req, res) => {
+	const { id, file, type } = req.params;
+	const resume = await Resume.findById(id);
+	const newFile = resume.uploadWork[type].filter((f) => f.file !== file);
+	await Resume.findByIdAndUpdate(id, {
+		uploadWork: {
+			...resume.uploadWork,
+			[type]: newFile,
+		},
+	});
+	if (fs.existsSync(`${__dirname}/../public/uploads/${file}`)) {
+		fs.unlink(`${__dirname}/../public/uploads/${file}`, (err) => {
+			if (err) {
+				console.error(err);
+				return;
+			}
+		});
+	}
+	res.json({ type, arr: newFile });
+});
+
 // @route   PUT /api/candidate/approve-resume
 // @desc    Approve resume
 // @access  Private
@@ -271,6 +295,7 @@ router.put('/approve-resume', auth, async (req, res) => {
 	const resume = await Resume.findByIdAndUpdate(_id, {
 		...req.body,
 		status: 'Approve',
+		dateApproved: Date.now(),
 	});
 	res.json(resume);
 });
@@ -283,6 +308,7 @@ router.put('/hire-resume', auth, async (req, res) => {
 	const resume = await Resume.findByIdAndUpdate(_id, {
 		...req.body,
 		status: 'Hire',
+		dateHired: Date.now(),
 	});
 	res.json(resume);
 });
@@ -295,6 +321,7 @@ router.put('/reject-resume', auth, async (req, res) => {
 	const resume = await Resume.findByIdAndUpdate(_id, {
 		...req.body,
 		status: 'Reject',
+		dateRejected: Date.now(),
 	});
 	res.json(resume);
 });
@@ -315,6 +342,8 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 		uploadWork,
 		user,
 	} = resume;
+
+	// Resume Image
 	if (fs.existsSync(`${__dirname}/../public/uploads/${resumeImage}`)) {
 		fs.unlink(`${__dirname}/../public/uploads/${resumeImage}`, (err) => {
 			if (err) {
@@ -335,6 +364,8 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 	// 		return;
 	// 	}
 	// });
+
+	// About Yourself
 	if (fs.existsSync(`${__dirname}/../public/uploads/${aboutYourself}`)) {
 		fs.unlink(`${__dirname}/../public/uploads/${aboutYourself}`, (err) => {
 			if (err) {
@@ -343,6 +374,8 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 			}
 		});
 	}
+
+	// Gov ID
 	if (fs.existsSync(`${__dirname}/../public/uploads/${govID}`)) {
 		fs.unlink(`${__dirname}/../public/uploads/${govID}`, (err) => {
 			if (err) {
@@ -351,6 +384,8 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 			}
 		});
 	}
+
+	// CV
 	if (fs.existsSync(`${__dirname}/../public/uploads/${cv}`)) {
 		fs.unlink(`${__dirname}/../public/uploads/${cv}`, (err) => {
 			if (err) {
@@ -360,27 +395,34 @@ router.delete('/delete-resume/:id', auth, async (req, res) => {
 		});
 	}
 
-	uploadWork.images.map((e) => {
-		if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
-			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-			});
-		}
-	});
+	// Upload Work - Images
+	if (uploadWork.images.length !== 0) {
+		uploadWork.images.map((e) => {
+			if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+				});
+			}
+		});
+	}
 
-	uploadWork.documents.map((e) => {
-		if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
-			fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
-				if (err) {
-					console.error(err);
-					return;
-				}
-			});
-		}
-	});
+	// Upload Work - Documents
+	if (uploadWork.documents.length !== 0) {
+		uploadWork.documents.map((e) => {
+			if (fs.existsSync(`${__dirname}/../public/uploads/${e.file}`)) {
+				fs.unlink(`${__dirname}/../public/uploads/${e.file}`, (err) => {
+					if (err) {
+						console.error(err);
+						return;
+					}
+				});
+			}
+		});
+	}
+
 	await User.findByIdAndDelete(user);
 	await Resume.findByIdAndDelete(id);
 	return res.json({ success: true });

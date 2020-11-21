@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import moment from 'moment';
+import { Document, Page, pdfjs } from 'react-pdf';
 
 // Actions
 import {
@@ -50,7 +51,7 @@ const ViewResume = ({
 		intermediateSoftware: [],
 		marketType: [],
 		countryExperience: [],
-		uploadWork: { images: [] },
+		uploadWork: { images: [], documents: [] },
 		workHistory: [],
 		education: [],
 		recruitmentsComment: '',
@@ -70,8 +71,8 @@ const ViewResume = ({
 	};
 	const initialViewSampleWork = {
 		show: false,
-		title: '',
-		file: '',
+		data: '',
+		current: '',
 	};
 
 	// State
@@ -135,6 +136,33 @@ const ViewResume = ({
 		return d1.diff(d2, 'month');
 	};
 
+	// Sample work
+	const sampleWork = () => {
+		if (
+			uploadWork.images.length > 0 ||
+			uploadWork.images !== undefined ||
+			uploadWork.documents.length > 0 ||
+			uploadWork.documents !== undefined
+		) {
+			const { images, documents } = uploadWork;
+			const newImages = images
+				? images.map((el) => {
+						const d = Object.assign({}, el);
+						d.type = 'image';
+						return d;
+				  })
+				: [];
+			const newDocuments = documents
+				? documents.map((el) => {
+						const d = Object.assign({}, el);
+						d.type = 'document';
+						return d;
+				  })
+				: [];
+			return [...newImages, ...newDocuments];
+		}
+	};
+
 	const handleClose = () => {
 		setShow(false);
 		clearResume();
@@ -150,6 +178,8 @@ const ViewResume = ({
 
 		// eslint-disable-next-line
 	}, [isShow]);
+
+	pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 	return (
 		<Modal
@@ -412,8 +442,8 @@ const ViewResume = ({
 							<p className="item-title color-2">Sample Works</p>
 						</div>
 						<div className="col-lg-8">
-							<div className="row pb-3 upload-work-images">
-								{uploadWork.images.map((e, i) => (
+							<div className="row pb-3 upload-work">
+								{/* {uploadWork.images.map((e, i) => (
 									<div className="col-lg-4" key={i}>
 										<figure
 											className="figure"
@@ -436,7 +466,65 @@ const ViewResume = ({
 											</figcaption>
 										</figure>
 									</div>
-								))}
+								))} */}
+								{sampleWork() !== undefined
+									? sampleWork().map((e, i) =>
+											e.type === 'image' ? (
+												<div className="col-lg-4" key={i}>
+													<figure
+														className="figure"
+														style={{ cursor: 'pointer' }}
+													>
+														<img
+															src={`/uploads/${e.file}`}
+															alt={e.title}
+															className="figure-img img-fluid shadow"
+															onClick={() =>
+																setViewSampleWork({
+																	show: true,
+																	data: sampleWork(),
+																	current: i,
+																})
+															}
+														/>
+														<figcaption className="figure-caption">
+															{e.title}
+														</figcaption>
+													</figure>
+												</div>
+											) : (
+												<div className="col-lg-4" key={i}>
+													<figure
+														className="figure w-100"
+														style={{ cursor: 'pointer' }}
+													>
+														<div
+															className="shadow"
+															style={{ marginBottom: '.5rem' }}
+															onClick={() =>
+																setViewSampleWork({
+																	show: true,
+																	data: sampleWork(),
+																	current: i,
+																})
+															}
+														>
+															<Document file={`/uploads/${e.file}`}>
+																<Page
+																	pageNumber={1}
+																	height={140}
+																	renderAnnotationLayer={false}
+																/>
+															</Document>
+														</div>
+														<figcaption className="figure-caption">
+															{e.title}
+														</figcaption>
+													</figure>
+												</div>
+											)
+									  )
+									: null}
 							</div>
 							<hr className="line-break" />
 						</div>

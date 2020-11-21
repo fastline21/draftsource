@@ -44,11 +44,15 @@ const Home = ({
 			<div style={{ height: '90vh' }}>
 				<div className="h-100  align-items-center d-flex">
 					<section className="sec-1">
-						<h1 className="title">Don’t spend major time on minor tasks</h1>
+						<h1 className="title">
+							Virtual Staffing Services to Cabinet Makers and Fit-Out
+							Contractors
+						</h1>
 						<p className="subtitle">
-							Hire a dedicated Filipino cabinet vision drafter and estimator and
-							avoid paying overpriced contractors. Delegate your shop drawing
-							tasks and focus on managing your projects and closing more deals.
+							We recruit, train and manage your Filipino virtual staff that can
+							assist you in estimating, 3D rendering and drawing presentations,
+							material take-off, documentations and shop drawings for
+							production.
 						</p>
 						<div className="cta">
 							<Button
@@ -79,11 +83,11 @@ const Home = ({
 								Request candidates for free
 							</Link> */}
 						</div>
-						<ul className="list">
+						{/* <ul className="list">
 							<li className="item">No hiring headahces</li>
 							<li className="item">No interviews</li>
 							<li className="item">No dramas</li>
-						</ul>
+						</ul> */}
 					</section>
 				</div>
 			</div>

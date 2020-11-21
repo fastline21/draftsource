@@ -158,10 +158,23 @@ const CandidateItem = ({ candidate, viewResume }) => {
 						prevIcon={<i className="fas fa-caret-left" aria-hidden="true"></i>}
 						fade={true}
 					>
-						{uploadWork.images.map((e, i) => (
-							<Carousel.Item key={i}>
+						{uploadWork.images.length !== 0 ? (
+							uploadWork.images.map((e, i) => (
+								<Carousel.Item key={i}>
+									<img
+										src={`/uploads/${e.file}`}
+										alt="..."
+										onError={(e) => {
+											e.target.onerror = null;
+											e.target.src = defaultImage;
+										}}
+									/>
+								</Carousel.Item>
+							))
+						) : (
+							<Carousel.Item key={0}>
 								<img
-									src={`/uploads/${e.file}`}
+									src={defaultImage}
 									alt="..."
 									onError={(e) => {
 										e.target.onerror = null;
@@ -169,10 +182,10 @@ const CandidateItem = ({ candidate, viewResume }) => {
 									}}
 								/>
 							</Carousel.Item>
-						))}
+						)}
 					</Carousel>
 					<span className="num">
-						{activeMiniSlide + 1} of {uploadWork.images.length}
+						{activeMiniSlide + 1} of {uploadWork.images.length || 1}
 					</span>
 				</div>
 			</div>

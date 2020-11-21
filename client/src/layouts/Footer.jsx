@@ -2,9 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import draftsourceLogo from './../images/draftsource_logo.png';
-import { peopleWeServeList } from '../list/PeopleWeServe';
-import { servicesOfferList } from '../list/ServicesOffer';
+// Lists
+import { softwareWeUseList } from '../list/SoftwareWeUse';
+import { staffWeOfferList } from '../list/StaffWeOffer';
 import { countriesWeServeList } from '../list/CountriesWeServe';
 
 const Footer = () => {
@@ -12,26 +12,6 @@ const Footer = () => {
 		<footer id="footer">
 			<Container>
 				<Row>
-					<Col lg="3" md="3" sm="6">
-						<h6 className="title">People we serve</h6>
-						<ul className="list">
-							{peopleWeServeList().map((e, i) => (
-								<li className="item" key={i}>
-									{e}
-								</li>
-							))}
-						</ul>
-					</Col>
-					<Col lg="3" md="3" sm="6">
-						<h6 className="title">Services we offer</h6>
-						<ul className="list">
-							{servicesOfferList().map((e, i) => (
-								<li className="item" key={i}>
-									{e}
-								</li>
-							))}
-						</ul>
-					</Col>
 					<Col lg="3" md="3" sm="6">
 						<h6 className="title">Countries we serve</h6>
 						<ul className="list">
@@ -43,11 +23,32 @@ const Footer = () => {
 						</ul>
 					</Col>
 					<Col lg="3" md="3" sm="6">
+						<h6 className="title">Staff we offer</h6>
+						<ul className="list">
+							{staffWeOfferList().map((e, i) => (
+								<li className="item" key={i}>
+									{e}
+								</li>
+							))}
+						</ul>
+					</Col>
+					<Col lg="3" md="3" sm="6">
+						<h6 className="title">Software we use</h6>
+						<ul className="list">
+							{softwareWeUseList().map((e, i) => (
+								<li className="item" key={i}>
+									{e}
+								</li>
+							))}
+						</ul>
+					</Col>
+					<Col lg="3" md="3" sm="6">
 						{/* <img src={draftsourceLogo} alt="" className="img-fluid logo" /> */}
 						<h6 className="title">About Us</h6>
 						<p className="address">
-							Draftsource is a cabinet vision drafting outsourcing and virtual
-							staff leasing company based in the Philippines.
+							Draftsource is a recruitment and staffing company providing
+							FIlipino Virtual Staffs to Cabinet Makers and Fit-Out Contractors
+							worldwide.
 						</p>
 						<h6 className="title mb-0">
 							Email:{' '}

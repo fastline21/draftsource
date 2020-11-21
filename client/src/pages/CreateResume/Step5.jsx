@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // Utils
 import useUnsavedChangesWarning from './../../utils/useUnsavedChangesWarning';
 import useWindowSize from './../../utils/useWindowSize';
+import getTotalMonth from './../../utils/getTotalMonth';
 
 // Action
 import { setAlert } from './../../state/actions/alertAction';
@@ -85,6 +87,20 @@ const Step5 = ({
 	const onAdd = (e) => {
 		e.preventDefault();
 
+		const date1 = getTotalMonth(
+			monthStarted,
+			1,
+			parseInt(yearStarted),
+			'MM/DD/YYYY'
+		);
+		const date2 = getTotalMonth(
+			monthEnded,
+			1,
+			parseInt(yearEnded),
+			'MM/DD/YYYY'
+		);
+		const totalMonth = date2.diff(date1, 'month');
+
 		if (
 			title === '' ||
 			company === '' ||
@@ -98,6 +114,8 @@ const Step5 = ({
 			companySize === ''
 		) {
 			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else if (totalMonth < 0) {
+			return setAlert('', 'Invalid Date');
 		}
 		setWorkHistory((workHistory) => [...workHistory, workHistoryItem]);
 		clearWorkHistoryItem();
@@ -112,6 +130,36 @@ const Step5 = ({
 
 	const onUpdate = (e) => {
 		e.preventDefault();
+		const date1 = getTotalMonth(
+			monthStarted,
+			1,
+			parseInt(yearStarted),
+			'MM/DD/YYYY'
+		);
+		const date2 = getTotalMonth(
+			monthEnded,
+			1,
+			parseInt(yearEnded),
+			'MM/DD/YYYY'
+		);
+		const totalMonth = date2.diff(date1, 'month');
+
+		if (
+			title === '' ||
+			company === '' ||
+			monthStarted === '' ||
+			yearStarted === '' ||
+			monthEnded === '' ||
+			yearEnded === '' ||
+			description === '' ||
+			companyExpertise.length === 0 ||
+			country === '' ||
+			companySize === ''
+		) {
+			return setAlert('', 'Please fill-in the required boxes to Proceed.');
+		} else if (totalMonth < 0) {
+			return setAlert('', 'Invalid Date');
+		}
 		setWorkHistoryItem([...workHistory.splice(current, 1, workHistoryItem)]);
 		clearWorkHistoryItem();
 		setDirty();

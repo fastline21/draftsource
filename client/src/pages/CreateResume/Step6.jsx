@@ -1267,6 +1267,7 @@ const Step6 = ({
 														data={e}
 														isEdit={onEditWorkImage}
 														isDelete={onDeleteWorkImage}
+														type="image"
 													/>
 												</div>
 											))}
@@ -1300,6 +1301,7 @@ const Step6 = ({
 														data={e}
 														isEdit={onEditWorkDocument}
 														isDelete={onDeleteWorkDocument}
+														type="document"
 													/>
 												</div>
 											))}

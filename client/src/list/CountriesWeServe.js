@@ -1,8 +1,9 @@
 export const countriesWeServeList = () => {
 	return [
 		'Australia',
-		'United States of America',
+		'United States',
 		'New Zealand',
 		'United Kingdom',
+		'Canada',
 	];
 };

@@ -691,19 +691,58 @@
 		}
 
 		.upload-work {
-			.figure-img {
-				height: 140px;
-				width: 230px;
-			}
+			.figure {
+				position: relative;
 
-			.figure-caption {
-				text-align: center;
-				color: #606060;
-				font-weight: 500;
-			}
+				&:hover > .title {
+					display: none;
+				}
 
-			.react-pdf__Page__canvas {
-				margin: auto;
+				&:hover > .action {
+					display: block;
+				}
+
+				.action {
+					display: none;
+					position: absolute;
+					top: 45%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					color: $black;
+					font-weight: 500;
+					width: 100px;
+					text-align: center;
+
+					.button {
+						background-color: transparent;
+						border-color: transparent;
+						padding: 0;
+						color: $black;
+						display: inline-block;
+						width: auto;
+						font-size: 12px;
+						margin-bottom: 0;
+					}
+
+					span {
+						margin: 0 5px;
+					}
+				}
+
+				.figure-img {
+					height: 140px;
+					width: 230px;
+				}
+
+				.figure-caption {
+					text-align: center;
+					color: #606060;
+					font-weight: 500;
+				}
+
+				.react-pdf__Page__canvas {
+					margin: auto;
+				}
 			}
 		}
 

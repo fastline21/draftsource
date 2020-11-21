@@ -41,6 +41,7 @@ router.post('/', async (req, res) => {
 			country,
 		});
 		await requestSample.save();
+		res.json(requestSample);
 		const compose = `
 			${fullName},<br />
 			<br />
@@ -95,7 +96,6 @@ router.post('/', async (req, res) => {
 				compose,
 				attachments
 			);
-			res.json(requestSample);
 		} catch (error) {
 			console.error('error:', error);
 			return res.status(error.responseCode).json({ msg: error.response });

@@ -10,6 +10,7 @@ import {
 	SET_SHORTLISTED,
 	CANDIDATE_LOADING,
 	STATUS_CANDIDATE,
+	REMOVE_SAMPLE_WORK,
 } from './types';
 
 const reloadData = (menu, dispatch) => {
@@ -201,6 +202,31 @@ export const updateResume = (resume) => async (dispatch) => {
 			},
 		};
 		await axios.put(`/api/candidate/update-resume/${_id}`, rest, config);
+	} catch (error) {
+		dispatch({
+			type: CANDIDATES_ERROR,
+			payload: error.response.data,
+		});
+	}
+};
+
+// Remove sample work
+export const removeSampleWork = (data) => async (dispatch) => {
+	try {
+		const { _id, file, type } = data;
+		const config = {
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		};
+		const res = await axios.delete(
+			`/api/candidate/remove-sample-work/${_id}/${file}/${type}`,
+			config
+		);
+		dispatch({
+			type: REMOVE_SAMPLE_WORK,
+			payload: res.data,
+		});
 	} catch (error) {
 		dispatch({
 			type: CANDIDATES_ERROR,

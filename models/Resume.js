@@ -185,6 +185,15 @@ const ResumeSchema = new mongoose.Schema({
 		type: Date,
 		default: Date.now,
 	},
+	dateApproved: {
+		type: Date,
+	},
+	dateRejected: {
+		type: Date,
+	},
+	dateHired: {
+		type: Date,
+	},
 });
 
 ResumeSchema.index({

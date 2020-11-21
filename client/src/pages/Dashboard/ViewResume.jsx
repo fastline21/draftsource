@@ -10,6 +10,7 @@ import {
 	clearResume,
 	addRecruitersComment,
 	updateResume,
+	removeSampleWork,
 } from './../../state/actions/candidateAction';
 import { setAlert } from './../../state/actions/alertAction';
 
@@ -32,6 +33,7 @@ const ViewResume = ({
 	clearResume,
 	addRecruitersComment,
 	updateResume,
+	removeSampleWork,
 	setAlert,
 }) => {
 	// Initial data
@@ -334,7 +336,12 @@ const ViewResume = ({
 
 	// Sample work
 	const sampleWork = () => {
-		if (uploadWork.images.length > 0 || uploadWork.documents.length > 0) {
+		if (
+			uploadWork.images.length > 0 ||
+			uploadWork.images !== undefined ||
+			uploadWork.documents.length > 0 ||
+			uploadWork.documents !== undefined
+		) {
 			const { images, documents } = uploadWork;
 			const newImages = images
 				? images.map((el) => {
@@ -352,6 +359,16 @@ const ViewResume = ({
 				: [];
 			return [...newImages, ...newDocuments];
 		}
+	};
+
+	// Delete sample work
+	const onDeleteSampleWork = (_id, file, type) => {
+		removeSampleWork({
+			_id,
+			file,
+			type,
+		});
+		loadCandidate();
 	};
 
 	useEffect(() => {
@@ -727,22 +744,41 @@ const ViewResume = ({
 								{sampleWork() !== undefined
 									? sampleWork().map((e, i) =>
 											e.type === 'image' ? (
-												<div className="col-lg-3" key={i}>
+												<div className="col-lg-4" key={i}>
 													<figure
 														className="figure"
 														style={{ cursor: 'pointer' }}
-														onClick={() =>
-															setViewSampleWork({
-																show: true,
-																data: sampleWork(),
-																current: i,
-															})
-														}
 													>
+														<div className="action">
+															<button
+																className="btn btn-primary button"
+																onClick={() =>
+																	setViewSampleWork({
+																		show: true,
+																		data: sampleWork(),
+																		current: i,
+																	})
+																}
+															>
+																View
+															</button>
+															<span>|</span>
+															<button
+																className="btn btn-primary button"
+																onClick={() => {
+																	window.confirm(
+																		'Are you sure to delete this file?'
+																	) &&
+																		onDeleteSampleWork(_id, e.file, 'images');
+																}}
+															>
+																Delete
+															</button>
+														</div>
 														<img
 															src={`/uploads/${e.file}`}
 															alt={e.title}
-															className="figure-img img-fluid"
+															className="figure-img img-fluid shadow"
 														/>
 														<figcaption className="figure-caption">
 															{e.title}
@@ -750,19 +786,45 @@ const ViewResume = ({
 													</figure>
 												</div>
 											) : (
-												<div className="col-lg-3" key={i}>
+												<div className="col-lg-4" key={i}>
 													<figure
 														className="figure w-100"
 														style={{ cursor: 'pointer' }}
-														onClick={() =>
-															setViewSampleWork({
-																show: true,
-																data: sampleWork(),
-																current: i,
-															})
-														}
 													>
-														<div style={{ marginBottom: '.5rem' }}>
+														<div className="action">
+															<button
+																className="btn btn-primary button"
+																onClick={() =>
+																	setViewSampleWork({
+																		show: true,
+																		data: sampleWork(),
+																		current: i,
+																	})
+																}
+															>
+																View
+															</button>
+															<span>|</span>
+															<button
+																className="btn btn-primary button"
+																onClick={() => {
+																	window.confirm(
+																		'Are you sure to delete this file?'
+																	) &&
+																		onDeleteSampleWork(
+																			_id,
+																			e.file,
+																			'documents'
+																		);
+																}}
+															>
+																Delete
+															</button>
+														</div>
+														<div
+															className="shadow"
+															style={{ marginBottom: '.5rem' }}
+														>
 															<Document file={`/uploads/${e.file}`}>
 																<Page
 																	pageNumber={1}
@@ -1189,6 +1251,7 @@ ViewResume.propTypes = {
 	setAlert: PropTypes.func.isRequired,
 	addRecruitersComment: PropTypes.func.isRequired,
 	updateResume: PropTypes.func.isRequired,
+	removeSampleWork: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -1200,4 +1263,5 @@ export default connect(mapStateToProps, {
 	setAlert,
 	addRecruitersComment,
 	updateResume,
+	removeSampleWork,
 })(ViewResume);

@@ -9,6 +9,7 @@ import {
 	SET_SHORTLISTED,
 	CANDIDATE_LOADING,
 	STATUS_CANDIDATE,
+	REMOVE_SAMPLE_WORK,
 } from './../actions/types';
 
 const initialState = {
@@ -85,6 +86,17 @@ export default (state = initialState, action) => {
 			return {
 				...state,
 				loading: true,
+			};
+		case REMOVE_SAMPLE_WORK:
+			return {
+				...state,
+				resume: {
+					...state.resume,
+					uploadWork: {
+						...state.resume.uploadWork,
+						[action.payload.type]: action.payload.arr,
+					},
+				},
 			};
 		default:
 			return state;
