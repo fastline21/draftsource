@@ -322,11 +322,33 @@ router.post('/', auth, async (req, res) => {
 	aboutYourself = aboutYourselfFile;
 
 	// Generate Upload Work Images
-	let uploadWorkImage = '';
-	if (uploadWork.images.length > 1) {
-		uploadFile.images.forEach((element) => {
-			const uploadWorkImageFile = generateFileName(element, 'uploadWorkImage');
-			element.mv(
+	if (uploadWork.images.length !== 0) {
+		let uploadWorkImage = '';
+		if (uploadWork.images.length > 1) {
+			uploadFile.images.forEach((element) => {
+				const uploadWorkImageFile = generateFileName(
+					element,
+					'uploadWorkImage'
+				);
+				element.mv(
+					`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
+					(err) => async () => {
+						if (err) {
+							const log = new Log({
+								message: err,
+								type: 'Create Resume',
+							});
+							await log.save();
+							console.error(err);
+							return res.status(500).send(err);
+						}
+					}
+				);
+				uploadWorkImage = [...uploadWorkImage, uploadWorkImageFile];
+			});
+		} else {
+			const uploadWorkImageFile = generateFileName(uploadFile.images, 'images');
+			uploadFile.images.mv(
 				`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
 				(err) => async () => {
 					if (err) {
@@ -340,36 +362,50 @@ router.post('/', auth, async (req, res) => {
 					}
 				}
 			);
-			uploadWorkImage = [...uploadWorkImage, uploadWorkImageFile];
+			uploadWorkImage = uploadWorkImageFile;
+		}
+
+		// Combine Upload Work Images file to array
+		uploadWork.images = uploadWork.images.map((x, i) => {
+			return {
+				...x,
+				file:
+					uploadWork.images.length > 1 ? uploadWorkImage[i] : uploadWorkImage,
+			};
 		});
-	} else {
-		const uploadWorkImageFile = generateFileName(uploadFile.images, 'images');
-		uploadFile.images.mv(
-			`${__dirname}/../public/uploads/${uploadWorkImageFile}`,
-			(err) => async () => {
-				if (err) {
-					const log = new Log({
-						message: err,
-						type: 'Create Resume',
-					});
-					await log.save();
-					console.error(err);
-					return res.status(500).send(err);
-				}
-			}
-		);
-		uploadWorkImage = uploadWorkImageFile;
 	}
 
 	// Generate Upload Work Documents
-	let uploadWorkDocument = '';
-	if (uploadWork.documents.length > 1) {
-		uploadFile.documents.forEach((element) => {
+	if (uploadWork.documents.length !== 0) {
+		let uploadWorkDocument = '';
+		if (uploadWork.documents.length > 1) {
+			uploadFile.documents.forEach((element) => {
+				const uploadWorkDocumentFile = generateFileName(
+					element,
+					'uploadWorkDocument'
+				);
+				element.mv(
+					`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
+					(err) => async () => {
+						if (err) {
+							const log = new Log({
+								message: err,
+								type: 'Create Resume',
+							});
+							await log.save();
+							console.error(err);
+							return res.status(500).send(err);
+						}
+					}
+				);
+				uploadWorkDocument = [...uploadWorkDocument, uploadWorkDocumentFile];
+			});
+		} else {
 			const uploadWorkDocumentFile = generateFileName(
-				element,
-				'uploadWorkDocument'
+				uploadFile.documents,
+				'documents'
 			);
-			element.mv(
+			uploadFile.documents.mv(
 				`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
 				(err) => async () => {
 					if (err) {
@@ -383,39 +419,8 @@ router.post('/', auth, async (req, res) => {
 					}
 				}
 			);
-			uploadWorkDocument = [...uploadWorkDocument, uploadWorkDocumentFile];
-		});
-	} else {
-		const uploadWorkDocumentFile = generateFileName(
-			uploadFile.documents,
-			'documents'
-		);
-		uploadFile.documents.mv(
-			`${__dirname}/../public/uploads/${uploadWorkDocumentFile}`,
-			(err) => async () => {
-				if (err) {
-					const log = new Log({
-						message: err,
-						type: 'Create Resume',
-					});
-					await log.save();
-					console.error(err);
-					return res.status(500).send(err);
-				}
-			}
-		);
-		uploadWorkDocument = uploadWorkDocumentFile;
-	}
-
-	try {
-		// Combine Upload Work Images file to array
-		uploadWork.images = uploadWork.images.map((x, i) => {
-			return {
-				...x,
-				file:
-					uploadWork.images.length > 1 ? uploadWorkImage[i] : uploadWorkImage,
-			};
-		});
+			uploadWorkDocument = uploadWorkDocumentFile;
+		}
 
 		// Combine Upload Work Documents file to array
 		uploadWork.documents = uploadWork.documents.map((x, i) => {
@@ -427,7 +432,9 @@ router.post('/', auth, async (req, res) => {
 						: uploadWorkDocument,
 			};
 		});
+	}
 
+	try {
 		const resumeFields = {
 			user: req.user.id,
 			firstName,
