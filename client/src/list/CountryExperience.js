@@ -9,7 +9,6 @@ export const countryExperienceList = () => {
 		'Saudi Arabia',
 		'Canada',
 		'United States',
-		'New Zealand',
 		'United Kingdom',
 		'United Arab Emirates',
 		'Philippines',

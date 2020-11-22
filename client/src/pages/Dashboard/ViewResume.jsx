@@ -329,6 +329,9 @@ const ViewResume = ({
 	const handleClose = () => {
 		setShow(false);
 		clearResume();
+		setData(initialData);
+		setViewImage(initialViewImage);
+		setViewSampleWork(initialViewSampleWork);
 	};
 
 	// Show modal
