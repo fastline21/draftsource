@@ -7,7 +7,6 @@ import ReactPaginate from 'react-paginate';
 
 // Actions
 import { addFilter } from './../../state/actions/filterAction';
-import { loadUser } from '../../state/actions/userAction';
 
 const PaginationLink = ({
 	type,

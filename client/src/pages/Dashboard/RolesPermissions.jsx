@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
@@ -12,6 +12,9 @@ import { addFilter } from './../../state/actions/filterAction';
 // Components
 import PreLoader from './../../layouts/PreLoader';
 import PaginationLink from './PaginationLink';
+
+// Utils
+import useWindowSize from './../../utils/useWindowSize';
 
 const RolesPermissions = ({
 	getUsers,
@@ -27,6 +30,7 @@ const RolesPermissions = ({
 		search: '',
 		viewBy: '10',
 	});
+	const windowSize = useWindowSize();
 	const onChange = (e) => {
 		const { name, value } = e.target;
 
@@ -60,15 +64,38 @@ const RolesPermissions = ({
 			deleteUser(id);
 		}
 	};
+	useEffect(() => {
+		if (windowSize.width > 1023) {
+			document.getElementById('filterMobile').removeAttribute('style');
+			document.getElementById('mobileOverlay1').removeAttribute('style');
+		}
+
+		if (showFilter) {
+			document.getElementById('filterMobile').style.left = 0;
+			document.getElementById('mobileOverlay1').style.cssText =
+				'visibility: visible; opacity: 1';
+			setShowFilter(false);
+		}
+
+		// eslint-disable-next-line
+	}, [showFilter, windowSize]);
 
 	return (
 		<Fragment>
-			<div className="top">
-				<p>
+			<div className="top align-items-baseline">
+				<p className="head-title">
 					Roles allow you to set which users are allowed to perform certain
 					actions within Close A role defines a group of users who have certain
 					permissions within the app.
 				</p>
+				<div className="view-by">
+					<button
+						className="btn btn-primary button filter"
+						onClick={() => setShowFilter(true)}
+					>
+						<i className="fas fa-filter"></i> Filter
+					</button>
+				</div>
 			</div>
 			{loading ? (
 				<PreLoader />

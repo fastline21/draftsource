@@ -204,6 +204,18 @@
 					}
 				}
 
+				.head-title {
+					@include media('>=576px') {
+						max-width: 750px;
+						width: 80vw;
+					}
+
+					@include media('>=desktop') {
+						max-width: none;
+						width: auto;
+					}
+				}
+
 				.view-by {
 					display: flex;
 					margin-top: 10px;

@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
-const moment = require('moment');
 
 // Models
 const Resume = require('./../models/Resume');
@@ -13,11 +12,21 @@ const auth = require('./../middleware/auth');
 // Utils
 const getTotalMonth = require('./../utils/getTotalMonth');
 
-function shuffle(array) {
-	array.sort(() => Math.random() - 0.5);
-}
+// function shuffle(array) {
+// 	array.sort(() => Math.random() - 0.5);
+// }
 
 const getCandidates = async (query, status) => {
+	let sortBy = '';
+	if (status === 'Approve') {
+		sortBy = 'dateApproved';
+	} else if (status === 'Reject') {
+		sortBy = 'dateRejected';
+	} else if (status === 'Hire') {
+		sortBy = 'dateHired';
+	} else {
+		sortBy = 'dateCreated';
+	}
 	let totalWorkYear = {
 		min: -1,
 		max: -1,
@@ -152,7 +161,7 @@ const getCandidates = async (query, status) => {
 	let candidates = await Resume.find({
 		...queryData,
 		status,
-	});
+	}).sort({ [sortBy]: -1 });
 	// shuffle(candidates);
 	const page = parseInt(query.page) || 1;
 	const limit = parseInt(query.limit) || 10;

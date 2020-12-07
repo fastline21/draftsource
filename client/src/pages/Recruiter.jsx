@@ -82,7 +82,7 @@ const Step1 = ({
 	}, [user, error]);
 
 	return (
-		<div>
+		<div className="recruiter">
 			{Prompt}
 			<form className="form" onSubmit={onSubmit}>
 				<div className="form-group">

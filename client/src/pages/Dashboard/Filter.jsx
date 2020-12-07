@@ -2,7 +2,6 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Form } from 'react-bootstrap';
 
 // Lists
 import { specialtyList } from './../../list/Specialty';

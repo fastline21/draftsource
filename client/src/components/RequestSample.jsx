@@ -87,6 +87,7 @@ const RequestSample = ({
 			setAlert('', requestSampleError.msg);
 			requestSampleDefault();
 		}
+		// eslint-disable-next-line
 	}, [isShow, requestSampleSuccess, requestSampleError, requestSampleLoading]);
 	return (
 		<Modal show={show} onHide={handleClose}>

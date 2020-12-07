@@ -828,7 +828,12 @@ const ViewResume = ({
 															className="shadow"
 															style={{ marginBottom: '.5rem' }}
 														>
-															<Document file={`/uploads/${e.file}`}>
+															<Document
+																file={`/uploads/${e.file}`}
+																onContextMenu={(event) =>
+																	event.preventDefault()
+																}
+															>
 																<Page
 																	pageNumber={1}
 																	height={140}

@@ -245,6 +245,7 @@ router.post('/signup', async (req, res) => {
 			}
 		}
 	} else if (type === 'Employer') {
+		// Get input fields
 		const { email, password, password2 } = req.body;
 
 		if (email === '' || password === '' || password2 === '') {
@@ -296,6 +297,7 @@ router.post('/signup', async (req, res) => {
 			}
 		}
 	} else if (type === 'Recruiter') {
+		// Get input fields
 		const { email, password, password2 } = req.body;
 
 		if (email === '' || password === '' || password2 === '') {

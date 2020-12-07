@@ -13,7 +13,6 @@ import {
 	GET_USERS,
 	USER_LOADING,
 	USER_PERCENT,
-	STATUS_USER,
 } from './types';
 
 // Add user

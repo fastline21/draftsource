@@ -22,7 +22,7 @@ const UploadWorkItem = ({ index, data, type, isEdit, isDelete }) => {
 			};
 			generateBgImage();
 		}
-	}, [file]);
+	}, [file, type]);
 
 	const styles = {
 		backgroundImage: `url(${bgImage})`,

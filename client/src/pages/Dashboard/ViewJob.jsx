@@ -142,6 +142,7 @@ const ViewJob = ({ menu, jobState: { details }, clearDetails, loadJob }) => {
 			setData({ ...data, ...details, menu });
 			handleShow();
 		}
+		// eslint-disable-next-line
 	}, [details]);
 	return (
 		<Modal

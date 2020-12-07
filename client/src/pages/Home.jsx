@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 // Components
-// import { talkRecruiter } from './../components/TalkRecruiter';
 import RequestSample from '../components/RequestSample';
 import ScheduleDemo from './../components/ScheduleDemo';
 
