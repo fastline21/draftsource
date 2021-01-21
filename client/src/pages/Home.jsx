@@ -34,40 +34,41 @@ const Home = ({
 		// eslint-disable-next-line
 	}, [resStep, jStep]);
 	return (
-		<div id="home">
+		<div id='home'>
 			<RequestSample
 				isShow={showRequestSample}
 				isHide={() => setShowRequestSample(false)}
 			/>
 			<div style={{ height: '90vh' }}>
-				<div className="h-100  align-items-center d-flex">
-					<section className="sec-1">
-						<h1 className="title">
-							Virtual Staffing Services to Cabinet Makers and Fit-Out
-							Contractors
+				<div className='h-100  align-items-center d-flex'>
+					<section className='sec-1'>
+						<h1 className='title'>
+							Virtual Staffing Services to Cabinet Makers and
+							Fit-Out Contractors
 						</h1>
-						<p className="subtitle">
-							We recruit, train and manage your Filipino virtual staff that can
-							assist you in estimating, 3D rendering and drawing presentations,
-							material take-off, documentations and shop drawings for
+						<p className='subtitle'>
+							We recruit, train and manage your Filipino virtual
+							staff that can assist you in estimating, 3D
+							rendering and drawing presentations, material
+							take-off, documentations and shop drawings for
 							production.
 						</p>
-						<div className="cta">
+						<div className='cta'>
 							<Button
-								variant="primary"
-								className="button"
+								variant='primary'
+								className='button'
 								onClick={() => ScheduleDemo()}
 							>
 								Schedule a Demo
 							</Button>
-							<span>or</span>
+							{/* <span>or</span>
 							<Button
 								variant="primary"
 								className="link"
 								onClick={() => setShowRequestSample(true)}
 							>
 								Request sample projects and price
-							</Button>
+							</Button> */}
 							{/* <Link to="/view-candidates" className="btn btn-primary button">
 								View Candidates
 							</Link> */}
